@@ -90,19 +90,16 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // PUT api/courses/5
         public void Put(Guid id, SaveCourseRequest request)
         {
-            // http://stackoverflow.com/a/630475
-            var course = Mapper.Map<Domain.Entities.Course>(request);
-            course.Id = id;
+            // We do not allow creation of a new resource by PUT.
+            var courseInDb = _courseRepository.GetById(id);
+            
+            if(courseInDb == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);    
+            }
 
-            // Update if the course exists. Otherwise, create
-            if (_courseRepository.GetAll().Any(c => c.Id.Equals(id)))
-            {
-                _courseRepository.Update(course);
-            }
-            else
-            {
-                _courseRepository.Add(course);
-            }
+            Mapper.Map(request, courseInDb);
+            _courseRepository.Update(courseInDb);
         }
 
         [Transaction]

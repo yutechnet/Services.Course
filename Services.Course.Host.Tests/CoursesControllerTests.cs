@@ -94,7 +94,7 @@ namespace BpeProducts.Services.Course.Host.Tests
 
             _coursesController.Put(saveCourseRequest.Id, saveCourseRequest);
 
-            _mockCourseRepository.Verify(c => c.Update(
+            _mockCourseRepository.Verify(c => c.SaveOrUpdate(
                 It.Is<Domain.Entities.Course>(p => p.Id.Equals(saveCourseRequest.Id) &&
                                                    p.Code.Equals(saveCourseRequest.Code) &&
                                                    p.Description.Equals(saveCourseRequest.Description) &&
