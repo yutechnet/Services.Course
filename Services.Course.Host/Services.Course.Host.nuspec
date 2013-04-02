@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>BpeProducts.Services.Course.Host</id>
+    <version>1.0.0</version>
+    <authors>syum</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>WebApi interface for Course</description>
+    <tags>Products,Course,WebApi</tags>
+    <dependencies>
+      <dependency id="BpeProducts.Common.WebApi" version="[1.0.0, 2.0.0)" />
+    </dependencies>
+  </metadata>
+</package>
