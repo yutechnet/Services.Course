@@ -89,16 +89,30 @@ namespace BpeProducts.Services.Course.Host.Tests
             Mapper.CreateMap<Domain.Entities.Course, SaveCourseRequest>();
 
             var courses = SetUpExistingCourse();
+            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(courses.First());
 
             var saveCourseRequest = Mapper.Map<SaveCourseRequest>(courses.First());
 
             _coursesController.Put(saveCourseRequest.Id, saveCourseRequest);
 
-            _mockCourseRepository.Verify(c => c.SaveOrUpdate(
+            _mockCourseRepository.Verify(c => c.Update(
                 It.Is<Domain.Entities.Course>(p => p.Id.Equals(saveCourseRequest.Id) &&
                                                    p.Code.Equals(saveCourseRequest.Code) &&
                                                    p.Description.Equals(saveCourseRequest.Description) &&
                                                    p.Name.Equals(saveCourseRequest.Name))), Times.Once());
+        }
+
+        [Test]
+        public void cannot_update_non_existing_course()
+        {
+            Mapper.CreateMap<Domain.Entities.Course, SaveCourseRequest>();
+
+            var saveCourseRequest = new SaveCourseRequest();
+
+            var response =
+                Assert.Throws<HttpResponseException>(() => _coursesController.Put(Guid.NewGuid(), saveCourseRequest)).Response;
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+
         }
 
         [Test]
