@@ -19,9 +19,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("Course Creation")]
+    [NUnit.Framework.DescriptionAttribute("Course Management")]
     [NUnit.Framework.CategoryAttribute("Api")]
-    public partial class CourseCreationFeature
+    public partial class CourseManagementFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -33,7 +33,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Course Creation", "In order to publish a course\r\nAs a course builder\r\nI want to create, edit and del" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Course Management", "In order to publish a course\r\nAs a course builder\r\nI want to create, edit and del" +
                     "ete a course", ProgrammingLanguage.CSharp, new string[] {
                         "Api"});
             testRunner.OnFeatureStart(featureInfo);
@@ -134,6 +134,89 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("I should get a success confirmation message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 23
  testRunner.And("my course info is changed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Delete a course")]
+        public virtual void DeleteACourse()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a course", ((string[])(null)));
+#line 25
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Code",
+                        "Description",
+                        "Tenant Id"});
+            table4.AddRow(new string[] {
+                        "Psychology 101",
+                        "PSY101",
+                        "Amro\'s awesome Psychology class",
+                        "1"});
+#line 26
+ testRunner.Given("I have an existing course with following info:", ((string)(null)), table4, "Given ");
+#line 29
+ testRunner.And("I delete this course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 30
+ testRunner.Then("I should get a success confirmation message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 31
+ testRunner.And("my course no longer exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Cannot create a course with same name or code")]
+        [NUnit.Framework.TestCaseAttribute("Psychology 101", "PSY102", "Amro\'s another awesome Psychology class", "1", "Conflict", null)]
+        [NUnit.Framework.TestCaseAttribute("Psychology 102", "PSY101", "Amro\'s another awesome Psychology class", "1", "Conflict", null)]
+        public virtual void CannotCreateACourseWithSameNameOrCode(string name, string code, string description, string tenantId, string status, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot create a course with same name or code", exampleTags);
+#line 33
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Code",
+                        "Description",
+                        "Tenant Id"});
+            table5.AddRow(new string[] {
+                        "Psychology 101",
+                        "PSY101",
+                        "Amro\'s awesome Psychology class",
+                        "1"});
+#line 34
+ testRunner.Given("I have an existing course with following info:", ((string)(null)), table5, "Given ");
+#line 37
+ testRunner.When(string.Format("I create a new course with {0}, {1}, {2}, {3}", name, code, description, tenantId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
+ testRunner.And("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 39
+    testRunner.Then(string.Format("I should get the status code {0}", status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("cannot create a course with missing data")]
+        [NUnit.Framework.TestCaseAttribute("Psychology 101", "", "Amro\'s another awesome Psychology class", "1", "BadRequest", null)]
+        [NUnit.Framework.TestCaseAttribute("", "PSY101", "Amro\'s another awesome Psychology class", "1", "BadRequest", null)]
+        [NUnit.Framework.TestCaseAttribute("Physcology 103", "PSY103", "", "1", "OK", null)]
+        [NUnit.Framework.TestCaseAttribute("Physcology 103", "PSY103", "Amro\'s another awesome Psychology class", "", "BadRequest", null)]
+        public virtual void CannotCreateACourseWithMissingData(string name, string code, string description, string tenantId, string status, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("cannot create a course with missing data", exampleTags);
+#line 46
+this.ScenarioSetup(scenarioInfo);
+#line 47
+ testRunner.When(string.Format("I create a new course with {0}, {1}, {2}, {3}", name, code, description, tenantId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 48
+ testRunner.And("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 49
+    testRunner.Then(string.Format("I should get the status code {0}", status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

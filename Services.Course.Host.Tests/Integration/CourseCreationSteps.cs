@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using BpeProducts.Common.WebApi.Test;
@@ -35,9 +36,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void WhenISubmitACreationRequest()
         {
             var saveCourseRequest = ScenarioContext.Current.Get<SaveCourseRequest>("createCourseRequest");
+            // make sure to clear the tenant header before setting it.
+            ApiFeature.ApiTestHost.Client.DefaultRequestHeaders.Remove("tenant");
             ApiFeature.ApiTestHost.Client.DefaultRequestHeaders.Add("tenant", ScenarioContext.Current.Get<string>("tenantId"));
             var response = ApiFeature.ApiTestHost.Client.PostAsync("/api/courses", saveCourseRequest, new JsonMediaTypeFormatter()).Result;
-            ScenarioContext.Current.Add("createCourseResponse",response);
+
+            if (ScenarioContext.Current.ContainsKey("createCourseResponse"))
+            {
+                ScenarioContext.Current.Remove("createCourseResponse");
+            }
+            ScenarioContext.Current.Add("createCourseResponse", response);
+
             // this is the response to ensure the success code
             if (ScenarioContext.Current.ContainsKey("responseToValidate"))
             {
@@ -92,6 +101,65 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.AreEqual(courseInfo.Code, originalRequest.Code);   
         }
 
+        [Given(@"I have an existing course with following info:")]
+        public void GivenIHaveAnExistingCourseWithFollowingInfo(Table table)
+        {
+            // This is creating a course for us.
+            GivenIHaveACourseWithFollowingInfo(table);
+            WhenISubmitACreationRequest();
+            ThenIShouldGetASuccessConfirmationMessage();
+        }
+
+        [Given(@"I delete this course")]
+        public void GivenIDeleteThisCourse()
+        {
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
+            var courseId = response.Content.ReadAsAsync<Guid>().Result;
+            ScenarioContext.Current.Add("courseId", courseId);
+            var delSuccess = ApiFeature.ApiTestHost.Client.DeleteAsync("api/courses/" + courseId).Result;
+            delSuccess.EnsureSuccessStatusCode();
+        }
+
+        [Then(@"my course no longer exists")]
+        public void ThenMyCourseNoLongerExists()
+        {
+            var courseId = ScenarioContext.Current.Get<Guid>("courseId");
+            var getResponse = ApiFeature.ApiTestHost.Client.GetAsync("api/courses/" + courseId).Result;
+            Assert.That(getResponse.StatusCode.Equals(HttpStatusCode.NotFound));
+        }
+
+        [When(@"I create a new course with (.*), (.*), (.*), (.*)")]
+        public void WhenICreateANewCourseWith(string name, string code, string description, string tenantId)
+        {
+            var saveCourseRequest = new SaveCourseRequest
+            {
+                Name = string.IsNullOrEmpty(name) ? name : name + ScenarioContext.Current.Get<long>("ticks") ,
+                Code = string.IsNullOrEmpty(code) ? code : code + ScenarioContext.Current.Get<long>("ticks"),
+                Description = description
+            };
+
+            if (ScenarioContext.Current.ContainsKey("createCourseRequest"))
+            {
+                ScenarioContext.Current.Remove("createCourseRequest");
+            }
+            ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
+
+            if (ScenarioContext.Current.ContainsKey("tenantId"))
+            {
+                ScenarioContext.Current.Remove("tenantId");
+            }
+            ScenarioContext.Current.Add("tenantId", tenantId);
+        }
+
+        [Then(@"I should get the status code (.*)")]
+        public void ThenIShouldGetA(string status)
+        {
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("responseToValidate");
+
+            var expectedStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), status);
+
+            Assert.That(response.StatusCode.Equals(expectedStatusCode));
+        }
 
     }
 }
