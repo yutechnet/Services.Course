@@ -94,6 +94,49 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Edit a course")]
+        public virtual void EditACourse()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit a course", ((string[])(null)));
+#line 14
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Code",
+                        "Description",
+                        "Tenant Id"});
+            table2.AddRow(new string[] {
+                        "English 101",
+                        "ENG101",
+                        "Ranji\'s awesome English Class",
+                        "1"});
+#line 15
+ testRunner.Given("I have a course with following info:", ((string)(null)), table2, "Given ");
+#line 18
+ testRunner.When("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Code",
+                        "Description",
+                        "Tenant Id"});
+            table3.AddRow(new string[] {
+                        "English 202",
+                        "ENG202",
+                        "Ranji\'s awesome English Class",
+                        "1"});
+#line 19
+ testRunner.And("I change the info to reflect the following:", ((string)(null)), table3, "And ");
+#line 22
+ testRunner.Then("I should get a success confirmation message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 23
+ testRunner.And("my course info is changed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
