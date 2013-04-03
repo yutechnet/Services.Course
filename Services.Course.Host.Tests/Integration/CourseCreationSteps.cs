@@ -27,12 +27,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 };
 
             ScenarioContext.Current.Add("saveCourseRequest", saveCourseRequest);
+            ScenarioContext.Current.Add("tenantId", table.Rows[0]["Tenant Id"]);
         }
         
         [When(@"I submit a creation request")]
         public void WhenISubmitACreationRequest()
         {
             var saveCourseRequest = ScenarioContext.Current.Get<SaveCourseRequest>("saveCourseRequest");
+            ApiFeature.ApiTestHost.Client.DefaultRequestHeaders.Add("tenant", ScenarioContext.Current.Get<string>("tenantId"));
             var response = ApiFeature.ApiTestHost.Client.PostAsync("/api/courses", saveCourseRequest, new JsonMediaTypeFormatter()).Result;
             ScenarioContext.Current.Add("saveCourseResponse",response);
         }

@@ -62,8 +62,9 @@
     <Reference Include="BpeProducts.Common.Exceptions">
       <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.8\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Ioc">
-      <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.18\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
+    <Reference Include="BpeProducts.Common.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.20\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Log">
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.9\lib\net40\BpeProducts.Common.Log.dll</HintPath>
@@ -72,11 +73,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.12\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Redis">
-      <HintPath>..\packages\BpeProducts.Common.Redis.1.0.7\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
+    <Reference Include="BpeProducts.Common.Redis, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.Redis.1.0.8\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApi">
-      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.20\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
+    <Reference Include="BpeProducts.Common.WebApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.22\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>

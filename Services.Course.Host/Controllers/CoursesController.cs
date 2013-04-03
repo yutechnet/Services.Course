@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Web;
 using System.Web.Http;
 using AutoMapper;
+using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.WebApi;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -14,10 +18,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
     public class CoursesController : ApiController
     {
         private readonly ICourseRepository _courseRepository;
+        private readonly ITenantExtractor _tenantExtractor;
 
-        public CoursesController(ICourseRepository courseRepository)
+        public CoursesController(ICourseRepository courseRepository, ITenantExtractor tenantExtractor)
         {
             _courseRepository = courseRepository;
+            _tenantExtractor = tenantExtractor;
         }
 
         // GET api/courses
@@ -71,6 +77,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public Guid Post(SaveCourseRequest request)
         {
             var course = Mapper.Map<Domain.Entities.Course>(request);
+            course.TenantId = _tenantExtractor.GetTenantId(Request);
 
             if (_courseRepository.GetAll().Any(c => (c.Name.Equals(request.Name) || c.Code.Equals(request.Code))))
             {
@@ -115,6 +122,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
         }
-
     }
+
+    
 }

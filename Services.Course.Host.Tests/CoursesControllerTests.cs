@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
+using BpeProducts.Common.WebApi;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Host.App_Start;
@@ -19,6 +21,8 @@ namespace BpeProducts.Services.Course.Host.Tests
     public class CoursesControllerTests
     {
         private Mock<ICourseRepository> _mockCourseRepository;
+        private Mock<ITenantExtractor> _mockTenantExtractor;
+
         private CoursesController _coursesController;
 
         [SetUp]
@@ -27,7 +31,10 @@ namespace BpeProducts.Services.Course.Host.Tests
             MapperConfig.ConfigureMappers();
 
             _mockCourseRepository = new Mock<ICourseRepository>();
-            _coursesController = new CoursesController(_mockCourseRepository.Object);
+            _mockTenantExtractor = new Mock<ITenantExtractor>();
+            _coursesController = new CoursesController(_mockCourseRepository.Object, _mockTenantExtractor.Object);
+
+            _mockTenantExtractor.Setup(t => t.GetTenantId(It.IsAny<HttpRequestMessage>())).Returns(1);
         }
 
         [Test]
