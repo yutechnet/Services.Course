@@ -30,17 +30,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 };
 
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
-            ScenarioContext.Current.Add("tenantId", table.Rows[0]["Tenant Id"]);
         }
         
         [When(@"I submit a creation request")]
         public void WhenISubmitACreationRequest()
         {
             var saveCourseRequest = ScenarioContext.Current.Get<SaveCourseRequest>("createCourseRequest");
-            // make sure to clear the tenant header before setting it.
-            ApiFeature.ApiTestHost.Client.DefaultRequestHeaders.Remove("tenant");
-            ApiFeature.ApiTestHost.Client.DefaultRequestHeaders.Add("tenant", ScenarioContext.Current.Get<string>("tenantId"));
-
             var response = ApiFeature.ApiTestHost.Client.PostAsync("/api/courses", saveCourseRequest, new JsonMediaTypeFormatter()).Result;
 
             if (ScenarioContext.Current.ContainsKey("createCourseResponse"))
@@ -87,7 +82,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenIShouldGetASuccessConfirmationMessage()
         {
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("responseToValidate");
-
             response.EnsureSuccessStatusCode();
         }
 
@@ -131,8 +125,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.That(getResponse.StatusCode.Equals(HttpStatusCode.NotFound));
         }
 
-        [When(@"I create a new course with (.*), (.*), (.*), (.*)")]
-        public void WhenICreateANewCourseWith(string name, string code, string description, string tenantId)
+        [When(@"I create a new course with (.*), (.*), (.*)")]
+        public void WhenICreateANewCourseWith(string name, string code, string description)
         {
             var saveCourseRequest = new SaveCourseRequest
             {
@@ -146,12 +140,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 ScenarioContext.Current.Remove("createCourseRequest");
             }
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
-
-            if (ScenarioContext.Current.ContainsKey("tenantId"))
-            {
-                ScenarioContext.Current.Remove("tenantId");
-            }
-            ScenarioContext.Current.Add("tenantId", tenantId);
         }
 
         [Then(@"I should get the status code (.*)")]

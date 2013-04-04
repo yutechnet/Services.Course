@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -22,6 +23,7 @@ namespace BpeProducts.Services.Course.Host.Tests
     {
         private Mock<ICourseRepository> _mockCourseRepository;
         private Mock<ITenantExtractor> _mockTenantExtractor;
+        private SamlTenantExtractor _samlTenantExtractor;
 
         private CoursesController _coursesController;
 
@@ -32,7 +34,12 @@ namespace BpeProducts.Services.Course.Host.Tests
 
             _mockCourseRepository = new Mock<ICourseRepository>();
             _mockTenantExtractor = new Mock<ITenantExtractor>();
-            _coursesController = new CoursesController(_mockCourseRepository.Object, _mockTenantExtractor.Object);
+            _samlTenantExtractor = new SamlTenantExtractor(new List<Claim>
+                {
+                    new Claim(ClaimTypes.Surname, "surname"),
+                    new Claim(CustomClaimTypes.Tenant, "1")
+                });
+            _coursesController = new CoursesController(_mockCourseRepository.Object, _samlTenantExtractor);
 
             _mockTenantExtractor.Setup(t => t.GetTenantId(It.IsAny<HttpRequestMessage>())).Returns(1);
         }

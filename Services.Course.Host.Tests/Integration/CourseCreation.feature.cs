@@ -78,13 +78,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description",
-                        "Tenant Id"});
+                        "Description"});
             table1.AddRow(new string[] {
                         "English 101",
                         "ENG101",
-                        "Ranji\'s awesome English Class",
-                        "1"});
+                        "Ranji\'s awesome English Class"});
 #line 8
  testRunner.Given("I have a course with following info:", ((string)(null)), table1, "Given ");
 #line 11
@@ -106,13 +104,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description",
-                        "Tenant Id"});
+                        "Description"});
             table2.AddRow(new string[] {
                         "English 101",
                         "ENG101",
-                        "Ranji\'s awesome English Class",
-                        "1"});
+                        "Ranji\'s awesome English Class"});
 #line 15
  testRunner.Given("I have a course with following info:", ((string)(null)), table2, "Given ");
 #line 18
@@ -121,13 +117,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description",
-                        "Tenant Id"});
+                        "Description"});
             table3.AddRow(new string[] {
                         "English 202",
                         "ENG202",
-                        "Ranji\'s awesome English Class",
-                        "1"});
+                        "Ranji\'s awesome English Class"});
 #line 19
  testRunner.And("I change the info to reflect the following:", ((string)(null)), table3, "And ");
 #line 22
@@ -149,13 +143,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description",
-                        "Tenant Id"});
+                        "Description"});
             table4.AddRow(new string[] {
                         "Psychology 101",
                         "PSY101",
-                        "Amro\'s awesome Psychology class",
-                        "1"});
+                        "Amro\'s awesome Psychology class"});
 #line 26
  testRunner.Given("I have an existing course with following info:", ((string)(null)), table4, "Given ");
 #line 29
@@ -170,9 +162,9 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Cannot create a course with same name or code")]
-        [NUnit.Framework.TestCaseAttribute("Psychology 101", "PSY102", "Amro\'s another awesome Psychology class", "1", "Conflict", null)]
-        [NUnit.Framework.TestCaseAttribute("Psychology 102", "PSY101", "Amro\'s another awesome Psychology class", "1", "Conflict", null)]
-        public virtual void CannotCreateACourseWithSameNameOrCode(string name, string code, string description, string tenantId, string status, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("Psychology 101", "PSY102", "Amro\'s another awesome Psychology class", "Conflict", null)]
+        [NUnit.Framework.TestCaseAttribute("Psychology 102", "PSY101", "Amro\'s another awesome Psychology class", "Conflict", null)]
+        public virtual void CannotCreateACourseWithSameNameOrCode(string name, string code, string description, string status, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot create a course with same name or code", exampleTags);
 #line 33
@@ -181,17 +173,15 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description",
-                        "Tenant Id"});
+                        "Description"});
             table5.AddRow(new string[] {
                         "Psychology 101",
                         "PSY101",
-                        "Amro\'s awesome Psychology class",
-                        "1"});
+                        "Amro\'s awesome Psychology class"});
 #line 34
  testRunner.Given("I have an existing course with following info:", ((string)(null)), table5, "Given ");
 #line 37
- testRunner.When(string.Format("I create a new course with {0}, {1}, {2}, {3}", name, code, description, tenantId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I create a new course with {0}, {1}, {2}", name, code, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 38
  testRunner.And("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 39
@@ -205,14 +195,13 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("Psychology 101", "", "Amro\'s another awesome Psychology class", "1", "BadRequest", null)]
         [NUnit.Framework.TestCaseAttribute("", "PSY101", "Amro\'s another awesome Psychology class", "1", "BadRequest", null)]
         [NUnit.Framework.TestCaseAttribute("Physcology 103", "PSY103", "", "1", "OK", null)]
-        [NUnit.Framework.TestCaseAttribute("Physcology 103", "PSY103", "Amro\'s another awesome Psychology class", "", "BadRequest", null)]
         public virtual void CannotCreateACourseWithMissingData(string name, string code, string description, string tenantId, string status, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("cannot create a course with missing data", exampleTags);
 #line 46
 this.ScenarioSetup(scenarioInfo);
 #line 47
- testRunner.When(string.Format("I create a new course with {0}, {1}, {2}, {3}", name, code, description, tenantId), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I create a new course with {0}, {1}, {2}", name, code, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 48
  testRunner.And("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49

@@ -19,12 +19,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
     public class CoursesController : ApiController
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly ITenantExtractor _tenantExtractor;
+        private readonly SamlTenantExtractor _samlTenantExtractor;
 
-        public CoursesController(ICourseRepository courseRepository, ITenantExtractor tenantExtractor)
+        public CoursesController(ICourseRepository courseRepository, SamlTenantExtractor samlTenantExtractor)
         {
             _courseRepository = courseRepository;
-            _tenantExtractor = tenantExtractor;
+            _samlTenantExtractor = samlTenantExtractor;
         }
 
         // GET api/courses
@@ -78,7 +78,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public Guid Post(SaveCourseRequest request)
         {
             var course = Mapper.Map<Domain.Entities.Course>(request);
-            course.TenantId = _tenantExtractor.GetTenantId(Request);
+            course.TenantId = _samlTenantExtractor.GetTenantId();
 
             if (_courseRepository.GetAll().Any(c => (c.Name.Equals(request.Name) || c.Code.Equals(request.Code))))
             {
