@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 using BpeProducts.Common.WebApi.Test;
 using BpeProducts.Services.Course.Contract;
 using NUnit.Framework;
@@ -39,6 +40,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             // make sure to clear the tenant header before setting it.
             ApiFeature.ApiTestHost.Client.DefaultRequestHeaders.Remove("tenant");
             ApiFeature.ApiTestHost.Client.DefaultRequestHeaders.Add("tenant", ScenarioContext.Current.Get<string>("tenantId"));
+
             var response = ApiFeature.ApiTestHost.Client.PostAsync("/api/courses", saveCourseRequest, new JsonMediaTypeFormatter()).Result;
 
             if (ScenarioContext.Current.ContainsKey("createCourseResponse"))
@@ -85,6 +87,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenIShouldGetASuccessConfirmationMessage()
         {
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("responseToValidate");
+
             response.EnsureSuccessStatusCode();
         }
 
@@ -160,6 +163,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             Assert.That(response.StatusCode.Equals(expectedStatusCode));
         }
+
+
+
 
     }
 }

@@ -15,6 +15,7 @@ using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
+    [Authorize]
     public class CoursesController : ApiController
     {
         private readonly ICourseRepository _courseRepository;
