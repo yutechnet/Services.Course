@@ -36,7 +36,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void WhenISubmitACreationRequest()
         {
             var saveCourseRequest = ScenarioContext.Current.Get<SaveCourseRequest>("createCourseRequest");
-            var response = ApiFeature.ApiTestHost.Client.PostAsync("/api/courses", saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PostAsync("/courses", saveCourseRequest, new JsonMediaTypeFormatter()).Result;
 
             if (ScenarioContext.Current.ContainsKey("createCourseResponse"))
             {
@@ -66,7 +66,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
             var courseId = response.Content.ReadAsAsync<string>().Result;
 
-            var result = ApiFeature.ApiTestHost.Client.PutAsync("/api/courses/"+courseId, editCourseRequest, new JsonMediaTypeFormatter()).Result;
+            var result = ApiFeature.ApiTestHost.Client.PutAsync("/courses/"+courseId, editCourseRequest, new JsonMediaTypeFormatter()).Result;
             ScenarioContext.Current.Add("editCourseResponse", result);
             ScenarioContext.Current.Add("courseId", courseId);
 
@@ -89,7 +89,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenMyCourseInfoIsChanged()
         {
             var courseId = ScenarioContext.Current.Get<string>("courseId");
-            var response = ApiFeature.ApiTestHost.Client.GetAsync("api/courses/" + courseId).Result;
+            var response = ApiFeature.ApiTestHost.Client.GetAsync("/courses/" + courseId).Result;
             response.EnsureSuccessStatusCode();
 
             var courseInfo = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
@@ -113,7 +113,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
             var courseId = response.Content.ReadAsAsync<Guid>().Result;
             ScenarioContext.Current.Add("courseId", courseId);
-            var delSuccess = ApiFeature.ApiTestHost.Client.DeleteAsync("api/courses/" + courseId).Result;
+            var delSuccess = ApiFeature.ApiTestHost.Client.DeleteAsync("/courses/" + courseId).Result;
             delSuccess.EnsureSuccessStatusCode();
         }
 
@@ -121,7 +121,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenMyCourseNoLongerExists()
         {
             var courseId = ScenarioContext.Current.Get<Guid>("courseId");
-            var getResponse = ApiFeature.ApiTestHost.Client.GetAsync("api/courses/" + courseId).Result;
+            var getResponse = ApiFeature.ApiTestHost.Client.GetAsync("/courses/" + courseId).Result;
             Assert.That(getResponse.StatusCode.Equals(HttpStatusCode.NotFound));
         }
 
