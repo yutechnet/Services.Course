@@ -14,10 +14,26 @@ Scenario: Create a course
 Scenario: Return course by course name
 	Given I have a course with following info:
 	| Name        | Code   | Description                   | Tenant Id |
-	| English 101 | ENG101 | Ranji's awesome English Class | 1         |	
+	| English 101 | ENG101 | Ranji's awesome English Class | 1         |
 	When I submit a creation request
 	Then I should get a success confirmation message
 	And I can retrieve the course by course name
+
+Scenario: Return course by course code
+	Given I have a course with following info:
+	| Name        | Code   | Description                   | Tenant Id |
+	| English 101 | ENG101 | Ranji's awesome English Class | 1         |
+	When I submit a creation request
+	Then I should get a success confirmation message
+	And I can retrieve the course by course code
+
+Scenario: Return 404 when course name is not found
+	Given I have a course with following info:
+	| Name        | Code   | Description                   | Tenant Id |
+	| English 101 | ENG101 | Ranji's awesome English Class | 1         |
+	When I submit a creation request
+	And I request a course name that does not exist
+	Then I should get a not found message returned
 
 Scenario: Edit a course
 	Given I have a course with following info:
@@ -32,8 +48,8 @@ Scenario: Edit a course
 
 Scenario: Delete a course
 	Given I have an existing course with following info:
-         | Name          | Code   | Description                     |
-         | Psychology 101| PSY101 | Amro's awesome Psychology class |
+         | Name           | Code   | Description                     |
+         | Psychology 101 | PSY101 | Amro's awesome Psychology class |
 	And I delete this course
 	Then I should get a success confirmation message
 	And my course no longer exists
