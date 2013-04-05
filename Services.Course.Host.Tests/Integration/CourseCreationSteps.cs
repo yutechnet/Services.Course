@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using BpeProducts.Common.WebApi.Test;
 using BpeProducts.Services.Course.Contract;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -30,6 +29,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 };
 
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
+            ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
         }
         
         [When(@"I submit a creation request")]
@@ -84,6 +84,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("responseToValidate");
             response.EnsureSuccessStatusCode();
         }
+
+        [Then(@"I can retrieve the course by course name")]
+        public void ThenICanRetrieveTheCourseByCourseName()
+        {
+            var courseName = ScenarioContext.Current.Get<string>("courseName");
+            var result = ApiFeature.ApiTestHost.Client.GetAsync("/api/courses?name=" + courseName + ScenarioContext.Current.Get<string>("ticks")).Result;
+            result.EnsureSuccessStatusCode();
+        }
+
 
         [Then(@"my course info is changed")]
         public void ThenMyCourseInfoIsChanged()
