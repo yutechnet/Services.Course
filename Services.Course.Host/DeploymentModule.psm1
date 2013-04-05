@@ -80,6 +80,8 @@ function Deployment-SetWebsiteBinding
 	if (-not (ConfigureIIS)) {return}
 	
 	Import-Module WebAdministration
+	$bindingString = "$($IPAddress):$($port):$($hostheader)"
+	
 	# find website
 	$website = Get-Item IIS:\Sites\$websiteName -ErrorAction SilentlyContinue
 	if ($website)
@@ -91,9 +93,10 @@ function Deployment-SetWebsiteBinding
 				$hostHeaderArray = $hostHeader.Split(';')
 				ForEach($tmpHostHeader in $hostHeaderArray)
 				{
+					$tmpBindingString = "$($IPAddress):$($port):$($tmpHostHeader)"
 					Write-Host "Checking existing website binding"
 					# get the existing binding
-					$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $tmpHostHeader
+					$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -Match ("^"+[regex]::escape($tmpBindingString)+"$")}
 					if (-not $existingBinding )
 					{
 						Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$tmpHostHeader`""
@@ -105,12 +108,23 @@ function Deployment-SetWebsiteBinding
 			{
 				Write-Host "Checking existing website binding"
 				# get the existing binding
-				$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
+				$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -Match ("^"+[regex]::escape($bindingString)+"$")}
 				if (-not $existingBinding )
 				{
 					Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
 					New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
 				}
+			}
+		}
+		else
+		{
+			Write-Host "Checking existing website binding"
+			# get the existing binding
+			$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -Match ("^"+[regex]::escape($bindingString)+"$")}
+			if (-not $existingBinding )
+			{
+				Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
+				New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
 			}
 		}
 		
@@ -151,7 +165,7 @@ function Deployment-AssociateSSLCertificateWithBinding
 	}
 	else
 	{
-		Throw "Unable to locate certificate with thumbprint `"$certThumbprint`" in `"$certLocation\$certStore`""
+		Throw "Unable to locate certificate with thumbprint `"$certThumbprint`" in `"$certStoreScope\$certStoreName`""
 	}
 }
 
@@ -199,13 +213,15 @@ function Deployment-RemoveWebsiteBinding
 	if (-not (ConfigureIIS)) {return}
 	
 	Import-Module WebAdministration
+	$bindingString = "$($IPAddress):$($port):$($hostheader)"
+	
 	# find website
 	$website = Get-Item IIS:\Sites\$websiteName -ErrorAction SilentlyContinue
 	if ($website)
 	{
 		Write-Host "Checking existing website binding"
 		# get the existing binding
-		$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
+		$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -Match ("^"+[regex]::escape($bindingString)+"$")}
 		if ($existingBinding)
 		{
 			Write-Host "Removing website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
@@ -367,7 +383,7 @@ function Deployment-UpdateConfigurationTransform
 	$missingVariables = @()
 	
 	# find all of the $OctopusVariable.xyz placeholders
-	$regexVariables = Select-String "\`"\`$OctopusVariable\.(?<VariableName>.*?)\`"" $transformFile -AllMatches | Select -Expand Matches
+	[array]$regexVariables = Select-String "\`"\`$OctopusVariable\.(?<VariableName>.*?)\`"" $transformFile -AllMatches | Select -Expand Matches
 	if ($regexVariables -ne $null -and $regexVariables.Count -gt 0)
 	{
 		foreach($regexVariable in $regexVariables)

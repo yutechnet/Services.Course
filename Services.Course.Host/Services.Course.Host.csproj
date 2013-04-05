@@ -230,11 +230,11 @@
     <Content Include="Services.Course.Host.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DeploymentModule.psm1" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="PostDeploy.ps1" />
     <Content Include="PreDeploy.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DeploymentModule.psm1" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
