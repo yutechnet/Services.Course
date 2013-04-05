@@ -11,6 +11,14 @@ Scenario: Create a course
 	When I submit a creation request
 	Then I should get a success confirmation message
 
+Scenario: Return course by course name
+	Given I have a course with following info:
+	| Name        | Code   | Description                   | Tenant Id |
+	| English 101 | ENG101 | Ranji's awesome English Class | 1         |	
+	When I submit a creation request
+	Then I should get a success confirmation message
+	And I can retrieve the course by course name
+
 Scenario: Edit a course
 	Given I have a course with following info:
 	| Name        | Code   | Description                   |
