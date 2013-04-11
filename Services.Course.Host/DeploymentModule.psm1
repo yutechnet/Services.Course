@@ -1,6 +1,8 @@
 ﻿$script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+#region IIS Functions
+
 function ConfigureIIS
 {
 	$configIIS = $env:OctopusConfigureIIS
@@ -96,7 +98,7 @@ function Deployment-SetWebsiteBinding
 					$tmpBindingString = "$($IPAddress):$($port):$($tmpHostHeader)"
 					Write-Host "Checking existing website binding"
 					# get the existing binding
-					$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -Match ("^"+[regex]::escape($tmpBindingString)+"$")}
+					$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $tmpBindingString}
 					if (-not $existingBinding )
 					{
 						Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$tmpHostHeader`""
@@ -108,7 +110,7 @@ function Deployment-SetWebsiteBinding
 			{
 				Write-Host "Checking existing website binding"
 				# get the existing binding
-				$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -Match ("^"+[regex]::escape($bindingString)+"$")}
+				$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $bindingString}
 				if (-not $existingBinding )
 				{
 					Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
@@ -120,7 +122,7 @@ function Deployment-SetWebsiteBinding
 		{
 			Write-Host "Checking existing website binding"
 			# get the existing binding
-			$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -Match ("^"+[regex]::escape($bindingString)+"$")}
+			$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $bindingString}
 			if (-not $existingBinding )
 			{
 				Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
@@ -149,7 +151,7 @@ function Deployment-AssociateSSLCertificateWithBinding
 	if (-not (ConfigureIIS)) {return}
 	
 	Import-Module WebAdministration
-	$cert = Get-ChildItem cert:\$certStoreScope\$certStoreName | Where-Object {$_.Thumbprint -match $certThumbprint}
+	$cert = Get-ChildItem cert:\$certStoreScope\$certStoreName | Where-Object {$_.Thumbprint -eq $certThumbprint}
 	if ($cert)
 	{
 		$existingBinding = Get-ChildItem -Path "IIS:\SslBindings\$bindingPath" -ErrorAction SilentlyContinue
@@ -166,37 +168,6 @@ function Deployment-AssociateSSLCertificateWithBinding
 	else
 	{
 		Throw "Unable to locate certificate with thumbprint `"$certThumbprint`" in `"$certStoreScope\$certStoreName`""
-	}
-}
-
-function Deployment-ImportSSLCertificate
-{
-	param(
-		[string]$pfxPath,
-		[string]$pfxPassword,
-		[string]$certThumbprint,
-		[string]$certStoreScope,
-		[string]$certStoreName
-	)
-	
-	if (-not (ConfigureIIS)) {return}
-			
-	$cert = Get-ChildItem cert:\$certStoreScope\$certStoreName | Where-Object {$_.Thumbprint -match $certThumbprint}
-	if (-not $cert)
-	{
-		$pfxCert = new-object system.security.cryptography.x509certificates.x509certificate2
-		$pfxCert.Import($pfxPath,$pfxPassword,"Exportable,PersistKeySet")
-		$store = New-Object system.security.cryptography.X509Certificates.X509Store $certStoreName, $certStoreScope
-		$store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]::ReadWrite)
-		$store.Add($pfxCert)
-		$store.Close()
-		Write-Host "Certificate imported from `"$pfxPath`" into certificate store `"$certStoreScope\$certStoreName`""
-		Write-Host "Certificate will expire on $($pfxCert.NotAfter)"
-		}
-	else
-	{
-		Write-Host "Existing certificate found in `"$certStoreScope\$certStoreName`" with subject `"$($cert.Subject)`" and thumbprint `"$certThumbprint`""
-		Write-Host "Certificate will expire on $($cert.NotAfter)"
 	}
 }
 
@@ -221,7 +192,7 @@ function Deployment-RemoveWebsiteBinding
 	{
 		Write-Host "Checking existing website binding"
 		# get the existing binding
-		$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -Match ("^"+[regex]::escape($bindingString)+"$")}
+		$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $bindingString}
 		if ($existingBinding)
 		{
 			Write-Host "Removing website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
@@ -359,6 +330,45 @@ function Deployment-SetupWebApplication
 	}
 }
 
+#endregion
+
+#region Certificate Functions
+
+function Deployment-ImportCertificateFromPFX
+{
+	param(
+		[string]$pfxPath,
+		[string]$pfxPassword,
+		[string]$certThumbprint,
+		[string]$certStoreScope,
+		[string]$certStoreName
+	)
+	
+	if (-not (ConfigureIIS)) {return}
+			
+	$cert = Get-ChildItem cert:\$certStoreScope\$certStoreName | Where-Object {$_.Thumbprint -eq $certThumbprint}
+	if (-not $cert)
+	{
+		$pfxCert = new-object system.security.cryptography.x509certificates.x509certificate2
+		$pfxCert.Import($pfxPath,$pfxPassword,"Exportable,PersistKeySet")
+		$store = New-Object system.security.cryptography.X509Certificates.X509Store $certStoreName, $certStoreScope
+		$store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]::ReadWrite)
+		$store.Add($pfxCert)
+		$store.Close()
+		Write-Host "Certificate imported from `"$pfxPath`" into certificate store `"$certStoreScope\$certStoreName`""
+		Write-Host "Certificate will expire on $($pfxCert.NotAfter)"
+		}
+	else
+	{
+		Write-Host "Existing certificate found in `"$certStoreScope\$certStoreName`" with subject `"$($cert.Subject)`" and thumbprint `"$certThumbprint`""
+		Write-Host "Certificate will expire on $($cert.NotAfter)"
+	}
+}
+
+#endregion
+
+#region Transform File Functions
+
 function Deployment-UpdateConfigurationTransform
 {
 	param (
@@ -455,6 +465,10 @@ function Deployment-UpdateConfigurationTransform
 	}
 }
 
+#endregion
+
+#region Octopus Cleanup Functions
+
 function Deployment-PurgeOldOctopusVersions
 {
 	param (
@@ -533,3 +547,44 @@ function Deployment-CleanupDeploymentConfigs
 		}
 	}
 }
+
+#endregion
+
+#region ACL Functions
+
+function Deployment-SetCustomACLPermissions
+{
+	param(
+		$account,
+		$path,
+		$fileSystemRights,
+		$accessControlType,
+		$inheritanceFlags,
+		$propagationFlags
+	)
+	# check existing acl
+	Write-Host "Checking ACL permissions for `"$account`" on `"$path`""
+	$existingAccessControlList = Get-Acl -Path $path
+	$existingFileSystemAccessRule = $existingAccessControlList.GetAccessRules($true, $true, [System.Security.Principal.NTAccount]) | `
+		Where { $_.IdentityReference -ieq $account} | `
+		Where { $_.AccessControlType -eq $accessControlType} | `
+		Where { $_.FileSystemRights -eq $fileSystemRights} | `
+		Where { $_.InheritanceFlags -eq $inheritanceFlags} | `
+		Where { $_.PropagationFlags -eq $propagationFlags}
+	
+	if ($existingFileSystemAccessRule -ne $null)
+	{
+		# we found a matching acl
+		Write-Host "Existing permissions ($fileSystemRights) for `"$account`" on `"$path`" have been found"
+	}
+	else
+	{
+		Write-Host "Updating permissions ($fileSystemRights) for `"$account`" on `"$path`""
+		$accessControlList = Get-Acl -Path $path
+		$accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule($account, $fileSystemRights, $inheritanceFlags, $propagationFlags, $accessControlType)
+		$accessControlList.SetAccessRule($accessRule)
+		Set-Acl -Path $path -AclObject $accessControlList
+	}
+}
+
+#endregion
