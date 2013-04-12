@@ -9,8 +9,15 @@ namespace BpeProducts.Services.Course.Contract
     public class CourseInfoResponse
     {
         public Guid Id { get; set; }
+        public long SequenceId { get; set; }
+
         public string Name { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
+
+        public DateTime DateAdded { get; set; }
+        public DateTime? DateUpdated { get; set; }
+        public Guid AddedBy { get; set; }
+        public Guid UpdatedBy { get; set; }
     }
 }

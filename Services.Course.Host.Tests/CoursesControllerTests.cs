@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AutoMapper;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.WebApi;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -22,8 +23,7 @@ namespace BpeProducts.Services.Course.Host.Tests
     public class CoursesControllerTests
     {
         private Mock<ICourseRepository> _mockCourseRepository;
-        private Mock<ITenantExtractor> _mockTenantExtractor;
-        private SamlTenantExtractor _samlTenantExtractor;
+        private Mock<IClaimsExtractor> _mockClaimsExtractor;
 
         private CoursesController _coursesController;
 
@@ -33,15 +33,10 @@ namespace BpeProducts.Services.Course.Host.Tests
             MapperConfig.ConfigureMappers();
 
             _mockCourseRepository = new Mock<ICourseRepository>();
-            _mockTenantExtractor = new Mock<ITenantExtractor>();
-            _samlTenantExtractor = new SamlTenantExtractor(new List<Claim>
-                {
-                    new Claim(ClaimTypes.Surname, "surname"),
-                    new Claim(CustomClaimTypes.Tenant, "1")
-                });
-            _coursesController = new CoursesController(_mockCourseRepository.Object, _samlTenantExtractor);
+            _mockClaimsExtractor = new Mock<IClaimsExtractor>();
+            _coursesController = new CoursesController(_mockCourseRepository.Object, _mockClaimsExtractor.Object);
 
-            _mockTenantExtractor.Setup(t => t.GetTenantId(It.IsAny<HttpRequestMessage>())).Returns(1);
+            _mockClaimsExtractor.Setup(t => t.GetTenantId()).Returns(1);
         }
 
         [Test]

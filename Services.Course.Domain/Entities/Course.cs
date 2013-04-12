@@ -10,9 +10,6 @@ namespace BpeProducts.Services.Course.Domain.Entities
 {
     public class Course : Entity
     {
-        public virtual Guid Id { get; set; }
-        // [Range(1,int.MaxValue)]
-        public virtual int TenantId { get; set; }
         [Required]
         public virtual string Name { get; set; }
         [Required]

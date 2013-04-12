@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Http;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.WebApi;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Services.Course.Contract;
@@ -19,12 +20,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
     public class CoursesController : ApiController
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly SamlTenantExtractor _samlTenantExtractor;
+        private readonly IClaimsExtractor _claimsExtractor;
 
-        public CoursesController(ICourseRepository courseRepository, SamlTenantExtractor samlTenantExtractor)
+        public CoursesController(ICourseRepository courseRepository, IClaimsExtractor claimsExtractor)
         {
             _courseRepository = courseRepository;
-            _samlTenantExtractor = samlTenantExtractor;
+            _claimsExtractor = claimsExtractor;
         }
 
         // GET api/courses
@@ -78,7 +79,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public Guid Post(SaveCourseRequest request)
         {
             var course = Mapper.Map<Domain.Entities.Course>(request);
-            course.TenantId = _samlTenantExtractor.GetTenantId();
+            course.TenantId = _claimsExtractor.GetTenantId();
 
             if (_courseRepository.GetAll().Any(c => (c.Name.Equals(request.Name) || c.Code.Equals(request.Code))))
             {

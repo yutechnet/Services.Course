@@ -22,8 +22,8 @@ namespace BpeProducts.Services.Course.Host.App_Start
             // From DTOs to Domain Entities
             Mapper.CreateMap<SaveCourseRequest, Domain.Entities.Course>()
                   .ForMember(x => x.Id,opt=>opt.Ignore())
-                  .ForMember(x=>x.Created,opt=>opt.Ignore())
-                  .ForMember(x => x.Modified, opt => opt.Ignore());
+                  .ForMember(x=> x.DateAdded,opt => opt.Ignore())
+                  .ForMember(x => x.DateUpdated, opt => opt.Ignore());
         }
     }
 }
