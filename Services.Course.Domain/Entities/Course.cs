@@ -8,7 +8,7 @@ using BpeProducts.Common.NHibernate;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
-    public class Course : Entity
+    public class Course : TenantEntity
     {
         [Required]
         public virtual string Name { get; set; }
