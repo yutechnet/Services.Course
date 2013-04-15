@@ -20,12 +20,10 @@ namespace BpeProducts.Services.Course.Host.Controllers
     public class CoursesController : ApiController
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly IClaimsExtractor _claimsExtractor;
 
-        public CoursesController(ICourseRepository courseRepository, IClaimsExtractor claimsExtractor)
+        public CoursesController(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
-            _claimsExtractor = claimsExtractor;
         }
 
         // GET api/courses
@@ -39,7 +37,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // GET api/courses/5
         public CourseInfoResponse Get(Guid id)
         {
-            var course = _courseRepository.GetById(id);
+            var course = _courseRepository.GetAll().FirstOrDefault(c => c.Id.Equals(id) && c.ActiveFlag.Equals(true));
             if (course == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -51,7 +49,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpGet]
         public CourseInfoResponse GetByCode(string code)
         {
-            var course = _courseRepository.GetAll().FirstOrDefault(c => c.Code == code);
+            var course = _courseRepository.GetAll().FirstOrDefault(c => c.Code == code && c.ActiveFlag.Equals(true));
             if (course == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -63,7 +61,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpGet]
         public CourseInfoResponse GetByName(string name)
         {
-            var course = _courseRepository.GetAll().FirstOrDefault(c => c.Name == name);
+            var course = _courseRepository.GetAll().FirstOrDefault(c => c.Name == name && c.ActiveFlag.Equals(true));
             if (course == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -79,18 +77,21 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public Guid Post(SaveCourseRequest request)
         {
             var course = Mapper.Map<Domain.Entities.Course>(request);
-            course.TenantId = _claimsExtractor.GetTenantId();
+            // Make sure the course is active by default
+            course.ActiveFlag = true;
+            // No duplicate check whatsoever 
+            var id = (Guid) _courseRepository.Add(course);
 
-            if (_courseRepository.GetAll().Any(c => (c.Name.Equals(request.Name) || c.Code.Equals(request.Code))))
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.Conflict,
-                    ReasonPhrase = "Course already exists."
-                });
-            }
+            return id;
 
-            return (Guid) _courseRepository.Add(course);
+            /*
+            var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_courseRepository.GetById(id));
+            var response = base.Request.CreateResponse<CourseInfoResponse>(HttpStatusCode.Created, courseInfoResponse);
+
+            var uri = Url.Link("DefaultApi", new {id = courseInfoResponse.Id});
+            response.Headers.Location = new Uri(uri);
+            return response;
+            */
         }
 
         [Transaction]
@@ -115,14 +116,16 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // DELETE api/courses/5
         public void Delete(Guid id)
         {
-            if (_courseRepository.GetAll().Any(c => c.Id.Equals(id)))
-            {
-                _courseRepository.DeleteById(id);
-            }
-            else
+            var courseInDb = _courseRepository.GetById(id);
+
+            if (courseInDb == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
+
+            // logical delete
+            courseInDb.ActiveFlag = false;
+            _courseRepository.Update(courseInDb);
         }
     }
 

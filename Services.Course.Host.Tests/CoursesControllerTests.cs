@@ -23,7 +23,6 @@ namespace BpeProducts.Services.Course.Host.Tests
     public class CoursesControllerTests
     {
         private Mock<ICourseRepository> _mockCourseRepository;
-        private Mock<IClaimsExtractor> _mockClaimsExtractor;
 
         private CoursesController _coursesController;
 
@@ -33,10 +32,7 @@ namespace BpeProducts.Services.Course.Host.Tests
             MapperConfig.ConfigureMappers();
 
             _mockCourseRepository = new Mock<ICourseRepository>();
-            _mockClaimsExtractor = new Mock<IClaimsExtractor>();
-            _coursesController = new CoursesController(_mockCourseRepository.Object, _mockClaimsExtractor.Object);
-
-            _mockClaimsExtractor.Setup(t => t.GetTenantId()).Returns(1);
+            _coursesController = new CoursesController(_mockCourseRepository.Object);
         }
 
         [Test]
@@ -52,6 +48,7 @@ namespace BpeProducts.Services.Course.Host.Tests
             var expected = Guid.NewGuid();
 
             _mockCourseRepository.Setup(c => c.Add(It.IsAny<Domain.Entities.Course>())).Returns(expected);
+            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(Mapper.Map<Domain.Entities.Course>(saveCourseRequest));
 
             var actual = _coursesController.Post(saveCourseRequest);
 
@@ -59,37 +56,10 @@ namespace BpeProducts.Services.Course.Host.Tests
             _mockCourseRepository.Verify(c => c.Add(
                 It.Is<Domain.Entities.Course>(p => p.Code.Equals("PSY101") &&
                                                    p.Description.Equals("Psych!") &&
-                                                   p.Name.Equals("Psychology 101"))), Times.Once());
+                                                   p.Name.Equals("Psychology 101") &&
+                                                   p.ActiveFlag.Equals(true))), Times.Once());
             Assert.That(actual.Equals(expected));
 
-        }
-
-        [Test]
-        public void should_prevent_a_course_creation_if_existing_course_with_same_name_or_code_exist()
-        {
-            var courses = SetUpExistingCourse();
-
-            var saveCourseRequest = new SaveCourseRequest
-            {
-                Code = "PSY101",
-                Description = "Psych!",
-                Name = "Test 101"
-            };
-
-            var response =
-                Assert.Throws<HttpResponseException>(() => _coursesController.Post(saveCourseRequest)).Response;
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
-
-            saveCourseRequest = new SaveCourseRequest
-            {
-                Code = "ENG101",
-                Description = "Psych!",
-                Name = "Psychology 101"
-            };
-
-            response =
-                Assert.Throws<HttpResponseException>(() => _coursesController.Post(saveCourseRequest)).Response;
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
         }
 
         [Test]
@@ -136,12 +106,13 @@ namespace BpeProducts.Services.Course.Host.Tests
         [Test]
         public void can_delete_a_course()
         {
+            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(new Domain.Entities.Course());
             var courses = SetUpExistingCourse();
 
             var id = courses.FirstOrDefault().Id;
             _coursesController.Delete(id);
 
-            _mockCourseRepository.Verify(c => c.DeleteById(id), Times.Once());
+            _mockCourseRepository.Verify(c => c.Update(It.Is<Domain.Entities.Course>(d => d.ActiveFlag == false)), Times.Once());
         }
 
         [Test]
@@ -186,21 +157,24 @@ namespace BpeProducts.Services.Course.Host.Tests
                             Id = Guid.NewGuid(),
                             Code = "PSY101",
                             Description = "Psych!",
-                            Name = "Psychology 101"
+                            Name = "Psychology 101",
+                            ActiveFlag = true
                         },
                     new Domain.Entities.Course
                         {
                             Id = Guid.NewGuid(),
                             Code = "PSY102",
                             Description = "Psych!",
-                            Name = "Psychology 102"
+                            Name = "Psychology 102",
+                            ActiveFlag = true
                         },
                     new Domain.Entities.Course
                         {
                             Id = Guid.NewGuid(),
                             Code = "PSY103",
                             Description = "Psych!",
-                            Name = "Psychology 103"
+                            Name = "Psychology 103",
+                            ActiveFlag = true
                         }
                 };
             _mockCourseRepository.Setup(t => t.GetAll()).Returns(courses.AsQueryable());
