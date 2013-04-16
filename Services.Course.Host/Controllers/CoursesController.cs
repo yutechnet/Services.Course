@@ -74,7 +74,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [CheckModelForNull]
         [ValidateModelState]
         // POST api/courses
-        public Guid Post(SaveCourseRequest request)
+        public HttpResponseMessage Post(SaveCourseRequest request)
         {
             var course = Mapper.Map<Domain.Entities.Course>(request);
             // Make sure the course is active by default
@@ -82,16 +82,17 @@ namespace BpeProducts.Services.Course.Host.Controllers
             // No duplicate check whatsoever 
             var id = (Guid) _courseRepository.Add(course);
 
-            return id;
+            //return id;
 
-            /*
             var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_courseRepository.GetById(id));
             var response = base.Request.CreateResponse<CourseInfoResponse>(HttpStatusCode.Created, courseInfoResponse);
 
             var uri = Url.Link("DefaultApi", new {id = courseInfoResponse.Id});
-            response.Headers.Location = new Uri(uri);
+            if (uri != null)
+            {
+                response.Headers.Location = new Uri(uri);
+            }
             return response;
-            */
         }
 
         [Transaction]

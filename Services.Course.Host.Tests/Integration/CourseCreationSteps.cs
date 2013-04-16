@@ -65,11 +65,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
-            var courseId = response.Content.ReadAsAsync<string>().Result;
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
-            var result = ApiFeature.ApiTestHost.Client.PutAsync("/courses/"+courseId, editCourseRequest, new JsonMediaTypeFormatter()).Result;
+            var result = ApiFeature.ApiTestHost.Client.PutAsync("/courses/" + courseInfoResponse.Id, editCourseRequest, new JsonMediaTypeFormatter()).Result;
             ScenarioContext.Current.Add("editCourseResponse", result);
-            ScenarioContext.Current.Add("courseId", courseId);
+            ScenarioContext.Current.Add("courseId", courseInfoResponse.Id);
 
             // this is the response to ensure the success code
             if (ScenarioContext.Current.ContainsKey("responseToValidate"))
@@ -115,7 +115,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"my course info is changed")]
         public void ThenMyCourseInfoIsChanged()
         {
-            var courseId = ScenarioContext.Current.Get<string>("courseId");
+            var courseId = ScenarioContext.Current.Get<Guid>("courseId");
             var response = ApiFeature.ApiTestHost.Client.GetAsync("/courses/" + courseId).Result;
             response.EnsureSuccessStatusCode();
 
@@ -146,9 +146,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void GivenIDeleteThisCourse()
         {
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
-            var courseId = response.Content.ReadAsAsync<Guid>().Result;
-            ScenarioContext.Current.Add("courseId", courseId);
-            var delSuccess = ApiFeature.ApiTestHost.Client.DeleteAsync("/courses/" + courseId).Result;
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+            ScenarioContext.Current.Add("courseId", courseInfoResponse.Id);
+            var delSuccess = ApiFeature.ApiTestHost.Client.DeleteAsync("/courses/" + courseInfoResponse.Id).Result;
             delSuccess.EnsureSuccessStatusCode();
         }
 

@@ -63,9 +63,9 @@ Scenario Template: Can create a course with same name or code
 	Then I should get the status code <Status>
 
 	Examples: 
-		 | Name           | Code   | Description                             | Status |
-		 | Psychology 101 | PSY102 | Amro's another awesome Psychology class | OK     |
-		 | Psychology 102 | PSY101 | Amro's another awesome Psychology class | OK     |
+		 | Name           | Code   | Description                             | Status  |
+		 | Psychology 101 | PSY102 | Amro's another awesome Psychology class | Created |
+		 | Psychology 102 | PSY101 | Amro's another awesome Psychology class | Created |
 
 Scenario Template: cannot create a course with missing data
 	When I create a new course with <Name>, <Code>, <Description>
@@ -76,4 +76,4 @@ Scenario Template: cannot create a course with missing data
 		 | Name           | Code   | Description                             | Tenant Id | Status     |
 		 | Psychology 101 |        | Amro's another awesome Psychology class | 1         | BadRequest |
 		 |                | PSY101 | Amro's another awesome Psychology class | 1         | BadRequest |
-		 | Physcology 103 | PSY103 |                                         | 1         | OK         |
+		 | Physcology 103 | PSY103 |                                         | 1         | Created    |

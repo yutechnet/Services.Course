@@ -7,6 +7,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Hosting;
+using System.Web.Http.Routing;
 using AutoMapper;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.WebApi;
@@ -38,19 +41,30 @@ namespace BpeProducts.Services.Course.Host.Tests
         [Test]
         public void can_create_a_new_course()
         {
+            SetUpApiController();
+
             var saveCourseRequest = new SaveCourseRequest
                 {
+                    Id = Guid.NewGuid(),
                     Code = "PSY101",
                     Description = "Psych!",
                     Name = "Psychology 101"
                 };
 
-            var expected = Guid.NewGuid();
+            var course = new Domain.Entities.Course
+                {
+                    ActiveFlag = true,
+                    Code = saveCourseRequest.Code,
+                    Description = saveCourseRequest.Description,
+                    Name = saveCourseRequest.Name,
+                    Id = saveCourseRequest.Id
+                };
 
-            _mockCourseRepository.Setup(c => c.Add(It.IsAny<Domain.Entities.Course>())).Returns(expected);
-            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(Mapper.Map<Domain.Entities.Course>(saveCourseRequest));
+            _mockCourseRepository.Setup(c => c.Add(It.IsAny<Domain.Entities.Course>())).Returns(saveCourseRequest.Id);
+            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(course);
 
-            var actual = _coursesController.Post(saveCourseRequest);
+            var response = _coursesController.Post(saveCourseRequest);
+            var actual = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
             //_mockCourseRepository.Verify(c => c.Add(It.IsAny<Domain.Entities.Course>()), Times.Once());
             _mockCourseRepository.Verify(c => c.Add(
@@ -58,7 +72,7 @@ namespace BpeProducts.Services.Course.Host.Tests
                                                    p.Description.Equals("Psych!") &&
                                                    p.Name.Equals("Psychology 101") &&
                                                    p.ActiveFlag.Equals(true))), Times.Once());
-            Assert.That(actual.Equals(expected));
+            Assert.That(actual.Id.Equals(saveCourseRequest.Id));
 
         }
 
@@ -146,6 +160,23 @@ namespace BpeProducts.Services.Course.Host.Tests
             var courseInfo = _coursesController.GetByName(course.Name);
             Assert.That(courseInfo.Name.Equals(course.Name));
             Assert.That(courseInfo.Code.Equals(course.Code));
+        }
+
+        private void SetUpApiController()
+        {
+            var configuration = new HttpConfiguration();
+            // Register the route
+            WebApiConfig.Register(configuration);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("http://localhost/Courses"),
+                Content = new HttpMessageContent(new HttpRequestMessage(HttpMethod.Post, "http://localhost/courses"))
+            };
+
+            _coursesController.Request = request;
+            _coursesController.Request.Properties["MS_HttpConfiguration"] = configuration;
+            _coursesController.Url = new UrlHelper(_coursesController.Request);
         }
 
         private IEnumerable<Domain.Entities.Course> SetUpExistingCourse()
