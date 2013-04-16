@@ -7,7 +7,7 @@ using BpeProducts.Services.Course.Contract;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 
-namespace BpeProducts.Services.Course.Host.Tests.Integration
+namespace BpeProducts.Services.Course.Host.Tests.IntegrationTests
 {
     [Binding]
     public class CourseCreationSteps

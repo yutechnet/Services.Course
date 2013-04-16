@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace BpeProducts.Services.Course.Host.Tests.Integration
+namespace BpeProducts.Services.Course.Host.Tests.IntegrationTests
 {
     using TechTalk.SpecFlow;
     
