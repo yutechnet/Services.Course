@@ -203,20 +203,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoursesControllerTests.cs" />
-    <Compile Include="Integration\ApiFeature.cs" />
-    <Compile Include="Integration\CourseCreation.feature.cs">
+    <Compile Include="IntegrationTests\ApiFeature.cs" />
+    <Compile Include="IntegrationTests\CourseCreation.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseCreation.feature</DependentUpon>
     </Compile>
-    <Compile Include="Integration\CourseCreationSteps.cs" />
+    <Compile Include="IntegrationTests\CourseCreationSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Integration\CourseCreation.feature">
+    <None Include="IntegrationTests\CourseCreation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseCreation.feature.cs</LastGenOutput>
     </None>
