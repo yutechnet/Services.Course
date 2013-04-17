@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BpeProducts.Common.Ioc;
+using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.NHibernate;
 using NHibernate;
 

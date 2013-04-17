@@ -1,15 +1,8 @@
-﻿using System;
-using System.IdentityModel.Protocols.WSTrust;
-using System.IdentityModel.Tokens;
-using System.Net.Http.Headers;
-using System.ServiceModel;
-using System.ServiceModel.Security;
+﻿using System.Net.Http.Headers;
 using BpeProducts.Common.WebApi.Test;
 using TechTalk.SpecFlow;
-using Thinktecture.IdentityModel.Constants;
-using Thinktecture.IdentityModel.WSTrust;
 
-namespace BpeProducts.Services.Course.Host.Tests.IntegrationTests
+namespace BpeProducts.Services.Course.Host.Tests.Integration
 {
     [Binding]
     public static class ApiFeature

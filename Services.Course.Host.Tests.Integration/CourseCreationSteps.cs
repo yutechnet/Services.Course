@@ -2,11 +2,6 @@
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-<<<<<<< HEAD
-using System.Net.Http.Headers;
-using BpeProducts.Common.WebApi.Test;
-=======
->>>>>>> Adding scenario to get course by course name
 using BpeProducts.Services.Course.Contract;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -33,11 +28,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 };
 
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
-<<<<<<< HEAD
-=======
-            ScenarioContext.Current.Add("tenantId", table.Rows[0]["Tenant Id"]);
             ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
->>>>>>> Adding scenario to get course by course name
+            ScenarioContext.Current.Add("courseCode", table.Rows[0]["Code"]);
         }
         
         [When(@"I submit a creation request")]
@@ -72,11 +64,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
-            var courseId = response.Content.ReadAsAsync<string>().Result;
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
-            var result = ApiFeature.ApiTestHost.Client.PutAsync("/courses/"+courseId, editCourseRequest, new JsonMediaTypeFormatter()).Result;
+            var result = ApiFeature.ApiTestHost.Client.PutAsync("/courses/" + courseInfoResponse.Id, editCourseRequest, new JsonMediaTypeFormatter()).Result;
             ScenarioContext.Current.Add("editCourseResponse", result);
-            ScenarioContext.Current.Add("courseId", courseId);
+            ScenarioContext.Current.Add("courseId", courseInfoResponse.Id);
 
             // this is the response to ensure the success code
             if (ScenarioContext.Current.ContainsKey("responseToValidate"))
@@ -84,6 +76,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 ScenarioContext.Current.Remove("responseToValidate");
             }
             ScenarioContext.Current.Add("responseToValidate", result);
+        }
+
+        [When(@"I request a course name that does not exist")]
+        public void WhenIRequestACourseNameThatDoesNotExist()
+        {
+            var courseName = "someCoureName";
+            var result = ApiFeature.ApiTestHost.Client.GetAsync("/courses?name=" + courseName + ScenarioContext.Current.Get<long>("ticks")).Result;
+
+            ScenarioContext.Current.Add("getCourseName", result);
         }
         
         [Then(@"I should get a success confirmation message")]
@@ -97,7 +98,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenICanRetrieveTheCourseByCourseName()
         {
             var courseName = ScenarioContext.Current.Get<string>("courseName");
-            var result = ApiFeature.ApiTestHost.Client.GetAsync("/api/courses?name=" + courseName + ScenarioContext.Current.Get<string>("ticks")).Result;
+            var result = ApiFeature.ApiTestHost.Client.GetAsync("/courses?name=" + courseName + ScenarioContext.Current.Get<long>("ticks")).Result;
+            result.EnsureSuccessStatusCode();
+        }
+
+        [Then(@"I can retrieve the course by course code")]
+        public void ThenICanRetrieveTheCourseByCourseCode()
+        {
+            var courseCode = ScenarioContext.Current.Get<string>("courseCode");
+            var result = ApiFeature.ApiTestHost.Client.GetAsync("/courses?code=" + courseCode + ScenarioContext.Current.Get<long>("ticks")).Result;
             result.EnsureSuccessStatusCode();
         }
 
@@ -105,7 +114,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"my course info is changed")]
         public void ThenMyCourseInfoIsChanged()
         {
-            var courseId = ScenarioContext.Current.Get<string>("courseId");
+            var courseId = ScenarioContext.Current.Get<Guid>("courseId");
             var response = ApiFeature.ApiTestHost.Client.GetAsync("/courses/" + courseId).Result;
             response.EnsureSuccessStatusCode();
 
@@ -113,6 +122,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var originalRequest = ScenarioContext.Current.Get<SaveCourseRequest>("editCourseRequest");
             Assert.AreEqual(courseInfo.Name, originalRequest.Name);
             Assert.AreEqual(courseInfo.Code, originalRequest.Code);   
+        }
+
+        [Then(@"I should get a not found message returned")]
+        public void ThenIShouldGetANotFoundMessageReturned()
+        {
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("getCourseName");
+            var expected = (HttpStatusCode)Enum.Parse(typeof (HttpStatusCode), "NotFound");
+            Assert.That(response.StatusCode, Is.EqualTo(expected));
         }
 
         [Given(@"I have an existing course with following info:")]
@@ -128,9 +145,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void GivenIDeleteThisCourse()
         {
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
-            var courseId = response.Content.ReadAsAsync<Guid>().Result;
-            ScenarioContext.Current.Add("courseId", courseId);
-            var delSuccess = ApiFeature.ApiTestHost.Client.DeleteAsync("/courses/" + courseId).Result;
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+            ScenarioContext.Current.Add("courseId", courseInfoResponse.Id);
+            var delSuccess = ApiFeature.ApiTestHost.Client.DeleteAsync("/courses/" + courseInfoResponse.Id).Result;
             delSuccess.EnsureSuccessStatusCode();
         }
 
@@ -168,9 +185,5 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             Assert.That(response.StatusCode.Equals(expectedStatusCode));
         }
-
-
-
-
     }
 }

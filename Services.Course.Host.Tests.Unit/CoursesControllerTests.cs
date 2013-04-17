@@ -3,16 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Controllers;
-using System.Web.Http.Hosting;
 using System.Web.Http.Routing;
 using AutoMapper;
-using BpeProducts.Common.NHibernate;
-using BpeProducts.Common.WebApi;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Host.App_Start;
@@ -20,7 +13,7 @@ using BpeProducts.Services.Course.Host.Controllers;
 using Moq;
 using NUnit.Framework;
 
-namespace BpeProducts.Services.Course.Host.Tests
+namespace BpeProducts.Services.Course.Host.Tests.Unit
 {
     [TestFixture]
     public class CoursesControllerTests
