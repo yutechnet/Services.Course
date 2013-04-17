@@ -72,32 +72,6 @@
       </propertyInstances>
     </stereotypeInstance>
   </appliedStereotypesInternal>
-  <profileInstances>
-    <packageHasProfileInstances Id="9d81812f-50eb-430d-96e4-bb53e94ac7e7">
-      <profileInstance Id="33d1ab6d-64f6-4c79-b7ec-98e71220720a" name="StandardProfileL2">
-        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
-      </profileInstance>
-      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
-    </packageHasProfileInstances>
-    <packageHasProfileInstances Id="a6f5fb95-4098-4cb5-b9f7-225d8c7b0b40">
-      <profileInstance Id="f180cee8-421a-4064-8c66-4711459f62c8" name="StandardProfileL3">
-        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
-      </profileInstance>
-      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
-    </packageHasProfileInstances>
-    <packageHasProfileInstances Id="b161f5c7-b584-43af-b031-7c0fa53b76da">
-      <profileInstance Id="9516d743-0597-4c0b-9804-cf5fe7533409" name="CSharpProfile">
-        <elementDefinition Id="829e56ff-55b8-417d-a454-a94e9c07dea8" />
-      </profileInstance>
-      <elementDefinition Id="057388c0-7dbf-4537-b8af-a91dddfb76f5" />
-    </packageHasProfileInstances>
-    <packageHasProfileInstances Id="b798c91b-bd0d-491d-b221-a261b5114b8a">
-      <profileInstance Id="bfe69279-b5c2-4fd7-bd61-1093cc00e0f8" name="TextTemplateBindings">
-        <elementDefinition Id="f4a99663-fc6b-49f1-89c5-f508dfa40118" />
-      </profileInstance>
-      <elementDefinition Id="9c66f683-9edc-4e06-8ea4-817805d4ef46" />
-    </packageHasProfileInstances>
-  </profileInstances>
   <packagedElements>
     <logicalClassDesignerModelHasTypes>
       <class Id="d95223e8-f795-4e78-88f6-55596743e99f" name="Course" isAbstract="false" isLeaf="false" isActiveClass="false">
@@ -610,6 +584,32 @@
             </relationshipOwnedElementsInternal>
             <elementDefinition Id="965abc57-2d6b-4982-bb10-e5a32eae1be0" />
           </association>
+          <association Id="10862f25-cfb6-428d-a7af-8bf83ebee8fe" isDerived="false" sourceEndRoleName="Program" targetEndRoleName="Program" isLeaf="false" isAbstract="false">
+            <classMoniker Id="68d81d93-6fb3-4b4c-b24c-09fb87491b49" LastKnownName="Program" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="c1997f29-29b6-4901-a7f2-38e92d38e4e0" name="Program" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="82278e39-bf31-4896-b91a-c4f6a49078e2" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="f753f60e-0516-4ed7-b8f6-05ddd5d9b2c1" name="Program" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <lowerValueInternal>
+                    <literalString Id="b0c5f1f9-bf36-4998-86f1-aa724e34a879" name="Lower" value="*">
+                      <elementDefinition Id="9795cd3a-bb8d-4988-8c35-ce34ec42d1c2" />
+                    </literalString>
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString Id="5b60b9e4-bc51-4faf-bf55-286f08f9c6ff" name="Upper" value="*">
+                      <elementDefinition Id="2d06a630-053e-46ef-9efd-c71c2f6fd693" />
+                    </literalString>
+                  </upperValueInternal>
+                  <elementDefinition Id="ea190e90-729b-4f14-ae21-7c7cb8b937f6" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="95c9f6f2-944d-40d8-9c0c-4aa041b1369c" />
+          </association>
         </targetEnds>
       </class>
     </logicalClassDesignerModelHasTypes>
@@ -658,5 +658,31 @@
   </packagedElements>
   <package Id="67a69c8b-e3d5-4289-b2b7-55fac6e493d8" name="CourseBuilder">
     <elementDefinition Id="d0be5150-11c2-4d5a-9861-eadfb4de4106" />
+    <profileInstances>
+      <packageHasProfileInstances Id="9d81812f-50eb-430d-96e4-bb53e94ac7e7">
+        <profileInstance Id="33d1ab6d-64f6-4c79-b7ec-98e71220720a" name="StandardProfileL2">
+          <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+        </profileInstance>
+        <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="a6f5fb95-4098-4cb5-b9f7-225d8c7b0b40">
+        <profileInstance Id="f180cee8-421a-4064-8c66-4711459f62c8" name="StandardProfileL3">
+          <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+        </profileInstance>
+        <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="b161f5c7-b584-43af-b031-7c0fa53b76da">
+        <profileInstance Id="9516d743-0597-4c0b-9804-cf5fe7533409" name="CSharpProfile">
+          <elementDefinition Id="829e56ff-55b8-417d-a454-a94e9c07dea8" />
+        </profileInstance>
+        <elementDefinition Id="057388c0-7dbf-4537-b8af-a91dddfb76f5" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="b798c91b-bd0d-491d-b221-a261b5114b8a">
+        <profileInstance Id="bfe69279-b5c2-4fd7-bd61-1093cc00e0f8" name="TextTemplateBindings">
+          <elementDefinition Id="f4a99663-fc6b-49f1-89c5-f508dfa40118" />
+        </profileInstance>
+        <elementDefinition Id="9c66f683-9edc-4e06-8ea4-817805d4ef46" />
+      </packageHasProfileInstances>
+    </profileInstances>
   </package>
 </logicalClassDesignerModel>
