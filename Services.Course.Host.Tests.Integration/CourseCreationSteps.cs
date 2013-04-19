@@ -24,7 +24,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 {
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                     Code = table.Rows[0]["Code"] + ScenarioContext.Current.Get<long>("ticks"),
-                    Description = table.Rows[0]["Description"]
+                    Description = table.Rows[0]["Description"],
+                    TenantId = 1
                 };
 
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
@@ -59,7 +60,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             {
                 Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                 Code = table.Rows[0]["Code"] + ScenarioContext.Current.Get<long>("ticks"),
-                Description = table.Rows[0]["Description"]
+                Description = table.Rows[0]["Description"],
+                TenantId = 1
             };
 
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);
@@ -166,7 +168,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             {
                 Name = string.IsNullOrEmpty(name) ? name : name + ScenarioContext.Current.Get<long>("ticks") ,
                 Code = string.IsNullOrEmpty(code) ? code : code + ScenarioContext.Current.Get<long>("ticks"),
-                Description = description
+                Description = description,
+                TenantId = 1
             };
 
             if (ScenarioContext.Current.ContainsKey("createCourseRequest"))

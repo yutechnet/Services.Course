@@ -76,6 +76,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
+            var tenantId = request.TenantId;
+
             var course = Mapper.Map<Domain.Entities.Course>(request);
             // Make sure the course is active by default
             course.ActiveFlag = true;

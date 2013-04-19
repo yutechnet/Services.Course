@@ -9,10 +9,10 @@ namespace BpeProducts.Services.Course.Contract
     public class SaveCourseRequest
     {
         public Guid Id { get; set; }
-        public long SequenceId { get; set; }
 
         public string Name { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
+        public int TenantId { get; set; }
     }
 }
