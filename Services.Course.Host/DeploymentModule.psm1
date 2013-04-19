@@ -588,3 +588,150 @@ function Deployment-SetCustomACLPermissions
 }
 
 #endregion
+
+#region Windows Service Functions
+
+function Deployment-StartWindowsService
+{
+	param(
+		$name
+	)
+	
+	# check to see if the windows service can be found
+	$existingService = Get-Service | Where-Object {$_.Name -eq "$name"}
+	if ($existingService -ne $null)
+	{
+		if ($existingService.Status -ine "running")
+		{
+			Write-Host "Starting Windows service `"$name`""
+			Start-Service "$name"
+		}
+		else
+		{
+			Write-Host "Windows service `"$name`" is already running"
+		}
+	}
+	else
+	{
+		# windows service was not found
+		Write-Warning "Unable to locate Windows service named `"$name`""
+	}
+}
+
+function Deployment-StopWindowsService
+{
+	param(
+		$name
+	)
+	
+	# check to see if the windows service can be found
+	$existingService = Get-Service | Where-Object {$_.Name -eq "$name"}
+	if ($existingService -ne $null)
+	{
+		if ($existingService.Status -ine "stopped")
+		{
+			Write-Host "Stopping Windows service `"$name`""
+			Stop-Service "$name" -ErrorAction SilentlyContinue
+		}
+		else
+		{
+			Write-Host "Windows service `"$name`" is already stopped"
+		}
+	}
+	else
+	{
+		# windows service was not found
+		Write-Warning "Unable to locate Windows service named `"$name`""
+	}
+}
+
+#endregion
+
+#region NServiceBus Functions
+
+function Deployment-InstallNServiceBusService
+{
+	param(
+		$path,
+		$name,
+		$displayName,
+		$description,
+		$startMode,
+		$account,
+		$password
+	)
+	
+	# check to see if the service has already been registered
+	#$existingService = Get-Service | Where-Object {$_.Name -eq "$name"}
+	$existingService = Get-WmiObject win32_service -Filter "name='$name'"
+	$reinstallService = $False
+	if ($existingService -ne $null)
+	{
+		# windows service exists
+		Write-Host "Existing Windows service named `"$name`" was found"
+		# check display name
+		if ($displayName -and $existingService.DisplayName -ine $displayName)
+		{
+			Write-Host "Existing service has a different display name `"$($existingService.DisplayName)`" vs `"$displayName`""
+			$reinstallService = $True
+		}
+		# check description
+		if ($description -and $existingService.Description -ine $description)
+		{
+			Write-Host "Existing service has a different service description `"$($existingService.Description)`" vs `"$description`""
+			$reinstallService = $True
+		}
+		# check start mode
+		if ($startMode -and $existingService.StartMode -ine $startMode)
+		{
+			Write-Host "Existing service has a different start mode `"$($existingService.StartMode)`" vs `"$startMode`""
+			$reinstallService = $True
+		}
+		# check account
+		if ($account -and $existingService.StartName -ine $account)
+		{
+			Write-Host "Existing service is set to run under a different service account `"$($existingService.StartName)`" vs `"$account`""
+			$reinstallService = $True
+		}
+		
+		if ($reinstallService)
+		{
+			# uninstall existing service
+			$nserviceBusHostExe = Join-Path $path "NServiceBus.Host.exe"
+			$uninstallArguments = @()
+			$uninstallArguments += "/uninstall"
+			if ($name) { $uninstallArguments += "/serviceName:`"$name`"" }
+			Write-Host "Uninstalling Windows service named `"$name`""
+			Set-Alias nservicebushost $nserviceBusHostExe
+			Start-Process -NoNewWindow -Wait -FilePath nservicebushost -ArgumentList $uninstallArguments
+		}
+	}
+	
+	if ( $reinstallService -or $existingService -eq $null )
+	{
+		# install new windows service
+		$nserviceBusHostExe = Join-Path $path "NServiceBus.Host.exe"
+		$installArguments = @()
+		$installArguments += "/install"
+		# set service name
+		if ($name) { $installArguments += "/serviceName:`"$name`"" }
+		# set service display name 
+		if ($displayName) { $installArguments += "/displayName:`"$displayName`"" }
+		# set service description
+		if ($description) { $installArguments += "/description:`"$description`"" }
+		# set start mode
+		if ($startMode) { if ($startMode -ine "automatic") { $installArguments += "/startManually" } }
+		# set service credentials
+		if ($account -and $password) 
+		{ 
+			$installArguments += "/username:`"$account`""
+			$installArguments += "/password:`"$password`""
+		}
+		# install the service
+		Write-Host "Installing Windows service named `"$name`""
+		Set-Alias nservicebushost $nserviceBusHostExe
+		Start-Process -NoNewWindow -Wait -FilePath nservicebushost -ArgumentList $installArguments
+	}	
+}
+
+#endregion
