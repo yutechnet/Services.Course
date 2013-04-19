@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Routing;
+﻿using System.Web.Http;
 using BpeProducts.Common.WebApi;
 using BpeProducts.Services.Course.Host.App_Start;
 
