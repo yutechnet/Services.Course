@@ -35,63 +35,52 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Autofac">
       <HintPath>..\packages\Autofac.3.0.2\lib\net40\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Autofac.Configuration">
       <HintPath>..\packages\Autofac.3.0.2\lib\net40\Autofac.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Extras.DynamicProxy2, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Autofac.Extras.DynamicProxy2">
       <HintPath>..\packages\Autofac.Extras.DynamicProxy2.3.0.2\lib\net40\Autofac.Extras.DynamicProxy2.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Extras.NHibernate, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Autofac.Extras.NHibernate">
       <HintPath>..\packages\Autofac.Extras.NHibernate.3.0.0\lib\net40\Autofac.Extras.NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Integration.WebApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Autofac.Integration.WebApi">
       <HintPath>..\packages\Autofac.WebApi.3.0.2\lib\net40\Autofac.Integration.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper, Version=2.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BpeProducts.Common.Exceptions">
       <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.9\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Ioc, Version=1.0.25.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BpeProducts.Common.Ioc">
       <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.25\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Log">
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.10\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.21.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BpeProducts.Common.NHibernate">
       <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.21\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Redis, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BpeProducts.Common.Redis">
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.9\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Core, Version=3.2.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BpeProducts.Common.WebApi">
+      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.32\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="FluentNHibernate, Version=1.3.0.733, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="FluentNHibernate">
       <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <Private>True</Private>
+    <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -99,16 +88,13 @@
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.3.3.3.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate.Caches.Redis, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NHibernate.Caches.Redis">
       <HintPath>..\packages\NHibernate.Caches.Redis.1.2.0.0\lib\net40\NHibernate.Caches.Redis.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -134,12 +120,21 @@
     <Reference Include="System.Data" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Services" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Channels" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -153,20 +148,11 @@
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
-    </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -191,8 +177,7 @@
     <Reference Include="TechTalk.SpecFlow">
       <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
-    <Reference Include="Thinktecture.IdentityModel, Version=2.3.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Thinktecture.IdentityModel">
       <HintPath>..\packages\Thinktecture.IdentityModel.2.3.2\lib\net45\Thinktecture.IdentityModel.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -202,8 +187,86 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
+    <Content Include="images\ajax-loader.gif" />
+    <Content Include="images\error.png" />
+    <Content Include="images\help.png" />
+    <Content Include="images\icons-18-black.png" />
+    <Content Include="images\icons-18-white.png" />
+    <Content Include="images\icons-36-black.png" />
+    <Content Include="images\icons-36-white.png" />
+    <Content Include="images\logo.jpg" />
+    <Content Include="jquery.mobile-1.2.0.css" />
+    <Content Include="jquery.mobile-1.2.0.min.css" />
+    <Content Include="jquery.mobile.structure-1.2.0.css" />
+    <Content Include="jquery.mobile.structure-1.2.0.min.css" />
+    <Content Include="jquery.mobile.theme-1.2.0.css" />
+    <Content Include="jquery.mobile.theme-1.2.0.min.css" />
+    <Content Include="Mobile.css" />
+    <Content Include="Site.css" />
+    <Content Include="Site.min.css" />
+    <Content Include="themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="themes\base\jquery-ui.css" />
+    <Content Include="themes\base\jquery.ui.accordion.css" />
+    <Content Include="themes\base\jquery.ui.all.css" />
+    <Content Include="themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="themes\base\jquery.ui.base.css" />
+    <Content Include="themes\base\jquery.ui.button.css" />
+    <Content Include="themes\base\jquery.ui.core.css" />
+    <Content Include="themes\base\jquery.ui.datepicker.css" />
+    <Content Include="themes\base\jquery.ui.dialog.css" />
+    <Content Include="themes\base\jquery.ui.menu.css" />
+    <Content Include="themes\base\jquery.ui.progressbar.css" />
+    <Content Include="themes\base\jquery.ui.resizable.css" />
+    <Content Include="themes\base\jquery.ui.selectable.css" />
+    <Content Include="themes\base\jquery.ui.slider.css" />
+    <Content Include="themes\base\jquery.ui.spinner.css" />
+    <Content Include="themes\base\jquery.ui.tabs.css" />
+    <Content Include="themes\base\jquery.ui.theme.css" />
+    <Content Include="themes\base\jquery.ui.tooltip.css" />
+    <Content Include="themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="themes\base\minified\jquery-ui.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.menu.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.spinner.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="themes\base\minified\jquery.ui.tooltip.min.css" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Mobile.less" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
