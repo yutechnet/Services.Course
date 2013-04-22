@@ -43,30 +43,25 @@
     <Reference Include="Autofac.Extras.NHibernate">
       <HintPath>..\packages\Autofac.Extras.NHibernate.3.0.0\lib\net40\Autofac.Extras.NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Integration.WebApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Autofac.Integration.WebApi">
       <HintPath>..\packages\Autofac.WebApi.3.0.2\lib\net40\Autofac.Integration.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BpeProducts.Common.Exceptions">
       <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.9\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Ioc">
       <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.25\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Log, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BpeProducts.Common.Log">
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.10\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.21.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BpeProducts.Common.NHibernate">
       <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.21\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Redis, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BpeProducts.Common.Redis">
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.9\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.WebApi">
@@ -81,8 +76,7 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <Private>True</Private>
+    <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -123,6 +117,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>

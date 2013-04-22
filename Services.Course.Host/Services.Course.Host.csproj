@@ -200,6 +200,7 @@
   <ItemGroup>
     <Compile Include="App_Start\MapperConfig.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
+    <Compile Include="Controllers\ProgramController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
