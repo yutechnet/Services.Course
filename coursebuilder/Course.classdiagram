@@ -584,32 +584,6 @@
             </relationshipOwnedElementsInternal>
             <elementDefinition Id="965abc57-2d6b-4982-bb10-e5a32eae1be0" />
           </association>
-          <association Id="10862f25-cfb6-428d-a7af-8bf83ebee8fe" isDerived="false" sourceEndRoleName="Program" targetEndRoleName="Program" isLeaf="false" isAbstract="false">
-            <classMoniker Id="68d81d93-6fb3-4b4c-b24c-09fb87491b49" LastKnownName="Program" />
-            <relationshipOwnedElementsInternal>
-              <associationHasOwnedEnds>
-                <memberEnd Id="c1997f29-29b6-4901-a7f2-38e92d38e4e0" name="Program" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
-                  <elementDefinition Id="82278e39-bf31-4896-b91a-c4f6a49078e2" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-              <associationHasOwnedEnds>
-                <memberEnd Id="f753f60e-0516-4ed7-b8f6-05ddd5d9b2c1" name="Program" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-                  <lowerValueInternal>
-                    <literalString Id="b0c5f1f9-bf36-4998-86f1-aa724e34a879" name="Lower" value="*">
-                      <elementDefinition Id="9795cd3a-bb8d-4988-8c35-ce34ec42d1c2" />
-                    </literalString>
-                  </lowerValueInternal>
-                  <upperValueInternal>
-                    <literalString Id="5b60b9e4-bc51-4faf-bf55-286f08f9c6ff" name="Upper" value="*">
-                      <elementDefinition Id="2d06a630-053e-46ef-9efd-c71c2f6fd693" />
-                    </literalString>
-                  </upperValueInternal>
-                  <elementDefinition Id="ea190e90-729b-4f14-ae21-7c7cb8b937f6" />
-                </memberEnd>
-              </associationHasOwnedEnds>
-            </relationshipOwnedElementsInternal>
-            <elementDefinition Id="95c9f6f2-944d-40d8-9c0c-4aa041b1369c" />
-          </association>
         </targetEnds>
       </class>
     </logicalClassDesignerModelHasTypes>
