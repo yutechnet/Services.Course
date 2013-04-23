@@ -49,9 +49,11 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // POST api/programs
         public HttpResponseMessage Post(CreateProgramRequest request)
         {
-	        var program = new Program {Name=request.Name,Description = request.Description};
+	        var program = new Program();
+	        Mapper.Map(request, program);
             var id = (Guid) _session.Save(program);
-	        var programResponse = new ProgramResponse {Id = id};
+	        var programResponse = new ProgramResponse();
+	        Mapper.Map(program, programResponse);
 			var response = base.Request.CreateResponse<ProgramResponse>(HttpStatusCode.Created, programResponse);
 			var uri = Url.Link("DefaultApi", new { id = programResponse.Id });
 			if (uri != null)
