@@ -43,27 +43,30 @@
     <Reference Include="Autofac.Extras.NHibernate">
       <HintPath>..\packages\Autofac.Extras.NHibernate.3.0.0\lib\net40\Autofac.Extras.NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac.Integration.WebApi">
+    <Reference Include="Autofac.Integration.WebApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Autofac.WebApi.3.0.2\lib\net40\Autofac.Integration.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Exceptions">
+    <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.9\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Ioc, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.26\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Log">
+    <Reference Include="BpeProducts.Common.Log, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.10\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="BpeProducts.Common.NHibernate">
       <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.26\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Redis">
+    <Reference Include="BpeProducts.Common.Redis, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.9\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.WebApi">
@@ -78,7 +81,8 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <Private>True</Private>
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -119,7 +123,6 @@
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
@@ -147,6 +150,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="CourseCreationSteps.cs" />
+    <Compile Include="ProgramCreation.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProgramCreation.feature</DependentUpon>
+    </Compile>
+    <Compile Include="ProgramCreationSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +167,10 @@
       <LastGenOutput>CourseCreation.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="ProgramCreation.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ProgramCreation.feature.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Services.Course.Contract\Services.Course.Contract.csproj">

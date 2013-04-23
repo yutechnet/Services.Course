@@ -66,8 +66,13 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
+<<<<<<< HEAD
 		// PUT api/programs/5
+        public void Put(Guid id, CreateProgramRequest request)
+=======
+        // PUT api/courses/5
         public HttpResponseMessage Put(Guid id, CreateProgramRequest request)
+>>>>>>> Updating nuget packages; adding more scenarios for program interface tests.
         {
             // We do not allow creation of a new resource by PUT.
             var programInDb = _session.Get<Program>(id);
