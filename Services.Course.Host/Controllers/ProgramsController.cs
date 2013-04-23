@@ -66,7 +66,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
-        // PUT api/courses/5
+		// PUT api/programs/5
         public void Put(Guid id, CreateProgramRequest request)
         {
             // We do not allow creation of a new resource by PUT.
