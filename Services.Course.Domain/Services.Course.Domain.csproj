@@ -51,20 +51,16 @@
       <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.9\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Ioc, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.26\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Log">
+    <Reference Include="BpeProducts.Common.Log, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.10\lib\net40\BpeProducts.Common.Log.dll</HintPath>
-    </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.26\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.26\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="BpeProducts.Common.Redis">
-      <HintPath>..\packages\BpeProducts.Common.Redis.1.0.9\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
