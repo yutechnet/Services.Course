@@ -24,7 +24,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // GET api/programs
         public IEnumerable<ProgramResponse> Get()
         {
-			var programs = _session.Query<Program>();
+			var programs = _session.Query<Program>().Where(p=>p.ActiveFlag);
 	        var response = new List<ProgramResponse>();
 	        Mapper.Map(programs, response);
 	        return response;
@@ -33,13 +33,13 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // GET api/programs/5
         public ProgramResponse Get(Guid id)
         {
-	        var program = _session.Get<Program>(id);
-			var programResponse= new ProgramResponse
-				{
-					Id = program.Id,
-					Name = program.Name,
-					Description = program.Name
-				};
+            var program = _session.Query<Program>().SingleOrDefault(p => p.ActiveFlag && p.Id == id);
+            if (program == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+            var programResponse=new ProgramResponse();
+            Mapper.Map(program, programResponse);
 	        return programResponse;
         }
 
@@ -67,7 +67,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [CheckModelForNull]
         [ValidateModelState]
 		// PUT api/programs/5
-        public void Put(Guid id, CreateProgramRequest request)
+        public HttpResponseMessage Put(Guid id, CreateProgramRequest request)
         {
             // We do not allow creation of a new resource by PUT.
             var programInDb = _session.Get<Program>(id);
@@ -79,6 +79,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
             Mapper.Map(request, programInDb);
             _session.Update(programInDb);
+            var response = base.Request.CreateResponse(HttpStatusCode.OK);
+            return response;
         }
 
         [Transaction]

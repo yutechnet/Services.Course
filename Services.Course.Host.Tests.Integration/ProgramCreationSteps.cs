@@ -21,11 +21,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
             if (!targetUri.Host.Equals("localhost"))
             {
-                _leadingPath = targetUri.PathAndQuery + "/courses";
+                _leadingPath = targetUri.PathAndQuery + "/programs";
             }
             else
             {
-                _leadingPath = "/courses";
+                _leadingPath = "/programs";
             }
         }
 
@@ -35,12 +35,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var programRequest = new CreateProgramRequest
                 {
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
-                    Description = table.Rows[0]["Description"]
+                    Description = table.Rows[0]["Description"],
+                    TenantId = "1"
                 };
 
             ScenarioContext.Current.Add("programRequest", programRequest);
             ScenarioContext.Current.Add("programName", table.Rows[0]["Name"]);
-            ScenarioContext.Current.Add("programName", table.Rows[0]["Description"]);
+            ScenarioContext.Current.Add("programDescription", table.Rows[0]["Description"]);
         }
 
         [Given(@"I have an existing program with following info:")]
@@ -80,6 +81,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 {
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                     Description = table.Rows[0]["Description"],
+                    TenantId = "1"
                 };
 
             ScenarioContext.Current.Add("editProgramRequest", editProgramRequest);
@@ -109,21 +111,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             delete.EnsureSuccessStatusCode();
         }
 
-        [When(@"I create a new program with Bachelor's of Science, , (.*)")]
-        public void WhenICreateANewProgramWithBachelorSOfScience(string name, string description)
+        [When(@"I create a new program with (.*), (.*)")]
+        public void WhenICreateANewProgramWith(string name, string description)
         {
             var programRequest = new CreateProgramRequest
                 {
                     Name = string.IsNullOrEmpty(name) ? name : name + ScenarioContext.Current.Get<long>("ticks"),
                     Description = description,
+                    TenantId =  "1"
                 };
 
-            if (ScenarioContext.Current.ContainsKey("createProgramRequest"))
+            if (ScenarioContext.Current.ContainsKey("programRequest"))
             {
-                ScenarioContext.Current.Remove("createProgramRequest");
+                ScenarioContext.Current.Remove("programRequest");
             }
 
-            ScenarioContext.Current.Add("createProgramRequest", programRequest);
+            ScenarioContext.Current.Add("programRequest", programRequest);
         }
 
         [When(@"I wish to add the same program to another tenant")]
@@ -131,6 +134,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             
         }
+
+        [When(@"I request a program id that does not exist")]
+        public void WhenIRequestAProgramIdThatDoesNotExist()
+        {
+            const string nonExistentId = "xxxxfc3b-xxxx-4b35-89e3-a1a900fxxxx";
+
+            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + nonExistentId).Result;
+            ScenarioContext.Current.Add("getProgramId", result);
+        }
+
         
         [Then(@"the operation is successful")]
         public void ThenTheOperationIsSuccessful()
@@ -168,7 +181,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.That(getResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
-        [Then(@"I should get the expected status code BadRequest")]
+        [Then(@"I should get the expected status code (.*)")]
         public void ThenIShouldGetTheExpectedStatusCodeBadRequest(string status)
         {
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("programResponseToValidate");
