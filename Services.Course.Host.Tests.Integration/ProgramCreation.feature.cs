@@ -159,35 +159,6 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Return 404 when program id is not found")]
-        [NUnit.Framework.TestCaseAttribute("NotFound", null)]
-        public virtual void Return404WhenProgramIdIsNotFound(string status, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Return 404 when program id is not found", exampleTags);
-#line 33
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "Tenant"});
-            table5.AddRow(new string[] {
-                        "Bachelor\'s of Science",
-                        "Economics",
-                        "1"});
-#line 34
- testRunner.Given("I have a program with following info:", ((string)(null)), table5, "Given ");
-#line 37
- testRunner.When("I submit a request to create a program", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 38
- testRunner.And("I request a program id that does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
- testRunner.Then(string.Format("I should get the expected status code {0}", status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Unable to create program due to missing info")]
         [NUnit.Framework.TestCaseAttribute("Bachelor\'s of Science", "", "BadRequest", null)]
         [NUnit.Framework.TestCaseAttribute("", "Economics", "BadRequest", null)]
