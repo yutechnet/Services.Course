@@ -56,16 +56,18 @@
     <Reference Include="BpeProducts.Common.Log">
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.10\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.21.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.NHibernate">
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.26\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.21\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.26\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="BpeProducts.Common.Redis">
+      <HintPath>..\packages\BpeProducts.Common.Redis.1.0.9\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-    <Reference Include="BpeProducts.Common.NHibernate">
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.21\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="BpeProducts.Common.Redis">
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.9\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
@@ -111,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Course.cs" />
+    <Compile Include="Entities\Program.cs" />
     <Compile Include="IocRegistrations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CourseRepository.cs" />

@@ -62,8 +62,9 @@
     <Reference Include="BpeProducts.Common.Log">
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.10\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate">
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.21\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.26\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis">
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.9\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
@@ -187,86 +188,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
-    <Content Include="images\ajax-loader.gif" />
-    <Content Include="images\error.png" />
-    <Content Include="images\help.png" />
-    <Content Include="images\icons-18-black.png" />
-    <Content Include="images\icons-18-white.png" />
-    <Content Include="images\icons-36-black.png" />
-    <Content Include="images\icons-36-white.png" />
-    <Content Include="images\logo.jpg" />
-    <Content Include="jquery.mobile-1.2.0.css" />
-    <Content Include="jquery.mobile-1.2.0.min.css" />
-    <Content Include="jquery.mobile.structure-1.2.0.css" />
-    <Content Include="jquery.mobile.structure-1.2.0.min.css" />
-    <Content Include="jquery.mobile.theme-1.2.0.css" />
-    <Content Include="jquery.mobile.theme-1.2.0.min.css" />
-    <Content Include="Mobile.css" />
-    <Content Include="Site.css" />
-    <Content Include="Site.min.css" />
-    <Content Include="themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="themes\base\images\ui-icons_222222_256x240.png" />
-    <Content Include="themes\base\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="themes\base\images\ui-icons_454545_256x240.png" />
-    <Content Include="themes\base\images\ui-icons_888888_256x240.png" />
-    <Content Include="themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="themes\base\jquery-ui.css" />
-    <Content Include="themes\base\jquery.ui.accordion.css" />
-    <Content Include="themes\base\jquery.ui.all.css" />
-    <Content Include="themes\base\jquery.ui.autocomplete.css" />
-    <Content Include="themes\base\jquery.ui.base.css" />
-    <Content Include="themes\base\jquery.ui.button.css" />
-    <Content Include="themes\base\jquery.ui.core.css" />
-    <Content Include="themes\base\jquery.ui.datepicker.css" />
-    <Content Include="themes\base\jquery.ui.dialog.css" />
-    <Content Include="themes\base\jquery.ui.menu.css" />
-    <Content Include="themes\base\jquery.ui.progressbar.css" />
-    <Content Include="themes\base\jquery.ui.resizable.css" />
-    <Content Include="themes\base\jquery.ui.selectable.css" />
-    <Content Include="themes\base\jquery.ui.slider.css" />
-    <Content Include="themes\base\jquery.ui.spinner.css" />
-    <Content Include="themes\base\jquery.ui.tabs.css" />
-    <Content Include="themes\base\jquery.ui.theme.css" />
-    <Content Include="themes\base\jquery.ui.tooltip.css" />
-    <Content Include="themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="themes\base\minified\images\ui-icons_222222_256x240.png" />
-    <Content Include="themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="themes\base\minified\images\ui-icons_454545_256x240.png" />
-    <Content Include="themes\base\minified\images\ui-icons_888888_256x240.png" />
-    <Content Include="themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="themes\base\minified\jquery-ui.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.accordion.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.autocomplete.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.button.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.core.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.datepicker.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.dialog.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.menu.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.progressbar.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.resizable.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.selectable.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.slider.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.spinner.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.tabs.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.theme.min.css" />
-    <Content Include="themes\base\minified\jquery.ui.tooltip.min.css" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Mobile.less" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

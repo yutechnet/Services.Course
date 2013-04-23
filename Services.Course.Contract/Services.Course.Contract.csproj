@@ -132,11 +132,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CourseInfoResponse.cs" />
+    <Compile Include="CreateProgramRequest.cs" />
+    <Compile Include="ProgramResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SaveCourseRequest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
