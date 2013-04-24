@@ -20,7 +20,7 @@ namespace BpeProducts.Services.Course.Host.App_Start
 	    private static void ProgramMappings()
 	    {
 		    Mapper.CreateMap<Program, ProgramResponse>();
-			Mapper.CreateMap<CreateProgramRequest, Program>();
+			Mapper.CreateMap<SaveProgramRequest, Program>();
 	    }
 
 	    private static void CourseMappings()

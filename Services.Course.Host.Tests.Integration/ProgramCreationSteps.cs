@@ -32,7 +32,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Given(@"I have a program with following info:")]
         public void GivenIHaveAProgramWithFollowingInfo(Table table)
         {
-            var programRequest = new CreateProgramRequest
+            var programRequest = new SaveProgramRequest
                 {
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                     Description = table.Rows[0]["Description"],
@@ -55,8 +55,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I submit a request to create a program")]
         public void WhenISubmitARequestToCreateAProgram()
         {
-            var program = ScenarioContext.Current.Get<CreateProgramRequest>("programRequest");
-
+            var program = ScenarioContext.Current.Get<SaveProgramRequest>("programRequest");
             var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, program, new JsonMediaTypeFormatter()).Result;
 
             if (ScenarioContext.Current.ContainsKey("createProgramResponse"))
@@ -78,7 +77,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I modify the program info to reflect the following:")]
         public void WhenIModifyTheProgramInfoToReflectTheFollowing(Table table)
         {
-            var editProgramRequest = new CreateProgramRequest
+            var editProgramRequest = new SaveProgramRequest
                 {
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                     Description = table.Rows[0]["Description"],
@@ -115,7 +114,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I create a new program with (.*), (.*)")]
         public void WhenICreateANewProgramWith(string name, string description)
         {
-            var programRequest = new CreateProgramRequest
+            var programRequest = new SaveProgramRequest
                 {
                     Name = string.IsNullOrEmpty(name) ? name : name + ScenarioContext.Current.Get<long>("ticks"),
                     Description = description,
@@ -181,7 +180,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             response.EnsureSuccessStatusCode();
 
             var programInfo = response.Content.ReadAsAsync<ProgramResponse>().Result;
-            var editedRequest = ScenarioContext.Current.Get<CreateProgramRequest>("editProgramRequest");
+            var editedRequest = ScenarioContext.Current.Get<SaveProgramRequest>("editProgramRequest");
 
             Assert.AreEqual(programInfo.Name, editedRequest.Name);
             Assert.AreEqual(programInfo.Description, editedRequest.Description);

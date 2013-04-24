@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BpeProducts.Services.Course.Host.Controllers
+namespace BpeProducts.Services.Course.Contract
 {
-	public class CreateProgramRequest
+	public class SaveProgramRequest
 	{
 		[Required]
 		public string Name { get; set; }
