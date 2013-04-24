@@ -56,6 +56,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void WhenISubmitARequestToCreateAProgram()
         {
             var program = ScenarioContext.Current.Get<CreateProgramRequest>("programRequest");
+
             var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, program, new JsonMediaTypeFormatter()).Result;
 
             if (ScenarioContext.Current.ContainsKey("createProgramResponse"))
@@ -138,10 +139,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I request a program id that does not exist")]
         public void WhenIRequestAProgramIdThatDoesNotExist()
         {
-            const string nonExistentId = "xxxxfc3b-xxxx-4b35-89e3-a1a900fxxxx";
-
+            const string nonExistentId = "4DE2024C-4C81-94CD-2BA7-A1AA0095359F";
             var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + nonExistentId).Result;
-            ScenarioContext.Current.Add("getProgramId", result);
+            ScenarioContext.Current.Add("programResponseToValidate", result);
         }
 
         
@@ -151,6 +151,27 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var programResponse = ScenarioContext.Current.Get<HttpResponseMessage>("programResponseToValidate");
             programResponse.EnsureSuccessStatusCode();
         }
+
+        [Then(@"my program information is as follows:")]
+        public void ThenMyProgramInformationIsAsFollows(Table table)
+        {
+            //Get GUID from program response
+            var message = ScenarioContext.Current.Get<HttpResponseMessage>("createProgramResponse");
+            var programInfo = message.Content.ReadAsAsync<ProgramResponse>().Result;
+            var programId = programInfo.Id;
+
+            //Perform a GET call with GUID
+            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + programId).Result;
+            result.EnsureSuccessStatusCode();
+
+            //Assert that the properties of the program info response from the GET equals the original program request properties
+            var originalProgramRequest = ScenarioContext.Current.Get<CreateProgramRequest>("programRequest");
+            var latestRequest = result.Content.ReadAsAsync<ProgramResponse>().Result;
+
+            Assert.That(latestRequest.Name, Is.EqualTo(originalProgramRequest.Name));
+            Assert.That(latestRequest.Description, Is.EqualTo(originalProgramRequest.Description));
+        }
+
 
         [Then(@"my program information is changed")]
         public void ThenMyProgramInformationIsChanged()
@@ -164,12 +185,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             Assert.AreEqual(programInfo.Name, editedRequest.Name);
             Assert.AreEqual(programInfo.Description, editedRequest.Description);
-        }
-
-        [Then(@"the program updates are reflected in all tenants")]
-        public void ThenTheProgramUpdatesAreReflectedInAllTenants()
-        {
-            ScenarioContext.Current.Pending();
         }
 
         [Then(@"the program no longer exists")]
