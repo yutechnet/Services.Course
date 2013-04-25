@@ -16,7 +16,7 @@ using NHibernate.OData;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
-
+	[Authorize]
 	public class ProgramsController : ApiController
 	{
 		private ISession _session;
