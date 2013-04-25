@@ -164,7 +164,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             result.EnsureSuccessStatusCode();
 
             //Assert that the properties of the program info response from the GET equals the original program request properties
-            var originalProgramRequest = ScenarioContext.Current.Get<CreateProgramRequest>("programRequest");
+            var originalProgramRequest = ScenarioContext.Current.Get<SaveProgramRequest>("programRequest");
             var latestRequest = result.Content.ReadAsAsync<ProgramResponse>().Result;
 
             Assert.That(latestRequest.Name, Is.EqualTo(originalProgramRequest.Name));
