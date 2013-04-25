@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
@@ -7,9 +8,17 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Controllers;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
+using System.Linq;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration
 {
+//    public class TestEntity
+//    {
+//        public string TestId { get; set; }
+//        public SaveProgramRequest SaveProgramRequest { get; set; }
+//
+//    }
+
     [Binding]
     public class ProgramCreationSteps
     {
@@ -32,16 +41,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Given(@"I have a program with following info:")]
         public void GivenIHaveAProgramWithFollowingInfo(Table table)
         {
+            var tempId = DateTime.Now.ToLongTimeString();
+                //ScenarioContext.Current.Get<long>("ticks");
             var programRequest = new SaveProgramRequest
                 {
-                    Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
+                    Name = table.Rows[0]["Name"] + tempId,
                     Description = table.Rows[0]["Description"],
                     TenantId = "1"
                 };
 
+            ScenarioContext.Current.Add(tempId, "testId");
             ScenarioContext.Current.Add("programRequest", programRequest);
-            ScenarioContext.Current.Add("programName", table.Rows[0]["Name"]);
-            ScenarioContext.Current.Add("programDescription", table.Rows[0]["Description"]);
         }
 
         [Given(@"I have an existing program with following info:")]
@@ -141,6 +151,55 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             const string nonExistentId = "4DE2024C-4C81-94CD-2BA7-A1AA0095359F";
             var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + nonExistentId).Result;
             ScenarioContext.Current.Add("programResponseToValidate", result);
+        }
+
+        [When(@"I submit another request to create another program")]
+        public void WhenISubmitAnotherRequestToCreateAnotherProgram(Table table)
+        {
+            //GivenIHaveAProgramWithFollowingInfo(table);
+            var anotherProgramRequest = new SaveProgramRequest
+                {
+                    Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
+                    Description = table.Rows[0]["Description"],
+                    TenantId = "1"
+                };
+
+            ScenarioContext.Current.Add("anotherProgramRequest", anotherProgramRequest);
+
+            var program = ScenarioContext.Current.Get<SaveProgramRequest>("anotherProgramRequest");
+            var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, program, new JsonMediaTypeFormatter()).Result;
+
+            ScenarioContext.Current.Add("anotherProgramResponse", response);
+        }
+
+
+        [When(@"I request to get all programs")]
+        public void WhenIRequestToGetAllPrograms()
+        {
+            var getAll = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath).Result;
+            getAll.EnsureSuccessStatusCode();
+
+            var getAllData = getAll.Content.ReadAsAsync<List<ProgramResponse>>().Result;
+            
+            ScenarioContext.Current.Add("allPrograms", getAllData);
+        }
+
+        [Then(@"my program is returned")]
+        public void ThenMyProgramIsReturned()
+        {
+            var firstRequest = ScenarioContext.Current.Get<HttpResponseMessage>("createProgramResponse");
+            var secondRequest = ScenarioContext.Current.Get<HttpResponseMessage>("anotherProgramResponse");
+
+            var originalRequest1 = firstRequest.Content.ReadAsAsync<ProgramResponse>().Result;
+            var originalRequest2 = secondRequest.Content.ReadAsAsync<ProgramResponse>().Result;
+
+            var allPrograms = ScenarioContext.Current.Get<List<ProgramResponse>>("allPrograms");
+
+            Assert.That(allPrograms.Any(p=> p.Id == originalRequest1.Id));
+            Assert.That(allPrograms.Any(p => p.Id == originalRequest2.Id));
+
+//            allPrograms.ForEach(x => Assert.That(listOfTestIds.Contains(x.Id)));
+//            Assert.That(allPrograms.Count, Is.GreaterThanOrEqualTo(listOfTestIds.Count()));            
         }
 
         

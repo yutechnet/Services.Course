@@ -170,16 +170,55 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get all programs")]
+        public virtual void GetAllPrograms()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get all programs", ((string[])(null)));
+#line 35
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "Tenant"});
+            table6.AddRow(new string[] {
+                        "Bachelor\'s of Science",
+                        "Economics",
+                        "1"});
+#line 36
+ testRunner.Given("I have a program with following info:", ((string)(null)), table6, "Given ");
+#line 39
+ testRunner.When("I submit a request to create a program", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "Tenant"});
+            table7.AddRow(new string[] {
+                        "Bachelor\'s of Art",
+                        "Philosophy",
+                        "1"});
+#line 40
+ testRunner.And("I submit another request to create another program", ((string)(null)), table7, "And ");
+#line 43
+ testRunner.And("I request to get all programs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 44
+ testRunner.Then("my program is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Return 404 when program id is not found")]
         [NUnit.Framework.TestCaseAttribute("NotFound", null)]
         public virtual void Return404WhenProgramIdIsNotFound(string status, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Return 404 when program id is not found", exampleTags);
-#line 35
+#line 46
 this.ScenarioSetup(scenarioInfo);
-#line 36
+#line 47
  testRunner.When("I request a program id that does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 37
+#line 48
  testRunner.Then(string.Format("I should get the expected status code {0}", status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -192,13 +231,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UnableToCreateProgramDueToMissingInfo(string name, string description, string status, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unable to create program due to missing info", exampleTags);
-#line 43
+#line 54
 this.ScenarioSetup(scenarioInfo);
-#line 44
+#line 55
  testRunner.When(string.Format("I create a new program with {0}, {1}", name, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 45
+#line 56
  testRunner.When("I submit a request to create a program", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 46
+#line 57
  testRunner.Then(string.Format("I should get the expected status code {0}", status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
