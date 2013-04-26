@@ -63,6 +63,9 @@
     <Reference Include="BpeProducts.Common.Log">
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.10\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
+    <Reference Include="BpeProducts.Common.NHibernate">
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.27\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="BpeProducts.Common.Redis">
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.9\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
