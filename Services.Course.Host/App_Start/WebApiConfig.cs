@@ -13,6 +13,8 @@ namespace BpeProducts.Services.Course.Host
                 routeTemplate: "{controller}/{id}",
                 defaults: new {id = RouteParameter.Optional}
                 );
+
+            config.EnableSystemDiagnosticsTracing();
         }
     }
 }
