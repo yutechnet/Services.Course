@@ -76,11 +76,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             ScenarioContext.Current.Add("createProgramResponse", response);
 
 
-            if (ScenarioContext.Current.ContainsKey("programResponseToValidate"))
+            if (ScenarioContext.Current.ContainsKey("responseToValidate"))
             {
-                ScenarioContext.Current.Remove("programResponseToValidate");
+                ScenarioContext.Current.Remove("responseToValidate");
             }
-            ScenarioContext.Current.Add("programResponseToValidate", response);
+            ScenarioContext.Current.Add("responseToValidate", response);
 
         }
 
@@ -102,12 +102,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             ScenarioContext.Current.Add("editProgramResponse", result);
             ScenarioContext.Current.Add("programId", programResponseInfo.Id);
 
-            if (ScenarioContext.Current.ContainsKey("programResponseToValidate"))
+            if (ScenarioContext.Current.ContainsKey("responseToValidate"))
             {
-                ScenarioContext.Current.Remove("programResponseToValidate");
+                ScenarioContext.Current.Remove("responseToValidate");
             }
 
-            ScenarioContext.Current.Add("programResponseToValidate", result);
+            ScenarioContext.Current.Add("responseToValidate", result);
         }
 
         [When(@"I delete the program")]
@@ -150,7 +150,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             const string nonExistentId = "4DE2024C-4C81-94CD-2BA7-A1AA0095359F";
             var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + nonExistentId).Result;
-            ScenarioContext.Current.Add("programResponseToValidate", result);
+            ScenarioContext.Current.Add("responseToValidate", result);
         }
 
         [When(@"I submit another request to create another program")]
@@ -206,7 +206,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"the operation is successful")]
         public void ThenTheOperationIsSuccessful()
         {
-            var programResponse = ScenarioContext.Current.Get<HttpResponseMessage>("programResponseToValidate");
+            var programResponse = ScenarioContext.Current.Get<HttpResponseMessage>("responseToValidate");
             programResponse.EnsureSuccessStatusCode();
         }
 
@@ -257,7 +257,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"I should get the expected status code (.*)")]
         public void ThenIShouldGetTheExpectedStatusCodeBadRequest(string status)
         {
-            var response = ScenarioContext.Current.Get<HttpResponseMessage>("programResponseToValidate");
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("responseToValidate");
             var expectedCode = (HttpStatusCode) Enum.Parse(typeof (HttpStatusCode), status);
 
             Assert.That(response.StatusCode, Is.EqualTo(expectedCode));
