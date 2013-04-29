@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.NHibernate;
+using BpeProducts.Services.Course.Domain.Entities;
 using NHibernate;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
@@ -17,6 +18,10 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             : base(session)
         {
             
+        }
+        public T Load<T>(Guid id) where T : TenantEntity
+        {
+            return Session.Load<T>(id);
         }
     }
 }

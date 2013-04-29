@@ -15,5 +15,12 @@ namespace BpeProducts.Services.Course.Domain.Entities
         [Required]
         public virtual string Code { get; set; }
         public virtual string Description { get; set; }
+        public virtual IList<Program> Programs { get; set; }
+
+        public Course()
+        {
+            Programs = new List<Program>();
+        }
+       
     }
 }

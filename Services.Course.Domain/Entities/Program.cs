@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BpeProducts.Common.NHibernate;
 
 namespace BpeProducts.Services.Course.Domain.Entities
@@ -16,5 +17,12 @@ namespace BpeProducts.Services.Course.Domain.Entities
 			get;
 			set; 
 		}
+
+	    public Program()
+	    {
+	        Courses = new List<Course>();
+	    }
+        public virtual IList<Course> Courses { get; set; }
+
 	}
 }

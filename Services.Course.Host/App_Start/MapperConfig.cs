@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using AutoMapper;
 using BpeProducts.Services.Course.Contract;
@@ -26,11 +27,15 @@ namespace BpeProducts.Services.Course.Host.App_Start
 	    private static void CourseMappings()
         {
             // From Domain entities to DTOs
-            Mapper.CreateMap<Domain.Entities.Course, CourseInfoResponse>();
+	        Mapper.CreateMap<Domain.Entities.Course, CourseInfoResponse>()
+                .ForMember(dest => dest.ProgramIds, opt => opt.MapFrom(course => course.Programs.Select(p => p.Id).ToList()));
 
             // From DTOs to Domain Entities
             Mapper.CreateMap<SaveCourseRequest, Domain.Entities.Course>()
                   .ForMember(x => x.Id, opt => opt.Ignore());
+
+            //Mapper.CreateMap<Domain.Entities.Program, Guid>()
+            //      .ForMember(x => x, opt => opt.MapFrom(p => p.Id));
         }
     }
 }

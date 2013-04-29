@@ -9,5 +9,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 {
     public interface ICourseRepository : IRepository<Entities.Course>
     {
+        T Load<T>(Guid programId) where T:TenantEntity;
     }
 }

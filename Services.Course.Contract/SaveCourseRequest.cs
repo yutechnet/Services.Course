@@ -8,11 +8,18 @@ namespace BpeProducts.Services.Course.Contract
 {
     public class SaveCourseRequest
     {
+        public SaveCourseRequest()
+        {
+            ProgramIds = new List<Guid>();
+        }
+
         public Guid Id { get; set; }
 
         public string Name { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
         public int TenantId { get; set; }
+
+        public List<Guid> ProgramIds { get; set; }
     }
 }

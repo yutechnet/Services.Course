@@ -12,7 +12,9 @@ using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.WebApi;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
+using NHibernate;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
@@ -20,10 +22,11 @@ namespace BpeProducts.Services.Course.Host.Controllers
     public class CoursesController : ApiController
     {
         private readonly ICourseRepository _courseRepository;
-
+      
         public CoursesController(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
+         
         }
 
         // GET api/courses
@@ -112,6 +115,13 @@ namespace BpeProducts.Services.Course.Host.Controllers
             }
 
             Mapper.Map(request, courseInDb);
+
+            foreach (var programId in request.ProgramIds)
+            {
+                var program = _courseRepository.Load<Program>(programId);
+                courseInDb.Programs.Add(program);
+            }
+
             _courseRepository.Update(courseInDb);
         }
 
