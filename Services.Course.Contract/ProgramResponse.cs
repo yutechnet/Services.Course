@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BpeProducts.Services.Course.Host.Controllers
+namespace BpeProducts.Services.Course.Contract
 {
 	public class ProgramResponse
 	{
