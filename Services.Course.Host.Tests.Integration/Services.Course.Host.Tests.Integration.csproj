@@ -53,6 +53,7 @@
     <Reference Include="BpeProducts.Common.Authorization, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.4\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.3\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -54,7 +54,6 @@
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Authorization">
-      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.2\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
       <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.3\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Exceptions">
