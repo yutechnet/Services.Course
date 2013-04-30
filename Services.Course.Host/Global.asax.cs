@@ -1,6 +1,11 @@
-﻿using System.Web.Http;
+﻿using System.IdentityModel.Services;
+using System.Security.Claims;
+using System.Web.Http;
+using Autofac;
+using BpeProducts.Common.Ioc;
 using BpeProducts.Common.WebApi;
 using BpeProducts.Services.Course.Host.App_Start;
+using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace BpeProducts.Services.Course.Host
 {
@@ -10,13 +15,14 @@ namespace BpeProducts.Services.Course.Host
     {
         public static void ConfigureWebApi(HttpConfiguration configuration)
         {
-            WebApiConfig.Register(configuration);
-            Configuration.Configure(configuration);
+	        var container = ContainerInstanceProvider.GetContainerInstance();
+			WebApiConfig.Register(configuration);
+            Configuration.Configure(configuration,container);		
             MapperConfig.ConfigureMappers();
         }
 
         protected void Application_Start()
-        {
+        {			
             ConfigureWebApi(GlobalConfiguration.Configuration);
         }
     }
