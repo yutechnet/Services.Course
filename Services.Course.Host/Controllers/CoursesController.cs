@@ -15,6 +15,7 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
 using NHibernate;
+using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
@@ -76,6 +77,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
+		[ClaimsAuthorize("CourseCreate")]
         // POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
