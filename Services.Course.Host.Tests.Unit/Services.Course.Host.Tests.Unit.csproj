@@ -55,6 +55,7 @@
     </Reference>
     <Reference Include="BpeProducts.Common.Authorization">
       <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.2\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.3\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Exceptions">
       <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.9\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
@@ -66,8 +67,9 @@
     <Reference Include="BpeProducts.Common.Log">
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.10\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate">
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.27\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.28.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.28\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis">
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.9\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
@@ -75,6 +77,9 @@
     <Reference Include="BpeProducts.Common.WebApi, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.37\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
+    <Reference Include="BpeProducts.Common.WebApi, Version=1.0.38.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.38\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
