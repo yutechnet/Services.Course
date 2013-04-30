@@ -11,11 +11,11 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.WebApi;
 using BpeProducts.Common.WebApi.Attributes;
+using BpeProducts.Common.WebApi.Authorization;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
 using NHibernate;
-using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
