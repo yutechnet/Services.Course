@@ -81,15 +81,11 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
-            var tenantId = request.TenantId;
-
             var course = Mapper.Map<Domain.Entities.Course>(request);
             // Make sure the course is active by default
             course.ActiveFlag = true;
             // No duplicate check whatsoever 
             var id = (Guid) _courseRepository.Add(course);
-
-            //return id;
 
             var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_courseRepository.GetById(id));
             var response = base.Request.CreateResponse<CourseInfoResponse>(HttpStatusCode.Created, courseInfoResponse);
@@ -117,6 +113,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
             }
 
             Mapper.Map(request, courseInDb);
+            courseInDb.Programs.Clear();
 
             foreach (var programId in request.ProgramIds)
             {

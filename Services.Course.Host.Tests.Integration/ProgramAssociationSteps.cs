@@ -154,6 +154,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var programs = ScenarioContext.Current.Get<IList<ProgramResponse>>("programs");
             var program = programs.First(p => p.Name.Equals(programName));
 
+            Assert.That(courseInfoResponse.ProgramIds.Count, Is.EqualTo(1));
             CollectionAssert.Contains(courseInfoResponse.ProgramIds, program.Id);
         }
 
