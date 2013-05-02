@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Configuration;
+using System.Net.Http.Headers;
 using BpeProducts.Common.WebApi.Test;
 using TechTalk.SpecFlow;
 
@@ -7,6 +9,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [Binding]
     public static class ApiFeature
     {
+		
         public static WebApiTestHost ApiTestHost
         {
             get { return (WebApiTestHost)FeatureContext.Current["ApiTestHost"]; }
@@ -25,7 +28,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             apiTestHost.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("SAML", base64SamlToken);
 
             FeatureContext.Current.Add("ApiTestHost", apiTestHost);
-        }
+
+			var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
+			if (!targetUri.Host.Equals("localhost"))
+			{
+				FeatureContext.Current.Add("CourseLeadingPath", targetUri.PathAndQuery + "/courses");
+				FeatureContext.Current.Add("ProgramLeadingPath", targetUri.PathAndQuery + "/programs");
+			}
+			else
+			{
+				FeatureContext.Current.Add("CourseLeadingPath", "/courses");
+				FeatureContext.Current.Add("ProgramLeadingPath", "/programs");
+			}
+		
+		}
 
         [AfterFeature("Api")]
         public static void AfterFeature()

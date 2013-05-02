@@ -18,5 +18,6 @@ namespace BpeProducts.Services.Course.Contract
         public DateTime? DateUpdated { get; set; }
         public Guid AddedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+		public List<CourseSegment> Segments { get; set; }
     }
 }
