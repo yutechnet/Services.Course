@@ -40,7 +40,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		// GET api/programs/5
 		public ProgramResponse Get(Guid id)
 		{
-			var program = _session.Query<Program>().SingleOrDefault(p => p.ActiveFlag && p.Id == id);
+            var program = _session.Query<Program>().SingleOrDefault(p => p.ActiveFlag && p.Id == id);
 			if (program == null)
 			{
 				throw new HttpResponseException(HttpStatusCode.NotFound);

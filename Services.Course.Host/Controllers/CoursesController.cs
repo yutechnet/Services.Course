@@ -3,19 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
-using System.Web;
 using System.Web.Http;
 using AutoMapper;
-using BpeProducts.Common.Exceptions;
-using BpeProducts.Common.NHibernate;
-using BpeProducts.Common.WebApi;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Common.WebApi.Authorization;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
-using NHibernate;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
@@ -23,11 +19,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
     public class CoursesController : ApiController
     {
         private readonly ICourseRepository _courseRepository;
-      
-        public CoursesController(ICourseRepository courseRepository)
+        private readonly IDomainEvents _domainEvents;
+
+        public CoursesController(ICourseRepository courseRepository, IDomainEvents domainEvents)
         {
             _courseRepository = courseRepository;
-         
+            _domainEvents = domainEvents;
         }
 
         // GET api/courses
@@ -41,7 +38,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // GET api/courses/5
         public CourseInfoResponse Get(Guid id)
         {
-            var course = _courseRepository.GetAll().FirstOrDefault(c => c.Id.Equals(id) && c.ActiveFlag.Equals(true));
+            Domain.Entities.Course course =
+                _courseRepository.GetAll().FirstOrDefault(c => c.Id.Equals(id) && c.ActiveFlag.Equals(true));
             if (course == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -53,7 +51,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpGet]
         public CourseInfoResponse GetByCode(string code)
         {
-            var course = _courseRepository.GetAll().FirstOrDefault(c => c.Code == code && c.ActiveFlag.Equals(true));
+            Domain.Entities.Course course =
+                _courseRepository.GetAll().FirstOrDefault(c => c.Code == code && c.ActiveFlag.Equals(true));
             if (course == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -65,7 +64,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpGet]
         public CourseInfoResponse GetByName(string name)
         {
-            var course = _courseRepository.GetAll().FirstOrDefault(c => c.Name == name && c.ActiveFlag.Equals(true));
+            Domain.Entities.Course course =
+                _courseRepository.GetAll().FirstOrDefault(c => c.Name == name && c.ActiveFlag.Equals(true));
             if (course == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -77,7 +77,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
-		[ClaimsAuthorize("CourseCreate")]
+        [ClaimsAuthorize("CourseCreate")]
         // POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
@@ -88,13 +88,22 @@ namespace BpeProducts.Services.Course.Host.Controllers
             var id = (Guid) _courseRepository.Add(course);
 
             var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_courseRepository.GetById(id));
-            var response = base.Request.CreateResponse<CourseInfoResponse>(HttpStatusCode.Created, courseInfoResponse);
+            HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
-            var uri = Url.Link("DefaultApi", new {id = courseInfoResponse.Id});
+            string uri = Url.Link("DefaultApi", new {id = courseInfoResponse.Id});
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
             }
+
+            _domainEvents.Raise<CourseCreated>(new CourseCreated
+            {
+                AggregateId = id,
+                Code = course.Code,
+                Description = course.Description,
+                Name = course.Name
+            });
+
             return response;
         }
 
@@ -105,30 +114,39 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public void Put(Guid id, SaveCourseRequest request)
         {
             // We do not allow creation of a new resource by PUT.
-            var courseInDb = _courseRepository.GetById(id);
-            
-            if(courseInDb == null)
+            Domain.Entities.Course courseInDb = _courseRepository.GetById(id);
+
+            if (courseInDb == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);    
+                throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
             Mapper.Map(request, courseInDb);
-            courseInDb.Programs.Clear();
+            var oldCourse = courseInDb;
 
-            foreach (var programId in request.ProgramIds)
+            courseInDb.Programs.Clear();
+            foreach (Guid programId in request.ProgramIds)
             {
                 var program = _courseRepository.Load<Program>(programId);
                 courseInDb.Programs.Add(program);
             }
 
             _courseRepository.Update(courseInDb);
+            var newCourse = courseInDb;
+
+            _domainEvents.Raise<CourseUpdated>(new CourseUpdated
+                {
+                    AggregateId = id,
+                    Old = oldCourse,
+                    New = newCourse
+                });
         }
 
         [Transaction]
         // DELETE api/courses/5
         public void Delete(Guid id)
         {
-            var courseInDb = _courseRepository.GetById(id);
+            Domain.Entities.Course courseInDb = _courseRepository.GetById(id);
 
             if (courseInDb == null)
             {
@@ -138,8 +156,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
             // logical delete
             courseInDb.ActiveFlag = false;
             _courseRepository.Update(courseInDb);
+
+            _domainEvents.Raise<CourseDeleted>(new CourseDeleted
+                {
+                    AggregateId = id
+                });
+            
         }
     }
-
-    
 }
