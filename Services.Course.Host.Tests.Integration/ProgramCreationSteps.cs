@@ -12,18 +12,11 @@ using System.Linq;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration
 {
-//    public class TestEntity
-//    {
-//        public string TestId { get; set; }
-//        public SaveProgramRequest SaveProgramRequest { get; set; }
-//
-//    }
-
     [Binding]
     public class ProgramCreationSteps
     {
 
-        private string _leadingPath;
+        private readonly string _leadingPath;
         private string _tempId;
         private List<ProgramResponse> _programs;
 
@@ -52,7 +45,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void GivenIHaveAProgramWithFollowingInfo(Table table)
         {
             _tempId = DateTime.Now.ToLongTimeString();
-                //ScenarioContext.Current.Get<long>("ticks");
             _programRequest = new SaveProgramRequest
                 {
                     Name = table.Rows[0]["Name"] + _tempId,
@@ -115,7 +107,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I request a program id that does not exist")]
         public void WhenIRequestAProgramIdThatDoesNotExist()
         {
-           // const string nonExistentId = "4DE2024C-4C81-94CD-2BA7-A1AA0095359F";
             _nonExistentId = Guid.NewGuid();
             _responseMessageToValidate = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + _nonExistentId).Result;
         }
@@ -156,20 +147,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"my program information is as follows:")]
         public void ThenMyProgramInformationIsAsFollows(Table table)
         {
-            //Get GUID from program response
             var programId = _programResponse.Id;
-
-            //Perform a GET call with GUID
             var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + programId).Result;
-            _programResponse = result.Content.ReadAsAsync<ProgramResponse>().Result;
             result.EnsureSuccessStatusCode();
-
-            //Assert that the properties of the program info response from the GET equals the original program request properties
-            var originalProgramRequest = _programRequest;
-            var latestRequest = _programResponse;
-
-            Assert.That(latestRequest.Name, Is.EqualTo(originalProgramRequest.Name));
-            Assert.That(latestRequest.Description, Is.EqualTo(originalProgramRequest.Description));
+            _programResponse = result.Content.ReadAsAsync<ProgramResponse>().Result;
+            
+            Assert.That(_programResponse.Name, Is.EqualTo(_programRequest.Name));
+            Assert.That(_programResponse.Description, Is.EqualTo(_programRequest.Description));
         }
 
 
@@ -188,7 +172,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenTheProgramNoLongerExists()
         {
             _responseMessageToValidate = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + _programResponse.Id).Result;
-
             Assert.That(_responseMessageToValidate.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
