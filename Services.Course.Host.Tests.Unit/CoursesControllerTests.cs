@@ -6,7 +6,9 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Routing;
 using AutoMapper;
+using Autofac;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Host.App_Start;
 using BpeProducts.Services.Course.Host.Controllers;
@@ -28,7 +30,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             MapperConfig.ConfigureMappers();
 
             _mockCourseRepository = new Mock<ICourseRepository>();
-            _coursesController = new CoursesController(_mockCourseRepository.Object);
+            _coursesController = new CoursesController(_mockCourseRepository.Object, new Mock<IDomainEvents>().Object);
         }
 
         [Test]

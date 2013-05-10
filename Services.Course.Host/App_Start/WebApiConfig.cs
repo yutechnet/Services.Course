@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using BpeProducts.Services.Course.Host.Controllers;
 using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Host
@@ -9,10 +10,23 @@ namespace BpeProducts.Services.Course.Host
         {
 			config.EnableQuerySupport();
 
+            config.Routes.MapHttpRoute("CourseSegmentsApi2", "{controller}/{courseId}/{action}");
+
+            config.Routes.MapHttpRoute("CourseSegmentsApi", "{controller}/{courseId}/{action}/{segmentId}", 
+                new
+               {
+                   segmentId = RouteParameter.Optional
+               }
+            );
+
+            config.Routes.MapHttpRoute("CourseSegmentsApi3", "{controller}/{courseId}/segments/{segmentId}/segments",
+                new { action = "SubSegments" }
+            );
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "{controller}/{id}",
-                defaults: new {id = RouteParameter.Optional}
+                defaults: new { id = RouteParameter.Optional }
                 );
 
             config.EnableSystemDiagnosticsTracing();
