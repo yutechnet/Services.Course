@@ -12,9 +12,11 @@ using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
+using CourseSegment = BpeProducts.Services.Course.Contract.CourseSegment;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
+//    [DefaultHttpRouteConvention]
     [Authorize]
     public class CoursesController : ApiController
     {
@@ -113,6 +115,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // PUT api/courses/5
         public void Put(Guid id, SaveCourseRequest request)
         {
+            var courseFromFactory = new CourseFactory().Create(id);
+
+
             // We do not allow creation of a new resource by PUT.
             Domain.Entities.Course courseInDb = _courseRepository.GetById(id);
 
@@ -163,5 +168,81 @@ namespace BpeProducts.Services.Course.Host.Controllers
                 });
             
         }
+
+        #region Course Segment Management
+
+        // courses/<courseId>/segments
+        [HttpGet]
+        public IEnumerable<CourseSegment> Segments(Guid courseId)
+        {
+            // returns the root course segments, including their childrent segments
+            return Get(courseId).Segments;
+        }
+
+        // courses/<courseId>/segments
+        [HttpPost]
+        public void Segments(Guid courseId, CourseSegment courseSegment)
+        {
+            // saves a root segment
+            Domain.Entities.Course courseInDb = _courseRepository.GetById(courseId);
+
+            if (courseInDb == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var newSegment = Mapper.Map<Domain.Entities.CourseSegment>(courseSegment);
+            courseInDb.Segments.Add(newSegment);
+
+            _courseRepository.Update(courseInDb);
+
+            _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
+                {
+                    AggregateId = courseId,
+                    Description = newSegment.Description,
+                    Name = newSegment.Name,
+                    ParentSegmentId = Guid.Empty,
+                    SegmentId = newSegment.Id,
+                    Type = newSegment.Type
+                });
+
+        }
+
+        // courses/<courseId>/segments/<segmentId>
+        [HttpPut]
+        public void Segments(Guid course, Guid segmentId, Contract.CourseSegment courseSegment)
+        {
+            // Updates the specified segment
+        }
+
+        // courses/<courseId>/segments/<segmentId>
+        [HttpGet]
+        public Contract.CourseSegment Segments(Guid courseId, Guid segmentId)
+        {
+            // returns the specified segments (and its children)
+            return new CourseSegment();
+        }
+
+        // GET courses/<courseId>/segments/<segmentId>/segments -- returns children of the specified segment
+        [HttpGet]
+        public IEnumerable<Contract.CourseSegment> SubSegments(Guid courseId, Guid segmentId)
+        {
+            return new List<CourseSegment>();
+        }
+
+        // POST courses/<courseId>/segments/<segmentId>/segments -- creates a child segment for a segment
+        [HttpPost]
+        public void SubSegments(Guid courseId, Guid segmentId, Contract.CourseSegment courseSegment)
+        {
+            return;
+        }
+        // PUT courses/<courseId>/segments/<segmentId>/segments -- reorders the children segments
+        [HttpPut]
+        public void SubSegments(Guid courseId, Guid segmentId, IEnumerable<Contract.CourseSegment> childrentSegments)
+        {
+
+        }
+
+        #endregion
     }
 }

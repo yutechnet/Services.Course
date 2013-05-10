@@ -118,8 +118,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CourseFactory.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="Entities\Course.cs" />
+    <Compile Include="Entities\CourseSegment.cs" />
     <Compile Include="Entities\Program.cs" />
     <Compile Include="Events\CourseAssociatedWithProgram.cs" />
     <Compile Include="Events\CourseCreated.cs" />
@@ -132,6 +134,7 @@
     <Compile Include="Handlers\CourseEventPersisterHandler.cs" />
     <Compile Include="Handlers\IHandle.cs" />
     <Compile Include="IocRegistrations.cs" />
+    <Compile Include="Overrides\CourseMappingOverride.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CourseEventStore.cs" />
     <Compile Include="Repositories\CourseRepository.cs" />
