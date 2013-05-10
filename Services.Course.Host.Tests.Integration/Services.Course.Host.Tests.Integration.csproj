@@ -163,6 +163,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="CourseCreationSteps.cs" />
+    <Compile Include="CourseSegment.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CourseSegment.feature</DependentUpon>
+    </Compile>
+    <Compile Include="CourseSegmentSteps.cs" />
     <Compile Include="ProgramAssociation.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -188,6 +194,10 @@
     <None Include="CourseCreation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseCreation.feature.cs</LastGenOutput>
+    </None>
+    <None Include="CourseSegment.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CourseSegment.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="ProgramAssociation.feature">
