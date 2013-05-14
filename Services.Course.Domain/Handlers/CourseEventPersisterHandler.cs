@@ -3,8 +3,11 @@ using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
 {
-    public class CourseEventPersisterHandler: IHandle<CourseAssociatedWithProgram>,IHandle<CourseDisassociatedWithProgram>
-        ,IHandle<CourseCreated>,IHandle<CourseInfoUpdated>,IHandle<CourseDeleted>,IHandle<CourseSegmentAdded>
+    public class CourseEventPersisterHandler : IHandle<CourseAssociatedWithProgram>,
+                                               IHandle<CourseDisassociatedWithProgram>,
+                                               IHandle<CourseCreated>, IHandle<CourseInfoUpdated>,
+                                               IHandle<CourseDeleted>, IHandle<CourseSegmentAdded>,
+                                               IHandle<CourseSegmentUpdated>
     {
         public void Handle(IDomainEvent domainEvent)
         {
@@ -13,4 +16,3 @@ namespace BpeProducts.Services.Course.Domain.Handlers
         }
     }
 }
-

@@ -2,7 +2,7 @@
 
 namespace BpeProducts.Services.Course.Domain.Events
 {
-    public class CourseSegmentAdded:IDomainEvent
+    public class CourseSegmentUpdated : IDomainEvent
     {
         public Guid ParentSegmentId { get; set; }
         public Guid SegmentId { get; set; }

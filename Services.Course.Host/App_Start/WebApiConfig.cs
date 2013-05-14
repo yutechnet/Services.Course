@@ -14,9 +14,9 @@ namespace BpeProducts.Services.Course.Host
 
             config.Routes.MapHttpRoute("CourseSegmentsApi", "{controller}/{courseId}/{action}/{segmentId}", 
                 new
-               {
+                {
                    segmentId = RouteParameter.Optional
-               }
+                }
             );
 
             config.Routes.MapHttpRoute("CourseSegmentsApi3", "{controller}/{courseId}/segments/{segmentId}/segments",

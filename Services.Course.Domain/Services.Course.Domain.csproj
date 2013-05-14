@@ -87,6 +87,9 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.3.3.3.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
@@ -121,7 +124,6 @@
     <Compile Include="CourseFactory.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="Entities\Course.cs" />
-    <Compile Include="Entities\CourseSegment.cs" />
     <Compile Include="Entities\Program.cs" />
     <Compile Include="Events\CourseAssociatedWithProgram.cs" />
     <Compile Include="Events\CourseCreated.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="Events\CourseDisassociatedWithProgram.cs" />
     <Compile Include="Events\CourseInfoUpdated.cs" />
     <Compile Include="Events\CourseSegmentAdded.cs" />
+    <Compile Include="Events\CourseSegmentUpdated.cs" />
     <Compile Include="Events\CourseUpdated.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
     <Compile Include="Handlers\CourseEventPersisterHandler.cs" />

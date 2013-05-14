@@ -154,6 +154,7 @@
   <ItemGroup>
     <Compile Include="CourseInfoResponse.cs" />
     <Compile Include="CourseSegment.cs" />
+    <Compile Include="SaveCourseSegmentRequest.cs" />
     <Compile Include="SaveProgramRequest.cs" />
     <Compile Include="ProgramResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,13 +11,13 @@ Background:
 
 Scenario: Add course segment
 	When I add following course segments to 'Math 101':
-	| Name  | Description                    | Type     |
-	| Week1 | First week is slack time       | TimeSpan |
-	| Week2 | Second week is more slack time | TimeSpan |
+	| Name  | Description                    | Type     | ParentSegment |
+	| Week1 | First week is slack time       | TimeSpan |               |
+	| Week2 | Second week is more slack time | TimeSpan |               |
 	Then the course 'Math 101' should have these course segments:
-	| Name  | Description                    | Type     |
-	| Week1 | First week is slack time       | TimeSpan |
-	| Week2 | Second week is more slack time | TimeSpan |
+	| Name  | Description                    | Type     | ParentSegment |
+	| Week1 | First week is slack time       | TimeSpan |               |
+	| Week2 | Second week is more slack time | TimeSpan |               |
 
 Scenario: Add a nested course segment
 	When I add following course segments to 'Math 101':
@@ -39,7 +39,7 @@ Scenario: Update the course segment info without affecting the segment tree
 	| Week1      | First week is slack time      | TimeSpan   |               |
 	| Discussion | Discussion for the first week | Discussion | Week1         |
 	| Topic      | Topic for a discussion        | Topic      | Discussion    |
-	And I update the course segment 'Topic' as following:
+	And I update the course segments as following:
 	| Name       | Description                | Type       |
 	| Discussion | Discussion is important    | Discussion |
 	| Topic      | New Topic for a discussion | Topic      |
@@ -57,5 +57,5 @@ Scenario: Retrieve the course segment tree from anywhere in the structure
 	| Discussion2 | Discussion2 for the first week | Discussion | Week1         |
 	| Topic       | Topic for a discussion         | Topic      | Discussion    |
 	Then the course segment 'Discussion' should have these children segments:
-	| Name        | Description                    | Type       | ParentSegment |
-	| Topic       | Topic for a discussion         | Topic      | Discussion    |
+	| Name        | Description                    | Type       |
+	| Topic       | Topic for a discussion         | Topic      |

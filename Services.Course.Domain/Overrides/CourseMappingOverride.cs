@@ -13,6 +13,8 @@ namespace BpeProducts.Services.Course.Domain.Overrides
         public void Override(AutoMapping<Entities.Course> mapping)
         {
             mapping.IgnoreProperty(course => course.SegmentIndex);
+            mapping.IgnoreProperty(course => course.Segments);
+            mapping.Map(course => course.CourseSegmentJson).CustomSqlType("nvarchar(max)");
         }
     }
 }

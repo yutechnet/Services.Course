@@ -11,8 +11,7 @@ namespace BpeProducts.Services.Course.Contract
         public SaveCourseRequest()
         {
             ProgramIds = new List<Guid>();
-			Segments = new List<CourseSegment>();
-        }
+		}
 
         public Guid Id { get; set; }
 
@@ -22,8 +21,5 @@ namespace BpeProducts.Services.Course.Contract
         public int TenantId { get; set; }
 
         public List<Guid> ProgramIds { get; set; }
-
-	    public List<CourseSegment> Segments{ get; set; }
-	    
     }
 }

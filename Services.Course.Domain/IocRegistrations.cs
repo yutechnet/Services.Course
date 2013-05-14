@@ -34,6 +34,7 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseCreated>>();
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseInfoUpdated>>();
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseSegmentAdded>>();
+            containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseSegmentUpdated>>();
            
             containerBuilder.RegisterType<CourseUpdatedHandler>().As<IHandle<CourseUpdated>>();
 

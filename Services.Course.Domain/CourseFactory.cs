@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
 using EventStore;
@@ -124,7 +125,7 @@ namespace BpeProducts.Services.Course.Domain
             
             var segment = new CourseSegment
                 {
-                    ParentSegment = parentSegment, 
+                    ParentSegmentId = msg.ParentSegmentId, 
                     Id = msg.SegmentId,
                     Description = msg.Description,
                     Name = msg.Name

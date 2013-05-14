@@ -97,30 +97,36 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type"});
+                        "Type",
+                        "ParentSegment"});
             table2.AddRow(new string[] {
                         "Week1",
                         "First week is slack time",
-                        "TimeSpan"});
+                        "TimeSpan",
+                        ""});
             table2.AddRow(new string[] {
                         "Week2",
                         "Second week is more slack time",
-                        "TimeSpan"});
+                        "TimeSpan",
+                        ""});
 #line 13
  testRunner.When("I add following course segments to \'Math 101\':", ((string)(null)), table2, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type"});
+                        "Type",
+                        "ParentSegment"});
             table3.AddRow(new string[] {
                         "Week1",
                         "First week is slack time",
-                        "TimeSpan"});
+                        "TimeSpan",
+                        ""});
             table3.AddRow(new string[] {
                         "Week2",
                         "Second week is more slack time",
-                        "TimeSpan"});
+                        "TimeSpan",
+                        ""});
 #line 17
  testRunner.Then("the course \'Math 101\' should have these course segments:", ((string)(null)), table3, "Then ");
 #line hidden
@@ -242,7 +248,7 @@ this.FeatureBackground();
                         "New Topic for a discussion",
                         "Topic"});
 #line 42
- testRunner.And("I update the course segment \'Topic\' as following:", ((string)(null)), table7, "And ");
+ testRunner.And("I update the course segments as following:", ((string)(null)), table7, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -311,13 +317,11 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type",
-                        "ParentSegment"});
+                        "Type"});
             table10.AddRow(new string[] {
                         "Topic",
                         "Topic for a discussion",
-                        "Topic",
-                        "Discussion"});
+                        "Topic"});
 #line 59
  testRunner.Then("the course segment \'Discussion\' should have these children segments:", ((string)(null)), table10, "Then ");
 #line hidden
