@@ -120,9 +120,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // PUT api/courses/5
         public void Put(Guid id, SaveCourseRequest request)
         {
-            var courseFromFactory = new CourseFactory().Create(id);
-
-
             // We do not allow creation of a new resource by PUT.
             Domain.Entities.Course courseInDb = _courseRepository.GetById(id);
 
@@ -190,35 +187,25 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public HttpResponseMessage Segments(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             // saves a root segment
-            Domain.Entities.Course courseInDb = _courseRepository.GetById(courseId);
-
-            if (courseInDb == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            var newSegment = Mapper.Map<CourseSegment>(saveCourseSegmentRequest);
-            newSegment.Id = Guid.NewGuid();
-            courseInDb.Segments.Add(newSegment);
-
-            _courseRepository.Update(courseInDb);
-
+            var course = new CourseFactory().Create(courseId);
+            if (course.Id == Guid.Empty) throw new HttpResponseException(HttpStatusCode.NotFound);
+            
             HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created);
-
-            string uri = Url.Link("CourseSegmentsApi", new { segmentId = newSegment.Id });
+            var newSegmentId = Guid.NewGuid();
+            string uri = Url.Link("CourseSegmentsApi", new { segmentId = newSegmentId});
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
-            }
-
+            } 
+            
             _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
                 {
                     AggregateId = courseId,
-                    Description = newSegment.Description,
-                    Name = newSegment.Name,
+                    Description = saveCourseSegmentRequest.Description,
+                    Name = saveCourseSegmentRequest.Name,
                     ParentSegmentId = Guid.Empty,
-                    SegmentId = newSegment.Id,
-                    Type = newSegment.Type
+                    Id = newSegmentId,
+                    Type = saveCourseSegmentRequest.Type
                 });
 
             return response;
@@ -230,10 +217,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public void Segments(Guid courseId, Guid segmentId, Contract.SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             // Updates the specified segment
-            // TODO: Get these from EventStore
-            Domain.Entities.Course courseInDb = _courseRepository.GetById(courseId);
-
-            if (courseInDb == null)
+            var courseInDb = new CourseFactory().Create(courseId);
+            if (courseInDb.Id == Guid.Empty)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
@@ -258,8 +243,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public CourseSegment Segments(Guid courseId, Guid segmentId)
         {
             // returns the specified segments (and its children)
-            // saves a root segment
-            // TODO: Get it from EvenStore
             Domain.Entities.Course courseInDb = _courseRepository.GetById(courseId);
 
             if (courseInDb == null)
@@ -274,7 +257,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpGet]
         public IEnumerable<Contract.CourseSegment> SubSegments(Guid courseId, Guid segmentId)
         {
-            // TODO: Get it from EventStore
             Domain.Entities.Course courseInDb = _courseRepository.GetById(courseId);
 
             if (courseInDb == null)
@@ -290,44 +272,41 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         public HttpResponseMessage SubSegments(Guid courseId, Guid segmentId, Contract.SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
-            // TODO: get the course from event store
-            var course = _courseRepository.GetById(courseId);
-
-            //get parent
-            var parentSegment = course.SegmentIndex[segmentId];
-            //add a node
-            var child = Mapper.Map<CourseSegment>(saveCourseSegmentRequest);
-            child.Id = Guid.NewGuid();
-            parentSegment.AddSubSegment(child);
-            course.SegmentIndex.Add(child.Id, child);
-
-            //persist
-            _courseRepository.SaveOrUpdate(course);
-            //raise domain event
-            _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
-                {
-                    AggregateId = courseId, 
-                    Name = child.Name, 
-                    Description = child.Description, 
-                    ParentSegmentId = parentSegment.Id, 
-                    SegmentId = child.Id
-                });
+            var course = new CourseFactory().Create(courseId);
+            if (course.Id == Guid.Empty||course.SegmentIndex[segmentId]==null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+          
+            var newSegmentId = Guid.NewGuid();
 
             HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created);
 
             string uri = Url.Link("CourseSegmentsApi", new
                 {
                     action = "segments",
-                    segmentId = child.Id
+                    segmentId = newSegmentId
                 });
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
             }
 
+            //raise domain event
+            _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
+            {
+                AggregateId = courseId,
+                Name = saveCourseSegmentRequest.Name,
+                Description = saveCourseSegmentRequest.Description,
+                ParentSegmentId = segmentId,
+                Type = saveCourseSegmentRequest.Type,
+                Id = newSegmentId
+            });
+
             return response;
 
         }
+
         // PUT courses/<courseId>/segments/<segmentId>/segments -- reorders the children segments
         [HttpPut]
         public void SubSegments(Guid courseId, Guid segmentId, IEnumerable<Contract.SaveCourseSegmentRequest> childrentSegments)

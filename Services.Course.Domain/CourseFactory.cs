@@ -12,23 +12,36 @@ namespace BpeProducts.Services.Course.Domain
 {
     public class CourseFactory
     {
-        Entities.Course _course;
         private CourseEventStore _store;
 
         public Entities.Course Create(Guid aggregateId)
         {
             _store = new CourseEventStore();
-            using (var stream = _store.OpenStream(aggregateId,0,int.MaxValue))
+            Entities.Course course;
+
+            // Get the latest snapshot
+            Snapshot latestSnapshot = _store.Advanced.GetSnapshot(aggregateId, int.MaxValue);
+            if (latestSnapshot == null)
             {
-                _course = Create(stream);
+                using (var stream = _store.OpenStream(aggregateId, 0, int.MaxValue))
+                {
+                    course = Create(stream);
+                }
             }
-            return _course;
+            else
+            {
+                using (var stream = _store.OpenStream(latestSnapshot, int.MaxValue))
+                {
+                    course = Create(stream, latestSnapshot.Payload as Entities.Course);
+                }
+            }
+
+            return course;
         }
 
         public Entities.Course Create(IEventStream stream, Entities.Course course = null)
         {
-            
-            _course = course ?? new Entities.Course();
+            course = course ?? new Entities.Course();
 
             foreach (var eventMessage in stream.CommittedEvents)
             {
@@ -36,36 +49,40 @@ namespace BpeProducts.Services.Course.Domain
 
                 if (@event is Events.CourseCreated)
                 {
-                    _course = Handle(@event as Events.CourseCreated);
+                    course = Handle(@event as Events.CourseCreated);
                 }
                 if (@event is Events.CourseAssociatedWithProgram)
                 {
-                    _course = Handle(@event as Events.CourseAssociatedWithProgram);
+                    course = Handle(@event as Events.CourseAssociatedWithProgram, course);
                 }
                 if (@event is Events.CourseDeleted)
                 {
-                    _course = Handle(@event as Events.CourseDeleted);
+                    course = Handle(@event as Events.CourseDeleted);
                 }
                 if (@event is Events.CourseDisassociatedWithProgram)
                 {
-                    _course = Handle(@event as Events.CourseDisassociatedWithProgram);
+                    course = Handle(@event as Events.CourseDisassociatedWithProgram, course);
                 }
                 if (@event is Events.CourseInfoUpdated)
                 {
-                    _course = Handle(@event as Events.CourseInfoUpdated);
+                    course = Handle(@event as Events.CourseInfoUpdated, course);
                 }
                 if (@event is Events.CourseSegmentAdded)
                 {
-                    _course = Handle(@event as Events.CourseSegmentAdded);
+                    course = Handle(@event as Events.CourseSegmentAdded, course);
+                }
+                if (@event is Events.CourseSegmentUpdated)
+                {
+                    course = Handle(@event as Events.CourseSegmentUpdated, course);
                 }
             }
 
-            return _course;
+            return course;
         }
 
         private Entities.Course Handle(Events.CourseCreated msg)
         {
-            return _course = new Entities.Course
+            return new Entities.Course
                 {
                     Id = msg.AggregateId,
                     Name = msg.Name,
@@ -74,66 +91,75 @@ namespace BpeProducts.Services.Course.Domain
                 };
         }
 
-        private Entities.Course Handle(Events.CourseAssociatedWithProgram msg)
+        private Entities.Course Handle(Events.CourseAssociatedWithProgram msg, Entities.Course course)
         {
-            _course.Programs.Add(new Program
+            course.Programs.Add(new Program
                 {
                     Id = msg.ProgramId
                 });
-            return _course;
+            return course;
         }
 
         private Entities.Course Handle(Events.CourseDeleted msg)
         {
-            return _course = null;
+            return null;
         }
 
-        private Entities.Course Handle(Events.CourseDisassociatedWithProgram msg)
+        private Entities.Course Handle(Events.CourseDisassociatedWithProgram msg, Entities.Course course)
         {
-            var program = _course.Programs.FirstOrDefault(p => p.Id.Equals(msg.ProgramId));
+            var program = course.Programs.FirstOrDefault(p => p.Id.Equals(msg.ProgramId));
             if (program != null)
             {
-                _course.Programs.RemoveAt(_course.Programs.IndexOf(program));
+                course.Programs.RemoveAt(course.Programs.IndexOf(program));
             }
 
-            return _course;
+            return course;
         }
 
-        private Entities.Course Handle(Events.CourseInfoUpdated msg)
+        private Entities.Course Handle(Events.CourseInfoUpdated msg, Entities.Course course)
         {
-            _course.Name = msg.Name;
-            _course.Code = msg.Code;
-            _course.Description = msg.Description;
+            course.Name = msg.Name;
+            course.Code = msg.Code;
+            course.Description = msg.Description;
 
-            return _course;
+            return course;
         }
 
-        private Entities.Course Handle(Events.CourseSegmentAdded msg)
+        private Entities.Course Handle(Events.CourseSegmentAdded msg, Entities.Course course)
         {
             // Look for the parent Segment Guid in the Segment Index and add the child.
             IList<CourseSegment> parentSegmentCollection;
-            CourseSegment parentSegment = null;
             if (msg.ParentSegmentId == Guid.Empty)
             {
-                parentSegmentCollection = _course.Segments;
+                parentSegmentCollection = course.Segments;
             }
             else
             {
-                parentSegment = _course.SegmentIndex[msg.ParentSegmentId];
+                var parentSegment = course.SegmentIndex[msg.ParentSegmentId];
                 parentSegmentCollection = parentSegment.ChildrenSegments;
             }
             
             var segment = new CourseSegment
                 {
                     ParentSegmentId = msg.ParentSegmentId, 
-                    Id = msg.SegmentId,
+                    Id = msg.Id,
                     Description = msg.Description,
                     Name = msg.Name
                 };
             parentSegmentCollection.Add(segment);
-            _course.SegmentIndex[msg.SegmentId] = segment;
+            course.SegmentIndex[msg.Id] = segment;
 
-            return _course;
+            return course;
+        }
+
+        private Entities.Course Handle(Events.CourseSegmentUpdated msg, Entities.Course course)
+        {
+            var segment = course.SegmentIndex[msg.SegmentId];
+            //segment.ParentSegmentId = msg.ParentSegmentId;//todo:if parent segment changed??
+            segment.Name = msg.Name;
+            segment.Description = msg.Description;
+            segment.Type = msg.Type;
+            return course;
         }
     }
 

@@ -2,6 +2,7 @@
 using AutoMapper;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Events;
 
 namespace BpeProducts.Services.Course.Host.App_Start
 {
@@ -29,6 +30,8 @@ namespace BpeProducts.Services.Course.Host.App_Start
 			Mapper.CreateMap<SaveCourseRequest, Domain.Entities.Course>()
 			      .ForMember(x => x.Id, opt => opt.Ignore());
 			Mapper.CreateMap<Contract.SaveCourseSegmentRequest, CourseSegment>();
+
+		    Mapper.CreateMap<CourseSegmentAdded, CourseSegment>();
 		}
 	}
 }
