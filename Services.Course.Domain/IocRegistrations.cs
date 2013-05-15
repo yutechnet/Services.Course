@@ -34,7 +34,10 @@ namespace BpeProducts.Services.Course.Domain
             //there must be an easier way using register generics
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseAssociatedWithProgram>>();
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseDisassociatedWithProgram>>();
+
+            containerBuilder.RegisterType<UpdateModelOnCourseCreation>().As<IHandle<CourseCreated>>();
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseCreated>>();
+            
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseInfoUpdated>>();
 
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseSegmentAdded>>();

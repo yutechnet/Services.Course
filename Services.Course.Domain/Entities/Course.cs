@@ -27,7 +27,6 @@ namespace BpeProducts.Services.Course.Domain.Entities
             {
                 var settings = new JsonSerializerSettings
                     {
-                        // ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                         ReferenceLoopHandling = ReferenceLoopHandling.Serialize
                     };
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(Segments,settings);

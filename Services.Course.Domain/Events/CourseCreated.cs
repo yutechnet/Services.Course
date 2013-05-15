@@ -8,5 +8,6 @@ namespace BpeProducts.Services.Course.Domain.Events
         public string Description { get; set; }
         public string Code { get; set; }
         public Guid AggregateId { get; set; }
+        public Entities.Course Course{ get; set; }
     }
 }

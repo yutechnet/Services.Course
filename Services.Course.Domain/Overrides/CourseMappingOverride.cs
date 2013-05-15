@@ -16,6 +16,8 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping.IgnoreProperty(course => course.SegmentIndex);
             mapping.IgnoreProperty(course => course.Segments);
             mapping.Map(course => course.CourseSegmentJson).CustomSqlType("nvarchar(max)");
+            //mapping.Map(course => course.Id).Generated.Never();
+            mapping.Id(x => x.Id).GeneratedBy.Assigned();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -13,8 +14,14 @@ namespace BpeProducts.Services.Course.Domain
     public class CourseFactory
     {
         private CourseEventStore _store;
-
-        public Entities.Course Create(Guid aggregateId)
+        public Entities.Course Create(SaveCourseRequest request)
+        {
+            //TODO: get tenant id
+            var course = new Entities.Course {Id = Guid.NewGuid(), ActiveFlag = true, TenantId =1};
+            Mapper.Map(request, course);
+            return course;
+        }
+        public Entities.Course Reconstitute(Guid aggregateId)
         {
             _store = new CourseEventStore();
             Entities.Course course;
@@ -25,21 +32,21 @@ namespace BpeProducts.Services.Course.Domain
             {
                 using (var stream = _store.OpenStream(aggregateId, 0, int.MaxValue))
                 {
-                    course = Create(stream);
+                    course = Reconstitute(stream);
                 }
             }
             else
             {
                 using (var stream = _store.OpenStream(latestSnapshot, int.MaxValue))
                 {
-                    course = Create(stream, latestSnapshot.Payload as Entities.Course);
+                    course = Reconstitute(stream, latestSnapshot.Payload as Entities.Course);
                 }
             }
 
             return course;
         }
 
-        public Entities.Course Create(IEventStream stream, Entities.Course course = null)
+        public Entities.Course Reconstitute(IEventStream stream, Entities.Course course = null)
         {
             course = course ?? new Entities.Course();
 

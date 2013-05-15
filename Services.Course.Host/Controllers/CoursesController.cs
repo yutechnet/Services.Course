@@ -88,29 +88,24 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
-            var course = Mapper.Map<Domain.Entities.Course>(request);
-            // Make sure the course is active by default
-            course.ActiveFlag = true;
-            // No duplicate check whatsoever 
-            var id = (Guid) _courseRepository.Add(course);
+            var course = new CourseFactory().Create(request);
+            _domainEvents.Raise<CourseCreated>(new CourseCreated
+            {
+                AggregateId = course.Id,
+                Code = course.Code,
+                Description = course.Description,
+                Name = course.Name,
+                Course = course
+            });
 
-            var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_courseRepository.GetById(id));
+            var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_courseRepository.GetById(course.Id));
             HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
-            string uri = Url.Link("DefaultApi", new {id = courseInfoResponse.Id});
+            string uri = Url.Link("DefaultApi", new { id = courseInfoResponse.Id });
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
             }
-
-            _domainEvents.Raise<CourseCreated>(new CourseCreated
-            {
-                AggregateId = id,
-                Code = course.Code,
-                Description = course.Description,
-                Name = course.Name
-            });
-
             return response;
         }
 
@@ -187,7 +182,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public HttpResponseMessage Segments(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             // saves a root segment
-            var course = new CourseFactory().Create(courseId);
+            var course = new CourseFactory().Reconstitute(courseId);
             if (course.Id == Guid.Empty) throw new HttpResponseException(HttpStatusCode.NotFound);
             
             HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created);
@@ -217,7 +212,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public void Segments(Guid courseId, Guid segmentId, Contract.SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             // Updates the specified segment
-            var courseInDb = new CourseFactory().Create(courseId);
+            var courseInDb = new CourseFactory().Reconstitute(courseId);
             if (courseInDb.Id == Guid.Empty)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -272,7 +267,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         public HttpResponseMessage SubSegments(Guid courseId, Guid segmentId, Contract.SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
-            var course = new CourseFactory().Create(courseId);
+            var course = new CourseFactory().Reconstitute(courseId);
             if (course.Id == Guid.Empty||course.SegmentIndex[segmentId]==null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
