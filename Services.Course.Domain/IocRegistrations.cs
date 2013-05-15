@@ -19,7 +19,10 @@ namespace BpeProducts.Services.Course.Domain
         public void Register(ContainerBuilder containerBuilder)
         {
             var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            Common.NHibernate.IocRegistrations.RegisterSessionFactory(containerBuilder, connectionString, dropSchema: false, updateSchema: true);
+            var updateSchema = false;
+            bool.TryParse(ConfigurationManager.AppSettings["UpdateSchema"], out updateSchema);
+
+            Common.NHibernate.IocRegistrations.RegisterSessionFactory(containerBuilder, connectionString, dropSchema: false, updateSchema: false);
 
             containerBuilder
                 .RegisterType<CourseRepository>().As<ICourseRepository>()
