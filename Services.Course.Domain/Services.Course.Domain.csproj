@@ -138,6 +138,7 @@
     <Compile Include="Handlers\IHandle.cs" />
     <Compile Include="IocRegistrations.cs" />
     <Compile Include="Overrides\CourseMappingOverride.cs" />
+    <Compile Include="Overrides\ProgramMappingOverride.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CourseEventStore.cs" />
     <Compile Include="Repositories\CourseRepository.cs" />
