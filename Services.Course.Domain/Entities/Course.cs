@@ -32,8 +32,11 @@ namespace BpeProducts.Services.Course.Domain.Entities
                     };
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(Segments,settings);
                 return json;
-            } 
-            set { Segments = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CourseSegment>>(value); }
+            }
+            set {
+                Segments = String.IsNullOrEmpty(value) ? new List<CourseSegment>():
+                    Newtonsoft.Json.JsonConvert.DeserializeObject<List<CourseSegment>>(value) ;
+            }
         }
 
         public virtual List<CourseSegment> Segments { get; set; }
