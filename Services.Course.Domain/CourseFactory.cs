@@ -32,6 +32,7 @@ namespace BpeProducts.Services.Course.Domain
             {
                 using (var stream = _store.OpenStream(aggregateId, 0, int.MaxValue))
                 {
+					//throw if it is a new
                     course = Reconstitute(stream);
                 }
             }
@@ -39,6 +40,7 @@ namespace BpeProducts.Services.Course.Domain
             {
                 using (var stream = _store.OpenStream(latestSnapshot, int.MaxValue))
                 {
+					//throw if it is a new
                     course = Reconstitute(stream, latestSnapshot.Payload as Entities.Course);
                 }
             }

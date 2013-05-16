@@ -1,4 +1,5 @@
-﻿using BpeProducts.Services.Course.Domain.Events;
+﻿using System;
+using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
@@ -17,6 +18,4 @@ namespace BpeProducts.Services.Course.Domain.Handlers
            
 		}
 	}
-
-	
 }

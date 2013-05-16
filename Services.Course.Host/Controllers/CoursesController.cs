@@ -118,33 +118,22 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // PUT api/courses/5
         public void Put(Guid id, SaveCourseRequest request)
         {
-            // We do not allow creation of a new resource by PUT.
-            Domain.Entities.Course courseInDb = _courseRepository.GetById(id);
+	        // We do not allow creation of a new resource by PUT.
+	        Domain.Entities.Course courseInDb = _courseFactory.Reconstitute(id);
 
-            if (courseInDb == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
+	        if (courseInDb == null)
+	        {
+		        throw new HttpResponseException(HttpStatusCode.NotFound);
+	        }
+	        //Course.Update(request);
+	        //update model
 
-            Mapper.Map(request, courseInDb);
-            var oldCourse = courseInDb;
-
-            courseInDb.Programs.Clear();
-            foreach (Guid programId in request.ProgramIds)
-            {
-                var program = _courseRepository.Load<Program>(programId);
-                courseInDb.Programs.Add(program);
-            }
-
-            _courseRepository.Update(courseInDb);
-            var newCourse = courseInDb;
-
-            _domainEvents.Raise<CourseUpdated>(new CourseUpdated
-	            {
-		            AggregateId = id,
-		            Old = oldCourse,
-		            New = newCourse
-	            });
+	        _domainEvents.Raise<CourseUpdated>(new CourseUpdated
+		        {
+			        AggregateId = id,
+			        Old = courseInDb,
+			        Request = request
+		        });
         }
 
         [Transaction]

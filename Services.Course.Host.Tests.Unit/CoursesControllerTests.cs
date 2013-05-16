@@ -82,17 +82,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Mapper.CreateMap<Domain.Entities.Course, SaveCourseRequest>();
 
             var courses = SetUpExistingCourse();
-            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(courses.First());
+            _mockCourseFactory.Setup(c => c.Reconstitute(It.IsAny<Guid>())).Returns(courses.First());
 
             var saveCourseRequest = Mapper.Map<SaveCourseRequest>(courses.First());
 
             _coursesController.Put(saveCourseRequest.Id, saveCourseRequest);
 
-            _mockCourseRepository.Verify(c => c.Update(
-                It.Is<Domain.Entities.Course>(p => p.Id.Equals(saveCourseRequest.Id) &&
-                                                   p.Code.Equals(saveCourseRequest.Code) &&
-                                                   p.Description.Equals(saveCourseRequest.Description) &&
-                                                   p.Name.Equals(saveCourseRequest.Name))), Times.Once());
+            _mockDomainEvents.Verify(c => c.Raise<CourseUpdated>(
+				It.IsAny<CourseUpdated>()),Times.Once());
         }
 
         [Test]
