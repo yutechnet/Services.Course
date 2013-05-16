@@ -60,7 +60,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Id = saveCourseRequest.Id
                 };
 
-            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(course);
+            _mockCourseFactory.Setup(c => c.Create(It.IsAny<SaveCourseRequest>())).Returns(course);
+			_mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(course);
 
             var response = _coursesController.Post(saveCourseRequest);
             var actual = response.Content.ReadAsAsync<CourseInfoResponse>().Result;

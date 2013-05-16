@@ -90,7 +90,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
-            var course = new CourseFactory().Create(request);
+            var course = _courseFactory.Create(request);
             _domainEvents.Raise<CourseCreated>(new CourseCreated
 	            {
 		            AggregateId = course.Id,
@@ -182,7 +182,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public HttpResponseMessage Segments(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             // saves a root segment
-            var course = new CourseFactory().Reconstitute(courseId);
+            var course = _courseFactory.Reconstitute(courseId);
             if (course.Id == Guid.Empty) throw new HttpResponseException(HttpStatusCode.NotFound);
             
             HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created);
@@ -212,7 +212,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public void Segments(Guid courseId, Guid segmentId, Contract.SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             // Updates the specified segment
-            var courseInDb = new CourseFactory().Reconstitute(courseId);
+            var courseInDb = _courseFactory.Reconstitute(courseId);
             if (courseInDb.Id == Guid.Empty)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -267,7 +267,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         public HttpResponseMessage SubSegments(Guid courseId, Guid segmentId, Contract.SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
-            var course = new CourseFactory().Reconstitute(courseId);
+            var course = _courseFactory.Reconstitute(courseId);
             if (course.Id == Guid.Empty||course.SegmentIndex[segmentId]==null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
