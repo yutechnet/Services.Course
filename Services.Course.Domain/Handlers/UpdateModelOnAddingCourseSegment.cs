@@ -31,19 +31,4 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             _courseRepository.Update(courseInDb);
         }
     }
-
-    public class UpdateModelOnCourseCreation : IHandle<CourseCreated>
-    {
-        private readonly ICourseRepository _courseRepository;
-        public UpdateModelOnCourseCreation(ICourseRepository courseRepository)
-        {
-            _courseRepository = courseRepository;
-        }
-        public void Handle(IDomainEvent domainEvent)
-        {
-            var e = (CourseCreated)domainEvent;
-            _courseRepository.Add(e.Course);
-           
-        }
-    }
 }

@@ -25,11 +25,13 @@ namespace BpeProducts.Services.Course.Host.Controllers
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IDomainEvents _domainEvents;
+	    private readonly ICourseFactory _courseFactory;
 
-        public CoursesController(ICourseRepository courseRepository, IDomainEvents domainEvents)
+	    public CoursesController(ICourseRepository courseRepository, IDomainEvents domainEvents,ICourseFactory courseFactory)
         {
             _courseRepository = courseRepository;
             _domainEvents = domainEvents;
+	        _courseFactory = courseFactory;
         }
 
         // GET api/courses
@@ -90,13 +92,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
         {
             var course = new CourseFactory().Create(request);
             _domainEvents.Raise<CourseCreated>(new CourseCreated
-            {
-                AggregateId = course.Id,
-                Code = course.Code,
-                Description = course.Description,
-                Name = course.Name,
-                Course = course
-            });
+	            {
+		            AggregateId = course.Id,
+		            Code = course.Code,
+		            Description = course.Description,
+		            Name = course.Name,
+					ActiveFlag = course.ActiveFlag,
+		            Course = course
+	            });
 
             var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_courseRepository.GetById(course.Id));
             HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
@@ -137,32 +140,29 @@ namespace BpeProducts.Services.Course.Host.Controllers
             var newCourse = courseInDb;
 
             _domainEvents.Raise<CourseUpdated>(new CourseUpdated
-                {
-                    AggregateId = id,
-                    Old = oldCourse,
-                    New = newCourse
-                });
+	            {
+		            AggregateId = id,
+		            Old = oldCourse,
+		            New = newCourse
+	            });
         }
 
         [Transaction]
         // DELETE api/courses/5
         public void Delete(Guid id)
         {
-            Domain.Entities.Course courseInDb = _courseRepository.GetById(id);
+            Domain.Entities.Course courseInDb = _courseFactory.Reconstitute(id);
 
             if (courseInDb == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            // logical delete
-            courseInDb.ActiveFlag = false;
-            _courseRepository.Update(courseInDb);
-
+            
             _domainEvents.Raise<CourseDeleted>(new CourseDeleted
-                {
-                    AggregateId = id
-                });
+	            {
+		            AggregateId = id,
+				});
             
         }
 
@@ -194,14 +194,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
             } 
             
             _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
-                {
-                    AggregateId = courseId,
-                    Description = saveCourseSegmentRequest.Description,
-                    Name = saveCourseSegmentRequest.Name,
-                    ParentSegmentId = Guid.Empty,
-                    Id = newSegmentId,
-                    Type = saveCourseSegmentRequest.Type
-                });
+	            {
+		            AggregateId = courseId,
+		            Description = saveCourseSegmentRequest.Description,
+		            Name = saveCourseSegmentRequest.Name,
+		            ParentSegmentId = Guid.Empty,
+		            Id = newSegmentId,
+		            Type = saveCourseSegmentRequest.Type
+	            });
 
             return response;
 
@@ -223,14 +223,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
             courseSegment.Id = segmentId;
             
             _domainEvents.Raise<CourseSegmentUpdated>(new CourseSegmentUpdated
-                {
-                    AggregateId = courseId,
-                    Description = courseSegment.Description,
-                    Name = courseSegment.Name,
-                    ParentSegmentId = courseSegment.ParentSegmentId,
-                    SegmentId = courseSegment.Id,
-                    Type = courseSegment.Type
-                });
+	            {
+		            AggregateId = courseId,
+		            Description = courseSegment.Description,
+		            Name = courseSegment.Name,
+		            ParentSegmentId = courseSegment.ParentSegmentId,
+		            SegmentId = courseSegment.Id,
+		            Type = courseSegment.Type
+	            });
         }
 
         // courses/<courseId>/segments/<segmentId>
@@ -289,14 +289,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
             //raise domain event
             _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
-            {
-                AggregateId = courseId,
-                Name = saveCourseSegmentRequest.Name,
-                Description = saveCourseSegmentRequest.Description,
-                ParentSegmentId = segmentId,
-                Type = saveCourseSegmentRequest.Type,
-                Id = newSegmentId
-            });
+	            {
+		            AggregateId = courseId,
+		            Name = saveCourseSegmentRequest.Name,
+		            Description = saveCourseSegmentRequest.Description,
+		            ParentSegmentId = segmentId,
+		            Type = saveCourseSegmentRequest.Type,
+		            Id = newSegmentId
+	            });
 
             return response;
 

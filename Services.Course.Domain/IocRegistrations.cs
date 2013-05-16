@@ -22,12 +22,14 @@ namespace BpeProducts.Services.Course.Domain
             var updateSchema = false;
             bool.TryParse(ConfigurationManager.AppSettings["UpdateSchema"], out updateSchema);
 
-            Common.NHibernate.IocRegistrations.RegisterSessionFactory(containerBuilder, connectionString, dropSchema: false, updateSchema: false);
+            Common.NHibernate.IocRegistrations.RegisterSessionFactory(containerBuilder, connectionString, dropSchema: false, updateSchema: updateSchema);
 
             containerBuilder
                 .RegisterType<CourseRepository>().As<ICourseRepository>()
                 .EnableInterfaceInterceptors().EnableValidation()
                 .InterceptedBy(typeof(PublicInterfaceLoggingInterceptor));
+
+	        containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
 
             containerBuilder.RegisterType<DomainEvents>().As<IDomainEvents>();
 
@@ -46,6 +48,11 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseSegmentUpdated>>();
            
             containerBuilder.RegisterType<CourseUpdatedHandler>().As<IHandle<CourseUpdated>>();
+
+
+			containerBuilder.RegisterType<UpdateModelOnCourseDeletion>().As<IHandle<CourseDeleted>>();
+			containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseDeleted>>();
+            
 
             
 

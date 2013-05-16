@@ -11,13 +11,13 @@ using EventStore;
 
 namespace BpeProducts.Services.Course.Domain
 {
-    public class CourseFactory
+    public class CourseFactory : ICourseFactory
     {
         private CourseEventStore _store;
         public Entities.Course Create(SaveCourseRequest request)
         {
             //TODO: get tenant id
-            var course = new Entities.Course {Id = Guid.NewGuid(), ActiveFlag = true, TenantId =1};
+            var course = new Entities.Course {Id = Guid.NewGuid(), ActiveFlag = true};
             Mapper.Map(request, course);
             return course;
         }
@@ -94,7 +94,8 @@ namespace BpeProducts.Services.Course.Domain
                     Id = msg.AggregateId,
                     Name = msg.Name,
                     Code = msg.Code,
-                    Description = msg.Description
+                    Description = msg.Description,
+					ActiveFlag = msg.ActiveFlag
                 };
         }
 

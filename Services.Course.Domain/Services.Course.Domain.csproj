@@ -137,6 +137,9 @@
     <Compile Include="Handlers\CourseEventPersisterHandler.cs" />
     <Compile Include="Handlers\IHandle.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCourseSegment.cs" />
+    <Compile Include="Handlers\UpdateModelOnCourseCreation.cs" />
+    <Compile Include="Handlers\UpdateModelOnCourseDeletion.cs" />
+    <Compile Include="ICourseFactory.cs" />
     <Compile Include="IocRegistrations.cs" />
     <Compile Include="Overrides\CourseMappingOverride.cs" />
     <Compile Include="Overrides\ProgramMappingOverride.cs" />

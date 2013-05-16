@@ -9,6 +9,7 @@ using AutoMapper;
 using Autofac;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
+using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Host.App_Start;
 using BpeProducts.Services.Course.Host.Controllers;
@@ -23,14 +24,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         private Mock<ICourseRepository> _mockCourseRepository;
 
         private CoursesController _coursesController;
+	    private Mock<IDomainEvents> _mockDomainEvents;
+	    private Mock<ICourseFactory> _mockCourseFactory;
 
-        [SetUp]
+	    [SetUp]
         public void SetUp()
         {
             MapperConfig.ConfigureMappers();
 
             _mockCourseRepository = new Mock<ICourseRepository>();
-            _coursesController = new CoursesController(_mockCourseRepository.Object, new Mock<IDomainEvents>().Object);
+	        _mockDomainEvents = new Mock<IDomainEvents>();
+		    _mockCourseFactory = new Mock<ICourseFactory>();
+			_coursesController = new CoursesController(_mockCourseRepository.Object, _mockDomainEvents.Object,_mockCourseFactory.Object);
         }
 
         [Test]
@@ -55,20 +60,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Id = saveCourseRequest.Id
                 };
 
-            _mockCourseRepository.Setup(c => c.Add(It.IsAny<Domain.Entities.Course>())).Returns(saveCourseRequest.Id);
             _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(course);
 
             var response = _coursesController.Post(saveCourseRequest);
             var actual = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
-            //_mockCourseRepository.Verify(c => c.Add(It.IsAny<Domain.Entities.Course>()), Times.Once());
-            _mockCourseRepository.Verify(c => c.Add(
-                It.Is<Domain.Entities.Course>(p => p.Code.Equals("PSY101") &&
-                                                   p.Description.Equals("Psych!") &&
-                                                   p.Name.Equals("Psychology 101") &&
-                                                   p.ActiveFlag.Equals(true))), Times.Once());
-            Assert.That(actual.Id.Equals(saveCourseRequest.Id));
-
+	       
+	        
+			_mockDomainEvents.Verify(c => c.Raise<CourseCreated>(
+		        It.Is<CourseCreated>(p => p.Code.Equals("PSY101") &&
+		                                  p.Description.Equals("Psych!") &&
+		                                  p.Name.Equals("Psychology 101")
+			        )), Times.Once());
+			
         }
 
         [Test]
@@ -115,13 +119,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void can_delete_a_course()
         {
-            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(new Domain.Entities.Course());
+            _mockCourseFactory.Setup(c => c.Reconstitute(It.IsAny<Guid>())).Returns(new Domain.Entities.Course());
             var courses = SetUpExistingCourse();
 
             var id = courses.FirstOrDefault().Id;
             _coursesController.Delete(id);
 
-            _mockCourseRepository.Verify(c => c.Update(It.Is<Domain.Entities.Course>(d => d.ActiveFlag == false)), Times.Once());
+            _mockDomainEvents.Verify(c => c.Raise<CourseDeleted>(It.Is<CourseDeleted>(d => d.AggregateId == id)), Times.Once());
         }
 
         [Test]
