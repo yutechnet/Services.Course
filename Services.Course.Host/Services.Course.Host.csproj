@@ -65,17 +65,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Authorization, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.4\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+    <Reference Include="BpeProducts.Common.Authorization">
+      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.6\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.9\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
+    <Reference Include="BpeProducts.Common.Exceptions">
+      <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.11\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BpeProducts.Common.Ioc, Version=1.0.26.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.26\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
+    <Reference Include="BpeProducts.Common.Ioc">
+      <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.28\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="BpeProducts.Common.Log, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

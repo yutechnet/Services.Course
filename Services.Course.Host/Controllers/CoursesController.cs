@@ -86,7 +86,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
-        [ClaimsAuthorize("CourseCreate")]
+        [ClaimsAuthorize()]
         // POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
