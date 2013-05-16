@@ -11,6 +11,7 @@ using BpeProducts.Common.Log;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Repositories;
+using EventStore;
 
 namespace BpeProducts.Services.Course.Domain
 {
@@ -35,7 +36,7 @@ namespace BpeProducts.Services.Course.Domain
 
             containerBuilder.RegisterType<DomainEvents>().As<IDomainEvents>();
 
-	        containerBuilder.Register(x => new CourseEventStore());
+			containerBuilder.Register<IStoreEvents>(x => new CourseEventStore());
 
             //there must be an easier way using register generics
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseAssociatedWithProgram>>();
