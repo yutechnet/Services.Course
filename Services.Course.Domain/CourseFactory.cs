@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 using EventStore;
 
@@ -63,7 +64,7 @@ namespace BpeProducts.Services.Course.Domain
 
                 if (@event is Events.CourseCreated)
                 {
-                    course = Handle(@event as Events.CourseCreated);
+                    course = Handle(@event as Events.CourseCreated,course);
                 }
                 if (@event is Events.CourseAssociatedWithProgram)
                 {
@@ -71,7 +72,7 @@ namespace BpeProducts.Services.Course.Domain
                 }
                 if (@event is Events.CourseDeleted)
                 {
-                    course = Handle(@event as Events.CourseDeleted);
+                    course = Handle(@event as Events.CourseDeleted,course);
                 }
                 if (@event is Events.CourseDisassociatedWithProgram)
                 {
@@ -94,16 +95,15 @@ namespace BpeProducts.Services.Course.Domain
             return course;
         }
 
-        private Entities.Course Handle(Events.CourseCreated msg)
+        private Entities.Course Handle(CourseCreated msg, Entities.Course course)
         {
-            return new Entities.Course
-                {
-                    Id = msg.AggregateId,
-                    Name = msg.Name,
-                    Code = msg.Code,
-                    Description = msg.Description,
-					ActiveFlag = msg.ActiveFlag
-                };
+			 
+            		course.Id = msg.AggregateId;
+					course.Name = msg.Name;
+					course.Code = msg.Code;
+					course.Description = msg.Description;
+					course.ActiveFlag = msg.ActiveFlag;
+	        return course;
         }
 
         private Entities.Course Handle(Events.CourseAssociatedWithProgram msg, Entities.Course course)
@@ -115,9 +115,10 @@ namespace BpeProducts.Services.Course.Domain
             return course;
         }
 
-        private Entities.Course Handle(Events.CourseDeleted msg)
+        private Entities.Course Handle(CourseDeleted msg, Entities.Course course)
         {
-            return null;
+	        course.ActiveFlag = false;
+            return course;
         }
 
         private Entities.Course Handle(Events.CourseDisassociatedWithProgram msg, Entities.Course course)
