@@ -17,7 +17,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         {
             _eventStore = Wireup.Init()
                                 .LogToOutputWindow()
-                                .UsingInMemoryPersistence()
+                                //.UsingInMemoryPersistence()
                                 .UsingSqlPersistence("DefaultConnection") // Connection string is in app.config
                                 .WithDialect(new MsSqlDialect())
                                 .EnlistInAmbientTransaction() // two-phase commit

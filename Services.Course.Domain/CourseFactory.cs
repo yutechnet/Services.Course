@@ -13,7 +13,12 @@ namespace BpeProducts.Services.Course.Domain
 {
     public class CourseFactory : ICourseFactory
     {
-        private CourseEventStore _store;
+	    public CourseFactory(CourseEventStore store)
+	    {
+		    _store = store;
+	    }
+
+	    private CourseEventStore _store;
         public Entities.Course Create(SaveCourseRequest request)
         {
             //TODO: get tenant id
@@ -21,9 +26,10 @@ namespace BpeProducts.Services.Course.Domain
             Mapper.Map(request, course);
             return course;
         }
+
         public Entities.Course Reconstitute(Guid aggregateId)
         {
-            _store = new CourseEventStore();
+           
             Entities.Course course;
 
             // Get the latest snapshot
@@ -44,8 +50,7 @@ namespace BpeProducts.Services.Course.Domain
                     course = Reconstitute(stream, latestSnapshot.Payload as Entities.Course);
                 }
             }
-
-            return course;
+			return course;
         }
 
         public Entities.Course Reconstitute(IEventStream stream, Entities.Course course = null)

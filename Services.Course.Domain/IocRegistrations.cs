@@ -33,6 +33,8 @@ namespace BpeProducts.Services.Course.Domain
 
             containerBuilder.RegisterType<DomainEvents>().As<IDomainEvents>();
 
+	        containerBuilder.Register(x => new CourseEventStore());
+
             //there must be an easier way using register generics
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseAssociatedWithProgram>>();
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseDisassociatedWithProgram>>();
