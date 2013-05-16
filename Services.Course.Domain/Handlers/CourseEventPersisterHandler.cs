@@ -1,5 +1,6 @@
 ﻿using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
+using EventStore;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
 {
@@ -9,10 +10,16 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                                                IHandle<CourseDeleted>, IHandle<CourseSegmentAdded>,
                                                IHandle<CourseSegmentUpdated>
     {
+        private readonly IStoreCourseEvents _eventStore;
+
+        public CourseEventPersisterHandler(IStoreCourseEvents eventStore)
+        {
+            _eventStore = eventStore;
+        }
+
         public void Handle(IDomainEvent domainEvent)
         {
-            var store = new CourseEventStore();
-            store.Store(domainEvent);
+            _eventStore.Store(domainEvent);
         }
     }
 }

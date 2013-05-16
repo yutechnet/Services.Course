@@ -15,8 +15,12 @@ namespace BpeProducts.Services.Course.Domain.Handlers
         }
         public void Handle(IDomainEvent domainEvent)
         {
+            var e = domainEvent as CourseSegmentAdded;
+            if (e == null)
+            {
+                throw new InvalidOperationException("Invalid domain event.");
+            }
 
-            var e = (CourseSegmentAdded) domainEvent;
             Entities.Course courseInDb = _courseRepository.GetById(e.AggregateId);
             var newSegment = Mapper.Map<CourseSegment>(e);
             if (newSegment.ParentSegmentId == Guid.Empty)

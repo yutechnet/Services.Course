@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Transactions;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
+using BpeProducts.Services.Course.Domain.Handlers;
 using EventStore;
 using EventStore.Persistence;
 using EventStore.Persistence.SqlPersistence.SqlDialects;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
 {
-    public class CourseEventStore : IStoreEvents
+    public class CourseEventStore : IStoreCourseEvents
     {
         private readonly IStoreEvents _eventStore;
 
@@ -22,13 +23,13 @@ namespace BpeProducts.Services.Course.Domain.Repositories
                                 .WithDialect(new MsSqlDialect())
                                 .EnlistInAmbientTransaction() // two-phase commit
                                 .InitializeStorageEngine()
-                //.TrackPerformanceInstance("example")
+                                //.TrackPerformanceInstance("example")
                                 .UsingJsonSerialization()
                                 .Compress()
-                //.EncryptWith(EncryptionKey)
-                //.HookIntoPipelineUsing(new[] { new AuthorizationPipelineHook() })
+                                //.EncryptWith(EncryptionKey)
+                                //.HookIntoPipelineUsing(new[] { new AuthorizationPipelineHook() })
                                 .UsingSynchronousDispatchScheduler()
-                //.DispatchTo(new DelegateMessageDispatcher(DispatchCommit))
+                                //.DispatchTo(new DelegateMessageDispatcher(DispatchCommit))
                                 .Build();
         }
 

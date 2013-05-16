@@ -136,6 +136,7 @@
     <Compile Include="Events\IDomainEvent.cs" />
     <Compile Include="Handlers\CourseEventPersisterHandler.cs" />
     <Compile Include="Handlers\IHandle.cs" />
+    <Compile Include="Handlers\IStoreCourseEvents.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCourseSegment.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseCreation.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseDeletion.cs" />
