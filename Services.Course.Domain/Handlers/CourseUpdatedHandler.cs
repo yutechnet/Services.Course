@@ -20,41 +20,42 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             if (@event != null)
             {
                 var events = new List<IDomainEvent>();
-            foreach (var programId in @event.Request.ProgramIds)
-                if (@event.Old.Programs.All(x => x.Id != programId))
+                foreach (var programId in @event.Request.ProgramIds)
+                    if (@event.Old.Programs.All(x => x.Id != programId))
                     {
-                    _domainEvents.Raise<CourseAssociatedWithProgram>(new CourseAssociatedWithProgram {AggregateId = @event.AggregateId,ProgramId = programId });
+                        _domainEvents.Raise<CourseAssociatedWithProgram>(new CourseAssociatedWithProgram
                             {
-                                ProgramId = program.Id
+                                AggregateId = @event.AggregateId,
+                                ProgramId = programId
                             });
                     }
 
                 foreach (var program in @event.Old.Programs)
                 {
-                if (@event.Request.ProgramIds.All(x => x != program.Id))
+                    if (@event.Request.ProgramIds.All(x => x != program.Id))
                     {
-					_domainEvents.Raise<CourseAssociatedWithProgram>(new CourseDisassociatedWithProgram { AggregateId = @event.AggregateId, ProgramId = program.Id });
+                        _domainEvents.Raise<CourseDisassociatedWithProgram>(new CourseDisassociatedWithProgram
                             {
+                                AggregateId = @event.AggregateId,
                                 ProgramId = program.Id
                             });
                     }
                 }
 
                 //bus.Publish<CourseCreatedEvent>(new CourseCreatedEvent {});
-            if (@event.Request.Name != @event.Old.Name ||
-                @event.Request.Code != @event.Old.Code ||
-                @event.Request.Description != @event.Old.Description)
+                if (@event.Request.Name != @event.Old.Name ||
+                    @event.Request.Code != @event.Old.Code ||
+                    @event.Request.Description != @event.Old.Description)
                 {
                     _domainEvents.Raise<CourseInfoUpdated>(new CourseInfoUpdated
                         {
-						AggregateId = @event.AggregateId,
-		                Code = @event.Request.Code,
-		                Description = @event.Request.Description,
-		                Name = @event.Request.Name
+                            AggregateId = @event.AggregateId,
+                            Code = @event.Request.Code,
+                            Description = @event.Request.Description,
+                            Name = @event.Request.Name
                         });
                 }
             }
-
         }
     }
 }

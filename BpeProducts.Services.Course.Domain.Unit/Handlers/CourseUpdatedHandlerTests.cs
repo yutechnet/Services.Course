@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
@@ -61,22 +62,34 @@ namespace BpeProducts.Services.Course.Domain.Unit.Handlers
 
         private CourseUpdated CreateCourseUpdatedEventWithNoCourseInfoUpdate()
         {
+            var courseId = Guid.NewGuid();
+            var programId = Guid.NewGuid();
+
+            var saveCourseRequest = new SaveCourseRequest
+                {
+                    Code = "NewCode1",
+                    Description = "NewDescription1",
+                    Id = courseId,
+                    Name = "NewName1",
+                    ProgramIds = new List<Guid> { programId }
+                };
+
             var course = new Entities.Course
             {
                 Code = "NewCode1",
                 Description = "NewDescription1",
-                Id = Guid.NewGuid(),
+                Id = courseId,
                 Name = "NewName1",
                 Programs = new List<Program>
                         {
-                            new Program { Id = Guid.NewGuid() }
+                            new Program { Id = programId }
                         }
             };
 
             return new CourseUpdated
             {
-                AggregateId = Guid.NewGuid(),
-                New = course,
+                AggregateId = courseId,
+                Request = saveCourseRequest,
                 Old = course
             };
 
@@ -84,70 +97,73 @@ namespace BpeProducts.Services.Course.Domain.Unit.Handlers
 
         private CourseUpdated CreateCourseUpdatedEventWithNoNewPrograms()
         {
+            var courseId = Guid.NewGuid();
             var programId = Guid.NewGuid();
+
+            var saveCourseRequest = new SaveCourseRequest
+            {
+                Code = "NewCode1",
+                Description = "NewDescription",
+                Id = courseId,
+                Name = "NewName1",
+                ProgramIds = new List<Guid> { programId }
+            };
+
+            var course = new Entities.Course
+            {
+                Code = "OldCode1",
+                Description = "OldDescription1",
+                Id = courseId,
+                Name = "OldName1",
+                Programs = new List<Program>
+                        {
+                            new Program { Id = programId }
+                        }
+            };
 
             return new CourseUpdated
             {
-                AggregateId = Guid.NewGuid(),
-                New = new Entities.Course
-                {
-                    Code = "NewCode1",
-                    Description = "NewDescription1",
-                    Id = Guid.NewGuid(),
-                    Name = "NewName1",
-                    Programs = new List<Program>
-                                {
-                                    new Program { Id = programId }
-                                }
-                },
-                Old = new Entities.Course
-                {
-                    Code = "OldCode1",
-                    Description = "OldDescription1",
-                    Id = Guid.NewGuid(),
-                    Name = "OldName1",
-                    Programs = new List<Program>
-                                {
-                                    new Program { Id = programId }
-                                }
-                }
-
+                AggregateId = courseId,
+                Request = saveCourseRequest,
+                Old = course
             };
+
         }
 
         private CourseUpdated CreateCourseUpdatedEventWithNewAndOldPrograms()
         {
-            return new CourseUpdated
-                {
-                    AggregateId = Guid.NewGuid(),
-                    New = new Entities.Course
-                        {
-                            Code = "NewCode1",
-                            Description = "NewDescription1",
-                            Id = Guid.NewGuid(),
-                            Name = "NewName1",
-                            Programs = new List<Program>
-                                {
-                                    new Program { Id = Guid.NewGuid() },
-                                    new Program { Id = Guid.NewGuid() },
-                                    new Program { Id = Guid.NewGuid() }
-                                }
-                        },
-                    Old = new Entities.Course
-                    {
-                        Code = "OldCode1",
-                        Description = "OldDescription1",
-                        Id = Guid.NewGuid(),
-                        Name = "OldName1",
-                        Programs = new List<Program>
-                                {
-                                    new Program { Id = Guid.NewGuid() },
-                                    new Program { Id = Guid.NewGuid() },
-                                    new Program { Id = Guid.NewGuid() }
-                                }
-                    }
+            var courseId = Guid.NewGuid();
 
-                };
+            var saveCourseRequest = new SaveCourseRequest
+            {
+                Code = "NewCode1",
+                Description = "NewDescription",
+                Id = courseId,
+                Name = "NewName1",
+                ProgramIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }
+            };
+
+            var course = new Entities.Course
+            {
+                Code = "OldCode1",
+                Description = "OldDescription1",
+                Id = courseId,
+                Name = "OldName1",
+                Programs = new List<Program>
+                        {
+                            new Program { Id = Guid.NewGuid() },
+                            new Program { Id = Guid.NewGuid() },
+                            new Program { Id = Guid.NewGuid() }
+                        }
+            };
+
+            return new CourseUpdated
+            {
+                AggregateId = Guid.NewGuid(),
+                Request = saveCourseRequest,
+                Old = course
+            };
+
         }
     }
 }
