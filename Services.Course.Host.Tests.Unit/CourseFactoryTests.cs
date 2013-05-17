@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Features.Indexed;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Events;
 using EventStore;
@@ -11,15 +13,38 @@ using NUnit.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit
 {
+	
+
 	 [TestFixture]
 	public class CourseFactoryTests
 	{
-		 private CourseFactory _factory;
+
+		 private ICourseFactory _factory;
 
 		 [SetUp]
 		 public void Setup()
 		 {
-			 _factory = new CourseFactory(new Mock<IStoreEvents>().Object);
+			
+
+			 var containerBuilder = new ContainerBuilder();
+			
+			 containerBuilder.Register(e => new Mock<IStoreEvents>().Object);
+
+			 containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
+				
+			 containerBuilder.RegisterType<PlayCourseCreated>().Keyed<IPlayEvent>(typeof(CourseCreated).Name);
+			 containerBuilder.RegisterType<PlayCourseAssociatedWithProgram>().Keyed<IPlayEvent>(typeof(CourseAssociatedWithProgram).Name);
+			 containerBuilder.RegisterType<PlayCourseDeleted>().Keyed<IPlayEvent>(typeof(CourseDeleted).Name);
+			 containerBuilder.RegisterType<PLayCourseDisassociatedWithProgram>().Keyed<IPlayEvent>(typeof(CourseDisassociatedWithProgram).Name);
+			 containerBuilder.RegisterType<PlayCourseInfoUpated>().Keyed<IPlayEvent>(typeof(CourseInfoUpdated).Name);
+			 containerBuilder.RegisterType<PLayCourseSegmentAdded>().Keyed<IPlayEvent>(typeof(CourseSegmentAdded).Name);
+			 containerBuilder.RegisterType<PlayCourseSegmentUpdated>().Keyed<IPlayEvent>(typeof(CourseSegmentUpdated).Name);
+			 
+		
+			 var container = containerBuilder.Build();
+			 
+			 _factory = container.Resolve<ICourseFactory>();
+			
 		 }
 		 [Test]
 		 public void Can_recreate_a_course()

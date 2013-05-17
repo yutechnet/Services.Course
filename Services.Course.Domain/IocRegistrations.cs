@@ -32,9 +32,20 @@ namespace BpeProducts.Services.Course.Domain
 
 
             containerBuilder.RegisterType<CourseEventStore>().As<IStoreCourseEvents>();
-	        containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
+			
+			containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
+				
 
-            containerBuilder.RegisterType<DomainEvents>().As<IDomainEvents>();
+			containerBuilder.RegisterType<PlayCourseCreated>().Keyed<IPlayEvent>(typeof(CourseCreated).Name);
+			containerBuilder.RegisterType<PlayCourseAssociatedWithProgram>().Keyed<IPlayEvent>(typeof(CourseAssociatedWithProgram).Name);
+			containerBuilder.RegisterType<PlayCourseDeleted>().Keyed<IPlayEvent>(typeof(CourseDeleted).Name);
+			containerBuilder.RegisterType<PLayCourseDisassociatedWithProgram>().Keyed<IPlayEvent>(typeof(CourseDisassociatedWithProgram).Name);
+			containerBuilder.RegisterType<PlayCourseInfoUpated>().Keyed<IPlayEvent>(typeof(CourseInfoUpdated).Name);
+			containerBuilder.RegisterType<PLayCourseSegmentAdded>().Keyed<IPlayEvent>(typeof(CourseSegmentAdded).Name);
+			containerBuilder.RegisterType<PlayCourseSegmentUpdated>().Keyed<IPlayEvent>(typeof(CourseSegmentUpdated).Name);
+			 
+
+			containerBuilder.RegisterType<DomainEvents>().As<IDomainEvents>();
 
 			containerBuilder.Register<IStoreEvents>(x => new CourseEventStore());
 

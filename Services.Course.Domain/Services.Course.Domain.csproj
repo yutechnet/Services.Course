@@ -121,7 +121,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PLayCourseDisassociatedWithProgram.cs" />
     <Compile Include="CourseFactory.cs" />
+    <Compile Include="PlayCourseInfoUpated.cs" />
+    <Compile Include="PLayCourseSegmentAdded.cs" />
+    <Compile Include="PlayCourseSegmentUpdated.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="Entities\Course.cs" />
     <Compile Include="Entities\Program.cs" />
@@ -143,8 +147,12 @@
     <Compile Include="Handlers\UpdateModelOnCourseUpdating.cs" />
     <Compile Include="ICourseFactory.cs" />
     <Compile Include="IocRegistrations.cs" />
+    <Compile Include="IPlayEvent.cs" />
     <Compile Include="Overrides\CourseMappingOverride.cs" />
     <Compile Include="Overrides\ProgramMappingOverride.cs" />
+    <Compile Include="PlayCourseAssociatedWithProgram.cs" />
+    <Compile Include="PlayCourseCreated.cs" />
+    <Compile Include="PlayCourseDeleted.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CourseEventStore.cs" />
     <Compile Include="Repositories\CourseRepository.cs" />
