@@ -1,4 +1,5 @@
-﻿using BpeProducts.Services.Course.Domain.Events;
+﻿using System;
+using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
@@ -12,7 +13,12 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 		}
 		public void Handle(IDomainEvent domainEvent)
 		{
-			var e = (CourseDeleted) domainEvent;
+			var e = domainEvent as CourseDeleted;
+            if (e == null)
+            {
+                throw new InvalidOperationException("Invalid domain event.");
+            }
+
 			var course = _courseRepository.GetById(e.AggregateId);
 			course.ActiveFlag = false;
 			_courseRepository.Update(course);

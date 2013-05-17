@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -14,7 +15,11 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 		}
 		public void Handle(IDomainEvent domainEvent)
 		{
-			var e = (CourseUpdated)domainEvent;
+			var e = domainEvent as CourseUpdated;
+            if (e == null)
+            {
+                throw new InvalidOperationException("Invalid domain event.");
+            }
 			//update model
 			var courseInDb = _courseRepository.GetById(e.AggregateId);
 			Mapper.Map(e.Request,courseInDb);

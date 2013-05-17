@@ -127,6 +127,9 @@
     <Compile Include="Handlers\CourseEventPersisterHandlerTests.cs" />
     <Compile Include="Handlers\CourseUpdatedHandlerTests.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCourseSegmentTests.cs" />
+    <Compile Include="Handlers\UpdateModelOnCourseCreationTests.cs" />
+    <Compile Include="Handlers\UpdateModelOnCourseDeletionTests.cs" />
+    <Compile Include="Handlers\UpdateModelOnCourseUpdatingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

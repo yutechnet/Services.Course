@@ -13,9 +13,13 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 		}
 		public void Handle(IDomainEvent domainEvent)
 		{
-			var e = (CourseCreated)domainEvent;
+			var e = domainEvent as CourseCreated;
+            if (e == null)
+            {
+                throw new InvalidOperationException("Invalid domain event.");
+            }
+
 			_courseRepository.Add(e.Course);
-           
 		}
 	}
 }
