@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Course.Host.Tests.
 EndProject
 Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "CourseBuilder", "CourseBuilder\CourseBuilder.modelproj", "{7DA27BB8-9774-431F-A79A-83793A7AAD79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Course.Domain.Unit", "BpeProducts.Services.Course.Domain.Unit\Services.Course.Domain.Unit.csproj", "{75743413-C078-4B1E-84F2-530FCAE4F023}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Course.Domain.Unit", "Services.Course.Domain.Unit\Services.Course.Domain.Unit.csproj", "{75743413-C078-4B1E-84F2-530FCAE4F023}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
