@@ -124,6 +124,7 @@
     <Compile Include="CourseFactory.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="Entities\Course.cs" />
+    <Compile Include="Entities\LearningOutcome.cs" />
     <Compile Include="Entities\Program.cs" />
     <Compile Include="Events\CourseAssociatedWithProgram.cs" />
     <Compile Include="Events\CourseCreated.cs" />
@@ -144,12 +145,15 @@
     <Compile Include="ICourseFactory.cs" />
     <Compile Include="IocRegistrations.cs" />
     <Compile Include="Overrides\CourseMappingOverride.cs" />
+    <Compile Include="Overrides\LearningOutcomeMappingOverride.cs" />
     <Compile Include="Overrides\ProgramMappingOverride.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CourseEventStore.cs" />
     <Compile Include="Repositories\CourseRepository.cs" />
     <Compile Include="Handlers\CourseUpdatedHandler.cs" />
     <Compile Include="Repositories\ICourseRepository.cs" />
+    <Compile Include="Repositories\ILearningOutcomeRepository.cs" />
+    <Compile Include="Repositories\LearningOutcomeRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

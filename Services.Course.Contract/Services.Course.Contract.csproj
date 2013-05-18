@@ -75,7 +75,7 @@
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.9\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.WebApi">
-      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.32\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
+      <HintPath>..\Services.Course.Host\bin\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
@@ -154,6 +154,8 @@
   <ItemGroup>
     <Compile Include="CourseInfoResponse.cs" />
     <Compile Include="CourseSegment.cs" />
+    <Compile Include="OutcomeRequest.cs" />
+    <Compile Include="OutcomeResponse.cs" />
     <Compile Include="SaveCourseSegmentRequest.cs" />
     <Compile Include="SaveProgramRequest.cs" />
     <Compile Include="ProgramResponse.cs" />

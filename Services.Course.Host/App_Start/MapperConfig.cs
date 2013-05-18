@@ -12,6 +12,7 @@ namespace BpeProducts.Services.Course.Host.App_Start
 		{
 			CourseMappings();
 			ProgramMappings();
+            OutcomeMappings();
 		}
 
 		private static void ProgramMappings()
@@ -33,5 +34,11 @@ namespace BpeProducts.Services.Course.Host.App_Start
 
 		    Mapper.CreateMap<CourseSegmentAdded, CourseSegment>();
 		}
+
+        private static void OutcomeMappings()
+        {
+            Mapper.CreateMap<LearningOutcome, OutcomeResponse>();
+            Mapper.CreateMap<OutcomeRequest, LearningOutcome>();
+        }
 	}
 }
