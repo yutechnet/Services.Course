@@ -35,12 +35,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			{
 				FeatureContext.Current.Add("CourseLeadingPath", targetUri.PathAndQuery + "/courses");
 				FeatureContext.Current.Add("ProgramLeadingPath", targetUri.PathAndQuery + "/programs");
+                FeatureContext.Current.Add("OutcomeLeadingPath", targetUri.PathAndQuery + "/outcome");
 			}
 			else
 			{
 				FeatureContext.Current.Add("CourseLeadingPath", "/courses");
 				FeatureContext.Current.Add("ProgramLeadingPath", "/programs");
-			}
+                FeatureContext.Current.Add("OutcomeLeadingPath", "/outcome");
+            }
 		
 		}
 
