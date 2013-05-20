@@ -18,6 +18,28 @@ function Deployment-CheckConfigureIIS
 	}
 }
 
+function Deployment-RemoveHandlerMapping
+{
+	param(
+		[string]$handlerName = $(Throw 'handler name is required'),
+		[string]$websiteName = $(Throw 'website name is required')
+	)
+	
+	if (-not (ConfigureIIS)) {return}
+
+	Import-Module WebAdministration
+	# find handler mapping
+	Write-Host "Checking existing handler mapping `"$handlerName`""
+	$handler = Get-WebConfiguration -PSPath "IIS:\Sites\$websiteName" -Filter "/system.webServer/handlers/add[@name='$handlerName']"	
+	if ($handler -ne $null)
+	{
+		Write-Host "Removing handler mapping `"$handlerName`""
+	
+		Get-WebConfiguration -PSPath "IIS:\Sites\$websiteName" -Filter "/system.webServer/handlers/add[@name='$handlerName']" `
+    		| % { Clear-WebConfiguration -PSPath $_.PSPath -Filter $_.ItemXPath -Location $_.Location }
+	}
+}
+
 function Deployment-SetAppPoolProperty
 {
 	param(
@@ -334,6 +356,24 @@ function Deployment-SetupWebApplication
 
 #region Certificate Functions
 
+<##
+Certificate Store Information
+
+Store Locations: 
+	CurrentUser
+	LocalMachine
+	
+Store Names: 	
+	Personal = My
+	Trusted Root Certification Authorities = Root
+	Intermediate Certification Authorities = CertificationAuthority
+	Trusted Publishers = TrustedPublisher
+	Untrusted Certificates = Disallowed
+	Third-party Root Certification Authorities = AuthRoot
+	Trusted People = TrustedPeople
+	Other People = AddressBook
+##>
+
 function Deployment-ImportCertificateFromPFX
 {
 	param(
@@ -365,6 +405,116 @@ function Deployment-ImportCertificateFromPFX
 	}
 }
 
+function Deployment-LocateCertificate
+{
+	param(
+		[string]$certSubject,
+		[string]$certThumbprint,
+		[string]$certStoreName,
+		[string]$certStoreLocation
+	)
+	
+	if ($certSubject)
+	{
+		$cert = Deployment-GetCertificate -CertSubject $certSubject -CertStoreName $certStoreName -CertStoreLocation $certStoreLocation
+		if ($cert)
+		{
+			Write-Host "Valid certificate located"
+		}
+	}
+	
+	if ($certThumbprint)
+	{
+		$cert = Deployment-GetCertificate -CertThumbprint $certThumbprint -CertStoreName $certStoreName -CertStoreLocation $certStoreLocation
+		if ($cert)
+		{
+			Write-Host "Valid certificate located"
+		}
+	}
+}
+
+function Deployment-GetCertificate
+{
+	param(
+		[string]$certSubject,
+		[string]$certThumbprint,
+		[string]$certStoreName,
+		[string]$certStoreLocation
+	)
+	
+	# default unset store to *
+	if( -not $certStoreName )
+ 	{
+ 		$certStoreName = '*'
+ 	}
+
+	# default unset store location to *
+	if( -not $certStoreLocation )
+ 	{
+ 		$certStoreLocation = '*'
+ 	}
+
+	$certs = $null
+	$cert = $null
+	
+	# find certificate by thumbprint
+	if ($certThumbprint)
+	{
+		Write-Host "Checking certificate store `"$certStoreName`" located at `"$certStoreLocation`" for certificate with thumbprint `"$certThumbprint`""
+    	$certs = Get-ChildItem cert:\$certStoreLocation\$certStoreName\* | Where-Object { $_.Thumbprint -eq $certThumbprint }
+	}
+	
+	# find certificate by subject
+	if ($certSubject)
+	{
+		Write-Host "Checking certificate store `"$certStoreName`" located at `"$certStoreLocation`" for certificate with subject `"$certSubject`""
+    	$certs = Get-ChildItem cert:\$certStoreLocation\$certStoreName\* | Where-Object { $_.Subject -eq $certSubject }
+	}
+	
+	if ($certs)
+	{
+		if ($certs.GetType().IsArray)
+		{
+			# find the certificate that is vaid with the longest expiration date
+			$cert = $null
+			foreach($tmpCert in $certs)
+			{
+				if ((Get-Date) -gt $tmpCert.NotBefore)
+				{
+					if ($cert -eq $null)
+					{
+						$cert = $tmpCert
+					}
+				
+					# keep the cert with the higher expiration date
+					if ($tmpCert.NotAfter -gt $cert.NotAfter)
+					{
+						$cert = $tmpCert
+					}
+				}
+			}			
+		}
+		else
+		{
+			# if the cert we found is valid then set the variable
+			if ((Get-Date) -gt $certs.NotBefore -and (Get-Date) -lt $certs.NotAfter)
+			{
+				$cert = $certs
+			}
+		}
+	}
+	
+	if ($cert)
+	{
+		return $cert
+	}
+	else
+	{
+		$errorMsg = "Unable to locate valid non-expired certificate in Store:$certStoreName at Store Location:$certStoreLocation"
+		Throw $errorMsg
+	}
+}
+
 #endregion
 
 #region Transform File Functions
@@ -393,11 +543,11 @@ function Deployment-UpdateConfigurationTransform
 	$missingVariables = @()
 	
 	# find all of the $OctopusVariable.xyz placeholders
-	[array]$regexVariables = Select-String "\`"\`$OctopusVariable\.(?<VariableName>.*?)\`"" $transformFile -AllMatches | Select -Expand Matches
+	[array]$regexVariables = Select-String "\`$OctopusVariable\.(?<VariableName>.*?)[^a-zA-Z0-9\.\-]" $transformFile -AllMatches | Select -Expand Matches
 	if ($regexVariables -ne $null -and $regexVariables.Count -gt 0)
 	{
 		foreach($regexVariable in $regexVariables)
-		{
+		{			
 			$octopusVariableName = $regexVariable.Groups[1]
 			
 			# try to match up the replacement variable with an octopus variable
@@ -405,7 +555,6 @@ function Deployment-UpdateConfigurationTransform
 			if (-not $octopusVariableValue)
 			{
 				# error
-				#Write-Host "Unable to locate variable: $octopusVariableName"
 				if (-not ($missingVariables -contains "$octopusVariableName")) 
 				{ 
 					$missingVariables += "$octopusVariableName"
@@ -446,17 +595,21 @@ function Deployment-UpdateConfigurationTransform
 	
 	if ($variableHash.Count -gt 0)
 	{
-		# get the transform file content
-		[string] $transformFileContent = Get-Content $transformFile
+		# get the transform file content (keeping line endings)
+		$transformFileContent = [string]::Join([Environment]::NewLine, (Get-Content -Path $transformFile))
 	
 		# perform replacement on placeholder values
 		foreach($key in $($variableHash.keys))
 		{
-			$transformFileContent = $transformFileContent -replace "`"\`$OctopusVariable.$key`"", "`"$($variableHash[$key])`""
+			$regex = New-Object System.Text.RegularExpressions.Regex "\`$OctopusVariable\.$key([^a-zA-Z0-9\.\-])"
+			$transformFileContent = $regex.Replace($transformFileContent, { param ($m) $variableHash[$key] + $m.Groups[1] })
 		}
-	
-		#Set-Content -Encoding $transformFile $transformFileContent
-		[System.IO.File]::WriteAllText($transformFile, $transformFileContent)
+		# do this to get the existing file encoding
+		$sr = New-Object System.IO.StreamReader($transformFile)
+  		$encoding = $sr.CurrentEncoding
+		$sr.Close()
+		# write the updated content back into the file
+		[System.IO.File]::WriteAllText($transformFile, $transformFileContent, $encoding)
 		Write-Host "Transform file `"$($TransformFile.FullName)`" updated"
 	}
 	else
@@ -732,6 +885,488 @@ function Deployment-InstallNServiceBusService
 		Set-Alias nservicebushost $nserviceBusHostExe
 		Start-Process -NoNewWindow -Wait -FilePath nservicebushost -ArgumentList $installArguments
 	}	
+}
+
+#endregion
+
+#region Database Functions
+
+function Deployment-SyncDatabaseSchemaToScript
+{
+	param(
+		$connectionString = $(Throw 'Connection string required'),
+		$compareParametersFile
+	)
+	# check to make sure that the SqlCompareHome environment variable has been set
+	$sqlCompareHome = $env:SqlCompareHome
+	if ($sqlCompareHome -eq $null -or $sqlCompareHome -eq "") 
+	{
+		Throw "The environment variable `"SqlCompareHome`" must be set on the server to run SQLCompare.exe"
+	}
+	# update Schema.xml file
+	$schemaFile = New-Object System.IO.FileInfo $compareParametersFile
+	$schemaDirectory = $schemaFile.DirectoryName
+	Write-Host "Sync database to script directory for database `"$($schemaFile.Directory.Name)`""
+	$databasesDirectory = New-Object System.IO.DirectoryInfo("$schemaDirectory\..\")
+	$builder = New-Object System.Data.SqlClient.SqlConnectionStringBuilder $connectionString
+	[xml]$xml = Get-Content $compareParametersFile
+	
+	# add source server (server1)
+	$server1 = $xml.CreateElement("server1")
+	$server1.AppendChild($xml.CreateTextNode($builder.DataSource)) | Out-Null
+	$xml.commandline.AppendChild($server1) | Out-Null
+	# add source database (database1)
+	$database1 = $xml.CreateElement("database1")
+	$database1.AppendChild($xml.CreateTextNode($builder.InitialCatalog)) | Out-Null
+	$xml.commandline.AppendChild($database1) | Out-Null
+	# add source username (username1)
+	$username1 = $xml.CreateElement("username1")
+	$username1.AppendChild($xml.CreateTextNode($builder.UserID)) | Out-Null
+	$xml.commandline.AppendChild($username1) | Out-Null
+	# add source password (password1)
+	$password1 = $xml.CreateElement("password1")
+	$password1.AppendChild($xml.CreateTextNode($builder.Password)) | Out-Null
+	$xml.commandline.AppendChild($password1) | Out-Null
+	# add target script directory (scripts2)
+	$scripts2 = $xml.CreateElement("scripts2")
+	$scripts2.AppendChild($xml.CreateTextNode($schemaDirectory)) | Out-Null
+	$xml.commandline.AppendChild($scripts2) | Out-Null
+	# add output logging
+	$outputlog = $xml.CreateElement("out")
+	$outputlog.AppendChild($xml.CreateTextNode("$($databasesDirectory.FullName)SqlCompare.log")) | Out-Null
+	$xml.commandline.AppendChild($outputlog) | Out-Null
+	# save config file
+	$xml.Save($compareParametersFile+".database-to-script")	
+	
+	# define command line arguments
+	$sqlCompareExe = Join-Path $sqlCompareHome "SQLCompare.exe"
+	$arguments = @()
+	$arguments += "/argfile:`"$compareParametersFile.database-to-script`""
+
+	# define process
+	$process = New-Object System.Diagnostics.Process
+	$processStartInfo = New-Object System.Diagnostics.ProcessStartInfo
+	$processStartInfo.CreateNoWindow = $true
+	$processStartInfo.UseShellExecute = $false
+	$processStartInfo.FileName = $sqlCompareExe	
+	$processStartInfo.Arguments = $arguments
+	$process.StartInfo = $processStartInfo
+	
+	# execute process
+	Write-Host "Executing SQLCompare [$sqlCompareExe /argfile:`"$compareParametersFile.database-to-script`"]"
+	$process.Start() | Out-Null
+	$process.WaitForExit()
+	Write-Host "SQLCompare exit code: $($process.ExitCode)"
+	$logContent = [string]::Join([Environment]::NewLine, (Get-Content -Path "$($databasesDirectory.FullName)SqlCompare.log"))
+	Write-Host $logContent
+	if ($process.ExitCode -gt 0)
+	{
+		Throw "SQLCompare has failed with exit code `"$($process.ExitCode)`""
+	}
+	
+	# clean up
+	# remove temp db to script argfile
+	if (Test-Path "$compareParametersFile.database-to-script") { Remove-Item "$compareParametersFile.database-to-script" -Force }	
+	# remove SqlCompare.log
+	if (Test-Path "$($databasesDirectory.FullName)SqlCompare.log") { Remove-Item "$($databasesDirectory.FullName)SqlCompare.log" -Force }	
+}
+
+function Deployment-SyncDatabaseDataToScript
+{
+	param(
+		$connectionString = $(Throw 'Connection string required'),
+		$compareParametersFile
+	)
+	# check to make sure that the SqlDataCompareHome environment variable has been set
+	$sqlDataCompareHome = $env:SqlDataCompareHome
+	if ($sqlDataCompareHome -eq $null -or $sqlDataCompareHome -eq "") 
+	{
+		Throw "The environment variable `"SqlDataCompareHome`" must be set on the server to run SQLDataCompare.exe"
+	}
+	# update Data.xml file
+	$dataFile = New-Object System.IO.FileInfo $compareParametersFile
+	$dataDirectory = $dataFile.DirectoryName
+	Write-Host "Sync database data to script directory for database `"$($dataFile.Directory.Name)`""
+	$databasesDirectory = New-Object System.IO.DirectoryInfo("$dataDirectory\..\")
+	$builder = New-Object System.Data.SqlClient.SqlConnectionStringBuilder $connectionString
+	[xml]$xml = Get-Content $compareParametersFile
+	
+	# add source server (server1)
+	$server1 = $xml.CreateElement("server1")
+	$server1.AppendChild($xml.CreateTextNode($builder.DataSource)) | Out-Null
+	$xml.commandline.AppendChild($server1) | Out-Null
+	# add source database (database1)
+	$database1 = $xml.CreateElement("database1")
+	$database1.AppendChild($xml.CreateTextNode($builder.InitialCatalog)) | Out-Null
+	$xml.commandline.AppendChild($database1) | Out-Null
+	# add source username (username1)
+	$username1 = $xml.CreateElement("username1")
+	$username1.AppendChild($xml.CreateTextNode($builder.UserID)) | Out-Null
+	$xml.commandline.AppendChild($username1) | Out-Null
+	# add source password (password1)
+	$password1 = $xml.CreateElement("password1")
+	$password1.AppendChild($xml.CreateTextNode($builder.Password)) | Out-Null
+	$xml.commandline.AppendChild($password1) | Out-Null
+	# add target script directory (scripts2)
+	$scripts2 = $xml.CreateElement("scripts2")
+	$scripts2.AppendChild($xml.CreateTextNode($dataDirectory)) | Out-Null
+	$xml.commandline.AppendChild($scripts2) | Out-Null
+	# add output logging
+	$outputlog = $xml.CreateElement("out")
+	$outputlog.AppendChild($xml.CreateTextNode("$($databasesDirectory.FullName)SqlDataCompare.log")) | Out-Null
+	$xml.commandline.AppendChild($outputlog) | Out-Null
+	# save config file
+	$xml.Save($compareParametersFile+".data-to-script")	
+	
+	# define command line arguments
+	$sqlDataCompareExe = Join-Path $sqlDataCompareHome "SQLDataCompare.exe"
+	$arguments = @()
+	$arguments += "/argfile:`"$compareParametersFile.data-to-script`""
+
+	# define process
+	$process = New-Object System.Diagnostics.Process
+	$processStartInfo = New-Object System.Diagnostics.ProcessStartInfo
+	$processStartInfo.CreateNoWindow = $true
+	$processStartInfo.UseShellExecute = $false
+	$processStartInfo.FileName = $sqlDataCompareExe	
+	$processStartInfo.Arguments = $arguments
+	$process.StartInfo = $processStartInfo
+	
+	# execute process
+	Write-Host "Executing SQLDataCompare [$sqlDataCompareExe /argfile:`"$compareParametersFile.data-to-script`"]"
+	$process.Start() | Out-Null
+	$process.WaitForExit()
+	Write-Host "SQLDataCompare exit code: $($process.ExitCode)"
+	$logContent = [string]::Join([Environment]::NewLine, (Get-Content -Path "$($databasesDirectory.FullName)SqlDataCompare.log"))
+	Write-Host $logContent
+	if ($process.ExitCode -gt 0)
+	{
+		Throw "SQLDataCompare has failed with exit code `"$($process.ExitCode)`""
+	}
+	
+	# clean up
+	# remove temp db to script argfile
+	if (Test-Path "$compareParametersFile.data-to-script") { Remove-Item "$compareParametersFile.data-to-script" -Force }	
+	# remove SqlCompare.log
+	if (Test-Path "$($databasesDirectory.FullName)SqlDataCompare.log") { Remove-Item "$($databasesDirectory.FullName)SqlDataCompare.log" -Force }	
+}
+
+function Deployment-SyncDatabaseScriptToSchema
+{
+	param(
+		$connectionString = $(Throw 'Connection string required'),
+		$compareParametersFile
+	)
+	# check to make sure that the SqlCompareHome environment variable has been set
+	$sqlCompareHome = $env:SqlCompareHome
+	if ($sqlCompareHome -eq $null -or $sqlCompareHome -eq "") 
+	{
+		Throw "The environment variable `"SqlCompareHome`" must be set on the server to run SQLCompare.exe"
+	}
+	# update Schema.xml file
+	$schemaFile = New-Object System.IO.FileInfo $compareParametersFile
+	$schemaDirectory = $schemaFile.DirectoryName
+	Write-Host "Sync script directory to database for database `"$($schemaFile.Directory.Name)`""
+	$databasesDirectory = New-Object System.IO.DirectoryInfo("$schemaDirectory\..\")
+	$builder = New-Object System.Data.SqlClient.SqlConnectionStringBuilder $connectionString
+	[xml]$xml = Get-Content $compareParametersFile
+	
+	# add source server (server1)
+	$server2 = $xml.CreateElement("server2")
+	$server2.AppendChild($xml.CreateTextNode($builder.DataSource)) | Out-Null
+	$xml.commandline.AppendChild($server2) | Out-Null
+	# add source database (database2)
+	$database2 = $xml.CreateElement("database2")
+	$database2.AppendChild($xml.CreateTextNode($builder.InitialCatalog)) | Out-Null
+	$xml.commandline.AppendChild($database2) | Out-Null
+	# add source username (username2)
+	$username2 = $xml.CreateElement("username2")
+	$username2.AppendChild($xml.CreateTextNode($builder.UserID)) | Out-Null
+	$xml.commandline.AppendChild($username2) | Out-Null
+	# add source password (password2)
+	$password2 = $xml.CreateElement("password2")
+	$password2.AppendChild($xml.CreateTextNode($builder.Password)) | Out-Null
+	$xml.commandline.AppendChild($password2) | Out-Null
+	# add target script directory (scripts1)
+	$scripts1 = $xml.CreateElement("scripts1")
+	$scripts1.AppendChild($xml.CreateTextNode($schemaDirectory)) | Out-Null
+	$xml.commandline.AppendChild($scripts1) | Out-Null
+	# add output logging
+	$outputlog = $xml.CreateElement("out")
+	$outputlog.AppendChild($xml.CreateTextNode("$($databasesDirectory.FullName)SqlCompare.log")) | Out-Null
+	$xml.commandline.AppendChild($outputlog) | Out-Null
+	# save config file
+	$xml.Save($compareParametersFile+".script-to-database")	
+	
+	Deployment-CreateDatabase -ConnectionString $connectionString
+	
+	# define command line arguments
+	$sqlCompareExe = Join-Path $sqlCompareHome "SQLCompare.exe"
+	$arguments = @()
+	$arguments += "/argfile:`"$compareParametersFile.script-to-database`""
+
+	# define process
+	$process = New-Object System.Diagnostics.Process
+	$processStartInfo = New-Object System.Diagnostics.ProcessStartInfo
+	$processStartInfo.CreateNoWindow = $true
+	$processStartInfo.UseShellExecute = $false
+	$processStartInfo.FileName = $sqlCompareExe	
+	$processStartInfo.Arguments = $arguments
+	$process.StartInfo = $processStartInfo
+	
+	# execute process
+	Write-Host "Executing SQLCompare [$sqlCompareExe /argfile:`"$compareParametersFile.script-to-database`"]"
+	$process.Start() | Out-Null
+	$process.WaitForExit()
+	Write-Host "SQLCompare exit code: $($process.ExitCode)"
+	$logContent = [string]::Join([Environment]::NewLine, (Get-Content -Path "$($databasesDirectory.FullName)SqlCompare.log"))
+	Write-Host $logContent
+	if ($process.ExitCode -gt 0)
+	{
+		Throw "SQLCompare has failed with exit code `"$($process.ExitCode)`""
+	}
+	
+	Deployment-InsertDatabaseSyncTrackingRecord -ConnectionString $connectionString -RecordType "Schema Sync" -Version $OctopusPackageNameAndVersion -Log $logContent
+
+	# clean up
+	# remove temp script to db argfile
+	if (Test-Path "$compareParametersFile.script-to-database") { Remove-Item "$compareParametersFile.script-to-database" -Force }	
+	# remove SqlCompare.log
+	if (Test-Path "$($databasesDirectory.FullName)SqlCompare.log") { Remove-Item "$($databasesDirectory.FullName)SqlCompare.log" -Force }	
+}
+
+function Deployment-SyncDatabaseScriptToData
+{
+	param(
+		$connectionString = $(Throw 'Connection string required'),
+		$compareParametersFile
+	)
+	# check to make sure that the SqlDataCompareHome environment variable has been set
+	$sqlDataCompareHome = $env:SqlDataCompareHome
+	if ($sqlDataCompareHome -eq $null -or $sqlDataCompareHome -eq "") 
+	{
+		Throw "The environment variable `"SqlDataCompareHome`" must be set on the server to run SQLDataCompare.exe"
+	}
+	# update Data.xml file
+	$dataFile = New-Object System.IO.FileInfo $compareParametersFile
+	$dataDirectory = $dataFile.DirectoryName
+	Write-Host "Sync script directory to database data for database `"$($dataFile.Directory.Name)`""
+	$databasesDirectory = New-Object System.IO.DirectoryInfo("$dataDirectory\..\")
+	$builder = New-Object System.Data.SqlClient.SqlConnectionStringBuilder $connectionString
+	[xml]$xml = Get-Content $compareParametersFile
+	
+	# add target server (server2)
+	$server2 = $xml.CreateElement("server2")
+	$server2.AppendChild($xml.CreateTextNode($builder.DataSource)) | Out-Null
+	$xml.commandline.AppendChild($server2) | Out-Null
+	# add target database (database2)
+	$database2 = $xml.CreateElement("database2")
+	$database2.AppendChild($xml.CreateTextNode($builder.InitialCatalog)) | Out-Null
+	$xml.commandline.AppendChild($database2) | Out-Null
+	# add target username (username2)
+	$username2 = $xml.CreateElement("username2")
+	$username2.AppendChild($xml.CreateTextNode($builder.UserID)) | Out-Null
+	$xml.commandline.AppendChild($username2) | Out-Null
+	# add target password (password2)
+	$password2 = $xml.CreateElement("password2")
+	$password2.AppendChild($xml.CreateTextNode($builder.Password)) | Out-Null
+	$xml.commandline.AppendChild($password2) | Out-Null
+	# add source script directory (scripts1)
+	$scripts1 = $xml.CreateElement("scripts1")
+	$scripts1.AppendChild($xml.CreateTextNode($dataDirectory)) | Out-Null
+	$xml.commandline.AppendChild($scripts1) | Out-Null
+	# add output logging
+	$outputlog = $xml.CreateElement("out")
+	$outputlog.AppendChild($xml.CreateTextNode("$($databasesDirectory.FullName)SqlDataCompare.log")) | Out-Null
+	$xml.commandline.AppendChild($outputlog) | Out-Null
+	# save config file
+	$xml.Save($compareParametersFile+".script-to-data")	
+		
+	# define command line arguments
+	$sqlDataCompareExe = Join-Path $sqlDataCompareHome "SQLDataCompare.exe"
+	$arguments = @()
+	$arguments += "/argfile:`"$compareParametersFile.script-to-data`""
+
+	# define process
+	$process = New-Object System.Diagnostics.Process
+	$processStartInfo = New-Object System.Diagnostics.ProcessStartInfo
+	$processStartInfo.CreateNoWindow = $true
+	$processStartInfo.UseShellExecute = $false
+	$processStartInfo.FileName = $sqlDataCompareExe	
+	$processStartInfo.Arguments = $arguments
+	$process.StartInfo = $processStartInfo
+	
+	# execute process
+	Write-Host "Executing SQLDataCompare [$sqlDataCompareExe /argfile:`"$compareParametersFile.script-to-data`"]"
+	$process.Start() | Out-Null
+	$process.WaitForExit()
+	Write-Host "SQLDataCompare exit code: $($process.ExitCode)"
+	$logContent = [string]::Join([Environment]::NewLine, (Get-Content -Path "$($databasesDirectory.FullName)SqlDataCompare.log"))
+	Write-Host $logContent
+	if ($process.ExitCode -gt 0)
+	{
+		Throw "SQLDataCompare has failed with exit code `"$($process.ExitCode)`""
+	}
+	
+	Deployment-InsertDatabaseSyncTrackingRecord -ConnectionString $connectionString -RecordType "Data Sync" -Version $OctopusPackageNameAndVersion -Log $logContent
+	
+	# clean up
+	# remove temp script to db argfile
+	if (Test-Path "$compareParametersFile.script-to-data") { Remove-Item "$compareParametersFile.script-to-data" -Force }	
+	# remove SqlCompare.log
+	if (Test-Path "$($databasesDirectory.FullName)SqlDataCompare.log") { Remove-Item "$($databasesDirectory.FullName)SqlDataCompare.log" -Force }	
+}
+
+function Deployment-CreateDatabase
+{
+	param(
+		$connectionString,
+		$server,
+		$database,
+		$username,
+		$password
+	)
+	# Create and open a database connection
+	$sqlConnection = $null
+	if ($connectionString)
+	{
+		$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+	}
+	else
+	{
+		$sqlConnection = New-Object System.Data.SqlClient.SqlConnection "server=$server;initial catalog=$database;user id=$username;password=$password"	
+	}
+	
+	# set the connection to the master database
+	$builder = New-Object System.Data.SqlClient.SqlConnectionStringBuilder $sqlConnection.ConnectionString	
+	$originalDatabase = $builder["Initial Catalog"]
+	$builder["Initial Catalog"] = "master"	
+	$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $builder.ConnectionString
+	try
+	{
+		$sqlConnection.Open()	
+		$sqlCommand = $sqlConnection.CreateCommand()
+		$sqlCommand.CommandText = "SELECT COUNT(*) FROM sys.databases WHERE name = '$originalDatabase'"
+        [int]$dbCount = $sqlCommand.ExecuteScalar()
+        if ($dbCount -lt 1)
+        {
+			# create the new database
+			Write-Host "Creating new database `"$originalDatabase`""		
+			$sqlCommand.CommandText = "CREATE DATABASE [$originalDatabase]"
+			$sqlCommand.ExecuteNonQuery() | Out-Null			
+		}
+		else
+		{
+			Write-Host "Existing database `"$originalDatabase`" was found"
+		}
+		Deployment-CreateTrackingTable -ConnectionString $connectionString
+	}
+	catch [System.Exception]
+	{
+  		Write-Error "Error creating new database `"$originalDatabase`""
+	}
+	finally
+	{
+		# Close the database connection
+		$sqlConnection.Close()
+	}
+}
+
+function Deployment-CreateTrackingTable
+{
+	param(
+		$connectionString
+	)
+	# Create and open a database connection
+	$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString	
+	try
+	{
+		$sqlConnection.Open()	
+		$sqlCommand = $sqlConnection.CreateCommand()
+		$sqlCommand.CommandText = "SELECT COUNT(TABLE_NAME) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '_Tracking' AND TABLE_TYPE = 'BASE TABLE'"
+        [int]$tableCount = $sqlCommand.ExecuteScalar()
+        if ($tableCount -lt 1)
+        {
+			# create the new _tracking table
+			Write-Host "Creating new `"_Tracking`" table"		
+			$sqlCommand.CommandText = "CREATE TABLE [dbo].[_Tracking]([Id] [int] IDENTITY(1,1) NOT NULL, [Date] [datetime] NULL, [Type] [varchar](50) NULL, [Version] [varchar](50) NULL, [Log] [nvarchar](max) NULL, CONSTRAINT [PK__Tracking] PRIMARY KEY CLUSTERED ([Id] ASC))"
+			$sqlCommand.ExecuteNonQuery() | Out-Null
+		}
+		else
+		{
+			Write-Host "Existing `"_Tracking`" table found"
+		}
+	}
+	catch [System.Exception] 
+	{
+  		Write-Error "Error creating new `"_Tracking`" table"
+	}
+	finally
+	{
+		# Close the database connection
+		$sqlConnection.Close()
+	}	
+}
+
+function Deployment-InsertDatabaseSyncTrackingRecord
+{
+	param(
+		$connectionString,
+		$recordType,
+		$version,
+		$log
+	)
+	# Create and open a database connection
+	$sqlConnection = $null
+	$sqlConnection = New-Object System.Data.SqlClient.SqlConnection $connectionString
+	
+	try
+	{
+		$sqlConnection.Open()	
+		$sqlCommand = $sqlConnection.CreateCommand()
+		$sqlCommand.CommandText = "INSERT INTO [_Tracking] (Date, Type, Version, Log) VALUES (GETDATE(), @Type, @Version, @Log)"
+
+		# type
+		if ($recordType)
+		{
+			$sqlCommand.Parameters.Add("@Type", $recordType) | Out-Null		
+		}
+		else
+		{
+			$sqlCommand.Parameters.Add("@Type", [DBNull]::Value) | Out-Null
+		}
+		
+		# version
+		if ($version)
+	{
+			$sqlCommand.Parameters.Add("@Version", $version) | Out-Null		
+	}	
+		else
+		{
+			$sqlCommand.Parameters.Add("@Version", [DBNull]::Value) | Out-Null
+}
+
+		# log
+		if ($log)
+		{
+			$sqlCommand.Parameters.Add("@Log", $log) | Out-Null		
+		}
+		else
+		{
+			$sqlCommand.Parameters.Add("@Log", [DBNull]::Value) | Out-Null
+		}
+
+		$sqlCommand.ExecuteNonQuery() | Out-Null
+	}
+	catch [System.Exception] 
+	{
+  		Write-Error "Error inserting new database sync tracking record"		
+	}
+	finally
+	{
+		# Close the database connection
+		$sqlConnection.Close()
+	}
 }
 
 #endregion

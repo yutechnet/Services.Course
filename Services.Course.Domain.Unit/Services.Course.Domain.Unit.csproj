@@ -53,8 +53,9 @@
     <Reference Include="BpeProducts.Common.Exceptions">
       <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.11\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Ioc">
-      <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.28\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
+    <Reference Include="BpeProducts.Common.Ioc, Version=1.0.29.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.29\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Log, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

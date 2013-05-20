@@ -23,10 +23,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             var samlToken = GetSamlToken();
 
-            var base64SamlBytes = System.Text.Encoding.ASCII.GetBytes(samlToken);
-            var base64SamlToken = System.Convert.ToBase64String(base64SamlBytes);
+            //var base64SamlBytes = System.Text.Encoding.ASCII.GetBytes(samlToken);
+            //var base64SamlToken = System.Convert.ToBase64String(base64SamlBytes);
 
-            apiTestHost.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("SAML", base64SamlToken);
+            apiTestHost.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("SAML", samlToken);
 
             FeatureContext.Current.Add("ApiTestHost", apiTestHost);
 
