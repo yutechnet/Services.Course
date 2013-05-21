@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
 
-namespace BpeProducts.Services.Course.Domain.Unit.Handlers
+namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 {
     [TestFixture]
     public class UpdateModelOnCourseDeletionTests
@@ -37,7 +33,7 @@ namespace BpeProducts.Services.Course.Domain.Unit.Handlers
         [Test]
         public void Soft_Deletes_Course_When_CourseDeleted()
         {
-            var course = new Entities.Course
+            var course = new Domain.Entities.Course
                 {
                     ActiveFlag = true
                 };
@@ -51,7 +47,7 @@ namespace BpeProducts.Services.Course.Domain.Unit.Handlers
                 });
 
             _mockCourseRepository.Verify(c => c.GetById(courseId), Times.Once());
-            _mockCourseRepository.Verify(c => c.Update(It.Is<Entities.Course>(x => x.ActiveFlag == false)), Times.Once());
+            _mockCourseRepository.Verify(c => c.Update(It.Is<Domain.Entities.Course>(x => x.ActiveFlag == false)), Times.Once());
         }
     }
 }

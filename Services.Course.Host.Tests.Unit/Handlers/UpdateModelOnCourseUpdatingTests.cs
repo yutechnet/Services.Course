@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
@@ -12,7 +9,7 @@ using BpeProducts.Services.Course.Host.App_Start;
 using Moq;
 using NUnit.Framework;
 
-namespace BpeProducts.Services.Course.Domain.Unit.Handlers
+namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 {
     [TestFixture]
     public class UpdateModelOnCourseUpdatingTests
@@ -53,7 +50,7 @@ namespace BpeProducts.Services.Course.Domain.Unit.Handlers
             _updateModelOnCourseUpdating.Handle(courseUpdatedEvent);
 
             _mockCourseRepository.Verify(c => c.GetById(courseUpdatedEvent.AggregateId), Times.Once());
-            _mockCourseRepository.Verify(c => c.Update(It.Is<Entities.Course>(x => x.Name == courseUpdatedEvent.Request.Name 
+            _mockCourseRepository.Verify(c => c.Update(It.Is<Domain.Entities.Course>(x => x.Name == courseUpdatedEvent.Request.Name 
                 && x.Description == courseUpdatedEvent.Request.Description
                 && x.Code == courseUpdatedEvent.Request.Code
                 && x.Programs.Count == courseUpdatedEvent.Request.ProgramIds.Count)), Times.Once());
@@ -72,7 +69,7 @@ namespace BpeProducts.Services.Course.Domain.Unit.Handlers
                 ProgramIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }
             };
 
-            var course = new Entities.Course
+            var course = new Domain.Entities.Course
             {
                 Code = "OldCode1",
                 Description = "OldDescription1",

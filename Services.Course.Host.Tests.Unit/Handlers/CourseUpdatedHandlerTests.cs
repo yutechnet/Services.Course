@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using Moq;
 using NUnit.Framework;
 
-namespace BpeProducts.Services.Course.Domain.Unit.Handlers
+namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 {
     [TestFixture]
     public class CourseUpdatedHandlerTests
@@ -74,7 +72,7 @@ namespace BpeProducts.Services.Course.Domain.Unit.Handlers
                     ProgramIds = new List<Guid> { programId }
                 };
 
-            var course = new Entities.Course
+            var course = new Domain.Entities.Course
             {
                 Code = "NewCode1",
                 Description = "NewDescription1",
@@ -109,7 +107,7 @@ namespace BpeProducts.Services.Course.Domain.Unit.Handlers
                 ProgramIds = new List<Guid> { programId }
             };
 
-            var course = new Entities.Course
+            var course = new Domain.Entities.Course
             {
                 Code = "OldCode1",
                 Description = "OldDescription1",
@@ -143,7 +141,7 @@ namespace BpeProducts.Services.Course.Domain.Unit.Handlers
                 ProgramIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }
             };
 
-            var course = new Entities.Course
+            var course = new Domain.Entities.Course
             {
                 Code = "OldCode1",
                 Description = "OldDescription1",

@@ -220,6 +220,12 @@
   <ItemGroup>
     <Compile Include="CourseFactoryTests.cs" />
     <Compile Include="CoursesControllerTests.cs" />
+    <Compile Include="Handlers\CourseEventPersisterHandlerTests.cs" />
+    <Compile Include="Handlers\CourseUpdatedHandlerTests.cs" />
+    <Compile Include="Handlers\UpdateModelOnAddingCourseSegmentTests.cs" />
+    <Compile Include="Handlers\UpdateModelOnCourseCreationTests.cs" />
+    <Compile Include="Handlers\UpdateModelOnCourseDeletionTests.cs" />
+    <Compile Include="Handlers\UpdateModelOnCourseUpdatingTests.cs" />
     <Compile Include="OutcomeControllerTests.cs" />
     <Compile Include="ProgramControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

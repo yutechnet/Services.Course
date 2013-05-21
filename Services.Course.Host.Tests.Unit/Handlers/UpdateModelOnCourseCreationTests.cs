@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
 
-namespace BpeProducts.Services.Course.Domain.Unit.Handlers
+namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 {
     [TestFixture]
     public class UpdateModelOnCourseCreationTests
@@ -36,7 +32,7 @@ namespace BpeProducts.Services.Course.Domain.Unit.Handlers
         [Test]
         public void Add_New_Course_To_Repository()
         {
-            var course = new Entities.Course();
+            var course = new Domain.Entities.Course();
             _updateModelOnCourseCreationTests.Handle(new CourseCreated { Course = course });
 
             _mockCourseRepository.Verify(c => c.Add(course), Times.Once());

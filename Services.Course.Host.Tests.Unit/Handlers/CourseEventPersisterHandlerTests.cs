@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using Moq;
 using NUnit.Framework;
 
-namespace BpeProducts.Services.Course.Domain.Unit.Handlers
+namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 {
     [TestFixture]
     public class CourseEventPersisterHandlerTests

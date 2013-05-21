@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
@@ -11,7 +8,7 @@ using BpeProducts.Services.Course.Host.App_Start;
 using Moq;
 using NUnit.Framework;
 
-namespace BpeProducts.Services.Course.Domain.Unit.Handlers
+namespace BpeProducts.Services.Course.Domain.Tests.Unit.Handlers
 {
     [TestFixture]
     public class UpdateModelOnAddingCourseSegmentTests
