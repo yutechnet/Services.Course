@@ -73,13 +73,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Return_Existing_LearningOutcome()
         {
-            var learningOutcome = new LearningOutcome {Description = "SomeDescription"};
-            _mockLearningOutcomeRepository.Setup(o => o.GetById(It.IsAny<Guid>())).Returns(learningOutcome);
+            var learningOutcome1 = new LearningOutcome {Id = Guid.NewGuid(), Description = "SomeDescription", ActiveFlag = true};
+            var learningOutcome2 = new LearningOutcome
+                {
+                    Id = Guid.NewGuid(),
+                    Description = "OtherDescription",
+                    ActiveFlag = false
+                };
+            var learningOutcomes = new List<LearningOutcome> {learningOutcome1, learningOutcome2};
+            _mockLearningOutcomeRepository.Setup(o => o.GetAll()).Returns(learningOutcomes.AsQueryable);
 
-            var outcomeResponse = _outcomeController.Get(Guid.NewGuid());
+            var outcomeResponse = _outcomeController.Get(learningOutcome1.Id);
 
-            _mockLearningOutcomeRepository.Verify(o => o.GetById(It.IsAny<Guid>()), Times.Once());
-            Assert.That(outcomeResponse.Description, Is.EqualTo(learningOutcome.Description));
+            _mockLearningOutcomeRepository.Verify(o => o.GetAll(), Times.Once());
+            Assert.That(outcomeResponse.Description, Is.EqualTo(learningOutcome1.Description));
         }
 
         [Test]
