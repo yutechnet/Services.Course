@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using BpeProducts.Services.Course.Contract;
@@ -61,5 +63,40 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl.ToString()).Result;
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
+
+		[When(@"I associate to the '(.*)' '(.*)' a new learning outcome with the description '(.*)'")]
+		public void WhenIAssociateToTheANewLearningOutcomeWithTheDescription(string entityType, string entityName, string outCome)
+		{
+			// PUT /program/programid/outcome
+			ProgramResponse program = null;
+			if (entityType.ToLower() == "program")
+			{
+				var programs = ScenarioContext.Current.Get<IList<ProgramResponse>>("programs");
+				program = programs.First(p => p.Name.Equals(entityName));
+			}
+
+			var postUrl = string.Format("{0}/{1}/outcome",
+			                            FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
+
+			var request = new OutcomeRequest
+				{
+					Description = outCome
+				};
+			var response = ApiFeature.ApiTestHost.Client.PostAsync(postUrl,request,new JsonMediaTypeFormatter()).Result;
+			response.EnsureSuccessStatusCode();
+			ScenarioContext.Current.Add("learningoutcomeResourceUrl", response.Headers.Location);
+		}
+
+		[Then(@"the '(.*)' '(.*)' is associated with learning outcome '(.*)'")]
+		public void ThenTheIsAssociatedWithLearningOutcome(string entityType, string entityName, string outcome)
+		{
+			var getUrl = ScenarioContext.Current.Get<Uri>("learningoutcomeResourceUrl");
+			var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl.ToString()).Result;
+			response.EnsureSuccessStatusCode();
+			var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
+			Assert.That(outcomeResponse.Description, Is.EqualTo(outcome));
+		}
+
+
     }
 }

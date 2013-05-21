@@ -18,3 +18,10 @@ Scenario: Delete an existing leanring outcome
 	When I delete this learning outcome
 	Then the learning outcome shoud no longer exist
 
+Scenario: Add a new learning outcome to a program and get it
+	Given the following programs exist:
+	| Name | Description |
+	| BA   | BA Program  |
+	When I associate to the 'program' 'BA' a new learning outcome with the description 'SomeDescription'
+	Then the learning outcome should be with the description 'SomeDescription'
+	And the 'program' 'BA' is associated with learning outcome 'SomeDescription'

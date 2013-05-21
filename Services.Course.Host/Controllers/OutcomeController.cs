@@ -55,6 +55,40 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         }
 
+		[Transaction]
+		[CheckModelForNull]
+		[ValidateModelState]
+		[ClaimsAuthorize()]
+		public object Post(string entityType,Guid entityId, OutcomeRequest request)
+		{
+			//check if the entity exists
+			//apply strategy pattern here?
+			if (entityType.ToLower() == "program")
+			{
+				//get program from propgram repository
+			}
+
+			//if not throw error
+
+			//create an outcome and associate to an entity
+			var learningOutcome = Mapper.Map<LearningOutcome>(request);
+			//learningOutcome.AssociatedEntities.Add(entityId);
+			_learningOutcomeRepository.Add(learningOutcome);
+			
+			
+			
+			var outcomeResponse = Mapper.Map<OutcomeResponse>(learningOutcome);
+			
+			var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
+
+			string uri = Url.Link("DefaultApi", new { id = learningOutcome.Id });
+			if (uri != null)
+			{
+				response.Headers.Location = new Uri(uri);
+			}
+			return response;
+		}
+
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
@@ -81,5 +115,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
             learningOutcome.ActiveFlag = false;
             _learningOutcomeRepository.Update(learningOutcome);
         }
+
+	  
     }
 }

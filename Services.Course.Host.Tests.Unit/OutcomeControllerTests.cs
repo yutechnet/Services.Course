@@ -70,6 +70,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             _mockLearningOutcomeRepository.Verify(o => o.Add(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
         }
 
+		[Test]
+		public void Add_a_new_LearningOutcome_and_associate_with_a_program()
+		{
+			var outcomeRequest = new OutcomeRequest
+			{
+				Description = "SomeDescription"
+			};
+			var programId = Guid.NewGuid();
+			//_outcomeController.Request = new HttpRequestMessage(HttpMethod.Post, "http://server.com/foos");
+			////The line below was needed in WebApi RC as null config caused an issue after upgrade from Beta
+			//_outcomeController.Configuration = new System.Web.Http.HttpConfiguration(new System.Web.Http.HttpRouteCollection());
+
+			var response = _outcomeController.Post("program",programId,outcomeRequest);
+
+			_mockLearningOutcomeRepository.Verify(o => o.Add(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
+		}
+
         [Test]
         public void Return_Existing_LearningOutcome()
         {
@@ -87,6 +104,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             _mockLearningOutcomeRepository.Verify(o => o.GetAll(), Times.Once());
             Assert.That(outcomeResponse.Description, Is.EqualTo(learningOutcome1.Description));
+			Assert.Fail();
         }
 
         [Test]

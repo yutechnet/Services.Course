@@ -60,8 +60,8 @@ namespace BpeProducts.Services.Course.Domain
 			foreach (EventMessage eventMessage in events)
 			{
 				object eventBody = eventMessage.Body;
-				var applier = _index[eventBody.GetType().Name];
-				applier.Apply(eventBody as IDomainEvent, course);
+				var eventPlayer= _index[eventBody.GetType().Name];
+				eventPlayer.Apply(eventBody as IDomainEvent, course);
 			}
 
 			return course;
