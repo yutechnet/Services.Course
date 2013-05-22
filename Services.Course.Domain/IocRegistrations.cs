@@ -73,11 +73,7 @@ namespace BpeProducts.Services.Course.Domain
 
 			containerBuilder.RegisterType<UpdateModelOnCourseDeletion>().As<IHandle<CourseDeleted>>();
 			containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseDeleted>>();
-            
-
-            
-
-
+     
         }
     }
 

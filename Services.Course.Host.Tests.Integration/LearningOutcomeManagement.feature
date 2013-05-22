@@ -20,8 +20,8 @@ Scenario: Delete an existing leanring outcome
 
 Scenario: Add a new learning outcome to a program and get it
 	Given the following programs exist:
-	| Name | Description |
-	| BA   | BA Program  |
+	| Name | Description | TenantId |
+	| BA   | BA Program  | 1        |
 	When I associate to the 'program' 'BA' a new learning outcome with the description 'SomeDescription'
 	Then the learning outcome should be with the description 'SomeDescription'
 	And the 'program' 'BA' is associated with learning outcome 'SomeDescription'

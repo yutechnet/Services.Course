@@ -80,7 +80,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
 			var request = new OutcomeRequest
 				{
-					Description = outCome
+					Description = outCome,
+					TenantId = 1
 				};
 			var response = ApiFeature.ApiTestHost.Client.PostAsync(postUrl,request,new JsonMediaTypeFormatter()).Result;
 			response.EnsureSuccessStatusCode();

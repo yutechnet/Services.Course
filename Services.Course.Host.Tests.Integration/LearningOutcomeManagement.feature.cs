@@ -126,10 +126,12 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
-                        "Description"});
+                        "Description",
+                        "TenantId"});
             table1.AddRow(new string[] {
                         "BA",
-                        "BA Program"});
+                        "BA Program",
+                        "1"});
 #line 22
  testRunner.Given("the following programs exist:", ((string)(null)), table1, "Given ");
 #line 25

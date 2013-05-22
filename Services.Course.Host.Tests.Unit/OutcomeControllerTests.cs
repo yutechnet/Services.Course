@@ -13,6 +13,7 @@ using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Host.App_Start;
 using BpeProducts.Services.Course.Host.Controllers;
 using Moq;
+using NHibernate;
 using NUnit.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit
@@ -27,7 +28,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         public void SetUp()
         {
             _mockLearningOutcomeRepository = new Mock<ILearningOutcomeRepository>();
-            _outcomeController = new OutcomeController(_mockLearningOutcomeRepository.Object);
+            _outcomeController = new OutcomeController(_mockLearningOutcomeRepository.Object,new Mock<ISession>().Object);
 
             var httpConfiguration = new HttpConfiguration();
             _outcomeController.Request = new HttpRequestMessage();

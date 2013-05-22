@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace BpeProducts.Services.Course.Domain.Entities
 {
 
-    public class Course : TenantEntity
+    public class Course : TenantEntity,IHaveOutcomes
     {
         private Dictionary<Guid, CourseSegment> _segmentIndex;
 
@@ -61,8 +61,10 @@ namespace BpeProducts.Services.Course.Domain.Entities
         {
             Programs = new List<Program>();
 			Segments = new List<CourseSegment>();
+			Outcomes = new List<LearningOutcome>();
             _segmentIndex = new Dictionary<Guid, CourseSegment>();
         }
-       
+
+	    public virtual IList<LearningOutcome> Outcomes { get; set; }
     }
 }
