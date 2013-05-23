@@ -54,12 +54,12 @@ function Deployment-SetAppPoolProperty
 	
 	Import-Module WebAdministration
 	# find app pool
-	$appPool = Get-Item IIS:\AppPools\$appPoolName -ErrorAction SilentlyContinue
+	$appPool = Get-Item "IIS:\AppPools\$appPoolName" -ErrorAction SilentlyContinue
 	if ($appPool)
 	{
-		Write-Host "Checking existing app pool property `"$appPoolProperty`""
+		Write-Host "Checking existing app pool `"$appPoolName`" property `"$appPoolProperty`""
 		# get the existing property value
-		$existingValue = Get-ItemProperty ("IIS:\AppPools\" + $appPoolName) -Name $appPoolProperty
+		$existingValue = Get-ItemProperty "IIS:\AppPools\$appPoolName" -Name $appPoolProperty
 		$updateValue = $False
 		# compare values
 		if ($compareValue -and $compareValue -ne $existingValue) { $updateValue = $True }
@@ -82,7 +82,7 @@ function Deployment-SetAppPoolProperty
 				}
 			}
 			# update property value
-			Set-ItemProperty ("IIS:\AppPools\" + $appPoolName) -Name $appPoolProperty -Value $appPoolPropertyValue
+			Set-ItemProperty "IIS:\AppPools\$appPoolName" -Name $appPoolProperty -Value $appPoolPropertyValue
 		}
 	}
 	else
@@ -107,7 +107,7 @@ function Deployment-SetWebsiteBinding
 	$bindingString = "$($IPAddress):$($port):$($hostheader)"
 	
 	# find website
-	$website = Get-Item IIS:\Sites\$websiteName -ErrorAction SilentlyContinue
+	$website = Get-Item "IIS:\Sites\$websiteName" -ErrorAction SilentlyContinue
 	if ($website)
 	{
 		if($hostHeader)
@@ -118,7 +118,7 @@ function Deployment-SetWebsiteBinding
 				ForEach($tmpHostHeader in $hostHeaderArray)
 				{
 					$tmpBindingString = "$($IPAddress):$($port):$($tmpHostHeader)"
-					Write-Host "Checking existing website binding"
+					Write-Host "Checking existing website `"$websiteName`" binding"
 					# get the existing binding
 					$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $tmpBindingString}
 					if (-not $existingBinding )
@@ -130,7 +130,7 @@ function Deployment-SetWebsiteBinding
 			}
 			else
 			{
-				Write-Host "Checking existing website binding"
+				Write-Host "Checking existing website `"$websiteName`" binding"
 				# get the existing binding
 				$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $bindingString}
 				if (-not $existingBinding )
@@ -142,7 +142,7 @@ function Deployment-SetWebsiteBinding
 		}
 		else
 		{
-			Write-Host "Checking existing website binding"
+			Write-Host "Checking existing website `"$websiteName`" binding"
 			# get the existing binding
 			$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $bindingString}
 			if (-not $existingBinding )
@@ -152,12 +152,12 @@ function Deployment-SetWebsiteBinding
 			}
 		}
 		
-		Write-Host "All website bindings"
-		Get-WebBinding -Name $websiteName
+		#Write-Host "All website bindings"
+		#Get-WebBinding -Name $websiteName | Format-Table -AutoSize
 	}
 	else
 	{
-		$(Throw "An existing website with name [$websiteName] was not found")
+		$(Throw "An existing website with name `"$websiteName`" was not found")
 	}
 }
 
@@ -209,7 +209,7 @@ function Deployment-RemoveWebsiteBinding
 	$bindingString = "$($IPAddress):$($port):$($hostheader)"
 	
 	# find website
-	$website = Get-Item IIS:\Sites\$websiteName -ErrorAction SilentlyContinue
+	$website = Get-Item "IIS:\Sites\$websiteName" -ErrorAction SilentlyContinue
 	if ($website)
 	{
 		Write-Host "Checking existing website binding"
@@ -220,8 +220,8 @@ function Deployment-RemoveWebsiteBinding
 			Write-Host "Removing website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
 			Remove-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader -ErrorAction SilentlyContinue
 		}
-		Write-Host "All website bindings"
-		Get-WebBinding -Name $websiteName
+		#Write-Host "All website bindings"
+		#Get-WebBinding -Name $websiteName
 	}
 	else
 	{
@@ -238,19 +238,29 @@ function Deployment-SetupAppPool
 	if (-not (ConfigureIIS)) {return}
 	
 	Import-Module WebAdministration
-	Write-Host "Checking for existing app pool"
+	Write-Host "Checking for existing app pool `"$appPoolName`""
 	# find app pool
-	$appPool = Get-Item IIS:\AppPools\$appPoolName -ErrorAction SilentlyContinue
+	$appPool = Get-Item "IIS:\AppPools\$appPoolName" -ErrorAction SilentlyContinue
 	if (-not $appPool)
 	{
 		# app pool was not found, create the app pool
 		Write-Host "Creating new app pool `"$appPoolName`""
 		New-WebAppPool -Name $appPoolName -Force | Out-Null
 	}
-	else
-	{
-		Write-Host "An existing app pool with name `"$appPoolName`" was found"
-	}
+}
+
+function Deployment-RemoveDefaultWebSite
+{
+	$websiteName = "Default Web Site"
+	
+	if (-not (ConfigureIIS)) {return}
+	
+	Import-Module ServerManager
+	Import-Module WebAdministration
+	
+	# find the Default Web Site website
+	Write-Host "Checking for existing website `"$websiteName`""
+	Remove-Item "IIS:\Sites\$websiteName" -ErrorAction SilentlyContinue
 }
 
 function Deployment-SetupWebsite
@@ -264,38 +274,43 @@ function Deployment-SetupWebsite
 	if (-not (ConfigureIIS)) {return}
 	
 	Import-Module WebAdministration
+	
+	# make sure that the website directory exists
+	if (-not (Test-Path "$websiteDirectoryPath"))
+	{
+		Write-Host "Creating directory `"$websiteDirectoryPath`""
+		New-Item -ItemType Directory -Path "$websiteDirectoryPath" | Out-Null
+	}
+	
 	# check for the app pool
 	$appPool = Deployment-SetupAppPool $appPoolName
-	Write-Host "Checking for existing website"
+	Write-Host "Checking for existing website `"$websiteName`""
+	
 	# find the website
-	$website = Get-Item IIS:\Sites\$websiteName -ErrorAction SilentlyContinue
+	$website = Get-Item "IIS:\Sites\$websiteName" -ErrorAction SilentlyContinue
 	if (-not $website)
 	{
 		# website not found, create new website
 		Write-Host "Creating new website `"$websiteName`""
-		$sites = Get-Item IIS:\Sites
+		$sites = Get-Item "IIS:\Sites"
 		if ($sites -eq $null -or ($sites.Count -eq 0))
 		{
 			# if fist site being created on the server then set the Id = 1
-			New-Website -Name $websiteName -PhysicalPath $websiteDirectoryPath -ApplicationPool $appPoolName -Id 1 -Force | Out-Null
+			New-Website -Name "$websiteName" -PhysicalPath "$websiteDirectoryPath" -ApplicationPool "$appPoolName" -Id 1 -Force | Out-Null
 		}
 		else
 		{
-			New-Website -Name $websiteName -PhysicalPath $websiteDirectoryPath -ApplicationPool $appPoolName -Force | Out-Null
+			New-Website -Name "$websiteName" -PhysicalPath "$websiteDirectoryPath" -ApplicationPool "$appPoolName" -Force | Out-Null
 		}
-		Write-Warning "A new website `"$websiteName`" has been created"
-		$website = Get-Item IIS:\Sites\$websiteName
-	}
-	else
-	{
-		Write-Host "An existing website with name `"$websiteName`" was found"
+		Write-Host "A new website `"$websiteName`" has been created"
+		$website = Get-Item "IIS:\Sites\$websiteName"
 	}
 	
 	# check the app pool of the website
-	if ($website.ApplicationPool -ne $appPoolName)
+	if ($website -and $website.ApplicationPool -ne "$appPoolName")
 	{
 		Write-Host "Updating website `"$websiteName`" app pool from `"$($website.ApplicationPool)`" to `"$appPoolName`"" 
-		Set-ItemProperty "IIS:\Sites\$websiteName" ApplicationPool $appPoolName
+		Set-ItemProperty "IIS:\Sites\$websiteName" ApplicationPool "$appPoolName"
 	}
 }
 
@@ -311,25 +326,32 @@ function Deployment-SetupWebApplication
 	if (-not (ConfigureIIS)) {return}
 	
 	Import-Module WebAdministration
-	Write-Host "Checking for existing website"
+	
+	# make sure that the webapp directory exists
+	if (-not (Test-Path "$webApplicationDirectoryPath"))
+	{
+		Write-Host "Creating directory `"$webApplicationDirectoryPath`""
+		New-Item -ItemType Directory -Path "$webApplicationDirectoryPath" | Out-Null
+	}
+	
+	Write-Host "Checking for existing website `"$websiteName`""
 	# find the website
-	$website = Get-Item IIS:\Sites\$websiteName -ErrorAction SilentlyContinue
+	$website = Get-Item "IIS:\Sites\$websiteName" -ErrorAction SilentlyContinue
 	if (-not $website)
 	{
 		Throw "Unable to locate website`"$websiteName`".  An existing website with the name of `"$websiteName`" is required to deploy this web application."
 	}
 	else
 	{
-		Write-Host "An existing website with name `"$websiteName`" was found"
-		Write-Host "Checking for existing web application"
+		Write-Host "Checking for existing web application `"$webApplicationName`""
 		$existingWebsiteAppPoolName = $website.ApplicationPool
 		# find the webapp
-		$webApp = Get-Item IIS:\Sites\$websiteName\$webApplicationName -ErrorAction SilentlyContinue
+		$webApp = Get-Item "IIS:\Sites\$websiteName\$webApplicationName" -ErrorAction SilentlyContinue
 		if (-not $webApp)
 		{
 			if ($appPoolName)
 			{
-				Deployment-SetupAppPool $appPoolName
+				Deployment-SetupAppPool "$appPoolName"
 			}
 			else
 			{
@@ -337,16 +359,15 @@ function Deployment-SetupWebApplication
 			}
 			# webapp not found, create new webapp
 			Write-Host "Creating new web application `"$webApplicationName`" under website `"$websiteName`""
-			$webApp = New-WebApplication -Name $webApplicationName -PhysicalPath $webApplicationDirectoryPath -Site $websiteName -ApplicationPool $appPoolName -Force | Out-Null
+			$webApp = New-WebApplication -Name "$webApplicationName" -PhysicalPath "$webApplicationDirectoryPath" -Site "$websiteName" -ApplicationPool "$appPoolName" -Force | Out-Null
 		}
 		else
 		{
-			Write-Host "An existing web application with name `"$webApplicationName`" was found under website `"$websiteName`""
-			if ($appPoolName -and $webApp.ApplicationPool -ne $appPoolName)
+			if ($appPoolName -and $webApp.ApplicationPool -ne "$appPoolName")
 			{
-				Deployment-SetupAppPool $appPoolName
+				Deployment-SetupAppPool "$appPoolName"
 				Write-Host "Updating web application `"$webApplicationName`" app pool from `"$($webApp.ApplicationPool)`" to `"$appPoolName`"" 
-				Set-ItemProperty "IIS:\Sites\$websiteName\$webApplicationName" ApplicationPool $appPoolName
+				Set-ItemProperty "IIS:\Sites\$websiteName\$webApplicationName" ApplicationPool "$appPoolName"
 			}
 		}
 	}
@@ -417,18 +438,18 @@ function Deployment-LocateCertificate
 	if ($certSubject)
 	{
 		$cert = Deployment-GetCertificate -CertSubject $certSubject -CertStoreName $certStoreName -CertStoreLocation $certStoreLocation
-		if ($cert)
+		if (-not $cert)
 		{
-			Write-Host "Valid certificate located"
+			Throw "Unable to locate valid certificate"
 		}
 	}
 	
 	if ($certThumbprint)
 	{
 		$cert = Deployment-GetCertificate -CertThumbprint $certThumbprint -CertStoreName $certStoreName -CertStoreLocation $certStoreLocation
-		if ($cert)
+		if (-not $cert)
 		{
-			Write-Host "Valid certificate located"
+			Throw "Unable to locate valid certificate"
 		}
 	}
 }
@@ -468,7 +489,7 @@ function Deployment-GetCertificate
 	if ($certSubject)
 	{
 		Write-Host "Checking certificate store `"$certStoreName`" located at `"$certStoreLocation`" for certificate with subject `"$certSubject`""
-    	$certs = Get-ChildItem cert:\$certStoreLocation\$certStoreName\* | Where-Object { $_.Subject -eq $certSubject }
+    	$certs = Get-ChildItem cert:\$certStoreLocation\$certStoreName\* | Where-Object { $_.Subject -eq "CN=$certSubject" }
 	}
 	
 	if ($certs)
@@ -1366,6 +1387,88 @@ function Deployment-InsertDatabaseSyncTrackingRecord
 	{
 		# Close the database connection
 		$sqlConnection.Close()
+	}
+}
+
+#endregion
+
+#region Windows Features Functions
+
+function Deployment-InstallWindowsFeatures
+{
+	param(
+		$featureArray = $(throw 'An array with Windows feature names and descriptions is required')
+	)
+	
+	for($index = 0; $index -lt $featureArray.Count; $index++) {
+		Deployment-InstallWindowsFeature -FeatureName $featureArray[$index][0] -Description $featureArray[$index][1] -Index $($index+1) -Total $featureArray.Count
+	}
+}
+
+function Deployment-RemoveWindowsFeatures
+{
+	param(
+		$featureArray = $(throw 'An array with Windows feature names and descriptions is required')
+	)
+	
+	for($index = 0; $index -lt $featureArray.Count; $index++) {
+		Deployment-RemoveWindowsFeature -FeatureName $featureArray[$index][0] -Description $featureArray[$index][1] -Index $($index+1) -Total $featureArray.Count
+	}
+}
+
+function Deployment-InstallWindowsFeature
+{
+	param(
+		[string]$featureName = $(throw 'Windows feature name is required'),
+		[string]$description,
+		[string]$index,
+		[string]$total
+	)
+	
+	Import-Module ServerManager
+	
+	if ($index -and $total)
+	{
+		Write-Host "Checking Windows feature [$index/$total] $featureName ($description) for installation"
+	}
+	else
+	{
+		Write-Host "Checking Windows feature $featureName ($description) for installation"
+	}
+	$feature = Get-WindowsFeature -Name $featureName
+	
+	if (-not ($feature.Installed))
+	{
+		Write-Host "Installing Windows feature $featureName ($description)"
+		Add-WindowsFeature -Name $featureName | Out-Null
+	}
+}
+
+function Deployment-RemoveWindowsFeature
+{
+	param(
+		[string]$featureName = $(throw 'Windows feature name is required'),
+		[string]$description,
+		[string]$index,
+		[string]$total
+	)
+	
+	Import-Module ServerManager
+	
+	if ($index -and $total)
+	{
+		Write-Host "Checking Windows feature [$index/$total] $featureName ($description) for removal"
+	}
+	else
+	{
+		Write-Host "Checking Windows feature $featureName ($description) for removal"
+	}
+	$feature = Get-WindowsFeature -Name $featureName
+	
+	if ($feature.Installed)
+	{
+		Write-Host "Removing Windows feature $featureName ($description)"
+		Remove-WindowsFeature -Name $featureName | Out-Null
 	}
 }
 
