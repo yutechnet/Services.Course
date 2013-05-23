@@ -6,24 +6,28 @@ using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Common.WebApi.Authorization;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
     public class OutcomeController : ApiController
     {
         private readonly ILearningOutcomeRepository _learningOutcomeRepository;
-	    private readonly ISession _session;
+	    private readonly IRepository _repository;
 
-	    public OutcomeController(ILearningOutcomeRepository learningOutcomeRepository,ISession session)
+
+		public OutcomeController(ILearningOutcomeRepository learningOutcomeRepository, IRepository repository)
         {
 	        _learningOutcomeRepository = learningOutcomeRepository;
-	        _session = session;
+		    _repository = repository;
+		
         }
 
 		[Transaction]
@@ -43,9 +47,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 	    public object Get(string entityType, Guid entityId, Guid outcomeId)
 	    {
 		    IHaveOutcomes entity =
-			    _session.QueryOver<IHaveOutcomes>()
-			            .Where(e => e.Id == entityId)
-			            .SingleOrDefault();
+			    _repository.Query<IHaveOutcomes>().SingleOrDefault(e => e.Id == entityId);
 		    
 			if (entity == null)
 		    {
@@ -92,16 +94,18 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		{
 			//check if the entity exists
 			//apply strategy pattern here?
-			var entities = _session.QueryOver<IHaveOutcomes>().Where(x => x.Id == entityId);
-			var entity = entities.SingleOrDefault<IHaveOutcomes>();
+			var entity = _repository.Query<IHaveOutcomes>().SingleOrDefault(x => x.Id == entityId);
+			//var entities = _repository.QueryOver<IHaveOutcomes>().Where(x => x.Id == entityId);
+			
+			//var entity = entities.SingleOrDefault<IHaveOutcomes>();
 			//create an outcome and associate to an entity
 			var learningOutcome = Mapper.Map<LearningOutcome>(request);
 			//learningOutcome.Id = Guid.NewGuid();
-			_session.Save(learningOutcome);
+			_learningOutcomeRepository.Add(learningOutcome);
 			
 			entity.Outcomes.Add(learningOutcome);
 
-			_session.Save(entity);
+			_repository.Save(entity);
 			var outcomeResponse = Mapper.Map<OutcomeResponse>(learningOutcome);
 			
 			var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);

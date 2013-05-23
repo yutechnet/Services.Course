@@ -8,8 +8,8 @@ namespace BpeProducts.Services.Course.Host
 		public static void Register(HttpConfiguration config)
 		{
 			config.EnableQuerySupport();
-			config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/{controller}/{outcomeId}",
-			                           new {outcomeId = RouteParameter.Optional});
+			config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/outcome/{outcomeId}",
+			                           new {controller="outcome",outcomeId = RouteParameter.Optional});
 
 			config.Routes.MapHttpRoute("CourseSegmentsApi2", "{controller}/{courseId}/{action}");
 

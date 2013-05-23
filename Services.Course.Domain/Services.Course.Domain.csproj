@@ -197,6 +197,7 @@
     <Compile Include="Repositories\ICourseRepository.cs" />
     <Compile Include="Repositories\ILearningOutcomeRepository.cs" />
     <Compile Include="Repositories\LearningOutcomeRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

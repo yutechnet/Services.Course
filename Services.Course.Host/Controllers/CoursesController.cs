@@ -198,6 +198,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         // courses/<courseId>/segments/<segmentId>
         [HttpPut]
+		[Transaction]
         public void Segments(Guid courseId, Guid segmentId, Contract.SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             // Updates the specified segment

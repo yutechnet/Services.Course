@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Hosting;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -23,12 +24,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
     {
         private Mock<ILearningOutcomeRepository> _mockLearningOutcomeRepository;
         private OutcomeController _outcomeController;
+		private Mock<IRepository> _repositoryOfObjecWithOutcomes;
 
-        [SetUp]
+	    [SetUp]
         public void SetUp()
         {
             _mockLearningOutcomeRepository = new Mock<ILearningOutcomeRepository>();
-            _outcomeController = new OutcomeController(_mockLearningOutcomeRepository.Object,new Mock<ISession>().Object);
+	        _repositoryOfObjecWithOutcomes = new Mock<IRepository>();
+            _outcomeController = new OutcomeController(_mockLearningOutcomeRepository.Object,_repositoryOfObjecWithOutcomes.Object);
 
             var httpConfiguration = new HttpConfiguration();
             _outcomeController.Request = new HttpRequestMessage();
@@ -78,12 +81,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			{
 				Description = "SomeDescription"
 			};
-			var programId = Guid.NewGuid();
-			//_outcomeController.Request = new HttpRequestMessage(HttpMethod.Post, "http://server.com/foos");
-			////The line below was needed in WebApi RC as null config caused an issue after upgrade from Beta
-			//_outcomeController.Configuration = new System.Web.Http.HttpConfiguration(new System.Web.Http.HttpRouteCollection());
+			var program = new Program
+				{
+					Id = Guid.NewGuid()
+				};
 
-			var response = _outcomeController.Post("program",programId,outcomeRequest);
+			_repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+			
+			
+
+			var response = _outcomeController.Post("program",program.Id,outcomeRequest);
 
 			_mockLearningOutcomeRepository.Verify(o => o.Add(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
 		}
@@ -105,7 +112,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             _mockLearningOutcomeRepository.Verify(o => o.GetAll(), Times.Once());
             Assert.That(outcomeResponse.Description, Is.EqualTo(learningOutcome1.Description));
-			Assert.Fail();
+			
         }
 
         [Test]
