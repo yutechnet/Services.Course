@@ -65,6 +65,26 @@ namespace BpeProducts.Services.Course.Host.Controllers
 			return Mapper.Map<OutcomeResponse>(outcome);
 	    }
 
+		[Transaction]
+		public object Get(string entityType, Guid entityId)
+		{
+			IHaveOutcomes entity =
+				_repository.Query<IHaveOutcomes>().SingleOrDefault(e => e.Id == entityId);
+
+			if (entity == null)
+			{
+				throw new HttpResponseException(HttpStatusCode.NotFound);
+			}
+
+			var outcomes = entity.Outcomes;
+			if (outcomes == null)
+			{
+				outcomes=new List<LearningOutcome>();
+			}
+
+			return Mapper.Map<List<OutcomeResponse>>(outcomes);
+		}
+
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
@@ -95,17 +115,21 @@ namespace BpeProducts.Services.Course.Host.Controllers
 			//check if the entity exists
 			//apply strategy pattern here?
 			var entity = _repository.Query<IHaveOutcomes>().SingleOrDefault(x => x.Id == entityId);
-			//var entities = _repository.QueryOver<IHaveOutcomes>().Where(x => x.Id == entityId);
-			
-			//var entity = entities.SingleOrDefault<IHaveOutcomes>();
-			//create an outcome and associate to an entity
-			var learningOutcome = Mapper.Map<LearningOutcome>(request);
-			//learningOutcome.Id = Guid.NewGuid();
-			_learningOutcomeRepository.Add(learningOutcome);
-			
-			entity.Outcomes.Add(learningOutcome);
+			if (entity==null) throw new HttpResponseException(HttpStatusCode.NotFound);
 
-			_repository.Save(entity);
+			var learningOutcome=entity.Outcomes.SingleOrDefault(o => o.Description.ToLower() == request.Description.ToLower());
+			if (learningOutcome==null)
+			{
+				//create an outcome and associate to an entity
+				learningOutcome = Mapper.Map<LearningOutcome>(request);
+				//learningOutcome.Id = Guid.NewGuid();
+				_repository.Save(learningOutcome);
+
+				entity.Outcomes.Add(learningOutcome);
+
+				_repository.Save(entity);
+				
+			}
 			var outcomeResponse = Mapper.Map<OutcomeResponse>(learningOutcome);
 			
 			var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
@@ -144,6 +168,21 @@ namespace BpeProducts.Services.Course.Host.Controllers
             learningOutcome.ActiveFlag = false;
             _learningOutcomeRepository.Update(learningOutcome);
         }
+
+		[Transaction]
+		public void Delete(string entityType, Guid entityId, Guid outcomeId)
+		{
+			var entity = _repository.Query<IHaveOutcomes>().SingleOrDefault<IHaveOutcomes>(x => x.Id == entityId);
+			if (entity == null)
+			{
+				throw new HttpResponseException(HttpStatusCode.NotFound);
+			}
+			var outcome = entity.Outcomes.SingleOrDefault(o => o.Id == outcomeId);
+			if (outcome==null) throw new HttpResponseException(HttpStatusCode.NotFound);
+			entity.Outcomes.Remove(outcome);
+			_repository.Update(entity);
+
+		}
 
 	  
     }

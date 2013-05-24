@@ -92,7 +92,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
 			var response = _outcomeController.Post("program",program.Id,outcomeRequest);
 
-			_mockLearningOutcomeRepository.Verify(o => o.Add(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
+			_repositoryOfObjecWithOutcomes.Verify(o => o.Save(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
 		}
 
         [Test]

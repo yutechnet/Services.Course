@@ -88,6 +88,60 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			ScenarioContext.Current.Add("learningoutcomeResourceUrl", response.Headers.Location);
 		}
 
+		[When(@"I associate the following learning outcomes to '(.*)' program:")]
+		public void WhenIAssociateTheFollowingLearningOutcomesToProgram(string programName, Table table)
+		{
+			// PUT /program/programid/outcome
+			ProgramResponse program = null;
+			
+			var programs = ScenarioContext.Current.Get<IList<ProgramResponse>>("programs");
+			program = programs.First(p => p.Name.Equals(programName));
+			
+
+			var postUrl = string.Format("{0}/{1}/outcome",
+										FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
+			var outcomeUrls = new Dictionary<string, Uri>();
+			if (ScenarioContext.Current.ContainsKey("learningoutcomeResourceUrls"))
+			{
+				outcomeUrls = ScenarioContext.Current.Get<Dictionary<string, Uri>>("learningoutcomeResourceUrls") ?? new Dictionary<string, Uri>();
+			}
+			
+
+			foreach (var item in table.Rows)
+			{
+				var request = new OutcomeRequest
+				{
+					Description = item["Description"],
+					TenantId = 1
+				};
+				var response = ApiFeature.ApiTestHost.Client.PostAsync(postUrl, request, new JsonMediaTypeFormatter()).Result;
+				response.EnsureSuccessStatusCode();
+				
+				if (outcomeUrls.ContainsKey(item["Description"]))
+				{
+					outcomeUrls[item["Description"]] = response.Headers.Location;
+				}
+				else
+				{
+					outcomeUrls.Add(item["Description"], response.Headers.Location);
+				}
+				
+				
+			}
+
+			if (ScenarioContext.Current.ContainsKey("learningoutcomeResourceUrls"))
+			{
+				ScenarioContext.Current["learningoutcomeResourceUrls"] = outcomeUrls;
+				
+			}
+			else
+			{
+				ScenarioContext.Current.Add("learningoutcomeResourceUrls", outcomeUrls);
+			}
+			
+			
+		}
+
 		[Then(@"the '(.*)' '(.*)' is associated with learning outcome '(.*)'")]
 		public void ThenTheIsAssociatedWithLearningOutcome(string entityType, string entityName, string outcome)
 		{
@@ -97,6 +151,87 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
 			Assert.That(outcomeResponse.Description, Is.EqualTo(outcome));
 		}
+
+		
+
+		[Then(@"'(.*)' program is associated with the following learning outcomes:")]
+		public void ThenProgramIsAssociatedWithTheFollowingLearningOutcomes(string programName, Table table)
+		{
+			var outcomeUrls = ScenarioContext.Current.Get<Dictionary<string, Uri>>("learningoutcomeResourceUrls");
+			foreach (var item in table.Rows)
+			{
+				var getUrl = outcomeUrls[item["Description"]];
+				var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl.ToString()).Result;
+				response.EnsureSuccessStatusCode();
+				var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
+				Assert.That(outcomeResponse.Description, Is.EqualTo(item["Description"]));
+			}
+
+		}
+
+		[When(@"I disassociate the following learning outcomes from '(.*)' program:")]
+		public void WhenIDisassociateTheFollowingLearningOutcomesFromProgram(string programName, Table table)
+		{
+			var outcomeUrls = ScenarioContext.Current.Get<Dictionary<string, Uri>>("learningoutcomeResourceUrls");
+			foreach (var item in table.Rows)
+			{
+				var deleteUrl = outcomeUrls[item["Description"]];
+				var response = ApiFeature.ApiTestHost.Client.DeleteAsync(deleteUrl.ToString()).Result;
+				ScenarioContext.Current.Add("Delete" + item["Description"],response);
+				response.EnsureSuccessStatusCode();
+			}
+		}
+
+		[Then(@"'(.*)' program is associated with the only following learning outcomes:")]
+		public void ThenProgramIsAssociatedWithTheOnlyFollowingLearningOutcomes(string programName, Table table)
+		{
+			//get the program and its outcome and assert on count and desc
+			// PUT /program/programid/outcome
+			ProgramResponse program = null;
+
+			var programs = ScenarioContext.Current.Get<IList<ProgramResponse>>("programs");
+			program = programs.First(p => p.Name.Equals(programName));
+
+
+			var getUrl = string.Format("{0}/{1}/outcome",
+										FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
+
+			var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl).Result;
+			response.EnsureSuccessStatusCode();
+			var outcomes = response.Content.ReadAsAsync<List<OutcomeResponse>>().Result;
+			Assert.That(outcomes.Count,Is.EqualTo(table.Rows.Count));
+			foreach (var row in table.Rows)
+			{
+				Assert.That(outcomes.Any(o=>o.Description==row["Description"]));
+			}
+		}
+
+		[Then(@"disassociating the following from '(.*)' program should result:")]
+		public void ThenDisassociatingTheFollowingFromProgramShouldResult(string p0, Table table)
+		{
+			var outcomeUrls = ScenarioContext.Current.Get<Dictionary<string, Uri>>("learningoutcomeResourceUrls");
+			String deleteUrl="";
+			foreach (var item in table.Rows)
+			{
+				
+				if (outcomeUrls.ContainsKey(item["Description"]))
+				{
+					deleteUrl = outcomeUrls[item["Description"]].ToString();
+				}
+				else
+				{
+					deleteUrl=deleteUrl.Substring(0,deleteUrl.LastIndexOf("/")+1) + Guid.NewGuid().ToString();//craft a fake
+				}
+				var response = ApiFeature.ApiTestHost.Client.DeleteAsync(deleteUrl).Result;
+
+				var expectedStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), item["Disassociation Response"]);
+
+				Assert.That(response.StatusCode.Equals(expectedStatusCode));
+
+			}
+		}
+
+
 
 
     }
