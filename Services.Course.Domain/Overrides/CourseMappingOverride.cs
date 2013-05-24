@@ -22,7 +22,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
 				.ParentKeyColumn("EntityId")
 				.ChildKeyColumn("LearningOutcomeId")
 				.ForeignKeyConstraintNames("none","none")
-				.Table("EntityOutcome");
+				.Table("EntityLearningOutcome");
 	    }
     }
 }
