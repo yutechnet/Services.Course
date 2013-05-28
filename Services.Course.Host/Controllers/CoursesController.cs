@@ -37,17 +37,17 @@ namespace BpeProducts.Services.Course.Host.Controllers
 	        _courseFactory = courseFactory;
         }
 
-		//// GET api/programs
-		//public IEnumerable<CourseInfoResponse> Get(ODataQueryOptions options)
-		//{
-		//	var queryString = Request.RequestUri.Query.Split('?');
-		//	ICriteria criteria = _session.ODataQuery<Domain.Entities.Course>(queryString.Length > 1 ? queryString[1] : "");
-		//	criteria.Add(Expression.Eq("ActiveFlag", true));
-		//	var courses = criteria.List<Domain.Entities.Course>();
-		//	var courseResponses = new List<CourseInfoResponse>();
-		//	Mapper.Map(courses, courseResponses);
-		//	return courseResponses;
-		//}
+		// GET api/programs
+		public IEnumerable<CourseInfoResponse> Get(ODataQueryOptions options)
+		{
+			var queryString = Request.RequestUri.Query.Split('?');
+			ICriteria criteria = _courseRepository.ODataQuery<Domain.Entities.Course>(queryString.Length > 1 ? queryString[1] : "");
+			criteria.Add(Expression.Eq("ActiveFlag", true));
+			var courses = criteria.List<Domain.Entities.Course>();
+			var courseResponses = new List<CourseInfoResponse>();
+			Mapper.Map(courses, courseResponses);
+			return courseResponses;
+		}
 
         // GET api/courses
         public IEnumerable<CourseInfoResponse> Get()
