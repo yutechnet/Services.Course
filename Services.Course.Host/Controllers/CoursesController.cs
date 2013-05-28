@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
+using System.Web.Http.OData.Query;
 using System.Xml.Linq;
 using AutoMapper;
 using BpeProducts.Common.WebApi.Attributes;
@@ -15,6 +16,8 @@ using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
+using NHibernate;
+using NHibernate.Criterion;
 using ServiceStack.Text;
 
 namespace BpeProducts.Services.Course.Host.Controllers
@@ -23,21 +26,33 @@ namespace BpeProducts.Services.Course.Host.Controllers
     [Authorize]
     public class CoursesController : ApiController
     {
-        private readonly ICourseRepository _courseRepository;
+        private readonly IRepository _courseRepository;
         private readonly IDomainEvents _domainEvents;
 	    private readonly ICourseFactory _courseFactory;
 
-	    public CoursesController(ICourseRepository courseRepository, IDomainEvents domainEvents,ICourseFactory courseFactory)
+	    public CoursesController(IRepository courseRepository, IDomainEvents domainEvents,ICourseFactory courseFactory)
         {
             _courseRepository = courseRepository;
             _domainEvents = domainEvents;
 	        _courseFactory = courseFactory;
         }
 
+		//// GET api/programs
+		//public IEnumerable<CourseInfoResponse> Get(ODataQueryOptions options)
+		//{
+		//	var queryString = Request.RequestUri.Query.Split('?');
+		//	ICriteria criteria = _session.ODataQuery<Domain.Entities.Course>(queryString.Length > 1 ? queryString[1] : "");
+		//	criteria.Add(Expression.Eq("ActiveFlag", true));
+		//	var courses = criteria.List<Domain.Entities.Course>();
+		//	var courseResponses = new List<CourseInfoResponse>();
+		//	Mapper.Map(courses, courseResponses);
+		//	return courseResponses;
+		//}
+
         // GET api/courses
         public IEnumerable<CourseInfoResponse> Get()
         {
-            return _courseRepository.GetAll()
+            return _courseRepository.Query<Domain.Entities.Course>()
                                     .Select(c => Mapper.Map<CourseInfoResponse>(c))
                                     .ToList();
         }
@@ -46,7 +61,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public CourseInfoResponse Get(Guid id)
         {
             Domain.Entities.Course course =
-                _courseRepository.GetAll().FirstOrDefault(c => c.Id.Equals(id) && c.ActiveFlag.Equals(true));
+				_courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Id.Equals(id) && c.ActiveFlag.Equals(true));
             if (course == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -61,7 +76,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public CourseInfoResponse GetByCode(string code)
         {
             Domain.Entities.Course course =
-                _courseRepository.GetAll().FirstOrDefault(c => c.Code == code && c.ActiveFlag.Equals(true));
+                _courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Code == code && c.ActiveFlag.Equals(true));
             if (course == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -74,7 +89,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public CourseInfoResponse GetByName(string name)
         {
             Domain.Entities.Course course =
-                _courseRepository.GetAll().FirstOrDefault(c => c.Name == name && c.ActiveFlag.Equals(true));
+				_courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Name == name && c.ActiveFlag.Equals(true));
             if (course == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -101,7 +116,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		            Course = course
 	            });
 
-            var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_courseRepository.GetById(course.Id));
+            var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_courseRepository.Get<Domain.Entities.Course>(course.Id));
             HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("DefaultApi", new { id = courseInfoResponse.Id });
@@ -228,7 +243,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public CourseSegment Segments(Guid courseId, Guid segmentId)
         {
             // returns the specified segments (and its children)
-            Domain.Entities.Course courseInDb = _courseRepository.GetById(courseId);
+            var courseInDb = _courseRepository.Get<Domain.Entities.Course>(courseId);
 
             if (courseInDb == null)
             {
@@ -242,7 +257,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpGet]
         public IEnumerable<Contract.CourseSegment> SubSegments(Guid courseId, Guid segmentId)
         {
-            Domain.Entities.Course courseInDb = _courseRepository.GetById(courseId);
+           var courseInDb = _courseRepository.Get<Domain.Entities.Course>(courseId);
 
             if (courseInDb == null)
             {
