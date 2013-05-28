@@ -44,7 +44,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
 	    [Transaction]
-	    public object Get(string entityType, Guid entityId, Guid outcomeId)
+        public OutcomeResponse Get(string entityType, Guid entityId, Guid outcomeId)
 	    {
 		    IHaveOutcomes entity =
 			    _repository.Query<IHaveOutcomes>().SingleOrDefault(e => e.Id == entityId);
@@ -66,7 +66,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 	    }
 
 		[Transaction]
-		public object Get(string entityType, Guid entityId)
+		public List<OutcomeResponse> Get(string entityType, Guid entityId)
 		{
 			IHaveOutcomes entity =
 				_repository.Query<IHaveOutcomes>().SingleOrDefault(e => e.Id == entityId);
@@ -110,7 +110,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		[CheckModelForNull]
 		[ValidateModelState]
 		[ClaimsAuthorize()]
-		public object Post(string entityType,Guid entityId, OutcomeRequest request)
+        public HttpResponseMessage Post(string entityType, Guid entityId, OutcomeRequest request)
 		{
 			//check if the entity exists
 			//apply strategy pattern here?
