@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Host.Controllers;
 using Moq;
 using NHibernate;
@@ -12,19 +13,12 @@ using NUnit.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit
 {
-    public static class SessionExtension
-    {
-        public static IQueryable Result; 
-        public static IQueryable Query<T>(this ISession session)
-        {
-            return Result;
-        }
-    }
+   
 	[TestFixture]
 	public class ProgramControllerTests
 	{
 		private ProgramsController _programsController;
-		private Mock<ISession> _session;
+		private Mock<IRepository> _repository;
 		private Guid[] _programIds;
 
 		[SetUp]
@@ -32,7 +26,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		{
 
 			_programIds =  new[]{Guid.NewGuid(),Guid.NewGuid(),Guid.NewGuid()};
-			_session=new Mock<ISession>();
+			_repository=new Mock<IRepository>();
 			var programs = new List<Program>
 				{
 					new Program
@@ -52,8 +46,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 						}
 				}.AsQueryable();
 
-		    SessionExtension.Result = programs;
-            _programsController = new ProgramsController(_session.Object);
+		    
+            _programsController = new ProgramsController(_repository.Object);
 		}
 
 		[TearDown]

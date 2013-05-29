@@ -1,6 +1,7 @@
 ﻿###############################################################################
 # Required User Defined Octopus Variables
 # =======================================
+# IdentityIssuerCertThumbprint
 # IISAppPoolIdentity
 # IISAppPoolIdentityPassword
 # IISAppPoolName
@@ -116,3 +117,6 @@ Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'M
 Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'ProcessModel.IdentityType' -AppPoolPropertyValue ([int] [Microsoft.Web.Administration.ProcessModelIdentityType]::SpecificUser) -CompareValue 'SpecificUser' #LocalSystem = 0, LocalService = 1, NetworkService = 2, SpecificUser = 3, ApplicationPoolIdentity = 4
 Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'ProcessModel.Username'     -AppPoolPropertyValue $IISAppPoolIdentity
 Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'ProcessModel.Password'     -AppPoolPropertyValue $IISAppPoolIdentityPassword -Hide
+
+# verify identity signing certificate is installed
+Deployment-LocateCertificate -CertThumbprint "$IdentityIssuerCertThumbprint" -CertStoreName "My" -CertStoreLocation "LocalMachine"

@@ -21,7 +21,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
     [TestFixture]
     public class CoursesControllerTests
     {
-        private Mock<ICourseRepository> _mockCourseRepository;
+        private Mock<IRepository> _mockCourseRepository;
 
         private CoursesController _coursesController;
 	    private Mock<IDomainEvents> _mockDomainEvents;
@@ -32,7 +32,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
             MapperConfig.ConfigureMappers();
 
-            _mockCourseRepository = new Mock<ICourseRepository>();
+            _mockCourseRepository = new Mock<IRepository>();
 	        _mockDomainEvents = new Mock<IDomainEvents>();
 		    _mockCourseFactory = new Mock<ICourseFactory>();
 			_coursesController = new CoursesController(_mockCourseRepository.Object, _mockDomainEvents.Object,_mockCourseFactory.Object);
@@ -61,7 +61,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                 };
 
             _mockCourseFactory.Setup(c => c.Create(It.IsAny<SaveCourseRequest>())).Returns(course);
-			_mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(course);
+			_mockCourseRepository.Setup(c => c.Get<Domain.Entities.Course>(It.IsAny<Guid>())).Returns(course);
 
             var response = _coursesController.Post(saveCourseRequest);
             var actual = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
@@ -205,7 +205,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                             ActiveFlag = true
                         }
                 };
-            _mockCourseRepository.Setup(t => t.GetAll()).Returns(courses.AsQueryable());
+            _mockCourseRepository.Setup(t => t.Query<Domain.Entities.Course>()).Returns(courses.AsQueryable());
 
             return courses;
         }

@@ -75,7 +75,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         }
 
 		[Test]
-		public void Add_a_new_LearningOutcome_and_associate_with_a_program()
+		public void Can_add_a_new_LearningOutcome_and_associate_with_a_program()
 		{
 			var outcomeRequest = new OutcomeRequest
 			{
@@ -94,6 +94,50 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
 			_repositoryOfObjecWithOutcomes.Verify(o => o.Save(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
 		}
+
+        [Test]
+        public void Cannot_add_new_LearningOutcome_and_associate_with_an_imaginary_program()
+        {
+            var outcomeRequest = new OutcomeRequest
+            {
+                Description = "SomeDescription"
+            };
+            
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> {}).AsQueryable());
+
+
+
+           var e = Assert.Throws<HttpResponseException>(()=>_outcomeController.Post("program", Guid.NewGuid(), outcomeRequest));
+           
+            Assert.That(e.Response.StatusCode,Is.EqualTo(HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void Associating_a_new_LearningOutcome_that_has_the_same_description_as_an_existing_one_is_idempotent()
+        {
+            var outcomeRequest = new OutcomeRequest
+            {
+                Description = "SomeDescription"
+            };
+            var program = new Program
+            {
+                Id = Guid.NewGuid(),
+                Outcomes=new List<LearningOutcome>
+                    {
+                        new LearningOutcome{Description = "SomeDescription"}
+                    }
+                
+            };
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+
+
+            var response = _outcomeController.Post("program", program.Id, outcomeRequest);
+
+            _repositoryOfObjecWithOutcomes.Verify(o => o.Save(It.IsAny<LearningOutcome>()),Times.Never());
+            _repositoryOfObjecWithOutcomes.Verify(o => o.Save(It.IsAny<Program>()), Times.Never());
+        }
 
         [Test]
         public void Return_Existing_LearningOutcome()
@@ -140,5 +184,196 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             _mockLearningOutcomeRepository.Verify(o => o.GetById(It.IsAny<Guid>()));
             _mockLearningOutcomeRepository.Verify(o => o.Update(It.Is<LearningOutcome>(x => x.ActiveFlag == false)));
         }
+
+        [Test]
+        public void Can_disassociate_a_program_from_LearningOutcome()
+        {
+            var learningOutcomeId = Guid.NewGuid();
+            var programId = Guid.NewGuid();
+
+            var program = new Program
+            {
+                Id = programId,
+                Outcomes = new List<LearningOutcome>
+                    {
+                        new LearningOutcome{Id=learningOutcomeId,Description = "SomeDescription"}
+                    }
+
+            };
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+            
+            _outcomeController.Delete("program", programId, learningOutcomeId);  
+
+            _repositoryOfObjecWithOutcomes.Verify(r=>r.Update(It.Is<Program>(p=>p.Outcomes.Count==0)));
+             
+        }
+
+        [Test]
+        public void Disassociating_a_program_from_LearningOutcome_that_is_diassociated_throws_404()
+        {
+            var learningOutcomeId = Guid.NewGuid();
+            var programId = Guid.NewGuid();
+
+            var program = new Program
+            {
+                Id = programId,
+            };
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+
+            var response=Assert.Throws<HttpResponseException>(()=>_outcomeController.Delete("program", programId, learningOutcomeId));
+            Assert.That(response.Response.StatusCode,Is.EqualTo(HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void Disassociating_an_outcome_from_non_existing_entity_throws_404()
+        {
+            var learningOutcomeId = Guid.NewGuid();
+            var programId = Guid.NewGuid();
+
+            var program = new Program
+            {
+                Id = programId,
+            };
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+
+            var response = Assert.Throws<HttpResponseException>(() => _outcomeController.Delete("program", Guid.NewGuid(), learningOutcomeId));
+            Assert.That(response.Response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void Get_the_specific_outcome_from_an_entity()
+        {
+            var learningOutcomeId = Guid.NewGuid();
+            var programId = Guid.NewGuid();
+
+            var program = new Program
+            {
+                Id = programId,
+                Outcomes = new List<LearningOutcome>
+                    {
+                        new LearningOutcome{Id=learningOutcomeId,Description = "SomeDescription"}
+                    }
+
+            };
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+            var outcome = (OutcomeResponse)_outcomeController.Get("program", programId, learningOutcomeId);
+
+            Assert.That(outcome, Is.Not.Null);
+            Assert.That(outcome.Description, Is.EqualTo(program.Outcomes[0].Description));
+        }
+
+        [Test]
+        public void Get_the_non_existing_outcome_from_an_entity_throws_404_error()
+        {
+            var learningOutcomeId = Guid.NewGuid();
+            var programId = Guid.NewGuid();
+
+            var program = new Program
+            {
+                Id = programId,
+                Outcomes = new List<LearningOutcome>
+                    {
+                        new LearningOutcome{Id=learningOutcomeId,Description = "SomeDescription"}
+                    }
+
+            };
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+            var response = Assert.Throws<HttpResponseException>(() => _outcomeController.Get("program", programId, Guid.NewGuid()));
+            
+            Assert.That(response.Response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void Get_the_non_existing_outcome_from_non_existing_entity_throws_404_error()
+        {
+            var learningOutcomeId = Guid.NewGuid();
+            var programId = Guid.NewGuid();
+
+            var program = new Program
+            {
+                Id = programId,
+                Outcomes = new List<LearningOutcome>
+                    {
+                        new LearningOutcome{Id=learningOutcomeId,Description = "SomeDescription"}
+                    }
+
+            };
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+            var response = Assert.Throws<HttpResponseException>(() => _outcomeController.Get("program", Guid.NewGuid(), Guid.NewGuid()));
+
+            Assert.That(response.Response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void Get_all_learning_outcomes_from_an_entity()
+        {
+            var programId = Guid.NewGuid();
+
+            var program = new Program
+            {
+                Id = programId,
+                Outcomes = new List<LearningOutcome>
+                    {
+                        new LearningOutcome{Id=Guid.NewGuid(),Description = "SomeDescription"},
+                        new LearningOutcome{Id=Guid.NewGuid(),Description = "OtherDescription"},
+                    }
+
+            };
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+            var outcomes = (List<OutcomeResponse>) _outcomeController.Get("program", programId);
+
+            Assert.That(outcomes, Is.Not.Null);
+            Assert.That(outcomes.Count, Is.EqualTo(2));
+            Assert.That(outcomes[0].Description, Is.EqualTo("SomeDescription"));
+            Assert.That(outcomes[1].Description, Is.EqualTo("OtherDescription"));
+        }
+
+
+        [Test]
+        public void Get_all_learning_outcomes_from_an_non_existing_entity_throws_404()
+        {
+            var programId = Guid.NewGuid();
+
+            var program = new Program
+            {
+                Id = programId,
+                Outcomes = new List<LearningOutcome>
+                    {
+                        new LearningOutcome{Id=Guid.NewGuid(),Description = "SomeDescription"},
+                        new LearningOutcome{Id=Guid.NewGuid(),Description = "OtherDescription"},
+                    }
+
+            };
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+            var response = Assert.Throws<HttpResponseException>(() => _outcomeController.Get("program", Guid.NewGuid()));
+
+            Assert.That(response.Response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        }
+
+        [Test]
+        public void Get_all_learning_outcomes_from_an_entity_with_no_outcomes()
+        {
+            var programId = Guid.NewGuid();
+
+            var program = new Program
+            {
+                Id = programId
+            };
+
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
+            var outcomes = (List<OutcomeResponse>)_outcomeController.Get("program", programId);
+
+            Assert.That(outcomes, Is.Not.Null);
+            Assert.That(outcomes.Count, Is.EqualTo(0));
+        }
+
     }
 }

@@ -7,10 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using BpeProducts.Services.Course.Domain.Entities;
 using NHibernate;
+using NHibernate.Criterion;
 using NHibernate.Engine;
 using NHibernate.Linq;
 using NHibernate.Stat;
 using NHibernate.Type;
+using NHibernate.OData;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
 {
@@ -476,12 +478,17 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 			return _session.Query<T>();
 		}
 
+		public ICriteria ODataQuery<T>(string queryString)
+		{
+			return _session.ODataQuery<T>(queryString);
+		}
 		
 	}
 
 	public interface IRepository:ISession
 	{
 		IQueryable<T> Query<T>();
+		ICriteria ODataQuery<T>(string queryString);
 		//object Save(object obj);
 		//IQueryOver<T, T> QueryOver<T>();
 	}
