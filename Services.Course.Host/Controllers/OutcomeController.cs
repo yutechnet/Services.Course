@@ -14,6 +14,8 @@ using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
 using NHibernate;
 using NHibernate.Linq;
+using log4net;
+using BpeProducts.Common.Log;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
@@ -21,13 +23,11 @@ namespace BpeProducts.Services.Course.Host.Controllers
     {
         private readonly ILearningOutcomeRepository _learningOutcomeRepository;
 	    private readonly IRepository _repository;
-
-
+	 
 		public OutcomeController(ILearningOutcomeRepository learningOutcomeRepository, IRepository repository)
         {
 	        _learningOutcomeRepository = learningOutcomeRepository;
 		    _repository = repository;
-		
         }
 
 		[Transaction]

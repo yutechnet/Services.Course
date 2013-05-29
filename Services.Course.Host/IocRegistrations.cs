@@ -12,6 +12,7 @@ namespace BpeProducts.Services.Course.Host
         public void Register(ContainerBuilder containerBuilder)
         {
             Common.WebApi.IocRegistrations.RegisterWebApi(containerBuilder);
+			
         }
     }
 }
