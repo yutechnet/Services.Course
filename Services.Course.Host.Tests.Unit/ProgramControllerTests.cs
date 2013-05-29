@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http.OData;
+using System.Web.Http.OData.Query;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Host.Controllers;
@@ -62,5 +65,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			var response = _programsController.Get(_programIds[0]);
 			Assert.That(response.Id,Is.EqualTo(_programIds[0]));
 		}
+
+
+
+
 	}
 }
