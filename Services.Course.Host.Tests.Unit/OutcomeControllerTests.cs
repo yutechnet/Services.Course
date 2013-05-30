@@ -16,6 +16,7 @@ using BpeProducts.Services.Course.Host.Controllers;
 using Moq;
 using NHibernate;
 using NUnit.Framework;
+using log4net;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit
 {

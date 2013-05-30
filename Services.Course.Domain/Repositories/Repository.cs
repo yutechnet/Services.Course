@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Services.Course.Domain.Entities;
 using NHibernate;
 using NHibernate.Criterion;
@@ -16,6 +17,7 @@ using NHibernate.OData;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
 {
+	[Validate]
 	public class Repository:IRepository
 	{
 		private readonly ISession _session;

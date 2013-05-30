@@ -12,6 +12,7 @@ using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Repositories;
 using EventStore;
+using log4net;
 
 namespace BpeProducts.Services.Course.Domain
 {
@@ -24,17 +25,21 @@ namespace BpeProducts.Services.Course.Domain
             bool.TryParse(ConfigurationManager.AppSettings["UpdateSchema"], out updateSchema);
 
             Common.NHibernate.IocRegistrations.RegisterSessionFactory(containerBuilder, connectionString, dropSchema: false, updateSchema: updateSchema);
-
+			containerBuilder.Register<ILog>(c => LogManager.GetLogger("CourseBuilder"));
             containerBuilder
                 .RegisterType<CourseRepository>().As<ICourseRepository>()
                 .EnableInterfaceInterceptors().EnableValidation()
                 .InterceptedBy(typeof(PublicInterfaceLoggingInterceptor));
+
             containerBuilder
                 .RegisterType<LearningOutcomeRepository>().As<ILearningOutcomeRepository>()
                 .EnableInterfaceInterceptors().EnableValidation()
                 .InterceptedBy(typeof(PublicInterfaceLoggingInterceptor));
 
-	        containerBuilder.RegisterType<Repository>().As<IRepository>();
+	        containerBuilder.RegisterType<Repository>().As<IRepository>()
+	                        .EnableInterfaceInterceptors()
+	                        .EnableValidation()
+				.InterceptedBy(typeof(PublicInterfaceLoggingInterceptor)); ;
 
             containerBuilder.RegisterType<CourseEventStore>().As<IStoreCourseEvents>();
 			
