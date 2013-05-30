@@ -50,12 +50,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		}
 
         // GET api/courses
-        public IEnumerable<CourseInfoResponse> Get()
-        {
-            return _courseRepository.Query<Domain.Entities.Course>()
-                                    .Select(c => Mapper.Map<CourseInfoResponse>(c))
-                                    .ToList();
-        }
+		//public IEnumerable<CourseInfoResponse> Get()
+		//{
+		//	return _courseRepository.Query<Domain.Entities.Course>()
+		//							.Select(c => Mapper.Map<CourseInfoResponse>(c))
+		//							.ToList();
+		//}
 
         // GET api/courses/5
         public CourseInfoResponse Get(Guid id)

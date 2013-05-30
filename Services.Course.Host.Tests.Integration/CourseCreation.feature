@@ -78,25 +78,8 @@ Scenario Template: cannot create a course with missing data
 		 |                | PSY101 | Amro's another awesome Psychology class | 1         | BadRequest |
 		 | Physcology 103 | PSY103 |                                         | 1         | Created    |
 
-Scenario Template: Return course by partial name
-	When I create a new course with <Name>, <Code>, <Description>
-	And I submit a creation request
-	Then the course name counts are as follows:
-		| Starts With | Count |
-		| ENG         | 3     |
-		| Phil        | 2     |
-		| ENGL        | 2     |
-		| PHILO       | 1     |
-		| MATH        | 0     |
-		| Chemistry   | 1     |
-		| En*         | 0     |
-		| \           | 0     |
-		| \\          | 0     |
-		| 'E'         | 0     |
-		| C*#         | 0     |
-		| A&          | 0     |
-
-	Examples: 
+Scenario: Return course by partial name
+	Given I have existing courses with following info:
 		 | Name             | Code     | Description                           | Tenant Id |
 		 | English 101      | ENGL101  | Learn to read and write               | 1         |
 		 | Engineering 200  | ENG200   | If you build it, they will come       | 1         |
@@ -104,3 +87,17 @@ Scenario Template: Return course by partial name
 		 | Philosophy 100   | PHIL100  | To be, or not to be                   | 1         |
 		 | Philanthropy 101 | PHILA101 | Don't be greedy                       | 1         |
 		 | Chemistry 350    | CHEM350  | Periodic table of elements to the max | 1         |
+	Then the course name counts are as follows:
+		| Starts With | Count |
+		| Eng         | 3     |
+		| Phil        | 2     |
+		| Engl        | 2     |
+		| Philo       | 1     |
+		| MATH        | 0     |
+		| Chemistry   | 1     |
+		| En*         | 0     |
+		| \           | 0     |
+		| \\          | 0     |
+		| ''E''       | 0     |
+		| C*%23       | 0     |
+		| A%26          | 0     |

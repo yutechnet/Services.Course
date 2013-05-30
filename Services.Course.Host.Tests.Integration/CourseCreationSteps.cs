@@ -32,6 +32,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void BeforeScenario()
         {
             ScenarioContext.Current.Add("ticks", DateTime.Now.Ticks);
+			
         }
 
         [Given(@"I have a course with following info:")]
@@ -39,11 +40,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             var saveCourseRequest = new SaveCourseRequest
                 {
-                    Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
-                    Code = table.Rows[0]["Code"] + ScenarioContext.Current.Get<long>("ticks"),
+                    Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
+                    Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                     Description = table.Rows[0]["Description"],
                     TenantId = 1
                 };
+			
 
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
             ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
@@ -75,8 +77,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             var editCourseRequest = new SaveCourseRequest
             {
-                Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
-                Code = table.Rows[0]["Code"] + ScenarioContext.Current.Get<long>("ticks"),
+                Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
+                Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
                 TenantId = 1
             };
@@ -101,7 +103,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void WhenIRequestACourseNameThatDoesNotExist()
         {
             var courseName = "someCoureName";
-            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?name=" + courseName + ScenarioContext.Current.Get<long>("ticks")).Result;
+            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?name=" + ScenarioContext.Current.Get<long>("ticks") + courseName).Result;
 
             ScenarioContext.Current.Add("getCourseName", result);
         }
@@ -117,7 +119,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenICanRetrieveTheCourseByCourseName()
         {
             var courseName = ScenarioContext.Current.Get<string>("courseName");
-            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?name=" + courseName + ScenarioContext.Current.Get<long>("ticks")).Result;
+            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?name=" + ScenarioContext.Current.Get<long>("ticks") + courseName ).Result;
             result.EnsureSuccessStatusCode();
         }
 
@@ -125,7 +127,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenICanRetrieveTheCourseByCourseCode()
         {
             var courseCode = ScenarioContext.Current.Get<string>("courseCode");
-            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?code=" + courseCode + ScenarioContext.Current.Get<long>("ticks")).Result;
+            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?code=" + ScenarioContext.Current.Get<long>("ticks") + courseCode ).Result;
             result.EnsureSuccessStatusCode();
         }
 
@@ -154,13 +156,40 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Given(@"I have an existing course with following info:")]
         public void GivenIHaveAnExistingCourseWithFollowingInfo(Table table)
         {
-            // This is creating a course for us.
-            GivenIHaveACourseWithFollowingInfo(table);
-            WhenISubmitACreationRequest();
-            ThenIShouldGetASuccessConfirmationMessage();
+			var saveCourseRequest = new SaveCourseRequest
+			{
+				Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
+				Code = table.Rows[0]["Code"] + ScenarioContext.Current.Get<long>("ticks"),
+				Description = table.Rows[0]["Description"],
+				TenantId = 1
+			};
+
+			ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
+			ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
+			ScenarioContext.Current.Add("courseCode", table.Rows[0]["Code"]);
         }
 
-        [Given(@"I delete this course")]
+		[Given(@"I have existing courses with following info:")]
+		public void GivenIHaveExistingCoursesWithFollowingInfo(Table table)
+		{
+			// This is creating a course for us.
+			foreach (var row in table.Rows)
+			{
+				var saveCourseRequest = new SaveCourseRequest
+				{
+					Name = ScenarioContext.Current.Get<long>("ticks") + row["Name"],
+					Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
+					Description = row["Description"],
+					TenantId = 1
+				};
+
+				var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+				response.EnsureSuccessStatusCode();
+
+			}
+		}
+
+		[Given(@"I delete this course")]
         public void GivenIDeleteThisCourse()
         {
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
@@ -183,8 +212,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             var saveCourseRequest = new SaveCourseRequest
             {
-                Name = string.IsNullOrEmpty(name) ? name : name + ScenarioContext.Current.Get<long>("ticks") ,
-                Code = string.IsNullOrEmpty(code) ? code : code + ScenarioContext.Current.Get<long>("ticks"),
+                Name = string.IsNullOrEmpty(name) ? name : ScenarioContext.Current.Get<long>("ticks") + name,
+                Code = string.IsNullOrEmpty(code) ? code : ScenarioContext.Current.Get<long>("ticks") + code,
                 Description = description,
                 TenantId = 1
             };
@@ -211,10 +240,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             foreach (var row in table.Rows)
             {
-                var startsWith = row["Starts With"];
-                var count = row["Count"];
-
-                var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?name=" + startsWith + ScenarioContext.Current.Get<long>("ticks")).Result;
+				var startsWith = row["Starts With"];
+                var count = int.Parse(row["Count"]);
+				var startsWithQuery = String.Format("?$filter=startswith(Name, '{0}')", ScenarioContext.Current.Get<long>("ticks") + startsWith);
+				var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
                 var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
                 var responseList = new List<CourseInfoResponse>(getResponse);
                 Assert.That(responseList.Count, Is.EqualTo(count));
