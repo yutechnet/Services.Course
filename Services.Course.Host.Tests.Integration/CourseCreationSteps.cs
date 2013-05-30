@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
 using System.Net.Http;
@@ -12,7 +13,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [Binding]
     public class CourseCreationSteps
     {
-        private string _leadingPath;
+        private readonly string _leadingPath;
 
         public CourseCreationSteps()
         {
@@ -203,6 +204,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var expectedStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), status);
 
             Assert.That(response.StatusCode.Equals(expectedStatusCode));
+        }
+
+        [Then(@"the course name counts are as follows:")]
+        public void ThenTheCourseNameCountsAreAsFollows(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var startsWith = row["Starts With"];
+                var count = row["Count"];
+
+                var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?name=" + startsWith + ScenarioContext.Current.Get<long>("ticks")).Result;
+                var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
+                var responseList = new List<CourseInfoResponse>(getResponse);
+                Assert.That(responseList.Count, Is.EqualTo(count));
+            }
         }
     }
 }
