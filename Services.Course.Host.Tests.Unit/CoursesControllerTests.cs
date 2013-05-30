@@ -4,6 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData;
+using System.Web.Http.OData.Builder;
+using System.Web.Http.OData.Query;
 using System.Web.Http.Routing;
 using AutoMapper;
 using Autofac;
@@ -14,6 +17,7 @@ using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Host.App_Start;
 using BpeProducts.Services.Course.Host.Controllers;
 using Moq;
+using NHibernate;
 using NUnit.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit
@@ -108,13 +112,27 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void can_get_list_of_course()
         {
-            var courses = SetUpExistingCourse();
-
-            var courseInfoList = _coursesController.Get();
-            Assert.That(courseInfoList.Count() == courses.Count());
+	        var criteria = new Mock<ICriteria>();
+			var courses = SetUpExistingCourse().ToList();
+			criteria.Setup(c => c.List<Domain.Entities.Course>()).Returns(courses);
+            
+			_coursesController.Request = new HttpRequestMessage(HttpMethod.Get,"http://locahost/courses");
+	        _mockCourseRepository.Setup(c => c.ODataQuery<Domain.Entities.Course>(It.IsAny<String>()))
+	                             .Returns(criteria.Object);
+	        var courseInfoList = _coursesController.Get(GetMockODataQueryOptions(_coursesController.Request));
+            
+			Assert.That(courseInfoList.Count() == courses.Count());
         }
 
-        [Test]
+	    private ODataQueryOptions GetMockODataQueryOptions(HttpRequestMessage request)
+	    {
+			ODataModelBuilder modelBuilder = new ODataConventionModelBuilder();
+			modelBuilder.EntitySet<Domain.Entities.Course>("Courses");
+			var opts = new ODataQueryOptions<Domain.Entities.Course>(new ODataQueryContext(modelBuilder.GetEdmModel(), typeof(Domain.Entities.Course)), request);
+		    return opts;
+	    }
+
+	    [Test]
         public void can_delete_a_course()
         {
             _mockCourseFactory.Setup(c => c.Reconstitute(It.IsAny<Guid>())).Returns(new Domain.Entities.Course());

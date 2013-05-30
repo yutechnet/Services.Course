@@ -100,4 +100,4 @@ Scenario: Return course by partial name
 		| \\          | 0     |
 		| ''E''       | 0     |
 		| C*%23       | 0     |
-		| A%26          | 0     |
+		| A%26        | 0     |

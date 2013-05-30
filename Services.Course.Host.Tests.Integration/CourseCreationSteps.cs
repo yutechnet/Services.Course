@@ -156,18 +156,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Given(@"I have an existing course with following info:")]
         public void GivenIHaveAnExistingCourseWithFollowingInfo(Table table)
         {
-			var saveCourseRequest = new SaveCourseRequest
-			{
-				Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
-				Code = table.Rows[0]["Code"] + ScenarioContext.Current.Get<long>("ticks"),
-				Description = table.Rows[0]["Description"],
-				TenantId = 1
-			};
-
-			ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
-			ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
-			ScenarioContext.Current.Add("courseCode", table.Rows[0]["Code"]);
-        }
+			// This is creating a course for us.
+			GivenIHaveACourseWithFollowingInfo(table);
+			WhenISubmitACreationRequest();
+			ThenIShouldGetASuccessConfirmationMessage();
+		}
 
 		[Given(@"I have existing courses with following info:")]
 		public void GivenIHaveExistingCoursesWithFollowingInfo(Table table)
