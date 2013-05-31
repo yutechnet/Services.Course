@@ -101,3 +101,4 @@ Scenario: Return course by partial name
 		| ''E''       | 0     |
 		| C*%23       | 0     |
 		| A%26        | 0     |
+	Then the course count is atleast '6' when search term is ''

@@ -387,6 +387,8 @@ this.ScenarioSetup(scenarioInfo);
                         "0"});
 #line 90
  testRunner.Then("the course name counts are as follows:", ((string)(null)), table10, "Then ");
+#line 104
+ testRunner.Then("the course count is atleast \'6\' when search term is \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

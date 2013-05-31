@@ -235,12 +235,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             {
 				var startsWith = row["Starts With"];
                 var count = int.Parse(row["Count"]);
-				var startsWithQuery = String.Format("?$filter=startswith(Name, '{0}')", ScenarioContext.Current.Get<long>("ticks") + startsWith);
+				var startsWithQuery = String.Format("?$filter=startswith(Name, '{0}')",String.IsNullOrWhiteSpace(startsWith)?"": ScenarioContext.Current.Get<long>("ticks") + startsWith);
 				var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
                 var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
                 var responseList = new List<CourseInfoResponse>(getResponse);
                 Assert.That(responseList.Count, Is.EqualTo(count));
             }
         }
+
+		[Then(@"the course count is atleast '(.*)' when search term is '(.*)'")]
+		public void ThenTheCourseCountIsAtleastWhenSearchTermIs(int count, string searchPhrase)
+		{
+			var startsWithQuery = String.IsNullOrWhiteSpace(searchPhrase) ? "": String.Format("?$filter=startswith(Name, '{0}')",  ScenarioContext.Current.Get<long>("ticks") + searchPhrase);
+			var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
+			var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
+			var responseList = new List<CourseInfoResponse>(getResponse);
+			Assert.That(responseList.Count, Is.AtLeast(count));
+		}
+
     }
 }
