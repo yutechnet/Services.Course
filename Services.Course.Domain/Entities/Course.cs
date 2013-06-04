@@ -21,6 +21,11 @@ namespace BpeProducts.Services.Course.Domain.Entities
         [Required]
         public virtual string Code { get; set; }
         public virtual string Description { get; set; }
+		public virtual Course RootVersion{get; set; }
+		public virtual Course ParentVersion { get; set; }
+		public virtual Guid VersionId { get; set; }
+		public virtual string VersionNumber { get; set; }
+		public virtual string PublishNote { get; set; }
         public virtual IList<Program> Programs { get; set; }
         public virtual string CourseSegmentJson { 
             get
@@ -66,5 +71,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
         }
 
 	    public virtual IList<LearningOutcome> Outcomes { get; set; }
+
+		public virtual string Status { get; set; }
     }
 }

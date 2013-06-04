@@ -115,6 +115,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             response.EnsureSuccessStatusCode();
         }
 
+		[Then(@"the course ""(.*)"" has following info")]
+		public void ThenTheCourseHasFollowingInfo(string courseCode, Table table)
+		{
+			var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?code=" + ScenarioContext.Current.Get<long>("ticks") + courseCode).Result;
+			result.EnsureSuccessStatusCode();
+			var courseInfo = result.Content.ReadAsAsync<CourseInfoResponse>().Result;
+			var row = table.Rows[0];
+			
+
+
+		}
+
+
         [Then(@"I can retrieve the course by course name")]
         public void ThenICanRetrieveTheCourseByCourseName()
         {

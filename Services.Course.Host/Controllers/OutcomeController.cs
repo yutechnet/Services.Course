@@ -46,6 +46,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
 	    [Transaction]
         public OutcomeResponse Get(string entityType, Guid entityId, Guid outcomeId)
 	    {
+			//apply strategy based on entitytype
+
 		    IHaveOutcomes entity =
 			    _repository.Query<IHaveOutcomes>().SingleOrDefault(e => e.Id == entityId);
 		    

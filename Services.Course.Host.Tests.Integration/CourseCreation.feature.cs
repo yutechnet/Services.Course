@@ -87,8 +87,33 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("I have a course with following info:", ((string)(null)), table1, "Given ");
 #line 11
  testRunner.When("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table2.AddRow(new string[] {
+                        "Name",
+                        "English 101"});
+            table2.AddRow(new string[] {
+                        "Code",
+                        "ENG101"});
+            table2.AddRow(new string[] {
+                        "Description",
+                        "Ranji\'s awesome English Class"});
+            table2.AddRow(new string[] {
+                        "VersionId",
+                        "IsGuid"});
+            table2.AddRow(new string[] {
+                        "Status",
+                        "unpublished"});
+            table2.AddRow(new string[] {
+                        "ParentVersionId",
+                        "IsNull"});
+            table2.AddRow(new string[] {
+                        "RootVersionId",
+                        "IsNull"});
 #line 12
- testRunner.Then("I should get a success confirmation message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the course \"ENG101\" has following info", ((string)(null)), table2, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -98,36 +123,6 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ReturnCourseByCourseName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Return course by course name", ((string[])(null)));
-#line 14
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Code",
-                        "Description",
-                        "Tenant Id"});
-            table2.AddRow(new string[] {
-                        "English 101",
-                        "ENG101",
-                        "Ranji\'s awesome English Class",
-                        "1"});
-#line 15
- testRunner.Given("I have a course with following info:", ((string)(null)), table2, "Given ");
-#line 18
- testRunner.When("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 19
- testRunner.Then("I should get a success confirmation message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 20
- testRunner.And("I can retrieve the course by course name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Return course by course code")]
-        public virtual void ReturnCourseByCourseCode()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Return course by course code", ((string[])(null)));
 #line 22
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -148,16 +143,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 27
  testRunner.Then("I should get a success confirmation message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 28
- testRunner.And("I can retrieve the course by course code", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I can retrieve the course by course name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Return 404 when course name is not found")]
-        public virtual void Return404WhenCourseNameIsNotFound()
+        [NUnit.Framework.DescriptionAttribute("Return course by course code")]
+        public virtual void ReturnCourseByCourseCode()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Return 404 when course name is not found", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Return course by course code", ((string[])(null)));
 #line 30
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -176,8 +171,38 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
  testRunner.When("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 35
- testRunner.And("I request a course name that does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("I should get a success confirmation message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 36
+ testRunner.And("I can retrieve the course by course code", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Return 404 when course name is not found")]
+        public virtual void Return404WhenCourseNameIsNotFound()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Return 404 when course name is not found", ((string[])(null)));
+#line 38
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Code",
+                        "Description",
+                        "Tenant Id"});
+            table5.AddRow(new string[] {
+                        "English 101",
+                        "ENG101",
+                        "Ranji\'s awesome English Class",
+                        "1"});
+#line 39
+ testRunner.Given("I have a course with following info:", ((string)(null)), table5, "Given ");
+#line 42
+ testRunner.When("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 43
+ testRunner.And("I request a course name that does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 44
  testRunner.Then("I should get a not found message returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -188,35 +213,35 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EditACourse()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit a course", ((string[])(null)));
-#line 38
+#line 46
 this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Code",
-                        "Description"});
-            table5.AddRow(new string[] {
-                        "English 101",
-                        "ENG101",
-                        "Ranji\'s awesome English Class"});
-#line 39
- testRunner.Given("I have a course with following info:", ((string)(null)), table5, "Given ");
-#line 42
- testRunner.When("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
                         "Description"});
             table6.AddRow(new string[] {
+                        "English 101",
+                        "ENG101",
+                        "Ranji\'s awesome English Class"});
+#line 47
+ testRunner.Given("I have a course with following info:", ((string)(null)), table6, "Given ");
+#line 50
+ testRunner.When("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Code",
+                        "Description"});
+            table7.AddRow(new string[] {
                         "English 202",
                         "ENG202",
                         "Ranji\'s awesome English Class"});
-#line 43
- testRunner.And("I change the info to reflect the following:", ((string)(null)), table6, "And ");
-#line 46
+#line 51
+ testRunner.And("I change the info to reflect the following:", ((string)(null)), table7, "And ");
+#line 54
  testRunner.Then("I should get a success confirmation message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 47
+#line 55
  testRunner.And("my course info is changed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -227,36 +252,6 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeleteACourse()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a course", ((string[])(null)));
-#line 49
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Code",
-                        "Description"});
-            table7.AddRow(new string[] {
-                        "Psychology 101",
-                        "PSY101",
-                        "Amro\'s awesome Psychology class"});
-#line 50
- testRunner.Given("I have an existing course with following info:", ((string)(null)), table7, "Given ");
-#line 53
- testRunner.And("I delete this course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
- testRunner.Then("I should get a success confirmation message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 55
- testRunner.And("my course no longer exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Can create a course with same name or code")]
-        [NUnit.Framework.TestCaseAttribute("Psychology 101", "PSY102", "Amro\'s another awesome Psychology class", "Created", null)]
-        [NUnit.Framework.TestCaseAttribute("Psychology 102", "PSY101", "Amro\'s another awesome Psychology class", "Created", null)]
-        public virtual void CanCreateACourseWithSameNameOrCode(string name, string code, string description, string status, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Can create a course with same name or code", exampleTags);
 #line 57
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -271,10 +266,40 @@ this.ScenarioSetup(scenarioInfo);
 #line 58
  testRunner.Given("I have an existing course with following info:", ((string)(null)), table8, "Given ");
 #line 61
- testRunner.When(string.Format("I create a new course with {0}, {1}, {2}", name, code, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I delete this course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
- testRunner.And("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("I should get a success confirmation message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 63
+ testRunner.And("my course no longer exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Can create a course with same name or code")]
+        [NUnit.Framework.TestCaseAttribute("Psychology 101", "PSY102", "Amro\'s another awesome Psychology class", "Created", null)]
+        [NUnit.Framework.TestCaseAttribute("Psychology 102", "PSY101", "Amro\'s another awesome Psychology class", "Created", null)]
+        public virtual void CanCreateACourseWithSameNameOrCode(string name, string code, string description, string status, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Can create a course with same name or code", exampleTags);
+#line 65
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Code",
+                        "Description"});
+            table9.AddRow(new string[] {
+                        "Psychology 101",
+                        "PSY101",
+                        "Amro\'s awesome Psychology class"});
+#line 66
+ testRunner.Given("I have an existing course with following info:", ((string)(null)), table9, "Given ");
+#line 69
+ testRunner.When(string.Format("I create a new course with {0}, {1}, {2}", name, code, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 70
+ testRunner.And("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 71
  testRunner.Then(string.Format("I should get the status code {0}", status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -288,13 +313,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CannotCreateACourseWithMissingData(string name, string code, string description, string tenantId, string status, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("cannot create a course with missing data", exampleTags);
-#line 70
+#line 78
 this.ScenarioSetup(scenarioInfo);
-#line 71
+#line 79
  testRunner.When(string.Format("I create a new course with {0}, {1}, {2}", name, code, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 72
+#line 80
  testRunner.And("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 81
  testRunner.Then(string.Format("I should get the status code {0}", status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -305,89 +330,89 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ReturnCourseByPartialName()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Return course by partial name", ((string[])(null)));
-#line 81
+#line 89
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
                         "Description",
                         "Tenant Id"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "English 101",
                         "ENGL101",
                         "Learn to read and write",
                         "1"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "Engineering 200",
                         "ENG200",
                         "If you build it, they will come",
                         "1"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "English 220",
                         "ENGL220",
                         "Essays",
                         "1"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "Philosophy 100",
                         "PHIL100",
                         "To be, or not to be",
                         "1"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "Philanthropy 101",
                         "PHILA101",
                         "Don\'t be greedy",
                         "1"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "Chemistry 350",
                         "CHEM350",
                         "Periodic table of elements to the max",
                         "1"});
-#line 82
- testRunner.Given("I have existing courses with following info:", ((string)(null)), table9, "Given ");
+#line 90
+ testRunner.Given("I have existing courses with following info:", ((string)(null)), table10, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "Starts With",
                         "Count"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "Eng",
                         "3"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "Phil",
                         "2"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "Engl",
                         "2"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "Philo",
                         "1"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "MATH",
                         "0"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "Chemistry",
                         "1"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "En*",
                         "0"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "\\",
                         "0"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "\\",
                         "0"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "\'\'E\'\'",
                         "0"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "C*%23",
                         "0"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "A%26",
                         "0"});
-#line 90
- testRunner.Then("the course name counts are as follows:", ((string)(null)), table10, "Then ");
-#line 104
+#line 98
+ testRunner.Then("the course name counts are as follows:", ((string)(null)), table11, "Then ");
+#line 112
  testRunner.Then("the course count is atleast \'6\' when search term is \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
