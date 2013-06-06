@@ -27,6 +27,7 @@ namespace BpeProducts.Services.Course.Domain
                     Id = courseId,
                     ActiveFlag = true,
                     OriginalCourseId = courseId,
+                    ParentCourseId = null,
                     VersionNumber = "1.0"
                 };
 		    course.OriginalCourseId = course.Id;

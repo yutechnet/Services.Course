@@ -70,7 +70,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
         // Version-related properties. 
         // TODO: IVersionable?
         public virtual Guid OriginalCourseId { get; set; }
-        public virtual Guid ParentCourseId { get; set; }
+        public virtual Guid? ParentCourseId { get; set; }
         public virtual string VersionNumber { get; set; }
 
         public virtual string PublishNote { get; set; }
