@@ -21,9 +21,16 @@ namespace BpeProducts.Services.Course.Domain
 		
 		public Entities.Course Create(SaveCourseRequest request)
 		{
-			
-			//TODO: get tenant id
-			var course = new Entities.Course {Id = Guid.NewGuid(), ActiveFlag = true};
+		    var courseId = Guid.NewGuid();
+			var course = new Entities.Course
+			    {
+                    Id = courseId,
+                    ActiveFlag = true,
+                    OriginalCourseId = courseId,
+                    VersionNumber = "1.0"
+                };
+		    course.OriginalCourseId = course.Id;
+
 			Mapper.Map(request, course);
 			return course;
 		}

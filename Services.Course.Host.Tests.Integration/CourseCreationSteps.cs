@@ -32,26 +32,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void BeforeScenario()
         {
             ScenarioContext.Current.Add("ticks", DateTime.Now.Ticks);
-			
+
         }
 
         [Given(@"I have a course with following info:")]
         public void GivenIHaveACourseWithFollowingInfo(Table table)
         {
             var saveCourseRequest = new SaveCourseRequest
-                {
-                    Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
-                    Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
-                    Description = table.Rows[0]["Description"],
-                    TenantId = 1
-                };
-			
+            {
+                Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
+                Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
+                Description = table.Rows[0]["Description"],
+                TenantId = 1
+            };
+
 
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
             ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
             ScenarioContext.Current.Add("courseCode", table.Rows[0]["Code"]);
         }
-        
+
         [When(@"I submit a creation request")]
         public void WhenISubmitACreationRequest()
         {
@@ -107,7 +107,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             ScenarioContext.Current.Add("getCourseName", result);
         }
-        
+
         [Then(@"I should get a success confirmation message")]
         public void ThenIShouldGetASuccessConfirmationMessage()
         {
@@ -115,24 +115,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             response.EnsureSuccessStatusCode();
         }
 
-		[Then(@"the course ""(.*)"" has following info")]
-		public void ThenTheCourseHasFollowingInfo(string courseCode, Table table)
-		{
-			var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?code=" + ScenarioContext.Current.Get<long>("ticks") + courseCode).Result;
-			result.EnsureSuccessStatusCode();
-			var courseInfo = result.Content.ReadAsAsync<CourseInfoResponse>().Result;
-			var row = table.Rows[0];
-			
-
-
-		}
-
-
         [Then(@"I can retrieve the course by course name")]
         public void ThenICanRetrieveTheCourseByCourseName()
         {
             var courseName = ScenarioContext.Current.Get<string>("courseName");
-            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?name=" + ScenarioContext.Current.Get<long>("ticks") + courseName ).Result;
+            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?name=" + ScenarioContext.Current.Get<long>("ticks") + courseName).Result;
             result.EnsureSuccessStatusCode();
         }
 
@@ -140,7 +127,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenICanRetrieveTheCourseByCourseCode()
         {
             var courseCode = ScenarioContext.Current.Get<string>("courseCode");
-            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?code=" + ScenarioContext.Current.Get<long>("ticks") + courseCode ).Result;
+            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?code=" + ScenarioContext.Current.Get<long>("ticks") + courseCode).Result;
             result.EnsureSuccessStatusCode();
         }
 
@@ -155,47 +142,47 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var courseInfo = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
             var originalRequest = ScenarioContext.Current.Get<SaveCourseRequest>("editCourseRequest");
             Assert.AreEqual(courseInfo.Name, originalRequest.Name);
-            Assert.AreEqual(courseInfo.Code, originalRequest.Code);   
+            Assert.AreEqual(courseInfo.Code, originalRequest.Code);
         }
 
         [Then(@"I should get a not found message returned")]
         public void ThenIShouldGetANotFoundMessageReturned()
         {
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("getCourseName");
-            var expected = (HttpStatusCode)Enum.Parse(typeof (HttpStatusCode), "NotFound");
+            var expected = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), "NotFound");
             Assert.That(response.StatusCode, Is.EqualTo(expected));
         }
 
         [Given(@"I have an existing course with following info:")]
         public void GivenIHaveAnExistingCourseWithFollowingInfo(Table table)
         {
-			// This is creating a course for us.
-			GivenIHaveACourseWithFollowingInfo(table);
-			WhenISubmitACreationRequest();
-			ThenIShouldGetASuccessConfirmationMessage();
-		}
+            // This is creating a course for us.
+            GivenIHaveACourseWithFollowingInfo(table);
+            WhenISubmitACreationRequest();
+            ThenIShouldGetASuccessConfirmationMessage();
+        }
 
-		[Given(@"I have existing courses with following info:")]
-		public void GivenIHaveExistingCoursesWithFollowingInfo(Table table)
-		{
-			// This is creating a course for us.
-			foreach (var row in table.Rows)
-			{
-				var saveCourseRequest = new SaveCourseRequest
-				{
-					Name = ScenarioContext.Current.Get<long>("ticks") + row["Name"],
-					Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
-					Description = row["Description"],
-					TenantId = 1
-				};
+        [Given(@"I have existing courses with following info:")]
+        public void GivenIHaveExistingCoursesWithFollowingInfo(Table table)
+        {
+            // This is creating a course for us.
+            foreach (var row in table.Rows)
+            {
+                var saveCourseRequest = new SaveCourseRequest
+                {
+                    Name = ScenarioContext.Current.Get<long>("ticks") + row["Name"],
+                    Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
+                    Description = row["Description"],
+                    TenantId = 1
+                };
 
-				var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
-				response.EnsureSuccessStatusCode();
+                var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+                response.EnsureSuccessStatusCode();
 
-			}
-		}
+            }
+        }
 
-		[Given(@"I delete this course")]
+        [Given(@"I delete this course")]
         public void GivenIDeleteThisCourse()
         {
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
@@ -246,25 +233,25 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             foreach (var row in table.Rows)
             {
-				var startsWith = row["Starts With"];
+                var startsWith = row["Starts With"];
                 var count = int.Parse(row["Count"]);
-				var startsWithQuery = String.Format("?$filter=startswith(Name, '{0}')",String.IsNullOrWhiteSpace(startsWith)?"": ScenarioContext.Current.Get<long>("ticks") + startsWith);
-				var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
+                var startsWithQuery = String.Format("?$filter=startswith(Name, '{0}')", String.IsNullOrWhiteSpace(startsWith) ? "" : ScenarioContext.Current.Get<long>("ticks") + startsWith);
+                var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
                 var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
                 var responseList = new List<CourseInfoResponse>(getResponse);
                 Assert.That(responseList.Count, Is.EqualTo(count));
             }
         }
 
-		[Then(@"the course count is atleast '(.*)' when search term is '(.*)'")]
-		public void ThenTheCourseCountIsAtleastWhenSearchTermIs(int count, string searchPhrase)
-		{
-			var startsWithQuery = String.IsNullOrWhiteSpace(searchPhrase) ? "": String.Format("?$filter=startswith(Name, '{0}')",  ScenarioContext.Current.Get<long>("ticks") + searchPhrase);
-			var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
-			var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
-			var responseList = new List<CourseInfoResponse>(getResponse);
-			Assert.That(responseList.Count, Is.AtLeast(count));
-		}
+        [Then(@"the course count is atleast '(.*)' when search term is '(.*)'")]
+        public void ThenTheCourseCountIsAtleastWhenSearchTermIs(int count, string searchPhrase)
+        {
+            var startsWithQuery = String.IsNullOrWhiteSpace(searchPhrase) ? "" : String.Format("?$filter=startswith(Name, '{0}')", ScenarioContext.Current.Get<long>("ticks") + searchPhrase);
+            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
+            var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
+            var responseList = new List<CourseInfoResponse>(getResponse);
+            Assert.That(responseList.Count, Is.AtLeast(count));
+        }
 
     }
 }

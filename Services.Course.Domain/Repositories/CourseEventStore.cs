@@ -7,6 +7,7 @@ using BpeProducts.Services.Course.Domain.Handlers;
 using EventStore;
 using EventStore.Persistence;
 using EventStore.Persistence.SqlPersistence.SqlDialects;
+using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
 {

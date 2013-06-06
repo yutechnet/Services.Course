@@ -9,16 +9,8 @@ Scenario: Create a course
 	| Name        | Code   | Description                   |
 	| English 101 | ENG101 | Ranji's awesome English Class |
 	When I submit a creation request
-	Then the course "ENG101" has following info
-	| Field           | Value                         |
-	| Name            | English 101                   |
-	| Code            | ENG101                        |
-	| Description     | Ranji's awesome English Class |
-	| VersionId       | IsGuid                        |
-	| Status          | unpublished                   |
-	| ParentVersionId | IsNull                        |
-	| RootVersionId   | IsNull                        |
-	      
+	Then I should get a success confirmation message
+
 Scenario: Return course by course name
 	Given I have a course with following info:
 	| Name        | Code   | Description                   | Tenant Id |

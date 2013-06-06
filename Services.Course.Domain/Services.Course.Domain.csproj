@@ -161,6 +161,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\IHaveOutcomes.cs" />
+    <Compile Include="Events\CourseVersionCreated.cs" />
+    <Compile Include="Handlers\UpdateModelOnCourseVersionCreation.cs" />
     <Compile Include="PLayCourseDisassociatedWithProgram.cs" />
     <Compile Include="CourseFactory.cs" />
     <Compile Include="PlayCourseInfoUpated.cs" />
@@ -195,6 +197,7 @@
     <Compile Include="PlayCourseAssociatedWithProgram.cs" />
     <Compile Include="PlayCourseCreated.cs" />
     <Compile Include="PlayCourseDeleted.cs" />
+    <Compile Include="PlayCourseVersionCreated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CourseEventStore.cs" />
     <Compile Include="Repositories\CourseRepository.cs" />
