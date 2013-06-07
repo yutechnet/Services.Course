@@ -17,5 +17,5 @@ Scenario: Create a default version
 	| Name          | English 1010                  |
 	| Code          | ENG101                        |
 	| Description   | Ranji's awesome English class |
-	| VersionNumber | 1.0                           |
+	| VersionNumber | 1.0.0.0                       |
 

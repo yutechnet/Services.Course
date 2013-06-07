@@ -23,8 +23,8 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             // create a new version based on the parent version
             var courseInDb = _courseRepository.GetById(e.ParentCourseId);
             courseInDb.Id = e.AggregateId;
-            courseInDb.OriginalCourseId = e.OriginalCourseId;
-            courseInDb.ParentCourseId = e.ParentCourseId;
+            courseInDb.OriginalEntityId = e.OriginalCourseId;
+            courseInDb.ParentEntityId = e.ParentCourseId;
 
             courseInDb.IsPublished = e.IsPublished;
             courseInDb.VersionNumber = e.VersionNumber;

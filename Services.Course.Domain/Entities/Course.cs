@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BpeProducts.Common.NHibernate;
+using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
 
-    public class Course : TenantEntity,IHaveOutcomes
+    public class Course : VersionableEntity ,IHaveOutcomes
     {
         private Dictionary<Guid, CourseSegment> _segmentIndex;
 
@@ -66,14 +67,5 @@ namespace BpeProducts.Services.Course.Domain.Entities
         }
 
 	    public virtual IList<LearningOutcome> Outcomes { get; set; }
-
-        // Version-related properties. 
-        // TODO: IVersionable?
-        public virtual Guid OriginalCourseId { get; set; }
-        public virtual Guid? ParentCourseId { get; set; }
-        public virtual string VersionNumber { get; set; }
-
-        public virtual string PublishNote { get; set; }
-		public virtual bool IsPublished { get; set; }
     }
 }

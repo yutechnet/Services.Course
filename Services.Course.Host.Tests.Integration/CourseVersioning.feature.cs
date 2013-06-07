@@ -109,7 +109,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Ranji\'s awesome English class"});
             table2.AddRow(new string[] {
                         "VersionNumber",
-                        "1.0"});
+                        "1.0.0.0"});
 #line 15
  testRunner.Then("the course should have the following info", ((string)(null)), table2, "Then ");
 #line hidden

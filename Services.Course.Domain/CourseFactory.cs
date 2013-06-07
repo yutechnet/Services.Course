@@ -26,11 +26,10 @@ namespace BpeProducts.Services.Course.Domain
 			    {
                     Id = courseId,
                     ActiveFlag = true,
-                    OriginalCourseId = courseId,
-                    ParentCourseId = null,
-                    VersionNumber = "1.0"
+                    OriginalEntityId = courseId,
+                    ParentEntityId = null,
+                    VersionNumber = new Version(1, 0, 0, 0).ToString()
                 };
-		    course.OriginalCourseId = course.Id;
 
 			Mapper.Map(request, course);
 			return course;
