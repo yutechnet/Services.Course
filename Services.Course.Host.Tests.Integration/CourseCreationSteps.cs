@@ -233,14 +233,41 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             foreach (var row in table.Rows)
             {
-                var startsWith = row["Starts With"];
+                var operation = row["Operation"];
+                var argument = row["Argument"];
                 var count = int.Parse(row["Count"]);
-                var startsWithQuery = String.Format("?$filter=startswith(Name, '{0}')", String.IsNullOrWhiteSpace(startsWith) ? "" : ScenarioContext.Current.Get<long>("ticks") + startsWith);
-                var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
+                var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + ConstructODataQueryString(operation, argument)).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
                 var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
                 var responseList = new List<CourseInfoResponse>(getResponse);
                 Assert.That(responseList.Count, Is.EqualTo(count));
             }
+        }
+
+        private string ConstructODataQueryString(string operation, string argument)
+        {
+            string queryString;
+
+            if (operation.ToLower() == "startswith")
+            {
+                queryString = String.Format("?$filter={1}(Name, '{0}')",
+                                                    String.IsNullOrWhiteSpace(argument)
+                                                        ? ""
+                                                        : ScenarioContext.Current.Get<long>("ticks") + argument,
+                                                    operation);
+            }
+            else if (operation.ToLower() == "eq")
+            {
+                queryString = String.Format("?$filter=Name eq '{0}'",
+                                                    String.IsNullOrWhiteSpace(argument)
+                                                        ? ""
+                                                        : ScenarioContext.Current.Get<long>("ticks") + argument);
+            }
+            else
+            {
+                throw new InvalidOperationException(string.Format("Unknown operation: {0}", operation));
+            }
+
+            return queryString;
         }
 
         [Then(@"the course count is atleast '(.*)' when search term is '(.*)'")]

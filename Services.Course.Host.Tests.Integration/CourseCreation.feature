@@ -88,17 +88,18 @@ Scenario: Return course by partial name
 		 | Philanthropy 101 | PHILA101 | Don't be greedy                       | 1         |
 		 | Chemistry 350    | CHEM350  | Periodic table of elements to the max | 1         |
 	Then the course name counts are as follows:
-		| Starts With | Count |
-		| Eng         | 3     |
-		| Phil        | 2     |
-		| Engl        | 2     |
-		| Philo       | 1     |
-		| MATH        | 0     |
-		| Chemistry   | 1     |
-		| En*         | 0     |
-		| \           | 0     |
-		| \\          | 0     |
-		| ''E''       | 0     |
-		| C*%23       | 0     |
-		| A%26        | 0     |
+		| Operation  | Argument          | Count |
+		| Eq         | Engineering%20200 | 1     |
+		| StartsWith | Eng               | 3     |
+		| StartsWith | Phil              | 2     |
+		| StartsWith | Engl              | 2     |
+		| StartsWith | Philo             | 1     |
+		| StartsWith | MATH              | 0     |
+		| StartsWith | Chemistry         | 1     |
+		| StartsWith | En*               | 0     |
+		| StartsWith | \                 | 0     |
+		| StartsWith | \\                | 0     |
+		| StartsWith | ''E''             | 0     |
+		| StartsWith | C*%23             | 0     |
+		| StartsWith | A%26              | 0     |
 	Then the course count is atleast '6' when search term is ''
