@@ -260,7 +260,6 @@
     <Content Include="PreDeploy.ps1" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DeploymentModule.psm1" />
     <None Include="Properties\PublishProfiles\Course.pubxml" />
   </ItemGroup>
   <PropertyGroup>

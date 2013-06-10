@@ -54,12 +54,12 @@ function Deployment-SetAppPoolProperty
 	
 	Import-Module WebAdministration
 	# find app pool
-	$appPool = Get-Item "IIS:\AppPools\$appPoolName" -ErrorAction SilentlyContinue
+	$appPool = Get-Item -Path "IIS:\AppPools\$appPoolName" -ErrorAction SilentlyContinue
 	if ($appPool)
 	{
 		Write-Host "Checking existing app pool `"$appPoolName`" property `"$appPoolProperty`""
 		# get the existing property value
-		$existingValue = Get-ItemProperty "IIS:\AppPools\$appPoolName" -Name $appPoolProperty
+		$existingValue = Get-ItemProperty -Path "IIS:\AppPools\$appPoolName" -Name $appPoolProperty
 		$updateValue = $False
 		# compare values
 		if ($compareValue -and $compareValue -ne $existingValue) { $updateValue = $True }
@@ -82,7 +82,7 @@ function Deployment-SetAppPoolProperty
 				}
 			}
 			# update property value
-			Set-ItemProperty "IIS:\AppPools\$appPoolName" -Name $appPoolProperty -Value $appPoolPropertyValue
+			Set-ItemProperty -Path "IIS:\AppPools\$appPoolName" -Name $appPoolProperty -Value $appPoolPropertyValue
 		}
 	}
 	else
@@ -110,33 +110,26 @@ function Deployment-SetWebsiteBinding
 	$website = Get-Item "IIS:\Sites\$websiteName" -ErrorAction SilentlyContinue
 	if ($website)
 	{
-		if($hostHeader)
+		if ($hostHeader.Contains(";"))
 		{
-			if ($hostHeader.Contains(";"))
+			$hostHeaderArray = $hostHeader.Split(';')
+			ForEach($tmpHostHeader in $hostHeaderArray)
 			{
-				$hostHeaderArray = $hostHeader.Split(';')
-				ForEach($tmpHostHeader in $hostHeaderArray)
-				{
-					$tmpBindingString = "$($IPAddress):$($port):$($tmpHostHeader)"
-					Write-Host "Checking existing website `"$websiteName`" binding"
-					# get the existing binding
-					$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $tmpBindingString}
-					if (-not $existingBinding )
-					{
-						Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$tmpHostHeader`""
-						New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $tmpHostHeader
-					}
-				}
-			}
-			else
-			{
+				$tmpBindingString = "$($IPAddress):$($port):$($tmpHostHeader)"
 				Write-Host "Checking existing website `"$websiteName`" binding"
 				# get the existing binding
-				$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $bindingString}
+				$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $tmpBindingString}
 				if (-not $existingBinding )
 				{
-					Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
-					New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
+					Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$tmpHostHeader`""
+					if ($IPAddress)
+					{
+						New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $tmpHostHeader						
+					}
+					else
+					{
+						New-WebBinding -Name $websiteName -Protocol $protocol -Port $port -HostHeader $tmpHostHeader
+					}
 				}
 			}
 		}
@@ -148,12 +141,16 @@ function Deployment-SetWebsiteBinding
 			if (-not $existingBinding )
 			{
 				Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
-				New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
+				if ($IPAddress)
+				{
+					New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
+				}
+				else
+				{
+					New-WebBinding -Name $websiteName -Protocol $protocol -Port $port -HostHeader $hostheader
+				}
 			}
 		}
-		
-		#Write-Host "All website bindings"
-		#Get-WebBinding -Name $websiteName | Format-Table -AutoSize
 	}
 	else
 	{
@@ -260,7 +257,7 @@ function Deployment-RemoveDefaultWebSite
 	
 	# find the Default Web Site website
 	Write-Host "Checking for existing website `"$websiteName`""
-	Remove-Item "IIS:\Sites\$websiteName" -ErrorAction SilentlyContinue
+	Remove-Item "IIS:\Sites\$websiteName" -Force -Recurse -ErrorAction SilentlyContinue
 }
 
 function Deployment-SetupWebsite
@@ -536,6 +533,57 @@ function Deployment-GetCertificate
 	}
 }
 
+function Deployment-SetupCertificatePermissions
+{
+	param(
+		[string]$certSubject,
+		[string]$certThumbprint,
+		[string]$certStoreName,
+		[string]$certStoreLocation,
+		[string]$account,
+		[string]$fileSystemRights,
+		[string]$accessControlType
+	)
+	
+	if ($certSubject)
+	{
+		Write-Host "Checking `"$fileSystemRights`" permissions on certificate in `"$certStoreLocation\$certStoreName`" with subject `"$certSubject`" for account `"$account`""
+	}
+	
+	if ($certThumbprint)
+	{
+		Write-Host "Checking `"$fileSystemRights`" permissions on certificate in `"$certStoreLocation\$certStoreName`" with thumbprint `"$certThumbprint`" for account `"$account`""
+	}
+	
+	# get the cert
+	$cert = Deployment-GetCertificate -CertSubject $certSubject -CertThumbprint $certThumbprint -CertStoreName $certStoreName -CertStoreLocation $certStoreLocation
+	
+	# get the private key
+	$certPrivKey = $cert.PrivateKey 
+	
+	# get the private key file
+	$privKeyCertFile = Get-Item -path "$ENV:ProgramData\Microsoft\Crypto\RSA\MachineKeys\*"  | Where {$_.Name -eq $certPrivKey.CspKeyContainerInfo.UniqueKeyContainerName} 
+	
+	# get the private key file ACL
+	$privKeyAcl = (Get-Item -Path $privKeyCertFile.FullName).GetAccessControl("Access")
+	
+	# try and locate the existing permission in the ACL
+	$existingFileSystemAccessRule = $privKeyAcl.GetAccessRules($true, $true, [System.Security.Principal.NTAccount]) | `
+		Where { $_.IdentityReference -ieq $account} | `
+		Where { $_.AccessControlType -eq $accessControlType} | `
+		Where { $_.FileSystemRights -eq $fileSystemRights}
+	
+	if (-not $existingFileSystemAccessRule)
+	{
+		# add a new rule to the ACL
+		Write-Host "Adding permission `"$accessControlType\$fileSystemRights`" to account `"$account`" on certificate private key"
+		$permission = $account, $fileSystemRights, $accessControlType
+		$accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule $permission 
+		$privKeyAcl.AddAccessRule($accessRule) 
+		Set-Acl $privKeyCertFile.FullName $privKeyAcl
+	}
+}
+
 #endregion
 
 #region Transform File Functions
@@ -746,12 +794,7 @@ function Deployment-SetCustomACLPermissions
 		Where { $_.InheritanceFlags -eq $inheritanceFlags} | `
 		Where { $_.PropagationFlags -eq $propagationFlags}
 	
-	if ($existingFileSystemAccessRule -ne $null)
-	{
-		# we found a matching acl
-		Write-Host "Existing permissions ($fileSystemRights) for `"$account`" on `"$path`" have been found"
-	}
-	else
+	if ($existingFileSystemAccessRule -eq $null)
 	{
 		Write-Host "Updating permissions ($fileSystemRights) for `"$account`" on `"$path`""
 		$accessControlList = Get-Acl -Path $path
@@ -817,95 +860,6 @@ function Deployment-StopWindowsService
 		# windows service was not found
 		Write-Warning "Unable to locate Windows service named `"$name`""
 	}
-}
-
-#endregion
-
-#region NServiceBus Functions
-
-function Deployment-InstallNServiceBusService
-{
-	param(
-		$path,
-		$name,
-		$displayName,
-		$description,
-		$startMode,
-		$account,
-		$password
-	)
-	
-	# check to see if the service has already been registered
-	#$existingService = Get-Service | Where-Object {$_.Name -eq "$name"}
-	$existingService = Get-WmiObject win32_service -Filter "name='$name'"
-	$reinstallService = $False
-	if ($existingService -ne $null)
-	{
-		# windows service exists
-		Write-Host "Existing Windows service named `"$name`" was found"
-		# check display name
-		if ($displayName -and $existingService.DisplayName -ine $displayName)
-		{
-			Write-Host "Existing service has a different display name `"$($existingService.DisplayName)`" vs `"$displayName`""
-			$reinstallService = $True
-		}
-		# check description
-		if ($description -and $existingService.Description -ine $description)
-		{
-			Write-Host "Existing service has a different service description `"$($existingService.Description)`" vs `"$description`""
-			$reinstallService = $True
-		}
-		# check start mode
-		if ($startMode -and $existingService.StartMode -ine $startMode)
-		{
-			Write-Host "Existing service has a different start mode `"$($existingService.StartMode)`" vs `"$startMode`""
-			$reinstallService = $True
-		}
-		# check account
-		if ($account -and $existingService.StartName -ine $account)
-		{
-			Write-Host "Existing service is set to run under a different service account `"$($existingService.StartName)`" vs `"$account`""
-			$reinstallService = $True
-		}
-		
-		if ($reinstallService)
-		{
-			# uninstall existing service
-			$nserviceBusHostExe = Join-Path $path "NServiceBus.Host.exe"
-			$uninstallArguments = @()
-			$uninstallArguments += "/uninstall"
-			if ($name) { $uninstallArguments += "/serviceName:`"$name`"" }
-			Write-Host "Uninstalling Windows service named `"$name`""
-			Set-Alias nservicebushost $nserviceBusHostExe
-			Start-Process -NoNewWindow -Wait -FilePath nservicebushost -ArgumentList $uninstallArguments
-		}
-	}
-	
-	if ( $reinstallService -or $existingService -eq $null )
-	{
-		# install new windows service
-		$nserviceBusHostExe = Join-Path $path "NServiceBus.Host.exe"
-		$installArguments = @()
-		$installArguments += "/install"
-		# set service name
-		if ($name) { $installArguments += "/serviceName:`"$name`"" }
-		# set service display name 
-		if ($displayName) { $installArguments += "/displayName:`"$displayName`"" }
-		# set service description
-		if ($description) { $installArguments += "/description:`"$description`"" }
-		# set start mode
-		if ($startMode) { if ($startMode -ine "automatic") { $installArguments += "/startManually" } }
-		# set service credentials
-		if ($account -and $password) 
-		{ 
-			$installArguments += "/username:`"$account`""
-			$installArguments += "/password:`"$password`""
-		}
-		# install the service
-		Write-Host "Installing Windows service named `"$name`""
-		Set-Alias nservicebushost $nserviceBusHostExe
-		Start-Process -NoNewWindow -Wait -FilePath nservicebushost -ArgumentList $installArguments
-	}	
 }
 
 #endregion
@@ -1427,6 +1381,8 @@ function Deployment-InstallWindowsFeature
 	
 	Import-Module ServerManager
 	
+	$osVersion = Deployment-GetOSVersion
+	
 	if ($index -and $total)
 	{
 		Write-Host "Checking Windows feature [$index/$total] $featureName ($description) for installation"
@@ -1440,7 +1396,19 @@ function Deployment-InstallWindowsFeature
 	if (-not ($feature.Installed))
 	{
 		Write-Host "Installing Windows feature $featureName ($description)"
-		Add-WindowsFeature -Name $featureName | Out-Null
+
+		switch ($osVersion) 
+		{ 
+			6.1 {  # Windows 2008 R2
+					Add-WindowsFeature -Name $featureName | Out-Null
+				}
+			6.2 { # Windows 2012
+					Install-WindowsFeature -Name $featureName | Out-Null
+				}
+			default {
+				Throw "Windws OS version is $osVersion, undefined method for Windows Feature management"
+				}
+		}
 	}
 }
 
@@ -1473,3 +1441,72 @@ function Deployment-RemoveWindowsFeature
 }
 
 #endregion
+
+#region .Net Framework Functions
+
+function Deployment-EnsureInstalledFrameworkVersion
+{
+	param(
+		[string]$netFrameworkVersion
+	)
+	
+	Write-Host "Checking for installed .Net framework v$netFrameworkVersion"
+	if (-not (Deployment-CheckForInstalledFrameworkVersion -NetFrameworkVersion $netFrameWorkVersion))
+	{
+		Throw "The .Net framework version v$netFrameworkVersion has not been installed"
+	}
+}
+
+function Deployment-CheckForInstalledFrameworkVersion
+{
+	param(
+		[string]$netFrameworkVersion
+	)
+	
+	$installedVersions = Deployment-GetInstalledFrameworkVersions
+	return ($installedVersions -Contains $netFrameworkVersion)
+}
+
+function Deployment-GetInstalledFrameworkVersions
+{
+	$installedFrameworks = @()
+	if(TestRegistryKey "HKLM:\Software\Microsoft\.NETFramework\Policy\v1.0" "3705") { $installedFrameworks += "1.0" }
+	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v1.1.4322" "Install") { $installedFrameworks += "1.1" }
+	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v2.0.50727" "Install") { $installedFrameworks += "2.0" }
+	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v3.0\Setup" "InstallSuccess") { $installedFrameworks += "3.0" }
+	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v3.5" "Install") { $installedFrameworks += "3.5" }
+	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v4\Client" "Install") { $installedFrameworks += "4.0c" }
+	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v4\Full" "Install") { $installedFrameworks += "4.0" }  
+	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v4\Full" "Release") { $installedFrameworks += "4.5" }  
+	
+	return $installedFrameworks
+}
+
+function TestRegistryKey
+{
+	param(
+		[string]$path, 
+		[string]$key
+	)
+	
+	if(-not (Test-Path $path))
+	{
+		return $false
+	}
+	
+	if ((Get-ItemProperty $path).$key -eq $null) 
+	{
+		return $false
+	}
+	return $true
+}
+
+#endregion
+
+
+function Deployment-GetOSVersion
+{
+	$version = Get-WmiObject Win32_OperatingSystem
+    $version = $version.Version.substring(0,3)
+	return $version
+}

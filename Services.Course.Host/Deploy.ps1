@@ -25,10 +25,3 @@ trap [Exception]
 # import deployment module
 $PSScriptRoot = $MyInvocation.MyCommand.Path | Split-Path
 Import-Module -Name $PSScriptRoot\DeploymentModule.psm1 -Force
-
-
-##############################
-# Deploy Windows Service
-
-# register NServiceBus windows service
-#Deployment-InstallNServiceBusService -Path "$OctopusPackageDirectoryPath" -Name "$WindowsServiceName" -DisplayName "$WindowsServiceDisplayName" -Description "$WindowsServiceDescription" -Account "$WindowsServiceAccount" -Password "$WindowsServiceAccountPassword" -StartMode "$WindowsServiceStartMode"
