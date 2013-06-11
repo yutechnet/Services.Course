@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BpeProducts.Services.Course.Contract
 {
@@ -8,6 +9,8 @@ namespace BpeProducts.Services.Course.Contract
 		public string Name { get; set; }
 		[Required]
 		public string Description { get; set; }
+        [Required]
+        public Guid OrganizationId { get; set; }
 		[Required]
 		public string TenantId { get; set; }
 	}
