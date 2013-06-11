@@ -6,9 +6,9 @@ Feature: ProgramAssociation
 
 Background: 
 	Given the following programs exist:
-	| Name                | Description |
-	| Bachelor of Art     | BA Program  |
-	| Bachelor of Science | BS program  |
+	| Name                | Description | OrganizationId |
+	| Bachelor of Art     | BA Program  | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Bachelor of Science | BS program  | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	And the following courses exist:
 	| Name           | Code   | Description    |
 	| English 101    | ENG101 | English 101    |
