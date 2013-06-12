@@ -22,6 +22,12 @@ Background:
 Given the following programs exist:
 	| Name | Description | OrganizationId | TenantId |
 	| BA   | BA Program  | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | 1        |
+And the following course exists:
+	| Field       | Value                         |
+	| Name        | English 101                   |
+	| Code        | ENG101                        |
+	| Description | Ranji's awesome English class |
+	| TenantId    | 1                             |
 
 Scenario: Add a new learning outcome to a program and get it
 	When I associate to the 'program' 'BA' a new learning outcome with the description 'SomeDescription'
@@ -71,3 +77,39 @@ Then disassociating the following from 'BA' program should result:
 | first learning outcome  | NoContent               |
 | second learning outcome | NoContent               |
 | third learning outcome  | NotFound                |
+
+Scenario: Associate an outcome to another outcome
+	Given I associate the following learning outcomes to 'BA' program:
+	| Description                     | TenantId |
+	| first program learning outcome  | 1        |
+	| second program learning outcome | 1        |
+	And I assoicate the following learning outcomes to 'ENG101' course:
+	| Description                    | TenantId |
+	| first course learning outcome  | 1        |
+	| second course learning outcome | 1        |
+	When I assoicate the following outcomes to 'second program learning outcome'
+	| CourseCode | Description                    |
+	| ENG101     | first course learning outcome  |
+	| ENG101     | second course learning outcome |
+	Then 'second program learning outcome' has the following learning outcomes:
+	| Description                    |
+	| first course learning outcome  |
+	| second course learning outcome |
+
+Scenario: Disassociate an outcome from another outcome
+	Given I associate the following learning outcomes to 'BA' program:
+	| Description                     | TenantId |
+	| first program learning outcome  | 1        |
+	| second program learning outcome | 1        |
+	And I assoicate the following learning outcomes to 'ENG101' course:
+	| Description                    | TenantId |
+	| first course learning outcome  | 1        |
+	| second course learning outcome | 1        |
+	When I assoicate the following outcomes to 'second program learning outcome'
+	| CourseCode | Description                    |
+	| ENG101     | first course learning outcome  |
+	| ENG101     | second course learning outcome |
+	And I disassociate 'first course learning outcome' from 'second program learning outcome'
+	Then 'second program learning outcome' has the following learning outcomes:
+	| Description                   | 
+	| second course learning outcome |

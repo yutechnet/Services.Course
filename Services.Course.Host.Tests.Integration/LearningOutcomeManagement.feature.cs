@@ -84,6 +84,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 #line 22
 testRunner.Given("the following programs exist:", ((string)(null)), table1, "Given ");
 #line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table2.AddRow(new string[] {
+                        "Name",
+                        "English 101"});
+            table2.AddRow(new string[] {
+                        "Code",
+                        "ENG101"});
+            table2.AddRow(new string[] {
+                        "Description",
+                        "Ranji\'s awesome English class"});
+            table2.AddRow(new string[] {
+                        "TenantId",
+                        "1"});
+#line 25
+testRunner.And("the following course exists:", ((string)(null)), table2, "And ");
+#line hidden
         }
         
         [NUnit.Framework.TestAttribute()]
@@ -146,16 +164,16 @@ this.FeatureBackground();
         public virtual void AddANewLearningOutcomeToAProgramAndGetIt()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a new learning outcome to a program and get it", ((string[])(null)));
-#line 26
+#line 32
 this.ScenarioSetup(scenarioInfo);
 #line 21
 this.FeatureBackground();
-#line 27
+#line 33
  testRunner.When("I associate to the \'program\' \'BA\' a new learning outcome with the description \'So" +
                     "meDescription\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 28
+#line 34
  testRunner.Then("the learning outcome should be with the description \'SomeDescription\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 29
+#line 35
  testRunner.And("the \'program\' \'BA\' is associated with learning outcome \'SomeDescription\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -166,19 +184,10 @@ this.FeatureBackground();
         public virtual void AssociateANewLearningOutcomeToAProgram()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Associate a new learning outcome to a program", ((string[])(null)));
-#line 31
+#line 37
 this.ScenarioSetup(scenarioInfo);
 #line 21
 this.FeatureBackground();
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table2.AddRow(new string[] {
-                        "first learning outcome"});
-            table2.AddRow(new string[] {
-                        "second learning outcome"});
-#line 32
-testRunner.When("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table2, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
@@ -186,8 +195,17 @@ testRunner.When("I associate the following learning outcomes to \'BA\' program:"
                         "first learning outcome"});
             table3.AddRow(new string[] {
                         "second learning outcome"});
-#line 36
-testRunner.Then("\'BA\' program is associated with the following learning outcomes:", ((string)(null)), table3, "Then ");
+#line 38
+testRunner.When("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table3, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table4.AddRow(new string[] {
+                        "first learning outcome"});
+            table4.AddRow(new string[] {
+                        "second learning outcome"});
+#line 42
+testRunner.Then("\'BA\' program is associated with the following learning outcomes:", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -197,31 +215,31 @@ testRunner.Then("\'BA\' program is associated with the following learning outcom
         public virtual void DuplicateAssociationIsIdempotent()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Duplicate association is idempotent", ((string[])(null)));
-#line 41
+#line 47
 this.ScenarioSetup(scenarioInfo);
 #line 21
 this.FeatureBackground();
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table4.AddRow(new string[] {
-                        "first learning outcome"});
-#line 42
-testRunner.When("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table4, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
             table5.AddRow(new string[] {
                         "first learning outcome"});
-#line 45
+#line 48
 testRunner.When("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table5, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
             table6.AddRow(new string[] {
                         "first learning outcome"});
-#line 48
-testRunner.Then("\'BA\' program is associated with the following learning outcomes:", ((string)(null)), table6, "Then ");
+#line 51
+testRunner.When("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table6, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table7.AddRow(new string[] {
+                        "first learning outcome"});
+#line 54
+testRunner.Then("\'BA\' program is associated with the following learning outcomes:", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -231,33 +249,33 @@ testRunner.Then("\'BA\' program is associated with the following learning outcom
         public virtual void DisassociatedALearningOutcomeFromAProgram()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disassociated a learning outcome from a program", ((string[])(null)));
-#line 52
+#line 58
 this.ScenarioSetup(scenarioInfo);
 #line 21
 this.FeatureBackground();
-#line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table7.AddRow(new string[] {
-                        "first learning outcome"});
-            table7.AddRow(new string[] {
-                        "second learning outcome"});
-#line 53
-testRunner.When("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table7, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
             table8.AddRow(new string[] {
                         "first learning outcome"});
-#line 57
-testRunner.When("I disassociate the following learning outcomes from \'BA\' program:", ((string)(null)), table8, "When ");
+            table8.AddRow(new string[] {
+                        "second learning outcome"});
+#line 59
+testRunner.When("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table8, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
             table9.AddRow(new string[] {
+                        "first learning outcome"});
+#line 63
+testRunner.When("I disassociate the following learning outcomes from \'BA\' program:", ((string)(null)), table9, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table10.AddRow(new string[] {
                         "second learning outcome"});
-#line 60
-testRunner.Then("\'BA\' program is associated with the only following learning outcomes:", ((string)(null)), table9, "Then ");
+#line 66
+testRunner.Then("\'BA\' program is associated with the only following learning outcomes:", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -267,34 +285,151 @@ testRunner.Then("\'BA\' program is associated with the only following learning o
         public virtual void DisassociatingNon_ExistingLearningOutcome()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disassociating non-existing learning outcome", ((string[])(null)));
-#line 64
+#line 70
 this.ScenarioSetup(scenarioInfo);
 #line 21
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table10.AddRow(new string[] {
-                        "first learning outcome"});
-            table10.AddRow(new string[] {
-                        "second learning outcome"});
-#line 65
-testRunner.When("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table10, "When ");
-#line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table11.AddRow(new string[] {
+                        "first learning outcome"});
+            table11.AddRow(new string[] {
+                        "second learning outcome"});
+#line 71
+testRunner.When("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table11, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description",
                         "Disassociation Response"});
-            table11.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "first learning outcome",
                         "NoContent"});
-            table11.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "second learning outcome",
                         "NoContent"});
-            table11.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "third learning outcome",
                         "NotFound"});
-#line 69
-testRunner.Then("disassociating the following from \'BA\' program should result:", ((string)(null)), table11, "Then ");
+#line 75
+testRunner.Then("disassociating the following from \'BA\' program should result:", ((string)(null)), table12, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Associate an outcome to another outcome")]
+        public virtual void AssociateAnOutcomeToAnotherOutcome()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Associate an outcome to another outcome", ((string[])(null)));
+#line 81
+this.ScenarioSetup(scenarioInfo);
+#line 21
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description",
+                        "TenantId"});
+            table13.AddRow(new string[] {
+                        "first program learning outcome",
+                        "1"});
+            table13.AddRow(new string[] {
+                        "second program learning outcome",
+                        "1"});
+#line 82
+ testRunner.Given("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table13, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description",
+                        "TenantId"});
+            table14.AddRow(new string[] {
+                        "first course learning outcome",
+                        "1"});
+            table14.AddRow(new string[] {
+                        "second course learning outcome",
+                        "1"});
+#line 86
+ testRunner.And("I assoicate the following learning outcomes to \'ENG101\' course:", ((string)(null)), table14, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "CourseCode",
+                        "Description"});
+            table15.AddRow(new string[] {
+                        "ENG101",
+                        "first course learning outcome"});
+            table15.AddRow(new string[] {
+                        "ENG101",
+                        "second course learning outcome"});
+#line 90
+ testRunner.When("I assoicate the following outcomes to \'second program learning outcome\'", ((string)(null)), table15, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table16.AddRow(new string[] {
+                        "first course learning outcome"});
+            table16.AddRow(new string[] {
+                        "second course learning outcome"});
+#line 94
+ testRunner.Then("\'second program learning outcome\' has the following learning outcomes:", ((string)(null)), table16, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Disassociate an outcome from another outcome")]
+        public virtual void DisassociateAnOutcomeFromAnotherOutcome()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disassociate an outcome from another outcome", ((string[])(null)));
+#line 99
+this.ScenarioSetup(scenarioInfo);
+#line 21
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description",
+                        "TenantId"});
+            table17.AddRow(new string[] {
+                        "first program learning outcome",
+                        "1"});
+            table17.AddRow(new string[] {
+                        "second program learning outcome",
+                        "1"});
+#line 100
+ testRunner.Given("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table17, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description",
+                        "TenantId"});
+            table18.AddRow(new string[] {
+                        "first course learning outcome",
+                        "1"});
+            table18.AddRow(new string[] {
+                        "second course learning outcome",
+                        "1"});
+#line 104
+ testRunner.And("I assoicate the following learning outcomes to \'ENG101\' course:", ((string)(null)), table18, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "CourseCode",
+                        "Description"});
+            table19.AddRow(new string[] {
+                        "ENG101",
+                        "first course learning outcome"});
+            table19.AddRow(new string[] {
+                        "ENG101",
+                        "second course learning outcome"});
+#line 108
+ testRunner.When("I assoicate the following outcomes to \'second program learning outcome\'", ((string)(null)), table19, "When ");
+#line 112
+ testRunner.And("I disassociate \'first course learning outcome\' from \'second program learning outc" +
+                    "ome\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table20.AddRow(new string[] {
+                        "second course learning outcome"});
+#line 113
+ testRunner.Then("\'second program learning outcome\' has the following learning outcomes:", ((string)(null)), table20, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

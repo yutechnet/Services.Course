@@ -14,20 +14,12 @@ namespace BpeProducts.Services.Course.Domain.Overrides
         public void Override(AutoMapping<LearningOutcome> mapping)
         {
 			mapping.Map(outcome => outcome.Description).CustomSqlType("nvarchar(max)");
-			//mapping.HasMany<IHaveOutcomes>(x => x.AssociatedEntities)
-			//	.KeyColumn("EntityId")
-			//	.ForeignKeyConstraintName("none");
-
-			//mapping.ReferencesAny(x => x.AssociatedEntities)
-			//	.EntityIdentifierColumn("EntityId")
-			//	.EntityTypeColumn("EntityType")
-			//	.AddMetaValue<Program>("program")
-			//	.AddMetaValue<Domain.Entities.Course>("course")
-			//	.IdentityType<Guid>();
-
-			//mapping
-			//	.HasManyToMany<Ih>(x => x.AssociatedEntities).
-			//	.Table("EntityOutcome");
+            mapping
+                .HasManyToMany<LearningOutcome>(x => x.Outcomes)
+                .ParentKeyColumn("EntityId")
+                .ChildKeyColumn("LearningOutcomeId")
+                .ForeignKeyConstraintNames("none", "none")
+                .Table("EntityLearningOutcome");
         }
     }
 }

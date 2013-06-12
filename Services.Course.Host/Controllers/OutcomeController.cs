@@ -160,6 +160,40 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
+        [CheckModelForNull]
+        [ValidateModelState]
+        public void Put(string entityType, Guid entityId, Guid outcomeId, OutcomeRequest request)
+        {
+            //check if the entity exists
+            //apply strategy pattern here?
+            var entity = _repository.Query<IHaveOutcomes>().SingleOrDefault(x => x.Id == entityId);
+            if (entity == null) throw new HttpResponseException(new HttpResponseMessage
+                {
+                    ReasonPhrase = string.Format("Entity \"{0}\" with id {1} not found", entityId, entityId),
+                    StatusCode = HttpStatusCode.NotFound
+                });
+
+            var learningOutcome = entity.Outcomes.SingleOrDefault(o => o.Id == outcomeId);
+            if (learningOutcome == null)
+            {
+                learningOutcome =
+                    _learningOutcomeRepository.GetAll().FirstOrDefault(l => l.Id == outcomeId && l.ActiveFlag);
+                if (learningOutcome == null)
+                {
+                    throw new HttpResponseException(new HttpResponseMessage
+                        {
+                            ReasonPhrase = string.Format("Outcome with id {0} not found.", outcomeId),
+                            StatusCode = HttpStatusCode.NotFound
+                        });                    
+                }
+                entity.Outcomes.Add(learningOutcome);
+
+                _repository.Update(entity);
+
+            }
+        }
+
+        [Transaction]
         public void Delete(Guid id)
         {
             var learningOutcome = _learningOutcomeRepository.GetById(id);
