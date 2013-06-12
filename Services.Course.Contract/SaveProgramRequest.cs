@@ -7,13 +7,13 @@ namespace BpeProducts.Services.Course.Contract
     [DataContract]
 	public class SaveProgramRequest
 	{
-		[Required]
+		[Required, DataMember]
 		public string Name { get; set; }
-		[Required]
-		public string Description { get; set; }
+        [Required, DataMember]
+        public string Description { get; set; }
         [Required, DataMember(IsRequired = true)]
         public Guid OrganizationId { get; set; }
-		[Required]
+		[Required, DataMember]
 		public string TenantId { get; set; }
 	}
 }
