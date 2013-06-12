@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using BpeProducts.Services.Course.Contract;
 using System.Net.Http.Formatting;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration
 {
@@ -231,7 +233,154 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			}
 		}
 
+        /*
+        [Given(@"I assoicate the following outcomes to '(.*)'")]
+        public void GivenIAssoicateTheFollowingOutcomesTo(string parentOutcome, Table table)
+        {
+            // create the parent outcome
+            var outcomeRequest = new OutcomeRequest {Description = parentOutcome, TenantId = 1};
+            var postUri = FeatureContext.Current.Get<string>("OutcomeLeadningPath");
+            
+            var response =
+                ApiFeature.ApiTestHost.Client.PostAsync(postUri, outcomeRequest, new JsonMediaTypeFormatter()).Result;
+            response.EnsureSuccessStatusCode();
 
+            ScenarioContext.Current.Add(parentOutcome, response.Headers.Location);
+
+            var outcomeRequests = table.CreateSet<OutcomeRequest>();
+            outcomeRequests.ToList().ForEach(o =>
+                {
+                    response =
+                        ApiFeature.ApiTestHost.Client.PostAsync(postUri, o, new JsonMediaTypeFormatter()).Result;
+                    response.EnsureSuccessStatusCode();
+                });
+        }
+
+        [Then(@"'(.*)' has the following learning outcomes:")]
+        public void ThenHasTheFollowingLearningOutcomes(string parentOutcome, Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I disassociate '(.*)' from '(.*)'")]
+        public void GivenIDisassociateFrom(string p0, string p1)
+        {
+            ScenarioContext.Current.Pending();
+        }
+        */
+
+        [Given(@"the following course exists:")]
+        public void GivenTheFollowingCourseExists(Table table)
+        {
+            var saveCourseRequest = table.CreateInstance<SaveCourseRequest>();
+            var postUri = FeatureContext.Current.Get<string>("CourseLeadingPath");
+
+            var response =
+                ApiFeature.ApiTestHost.Client.PostAsync(postUri, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+            response.EnsureSuccessStatusCode();
+
+            ScenarioContext.Current.Add(saveCourseRequest.Code, response.Headers.Location);
+        }
+
+        [Given(@"I associate the following learning outcomes to '(.*)' program:")]
+        public void GivenIAssociateTheFollowingLearningOutcomesToProgram(string programName, Table table)
+        {
+            // PUT /program/programid/outcome
+            ProgramResponse program = null;
+
+            var programs = ScenarioContext.Current.Get<IList<ProgramResponse>>("programs");
+            program = programs.First(p => p.Name.Equals(programName));
+            var postUri = string.Format("{0}/{1}/outcome",
+                                        FeatureContext.Current.Get<string>("ProgramLeadingPath"), program.Id);
+
+            var outcomeRequests = table.CreateSet<OutcomeRequest>();
+            outcomeRequests.ToList().ForEach(o =>
+                {
+                    var response =
+                        ApiFeature.ApiTestHost.Client.PostAsync(postUri, o, new JsonMediaTypeFormatter()).Result;
+                    response.EnsureSuccessStatusCode();
+
+                    ScenarioContext.Current.Add(o.Description, response.Headers.Location);
+                });
+        }
+
+        [Given(@"I assoicate the following learning outcomes to '(.*)' course:")]
+        public void GivenIAssoicateTheFollowingLearningOutcomesToCourse(string courseName, Table table)
+        {
+            var postUri = string.Format("{0}/outcome", ScenarioContext.Current.Get<Uri>(courseName));
+            var outcomeRequests = table.CreateSet<OutcomeRequest>();
+            outcomeRequests.ToList().ForEach(o =>
+            {
+                var response =
+                    ApiFeature.ApiTestHost.Client.PostAsync(postUri, o, new JsonMediaTypeFormatter()).Result;
+                response.EnsureSuccessStatusCode();
+
+                ScenarioContext.Current.Add(o.Description, response.Headers.Location);
+            });
+        }
+
+        [When(@"I assoicate the following outcomes to '(.*)'")]
+        public void WhenIAssoicateTheFollowingOutcomesTo(string outcomeDescription, Table table)
+        {
+            var parentOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(outcomeDescription);
+            var parentOutcomeId = ExtractGuid(parentOutcomeResourceUri.ToString(), 1);
+
+            foreach (var row in table.Rows)
+            {
+                var childOutcomeDescription = row["Description"];
+                var childOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(childOutcomeDescription);
+
+                var childOutcomeId = ExtractGuid(childOutcomeResourceUri.ToString(), 1);
+                var putUri = string.Format("{0}/{1}/outcome/{2}", 
+                    FeatureContext.Current.Get<string>("OutcomeLeadingPath"), parentOutcomeId, childOutcomeId);
+
+                var response =
+                    ApiFeature.ApiTestHost.Client.PutAsync(putUri, new OutcomeRequest(), new JsonMediaTypeFormatter())
+                              .Result;
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
+        private string ExtractGuid(string str, int i)
+        {
+            var p = @"([a-z0-9]{8}[-][a-z0-9]{4}[-][a-z0-9]{4}[-][a-z0-9]{4}[-][a-z0-9]{12})";
+            var mc = Regex.Matches(str, p);
+
+            return mc[i].ToString();
+        }
+
+        [Then(@"'(.*)' has the following learning outcomes:")]
+        public void ThenHasTheFollowingLearningOutcomes(string outcomeDescription, Table table)
+        {
+            var parentOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(outcomeDescription);
+            var parentOutcomeId = ExtractGuid(parentOutcomeResourceUri.ToString(), 1);
+
+            var getUri = string.Format("{0}/{1}/outcome",
+                    FeatureContext.Current.Get<string>("OutcomeLeadingPath"), parentOutcomeId);
+
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri).Result;
+            response.EnsureSuccessStatusCode();
+
+            var childOutcomes = response.Content.ReadAsAsync<IList<OutcomeResponse>>().Result;
+            table.CompareToSet(childOutcomes);
+        }
+
+        [When(@"I disassociate '(.*)' from '(.*)'")]
+        public void WhenIDisassociateFrom(string childOutcome, string parentOutcome)
+        {
+            var parentOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(parentOutcome);
+            var parentOutcomeId = ExtractGuid(parentOutcomeResourceUri.ToString(), 1);
+            var childOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(childOutcome);
+            var childOutcomeId = ExtractGuid(childOutcomeResourceUri.ToString(), 1);
+
+            var deleteUri = string.Format("{0}/{1}/outcome/{2}",
+                                          FeatureContext.Current.Get<string>("OutcomeLeadingPath"), parentOutcomeId,
+                                          childOutcomeId);
+
+            var response =
+                ApiFeature.ApiTestHost.Client.DeleteAsync(deleteUri).Result;
+            response.EnsureSuccessStatusCode();
+        }
 
 
     }
