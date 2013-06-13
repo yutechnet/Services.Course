@@ -22,5 +22,6 @@ namespace BpeProducts.Services.Course.Contract
 
         public string VersionNumber { get; set; }
         public bool IsPublished { get; set; }
+        public string PublishNote { get; set; }
     }
 }

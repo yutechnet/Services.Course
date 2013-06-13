@@ -54,6 +54,7 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<PLayCourseSegmentAdded>().Keyed<IPlayEvent>(typeof(CourseSegmentAdded).Name);
             containerBuilder.RegisterType<PlayCourseSegmentUpdated>().Keyed<IPlayEvent>(typeof(CourseSegmentUpdated).Name);
             containerBuilder.RegisterType<PlayCourseVersionCreated>().Keyed<IPlayEvent>(typeof(CourseVersionCreated).Name);
+            containerBuilder.RegisterType<PlayCourseVersionPublished>().Keyed<IPlayEvent>(typeof(CourseVersionPublished).Name);
 
 			containerBuilder.RegisterType<DomainEvents>().As<IDomainEvents>();
 
@@ -80,6 +81,10 @@ namespace BpeProducts.Services.Course.Domain
 
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseVersionCreated>>();
             containerBuilder.RegisterType<UpdateModelOnCourseVersionCreation>().As<IHandle<CourseVersionCreated>>();
+
+            containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseVersionPublished>>();
+            containerBuilder.RegisterType<UpdateModelOnCourseVersionPublish>().As<IHandle<CourseVersionPublished>>();
+
         }
     }
 

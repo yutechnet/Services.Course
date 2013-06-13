@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.Routing;
 using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Host
@@ -8,10 +9,19 @@ namespace BpeProducts.Services.Course.Host
 		public static void Register(HttpConfiguration config)
 		{
 			config.EnableQuerySupport();
-			config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/outcome/{outcomeId}",
+
+            config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/outcome/{outcomeId}",
 			                           new {controller="outcome",outcomeId = RouteParameter.Optional});
 
-			config.Routes.MapHttpRoute("CourseSegmentsApi2", "{controller}/{courseId}/{action}");
+            // Had to send to a separate controller because I couldn't figure out how to allow two PUT methods
+            // with a similar function signature
+            // http://stackoverflow.com/a/13128870
+            config.Routes.MapHttpRoute(
+                "CoursePublish",
+                "courses/{id}/publish",
+                new { controller = "CoursePublish", action = "Publish" });
+
+            config.Routes.MapHttpRoute("CourseSegmentsApi2", "{controller}/{courseId}/{action}");
 
 			config.Routes.MapHttpRoute("CourseSegmentsApi", "{controller}/{courseId}/{action}/{segmentId}",
 			                           new
@@ -24,13 +34,13 @@ namespace BpeProducts.Services.Course.Host
 			                           new {action = "SubSegments"}
 				);
 
-			config.Routes.MapHttpRoute(
+            config.Routes.MapHttpRoute(
 				name: "DefaultApi",
 				routeTemplate: "{controller}/{id}",
-				defaults: new {id = RouteParameter.Optional}
+				defaults: new {id = RouteParameter.Optional }
 				);
 
-			config.EnableSystemDiagnosticsTracing();
+            config.EnableSystemDiagnosticsTracing();
 
 			//id this works move to common.webapi to let serializer handle self referencing objects
 			var jsonSerializerSettings = new JsonSerializerSettings

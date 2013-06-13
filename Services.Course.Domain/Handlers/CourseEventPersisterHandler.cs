@@ -8,7 +8,8 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                                                IHandle<CourseDisassociatedWithProgram>,
                                                IHandle<CourseCreated>, IHandle<CourseInfoUpdated>,
                                                IHandle<CourseDeleted>, IHandle<CourseSegmentAdded>,
-                                               IHandle<CourseSegmentUpdated>, IHandle<CourseVersionCreated>
+                                               IHandle<CourseSegmentUpdated>, IHandle<CourseVersionCreated>,
+                                               IHandle<CourseVersionPublished>
     {
         private readonly IStoreCourseEvents _eventStore;
 

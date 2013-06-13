@@ -140,6 +140,15 @@ namespace BpeProducts.Services.Course.Host.Controllers
 	        {
 		        throw new HttpResponseException(HttpStatusCode.NotFound);
 	        }
+
+            if (courseInDb.IsPublished)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                    {
+                        StatusCode = HttpStatusCode.Forbidden,
+                        ReasonPhrase = string.Format("Course {0} is published and cannot be modified.", id)
+                    });
+            }
 	        //Course.Update(request);
 	        //update model
 
@@ -162,6 +171,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
+            if (courseInDb.IsPublished)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.Forbidden,
+                    ReasonPhrase = string.Format("Course {0} is published and cannot be deleted.", id)
+                });
+            }
             
             _domainEvents.Raise<CourseDeleted>(new CourseDeleted
 	            {
