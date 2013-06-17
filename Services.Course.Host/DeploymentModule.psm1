@@ -1,4 +1,6 @@
-﻿$script:ErrorActionPreference = 'Stop'
+# Deployment Module v0.1.29
+
+$script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 #region IIS Functions
@@ -697,7 +699,7 @@ function Deployment-PurgeOldOctopusVersions
 		[int]$howManyToKeep
 	)
 	
-	if ($Caller -eq "Octopus") 
+	if ($Caller -eq "Octopus" -and $OctopusAppRoot -ne $null) 
 	{ 
 		$dirMask = Join-Path $OctopusAppRoot ($OctopusPackageName + "\*")
 		$dirSortedList = Get-Item $dirMask | Sort-Object LastWriteTime
@@ -763,7 +765,7 @@ function Deployment-CleanupDeploymentConfigs
 	if ($Caller -eq "Octopus") 
 	{ 
 		Write-Host "Cleaning up deployment configs"
-		Get-ChildItem $modulePath\*.*.config -Include *.debug.config,*.release.config,*.local.config,*.dev.config,*.qa.config,*.stg.config,*.test.config,*.test2.config,*.prod.config | ForEach ($_) {
+		Get-ChildItem $modulePath -Include *.debug.config,*.release.config,*.local.config,*.dev.config,*.qa.config,*.stg.config,*.test.config,*.test2.config,*.prod.config -Recurse | ForEach ($_) {
 			Write-Host "Removing config file $($_.Name)"
 			Remove-Item $_.Fullname -Force
 		}
@@ -1507,6 +1509,21 @@ function TestRegistryKey
 function Deployment-GetOSVersion
 {
 	$version = Get-WmiObject Win32_OperatingSystem
-    $version = $version.Version.substring(0,3)
+	$version = $version.Version.substring(0,3)
 	return $version
 }
+
+function Deployment-UpdateDeploymentModuleWithVersion
+{
+	param(
+		[string]$version
+	)
+	# append comment to top of file
+	$content = "# Deployment Module v$version`r`n`r`n"
+	$deploymentModuleFile = $script:MyInvocation.MyCommand.Path
+	$content += [System.IO.File]::ReadAllText($deploymentModuleFile)
+	# save updated file
+	$content | Set-Content -Path $deploymentModuleFile
+}
+
+
