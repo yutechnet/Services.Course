@@ -17,7 +17,13 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping.IgnoreProperty(course => course.Segments);
             mapping.Map(course => course.CourseSegmentJson).CustomSqlType("nvarchar(max)");
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
-			mapping
+            mapping
+                .HasManyToMany<Program>(x => x.Programs)
+                .ParentKeyColumn("CourseId")
+                .ChildKeyColumn("ProgramId")
+                .ForeignKeyConstraintNames("FK_Course", "FK_Program")
+                .Table("CourseProgram");
+            mapping
 				.HasManyToMany<LearningOutcome>(x => x.Outcomes)
 				.ParentKeyColumn("EntityId")
 				.ChildKeyColumn("LearningOutcomeId")

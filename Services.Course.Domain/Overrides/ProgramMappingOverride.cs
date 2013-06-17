@@ -13,7 +13,12 @@ namespace BpeProducts.Services.Course.Domain.Overrides
     {
         public void Override(AutoMapping<Entities.Program> mapping)
         {
-            mapping.HasMany(p => p.Courses).Inverse();
+            mapping
+                .HasManyToMany<Entities.Course>(x => x.Courses)
+                .ParentKeyColumn("ProgramId")
+                .ChildKeyColumn("CourseId")
+                .Table("CourseProgram")
+                .Inverse();
 			
 			mapping
 				.HasManyToMany<LearningOutcome>(x => x.Outcomes)
