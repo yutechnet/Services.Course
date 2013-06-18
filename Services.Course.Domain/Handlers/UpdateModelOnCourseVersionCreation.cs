@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 
@@ -22,14 +26,16 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 
             // create a new version based on the parent version
             var courseInDb = _courseRepository.GetById(e.ParentCourseId);
-            courseInDb.Id = e.AggregateId;
-            courseInDb.OriginalEntityId = e.OriginalCourseId;
-            courseInDb.ParentEntityId = e.ParentCourseId;
 
-            courseInDb.IsPublished = e.IsPublished;
-            courseInDb.VersionNumber = e.VersionNumber;
+            var newCourseVersion = new Entities.Course(courseInDb);
+            newCourseVersion.Id = e.AggregateId;
+            newCourseVersion.OriginalEntityId = e.OriginalCourseId;
+            newCourseVersion.ParentEntityId = e.ParentCourseId;
 
-            _courseRepository.Add(courseInDb);
+            newCourseVersion.IsPublished = e.IsPublished;
+            newCourseVersion.VersionNumber = e.VersionNumber;
+
+            _courseRepository.Add(newCourseVersion);
         }
     }
 }

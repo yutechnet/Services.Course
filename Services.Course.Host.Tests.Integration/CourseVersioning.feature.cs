@@ -292,6 +292,61 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Create a course version from a previously-published version")]
+        public virtual void CreateACourseVersionFromAPreviously_PublishedVersion()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a course version from a previously-published version", ((string[])(null)));
+#line 72
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table10.AddRow(new string[] {
+                        "PublishNote",
+                        "Blah blah"});
+            table10.AddRow(new string[] {
+                        "VersionNumber",
+                        "1.1.0.0"});
+#line 73
+ testRunner.Given("I publish \'ENG101\' course with the following info", ((string)(null)), table10, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table11.AddRow(new string[] {
+                        "VersionNumber",
+                        "2.0a"});
+#line 77
+ testRunner.When("I create a new version of \'ENG101\' with the following info", ((string)(null)), table11, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table12.AddRow(new string[] {
+                        "Name",
+                        "English 1010"});
+            table12.AddRow(new string[] {
+                        "Code",
+                        "ENG101"});
+            table12.AddRow(new string[] {
+                        "Description",
+                        "Ranji\'s awesome English class"});
+            table12.AddRow(new string[] {
+                        "VersionNumber",
+                        "2.0a"});
+            table12.AddRow(new string[] {
+                        "IsPublished",
+                        "false"});
+#line 80
+ testRunner.Then("the course \'ENG101\' should have the following info", ((string)(null)), table12, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

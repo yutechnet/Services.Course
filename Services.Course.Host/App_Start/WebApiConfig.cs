@@ -21,6 +21,11 @@ namespace BpeProducts.Services.Course.Host
                 "courses/{id}/publish",
                 new { controller = "CoursePublish", action = "Publish" });
 
+		    config.Routes.MapHttpRoute(
+		        "CourseVersion",
+		        "courses/version",
+		        new {controller = "CoursePublish", action = "CreateVersion"});
+
             config.Routes.MapHttpRoute("CourseSegmentsApi2", "{controller}/{courseId}/{action}");
 
 			config.Routes.MapHttpRoute("CourseSegmentsApi", "{controller}/{courseId}/{action}/{segmentId}",

@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Text.RegularExpressions;
 using BpeProducts.Services.Course.Contract;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -97,6 +98,29 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resourceUri).Result;
 
             ScenarioContext.Current.Add("ResponseToValidate", response);
+        }
+
+        [When(@"I create a new version of '(.*)' with the following info")]
+        public void WhenICreateANewVersionOfWithTheFollowingInfo(string courseCode, Table table)
+        {
+            var versionRequest = table.CreateInstance<CourseVersionRequest>();
+            var resourceUri = ScenarioContext.Current.Get<Uri>(courseCode);
+            versionRequest.ParentVersionId = Guid.Parse(ExtractGuid(resourceUri.ToString(), 0));
+
+            var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("CourseLeadingPath"));
+
+            var response =
+                ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
+
+            ScenarioContext.Current[courseCode] = response.Headers.Location;
+        }
+
+        private string ExtractGuid(string str, int i)
+        {
+            var p = @"([a-z0-9]{8}[-][a-z0-9]{4}[-][a-z0-9]{4}[-][a-z0-9]{4}[-][a-z0-9]{12})";
+            var mc = Regex.Matches(str, p);
+
+            return mc[i].ToString();
         }
 
     }
