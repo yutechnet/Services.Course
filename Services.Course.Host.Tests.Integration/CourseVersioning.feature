@@ -39,13 +39,12 @@ Scenario: Publish a course version
 	When I publish 'ENG101' course with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	| VersionNumber | 1.1.1.1   |
 	Then the course 'ENG101' should have the following info
 	| Field         | Value                         |
 	| Name          | English 1010                  |
 	| Code          | ENG101                        |
 	| Description   | Ranji's awesome English class |
-	| VersionNumber | 1.1.1.1                       |
+	| VersionNumber | 1.0.0.0                       |
 	| IsPublished   | true                          |
 	| PublishNote   | Blah blah                     |
 
@@ -53,7 +52,6 @@ Scenario: Published version cannot be modified
 	Given I publish 'ENG101' course with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	| VersionNumber | 1.1.1.1   |
 	When I update 'ENG101' course with the following info
 	| Field       | Value                          |
 	| Name        | English 10101                  |
@@ -73,7 +71,6 @@ Scenario: Create a course version from a previously-published version
 	Given I publish 'ENG101' course with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	| VersionNumber | 1.1.0.0   |
 	When I create a new version of 'ENG101' with the following info
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
@@ -89,8 +86,19 @@ Scenario: Cannot publish the same version twice
 	Given I publish 'ENG101' course with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	| VersionNumber | 1.0.0.0   |
 	When I create a new version of 'ENG101' with the following info
 	| Field         | Value   |
 	| VersionNumber | 1.0.0.0 |
 	Then I get 'Conflict' response
+
+Scenario: Cannot create a version off non-existing version
+	When I create a new version of 'RandomCourse' with the following info
+	| Field         | Value   |
+	| VersionNumber | 1.0.0.0 |
+	Then I get 'NotFound' response
+
+Scenario: Cannot publish without a version
+	When I create a course without a version
+	Then I get 'BadRequest' response
+
+

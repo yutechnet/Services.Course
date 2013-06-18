@@ -9,6 +9,5 @@ namespace BpeProducts.Services.Course.Contract
     public class CoursePublishRequest
     {
         public string PublishNote { get; set; }
-        public string VersionNumber { get; set; }
     }
 }

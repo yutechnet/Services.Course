@@ -21,7 +21,6 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             var courseInDb = _courseRepository.GetById(e.AggregateId);
             courseInDb.IsPublished = true;
             courseInDb.PublishNote = e.PublishNote;
-            courseInDb.VersionNumber = e.VersionNumber;
 
             _courseRepository.Update(courseInDb);
         }

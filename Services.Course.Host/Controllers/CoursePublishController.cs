@@ -44,8 +44,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
             _domainEvents.Raise<CourseVersionPublished>(new CourseVersionPublished
             {
                 AggregateId = id,
-                PublishNote = request.PublishNote,
-                VersionNumber = request.VersionNumber
+                PublishNote = request.PublishNote
             });
         }
 
@@ -55,6 +54,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPost]
         public HttpResponseMessage CreateVersion(CourseVersionRequest request)
         {
+            if (string.IsNullOrEmpty(request.VersionNumber))
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ReasonPhrase = "Version number is required."
+                });
+            }
             var courseInDb =
                 _courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true));
             if (courseInDb == null)

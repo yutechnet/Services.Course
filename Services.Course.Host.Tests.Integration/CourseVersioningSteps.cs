@@ -104,8 +104,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void WhenICreateANewVersionOfWithTheFollowingInfo(string courseCode, Table table)
         {
             var versionRequest = table.CreateInstance<CourseVersionRequest>();
-            var resourceUri = ScenarioContext.Current.Get<Uri>(courseCode);
-            versionRequest.ParentVersionId = Guid.Parse(ExtractGuid(resourceUri.ToString(), 0));
+
+            if (courseCode.Equals("RandomCourse"))
+            {
+                versionRequest.ParentVersionId = Guid.NewGuid();
+            }
+            else
+            {
+                var resourceUri = ScenarioContext.Current.Get<Uri>(courseCode);
+                versionRequest.ParentVersionId = Guid.Parse(ExtractGuid(resourceUri.ToString(), 0));
+            }
 
             var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("CourseLeadingPath"));
 
@@ -115,6 +123,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             ScenarioContext.Current[courseCode] = response.Headers.Location;
             ScenarioContext.Current["ResponseToValidate"] = response;
         }
+
+        [When(@"I create a course without a version")]
+        public void WhenICreateACourseWithoutAVersion()
+        {
+            var versionRequest = new CourseVersionRequest
+                {
+                    ParentVersionId = Guid.NewGuid(),
+                    VersionNumber = null
+                };
+            var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("CourseLeadingPath"));
+
+            var response =
+                ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
+
+            ScenarioContext.Current["ResponseToValidate"] = response;
+        }
+
 
         private string ExtractGuid(string str, int i)
         {
