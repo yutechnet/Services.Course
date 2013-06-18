@@ -74,14 +74,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
+                        "ProgramType",
                         "OrganizationId"});
             table1.AddRow(new string[] {
                         "Bachelor of Art",
                         "BA Program",
+                        "BA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
             table1.AddRow(new string[] {
                         "Bachelor of Science",
                         "BS program",
+                        "BS",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 8
  testRunner.Given("the following programs exist:", ((string)(null)), table1, "Given ");

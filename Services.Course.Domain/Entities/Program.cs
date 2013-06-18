@@ -20,6 +20,8 @@ namespace BpeProducts.Services.Course.Domain.Entities
 
         public virtual Guid OrganizationId { get; set; }
 
+        public virtual string ProgramType { get; set; }
+
 	    public Program()
 	    {
 	        Courses = new List<Course>();

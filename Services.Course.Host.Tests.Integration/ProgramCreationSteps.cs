@@ -50,7 +50,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Name = table.Rows[0]["Name"] + _tempId,
                     Description = table.Rows[0]["Description"],
                     TenantId = "1",
-                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
+                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                    ProgramType = table.Rows[0]["ProgramType"]
                 };
         }
 
@@ -79,7 +80,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                     Description = table.Rows[0]["Description"],
                     TenantId = "1",
-                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
+                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                    ProgramType = table.Rows[0]["ProgramType"]
                 };
 
             _responseMessageToValidate = ApiFeature.ApiTestHost.Client.PutAsync(_leadingPath + "/" + _programResponse.Id, _editProgramRequest, new JsonMediaTypeFormatter()).Result;
@@ -101,7 +103,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Name = string.IsNullOrEmpty(name) ? name : name + ScenarioContext.Current.Get<long>("ticks"),
                     Description = description,
                     TenantId =  "1",
-                    OrganizationId = Guid.NewGuid()
+                    OrganizationId = Guid.NewGuid(),
+                    ProgramType = "BA"
                 };
 
             _responseMessageToValidate = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, _programRequest, new JsonMediaTypeFormatter()).Result;
@@ -122,7 +125,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                     Description = table.Rows[0]["Description"],
                     TenantId = "1",
-                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
+                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                    ProgramType = table.Rows[0]["ProgramType"]
                 };
 
             _responseMessageToValidate = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, _anotherProgramRequest, new JsonMediaTypeFormatter()).Result;

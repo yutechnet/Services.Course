@@ -78,11 +78,13 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
+                        "ProgramType",
                         "OrganizationId",
                         "Tenant"});
             table1.AddRow(new string[] {
                         "Bachelor\'s of Science",
                         "Economics",
+                        "MA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "1"});
 #line 8
@@ -93,11 +95,13 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
+                        "ProgramType",
                         "OrganizationId",
                         "Tenant"});
             table2.AddRow(new string[] {
                         "Bachelor\'s of Science",
                         "Economics",
+                        "MA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "1"});
 #line 12
@@ -117,11 +121,13 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
+                        "ProgramType",
                         "OrganizationId",
                         "Tenant"});
             table3.AddRow(new string[] {
                         "Bachelor\'s of Science",
                         "Economics",
+                        "BA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "1"});
 #line 17
@@ -132,11 +138,13 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
+                        "ProgramType",
                         "OrganizationId",
                         "Tenant"});
             table4.AddRow(new string[] {
                         "Bachelor\'s of Art",
                         "English",
+                        "BA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "1"});
 #line 21
@@ -158,11 +166,13 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
+                        "ProgramType",
                         "OrganizationId",
                         "Tenant"});
             table5.AddRow(new string[] {
                         "Bachelor\'s of Science",
                         "Economics",
+                        "BA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "1"});
 #line 27
@@ -186,11 +196,13 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
+                        "ProgramType",
                         "OrganizationId",
                         "Tenant"});
             table6.AddRow(new string[] {
                         "Bachelor\'s of Science",
                         "Economics",
+                        "AA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "1"});
 #line 34
@@ -201,11 +213,13 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
+                        "ProgramType",
                         "OrganizationId",
                         "Tenant"});
             table7.AddRow(new string[] {
                         "Bachelor\'s of Art",
                         "Philosophy",
+                        "AA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "1"});
 #line 38

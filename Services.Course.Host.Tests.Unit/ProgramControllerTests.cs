@@ -24,6 +24,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		private Mock<IRepository> _repository;
 		private Guid[] _programIds;
         private Guid[] _organizationIds;
+	    private string[] _programTypes;
 
 		[SetUp]
 		public void SetUp()
@@ -31,6 +32,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
 			_programIds =  new[]{Guid.NewGuid(),Guid.NewGuid(),Guid.NewGuid()};
             _organizationIds = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+		    _programTypes = new string[] {"MA", "BA", "AA"};
 			_repository=new Mock<IRepository>();
 			var programs = new List<Program>
 				{
@@ -38,18 +40,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 						{ 
 							Id=_programIds[0],
                             OrganizationId = _organizationIds[0],
+                            ProgramType = _programTypes[0],
 							ActiveFlag = true
 						},
 					new Program
 						{
 							Id=_programIds[1],
                             OrganizationId = _organizationIds[1],
+                            ProgramType = _programTypes[1],
 							ActiveFlag = false
 						},
 					new Program
 						{
 							Id=_programIds[2],
                             OrganizationId = _organizationIds[2],
+                            ProgramType = _programTypes[2],
 							ActiveFlag = false
 						}
 				}.AsQueryable();
