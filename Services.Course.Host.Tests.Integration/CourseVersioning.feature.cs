@@ -189,6 +189,9 @@ this.FeatureBackground();
             table5.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
+            table5.AddRow(new string[] {
+                        "VersionNumber",
+                        "1.1.1.1"});
 #line 39
  testRunner.When("I publish \'ENG101\' course with the following info", ((string)(null)), table5, "When ");
 #line hidden
@@ -206,14 +209,14 @@ this.FeatureBackground();
                         "Ranji\'s awesome English class"});
             table6.AddRow(new string[] {
                         "VersionNumber",
-                        "1.0.0.0"});
+                        "1.1.1.1"});
             table6.AddRow(new string[] {
                         "IsPublished",
                         "true"});
             table6.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 42
+#line 43
  testRunner.Then("the course \'ENG101\' should have the following info", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -224,7 +227,7 @@ this.FeatureBackground();
         public virtual void PublishedVersionCannotBeModified()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Published version cannot be modified", ((string[])(null)));
-#line 51
+#line 52
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -235,7 +238,10 @@ this.FeatureBackground();
             table7.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 52
+            table7.AddRow(new string[] {
+                        "VersionNumber",
+                        "1.1.1.1"});
+#line 53
  testRunner.Given("I publish \'ENG101\' course with the following info", ((string)(null)), table7, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -253,9 +259,9 @@ this.FeatureBackground();
             table8.AddRow(new string[] {
                         "TenantId",
                         "1"});
-#line 55
+#line 57
  testRunner.When("I update \'ENG101\' course with the following info", ((string)(null)), table8, "When ");
-#line 61
+#line 63
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -266,7 +272,7 @@ this.FeatureBackground();
         public virtual void PublishedVersionCannotBeDeleted()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Published version cannot be deleted", ((string[])(null)));
-#line 63
+#line 65
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -277,11 +283,11 @@ this.FeatureBackground();
             table9.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 64
+#line 66
  testRunner.Given("I publish \'ENG101\' course with the following info", ((string)(null)), table9, "Given ");
-#line 67
+#line 69
  testRunner.When("I delete \'ENG101\' course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 68
+#line 70
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

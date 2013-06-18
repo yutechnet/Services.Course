@@ -43,7 +43,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
             _domainEvents.Raise<CourseVersionPublished>(new CourseVersionPublished
             {
                 AggregateId = id,
-                PublishNote = request.PublishNote
+                PublishNote = request.PublishNote,
+                VersionNumber = request.VersionNumber
             });
         }
 

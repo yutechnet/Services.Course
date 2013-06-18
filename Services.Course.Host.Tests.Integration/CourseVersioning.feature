@@ -37,21 +37,23 @@ Scenario: Edit a course version
 
 Scenario: Publish a course version
 	When I publish 'ENG101' course with the following info
-	| Field       | Value     |
-	| PublishNote | Blah blah |
+	| Field         | Value     |
+	| PublishNote   | Blah blah |
+	| VersionNumber | 1.1.1.1   |
 	Then the course 'ENG101' should have the following info
 	| Field         | Value                         |
 	| Name          | English 1010                  |
 	| Code          | ENG101                        |
 	| Description   | Ranji's awesome English class |
-	| VersionNumber | 1.0.0.0                       |
+	| VersionNumber | 1.1.1.1                       |
 	| IsPublished   | true                          |
 	| PublishNote   | Blah blah                     |
 
 Scenario: Published version cannot be modified
 	Given I publish 'ENG101' course with the following info
-	| Field       | Value     |
-	| PublishNote | Blah blah |
+	| Field         | Value     |
+	| PublishNote   | Blah blah |
+	| VersionNumber | 1.1.1.1   |
 	When I update 'ENG101' course with the following info
 	| Field       | Value                          |
 	| Name        | English 10101                  |

@@ -10,5 +10,6 @@ namespace BpeProducts.Services.Course.Domain.Events
     {
         public Guid AggregateId { get; set; }
         public string PublishNote { get; set; }
+        public string VersionNumber { get; set; }
     }
 }

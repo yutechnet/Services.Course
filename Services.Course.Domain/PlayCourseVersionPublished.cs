@@ -8,6 +8,7 @@ namespace BpeProducts.Services.Course.Domain
         {
             course.IsPublished = true;
             course.PublishNote = msg.PublishNote;
+            course.VersionNumber = msg.VersionNumber;
 
             return course;
         }
