@@ -85,3 +85,12 @@ Scenario: Create a course version from a previously-published version
 	| VersionNumber | 2.0a                          |
 	| IsPublished   | false                         |
 
+Scenario: Cannot publish the same version twice
+	Given I publish 'ENG101' course with the following info
+	| Field         | Value     |
+	| PublishNote   | Blah blah |
+	| VersionNumber | 1.0.0.0   |
+	When I create a new version of 'ENG101' with the following info
+	| Field         | Value   |
+	| VersionNumber | 1.0.0.0 |
+	Then I get 'Conflict' response

@@ -113,6 +113,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
 
             ScenarioContext.Current[courseCode] = response.Headers.Location;
+            ScenarioContext.Current["ResponseToValidate"] = response;
         }
 
         private string ExtractGuid(string str, int i)

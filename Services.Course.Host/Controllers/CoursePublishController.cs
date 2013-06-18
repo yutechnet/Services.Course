@@ -55,13 +55,29 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPost]
         public HttpResponseMessage CreateVersion(CourseVersionRequest request)
         {
-            Domain.Entities.Course courseInDb = _courseFactory.Reconstitute(request.ParentVersionId);
+            var courseInDb =
+                _courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true));
             if (courseInDb == null)
             {
                 throw new HttpResponseException(new HttpResponseMessage
                     {
                         StatusCode = HttpStatusCode.NotFound,
                         ReasonPhrase = string.Format("Parent version {0} not found.", request.ParentVersionId)
+                    });
+            }
+
+            var versionExists =
+                _courseRepository.Query<Domain.Entities.Course>()
+                                 .Any(
+                                     c =>
+                                     c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true) &&
+                                     c.VersionNumber.Equals(request.VersionNumber));
+            if (versionExists)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                    {
+                        StatusCode = HttpStatusCode.Conflict,
+                        ReasonPhrase = string.Format("Version {0} for the course {1} already exists", request.VersionNumber, courseInDb.OriginalEntityId)
                     });
             }
 

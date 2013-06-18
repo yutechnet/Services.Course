@@ -347,6 +347,42 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Cannot publish the same version twice")]
+        public virtual void CannotPublishTheSameVersionTwice()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot publish the same version twice", ((string[])(null)));
+#line 88
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table13.AddRow(new string[] {
+                        "PublishNote",
+                        "Blah blah"});
+            table13.AddRow(new string[] {
+                        "VersionNumber",
+                        "1.0.0.0"});
+#line 89
+ testRunner.Given("I publish \'ENG101\' course with the following info", ((string)(null)), table13, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table14.AddRow(new string[] {
+                        "VersionNumber",
+                        "1.0.0.0"});
+#line 93
+ testRunner.When("I create a new version of \'ENG101\' with the following info", ((string)(null)), table14, "When ");
+#line 96
+ testRunner.Then("I get \'Conflict\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
