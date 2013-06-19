@@ -189,6 +189,11 @@
       <DependentUpon>LearningOutcomeManagement.feature</DependentUpon>
     </Compile>
     <Compile Include="LearningOutcomeManagementSteps.cs" />
+    <Compile Include="LearningOutcomeVersioning.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LearningOutcomeVersioning.feature</DependentUpon>
+    </Compile>
     <Compile Include="ProgramAssociation.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -226,6 +231,10 @@
     <None Include="LearningOutcomeManagement.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>LearningOutcomeManagement.feature.cs</LastGenOutput>
+    </None>
+    <None Include="LearningOutcomeVersioning.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>LearningOutcomeVersioning.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="ProgramAssociation.feature">
