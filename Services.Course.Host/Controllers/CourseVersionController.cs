@@ -33,7 +33,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPut]
         public void Publish(Guid id, CoursePublishRequest request)
         {
-            // We do not allow creation of a new resource by PUT.
             Domain.Entities.Course courseInDb = _courseFactory.Reconstitute(id);
 
             if (courseInDb == null)
@@ -54,14 +53,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPost]
         public HttpResponseMessage CreateVersion(CourseVersionRequest request)
         {
-            if (string.IsNullOrEmpty(request.VersionNumber))
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ReasonPhrase = "Version number is required."
-                });
-            }
             var courseInDb = _courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true));
             if (courseInDb == null)
             {
@@ -76,7 +67,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
                 _courseRepository.Query<Domain.Entities.Course>()
                                  .Any(
                                      c =>
-                                     c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true) &&
+                                     c.OriginalEntityId.Equals(courseInDb.OriginalEntityId) && c.ActiveFlag.Equals(true) &&
                                      c.VersionNumber.Equals(request.VersionNumber));
             if (versionExists)
             {
