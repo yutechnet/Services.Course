@@ -33,7 +33,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPut]
         public void Publish(Guid id, CoursePublishRequest request)
         {
-            Domain.Entities.Course courseInDb = _courseFactory.Reconstitute(id);
+            var courseInDb = _courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Id.Equals(id) && c.ActiveFlag.Equals(true));
 
             if (courseInDb == null)
             {
