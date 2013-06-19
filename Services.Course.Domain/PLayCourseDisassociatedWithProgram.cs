@@ -3,7 +3,7 @@ using BpeProducts.Services.Course.Domain.Events;
 
 namespace BpeProducts.Services.Course.Domain
 {
-	public class PLayCourseDisassociatedWithProgram : IPlayEvent<CourseDisassociatedWithProgram>
+	public class PlayCourseDisassociatedWithProgram : IPlayEvent<CourseDisassociatedWithProgram>
 	{
 		public Entities.Course Apply(Events.CourseDisassociatedWithProgram msg, Entities.Course course)
 		{

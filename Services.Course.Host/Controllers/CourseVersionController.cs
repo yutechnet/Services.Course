@@ -13,13 +13,13 @@ using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
-    public class CoursePublishController : ApiController
+    public class CourseVersionController : ApiController
     {
         private readonly IRepository _courseRepository;
         private readonly IDomainEvents _domainEvents;
 	    private readonly ICourseFactory _courseFactory;
 
-        public CoursePublishController(IRepository courseRepository, IDomainEvents domainEvents, ICourseFactory courseFactory)
+        public CourseVersionController(IRepository courseRepository, IDomainEvents domainEvents, ICourseFactory courseFactory)
         {
             _courseRepository = courseRepository;
             _domainEvents = domainEvents;
@@ -62,8 +62,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
                     ReasonPhrase = "Version number is required."
                 });
             }
-            var courseInDb =
-                _courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true));
+            var courseInDb = _courseFactory.Reconstitute(request.ParentVersionId);
             if (courseInDb == null)
             {
                 throw new HttpResponseException(new HttpResponseMessage

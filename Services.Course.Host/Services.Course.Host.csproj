@@ -214,7 +214,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\MapperConfig.cs" />
-    <Compile Include="Controllers\CoursePublishController.cs" />
+    <Compile Include="Controllers\CourseVersionController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\OutcomeController.cs" />
     <Compile Include="Controllers\ProgramsController.cs" />
