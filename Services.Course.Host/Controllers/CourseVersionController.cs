@@ -62,7 +62,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
                     ReasonPhrase = "Version number is required."
                 });
             }
-            var courseInDb = _courseFactory.Reconstitute(request.ParentVersionId);
+            var courseInDb = _courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true));
             if (courseInDb == null)
             {
                 throw new HttpResponseException(new HttpResponseMessage
