@@ -47,12 +47,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
             SetUpApiController();
 
+            var organizationId = Guid.NewGuid();
+
             var saveCourseRequest = new SaveCourseRequest
                 {
                     Id = Guid.NewGuid(),
                     Code = "PSY101",
                     Description = "Psych!",
-                    Name = "Psychology 101"
+                    Name = "Psychology 101", 
+                    OrganizationId = organizationId
                 };
 
             var course = new Domain.Entities.Course
@@ -61,7 +64,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Code = saveCourseRequest.Code,
                     Description = saveCourseRequest.Description,
                     Name = saveCourseRequest.Name,
-                    Id = saveCourseRequest.Id
+                    Id = saveCourseRequest.Id, 
+                    OrganizationId = saveCourseRequest.OrganizationId
                 };
 
             _mockCourseFactory.Setup(c => c.Create(It.IsAny<SaveCourseRequest>())).Returns(course);
@@ -75,8 +79,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			_mockDomainEvents.Verify(c => c.Raise<CourseCreated>(
 		        It.Is<CourseCreated>(p => p.Code.Equals("PSY101") &&
 		                                  p.Description.Equals("Psych!") &&
-		                                  p.Name.Equals("Psychology 101")
-			        )), Times.Once());
+		                                  p.Name.Equals("Psychology 101") &&
+                                          p.OrganizationId.Equals(saveCourseRequest.OrganizationId))), Times.Once());
 			
         }
 

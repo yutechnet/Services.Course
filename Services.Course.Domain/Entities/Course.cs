@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
-    public class Course : VersionableEntity ,IHaveOutcomes
+    public class Course : OrganizationEntity, IVersionable ,IHaveOutcomes
     {
         private Dictionary<Guid, CourseSegment> _segmentIndex;
 
@@ -73,8 +74,15 @@ namespace BpeProducts.Services.Course.Domain.Entities
             _segmentIndex = new Dictionary<Guid, CourseSegment>();
             CourseSegmentJson = course.CourseSegmentJson;
             TenantId = course.TenantId;
+            OrganizationId = course.OrganizationId;
         }
 
 	    public virtual IList<LearningOutcome> Outcomes { get; set; }
+        
+        public virtual Guid OriginalEntityId { get; set; }
+        public virtual Guid? ParentEntityId { get; set; }
+        public virtual string VersionNumber { get; set; }
+        public virtual string PublishNote { get; set; }
+        public virtual bool IsPublished { get; set; }
     }
 }

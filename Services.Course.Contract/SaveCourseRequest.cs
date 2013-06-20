@@ -19,6 +19,7 @@ namespace BpeProducts.Services.Course.Contract
         public string Code { get; set; }
         public string Description { get; set; }
         public int TenantId { get; set; }
+        public Guid OrganizationId { get; set; }
 
         public List<Guid> ProgramIds { get; set; }
     }
