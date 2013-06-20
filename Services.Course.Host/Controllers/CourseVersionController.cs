@@ -31,9 +31,21 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [CheckModelForNull]
         [ValidateModelState]
         [HttpPut]
-        public void Publish(Guid id, CoursePublishRequest request)
+        public void PublishVersion(string entityType, Guid id, CoursePublishRequest request)
         {
-            var courseInDb = _courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Id.Equals(id) && c.ActiveFlag.Equals(true));
+            // /courses/<id>/publish -- publish a course
+            // /program/<id>/publish -- publish a program
+            // /outcome/<id>/publish --
+            // /sang/<id>
+
+            // /course/version {parentEntityId} -- create a new version based on the parent version
+            // /program/version {parentEntityId} -- create a new version based on the parent version
+            // /outcome/version {parentEntityId} -- create a new version based on the parent version
+
+
+            // Get the entity from Repository using IVersionable interface
+
+            var courseInDb = _courseFactory.Reconstitute(id);
 
             if (courseInDb == null)
             {
@@ -51,7 +63,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [CheckModelForNull]
         [ValidateModelState]
         [HttpPost]
-        public HttpResponseMessage CreateVersion(CourseVersionRequest request)
+        public HttpResponseMessage CreateVersion(string entityType, CourseVersionRequest request)
         {
             var courseInDb = _courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true));
             if (courseInDb == null)

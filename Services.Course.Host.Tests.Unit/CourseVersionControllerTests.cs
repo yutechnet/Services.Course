@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Net.Http;
-using System.Web.Http;
 using System.Web.Http.Routing;
-using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Events;
@@ -48,7 +44,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             var response =
                 Assert.Throws<HttpResponseException>(
-                    () => _courseVersionController.Publish(Guid.NewGuid(), new CoursePublishRequest())).Response;
+                    () => _courseVersionController.PublishVersion("courses", Guid.NewGuid(), new CoursePublishRequest())).Response;
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
@@ -63,7 +59,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             _mockCourseFactory.Setup(c => c.Reconstitute(courseVersionId)).Returns(new Domain.Entities.Course());
 
-            _courseVersionController.Publish(courseVersionId, coursePublishRequest);
+            _courseVersionController.PublishVersion("courses", courseVersionId, coursePublishRequest);
 
             _mockCourseFactory.Verify(c => c.Reconstitute(courseVersionId), Times.Once());
             _mockDomainEvents.Verify(d => d.Raise<CourseVersionPublished>(It.Is<CourseVersionPublished>(e => e.PublishNote.Equals(coursePublishRequest.PublishNote))));
@@ -103,8 +99,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             _mockRepository.Setup(c => c.Query<Domain.Entities.Course>()).Returns(courses.AsQueryable);
 
-            _courseVersionController.CreateVersion(courseVersionRequest);
-            var response = _courseVersionController.CreateVersion(courseVersionRequest);
+            // _courseVersionController.CreateVersion("courses", courseVersionRequest);
+            var response = _courseVersionController.CreateVersion("courses", courseVersionRequest);
             var actual = response.Headers.Location;
 
             Assert.That(actual, Is.Not.Null);
@@ -133,7 +129,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             var response =
                 Assert.Throws<HttpResponseException>(
-                    () => _courseVersionController.CreateVersion(courseVersionRequest)).Response;
+                    () => _courseVersionController.CreateVersion("courses", courseVersionRequest)).Response;
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
@@ -170,7 +166,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             var response =
                 Assert.Throws<HttpResponseException>(
-                    () => _courseVersionController.CreateVersion(courseVersionRequest)).Response;
+                    () => _courseVersionController.CreateVersion("courses", courseVersionRequest)).Response;
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
         }
 
