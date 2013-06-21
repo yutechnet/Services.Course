@@ -9,6 +9,7 @@ namespace BpeProducts.Services.Course.Contract
     public class CourseInfoResponse
     {
         public Guid Id { get; set; }
+        public Guid TemplateCourseId { get; set; }
 
         public string Name { get; set; }
         public string Code { get; set; }
@@ -24,5 +25,6 @@ namespace BpeProducts.Services.Course.Contract
         public bool IsPublished { get; set; }
         public string PublishNote { get; set; }
         public Guid OrganizationId { get; set; }
+        
     }
 }

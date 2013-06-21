@@ -62,6 +62,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         {
             var courseId = Guid.NewGuid();
             var programId = Guid.NewGuid();
+            var organizationId = Guid.NewGuid();
 
             var saveCourseRequest = new SaveCourseRequest
                 {
@@ -69,6 +70,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     Description = "NewDescription1",
                     Id = courseId,
                     Name = "NewName1",
+                    OrganizationId = organizationId,
                     ProgramIds = new List<Guid> { programId }
                 };
 
@@ -78,6 +80,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Description = "NewDescription1",
                 Id = courseId,
                 Name = "NewName1",
+                OrganizationId = organizationId,
                 Programs = new List<Program>
                         {
                             new Program { Id = programId }
@@ -97,6 +100,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         {
             var courseId = Guid.NewGuid();
             var programId = Guid.NewGuid();
+            var organizationId = Guid.NewGuid();
 
             var saveCourseRequest = new SaveCourseRequest
             {
@@ -104,6 +108,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Description = "NewDescription",
                 Id = courseId,
                 Name = "NewName1",
+                OrganizationId = organizationId,
                 ProgramIds = new List<Guid> { programId }
             };
 
@@ -113,6 +118,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Description = "OldDescription1",
                 Id = courseId,
                 Name = "OldName1",
+                OrganizationId = organizationId,
                 Programs = new List<Program>
                         {
                             new Program { Id = programId }
@@ -131,6 +137,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         private CourseUpdated CreateCourseUpdatedEventWithNewAndOldPrograms()
         {
             var courseId = Guid.NewGuid();
+            var organizationId = Guid.NewGuid();
 
             var saveCourseRequest = new SaveCourseRequest
             {
@@ -138,6 +145,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Description = "NewDescription",
                 Id = courseId,
                 Name = "NewName1",
+                OrganizationId = organizationId,
                 ProgramIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }
             };
 
@@ -147,6 +155,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Description = "OldDescription1",
                 Id = courseId,
                 Name = "OldName1",
+                OrganizationId = organizationId,
                 Programs = new List<Program>
                         {
                             new Program { Id = Guid.NewGuid() },

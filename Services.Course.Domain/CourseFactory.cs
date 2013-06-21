@@ -25,6 +25,7 @@ namespace BpeProducts.Services.Course.Domain
 			var course = new Entities.Course
 			    {
                     Id = courseId,
+                    TemplateCourseId = request.TemplateCourseId,
                     ActiveFlag = true,
                     OriginalEntityId = courseId,
                     ParentEntityId = null,

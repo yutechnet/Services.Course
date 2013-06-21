@@ -55,8 +55,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 				 ActiveFlag = true,
 				 Code = "x1",
 				 Description = "mui blah",
-				 Name = "blah"
-
+				 Name = "blah",
+                 OrganizationId = Guid.NewGuid(),
+                 TemplateCourseId = Guid.NewGuid()
 			 };
 			 var messages = new List<EventMessage>();
 			 var msg = new EventMessage();

@@ -78,11 +78,17 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description"});
+                        "Description",
+                        "Tenant Id",
+                        "OrganizationId",
+                        "TemplateCourseId"});
             table1.AddRow(new string[] {
                         "English 101",
                         "ENG101",
-                        "Ranji\'s awesome English Class"});
+                        "Ranji\'s awesome English Class",
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
 #line 8
  testRunner.Given("I have a course with following info:", ((string)(null)), table1, "Given ");
 #line 11
@@ -105,12 +111,16 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id"});
+                        "Tenant Id",
+                        "OrganizationId",
+                        "TemplateCourseId"});
             table2.AddRow(new string[] {
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1"});
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
 #line 15
  testRunner.Given("I have a course with following info:", ((string)(null)), table2, "Given ");
 #line 18
@@ -135,12 +145,16 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id"});
+                        "Tenant Id",
+                        "OrganizationId",
+                        "TemplateCourseId"});
             table3.AddRow(new string[] {
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1"});
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
 #line 23
  testRunner.Given("I have a course with following info:", ((string)(null)), table3, "Given ");
 #line 26
@@ -165,12 +179,16 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id"});
+                        "Tenant Id",
+                        "OrganizationId",
+                        "TemplateCourseId"});
             table4.AddRow(new string[] {
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1"});
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
 #line 31
  testRunner.Given("I have a course with following info:", ((string)(null)), table4, "Given ");
 #line 34
@@ -194,11 +212,17 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description"});
+                        "Description",
+                        "Tenant Id",
+                        "OrganizationId",
+                        "TemplateCourseId"});
             table5.AddRow(new string[] {
                         "English 101",
                         "ENG101",
-                        "Ranji\'s awesome English Class"});
+                        "Ranji\'s awesome English Class",
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
 #line 39
  testRunner.Given("I have a course with following info:", ((string)(null)), table5, "Given ");
 #line 42
@@ -207,11 +231,17 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description"});
+                        "Description",
+                        "Tenant Id",
+                        "OrganizationId",
+                        "TemplateCourseId"});
             table6.AddRow(new string[] {
-                        "English 202",
-                        "ENG202",
-                        "Ranji\'s awesome English Class"});
+                        "English 101",
+                        "ENG101",
+                        "Ranji\'s awesome English Class",
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
 #line 43
  testRunner.And("I change the info to reflect the following:", ((string)(null)), table6, "And ");
 #line 46
@@ -233,11 +263,15 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description"});
+                        "Description",
+                        "OrganizationId",
+                        "TemplateCourseId"});
             table7.AddRow(new string[] {
                         "Psychology 101",
                         "PSY101",
-                        "Amro\'s awesome Psychology class"});
+                        "Amro\'s awesome Psychology class",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
 #line 50
  testRunner.Given("I have an existing course with following info:", ((string)(null)), table7, "Given ");
 #line 53
@@ -263,11 +297,15 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description"});
+                        "Description",
+                        "OrganizationId",
+                        "TemplateCourseId"});
             table8.AddRow(new string[] {
                         "Psychology 101",
                         "PSY101",
-                        "Amro\'s awesome Psychology class"});
+                        "Amro\'s awesome Psychology class",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
 #line 58
  testRunner.Given("I have an existing course with following info:", ((string)(null)), table8, "Given ");
 #line 61
@@ -312,37 +350,51 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id"});
+                        "Tenant Id",
+                        "OrganizationId",
+                        "TemplateCourseId"});
             table9.AddRow(new string[] {
                         "English 101",
                         "ENGL101",
                         "Learn to read and write",
-                        "1"});
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
             table9.AddRow(new string[] {
                         "Engineering 200",
                         "ENG200",
                         "If you build it, they will come",
-                        "1"});
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
             table9.AddRow(new string[] {
                         "English 220",
                         "ENGL220",
                         "Essays",
-                        "1"});
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
             table9.AddRow(new string[] {
                         "Philosophy 100",
                         "PHIL100",
                         "To be, or not to be",
-                        "1"});
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
             table9.AddRow(new string[] {
                         "Philanthropy 101",
                         "PHILA101",
                         "Don\'t be greedy",
-                        "1"});
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
             table9.AddRow(new string[] {
                         "Chemistry 350",
                         "CHEM350",
                         "Periodic table of elements to the max",
-                        "1"});
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
 #line 82
  testRunner.Given("I have existing courses with following info:", ((string)(null)), table9, "Given ");
 #line hidden

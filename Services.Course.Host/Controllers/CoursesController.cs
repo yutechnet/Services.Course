@@ -109,6 +109,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
             _domainEvents.Raise<CourseCreated>(new CourseCreated
 	            {
 		            AggregateId = course.Id,
+                    TemplateCourseId = course.TemplateCourseId,
+                    OrganizationId = course.OrganizationId,
 		            Code = course.Code,
 		            Description = course.Description,
 		            Name = course.Name,

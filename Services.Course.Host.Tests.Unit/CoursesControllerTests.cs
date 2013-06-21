@@ -55,7 +55,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Code = "PSY101",
                     Description = "Psych!",
                     Name = "Psychology 101", 
-                    OrganizationId = organizationId
+                    OrganizationId = organizationId,
+                    TemplateCourseId = Guid.NewGuid()
                 };
 
             var course = new Domain.Entities.Course
@@ -65,7 +66,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Description = saveCourseRequest.Description,
                     Name = saveCourseRequest.Name,
                     Id = saveCourseRequest.Id, 
-                    OrganizationId = saveCourseRequest.OrganizationId
+                    OrganizationId = saveCourseRequest.OrganizationId,
+                    TemplateCourseId = saveCourseRequest.TemplateCourseId
                 };
 
             _mockCourseFactory.Setup(c => c.Create(It.IsAny<SaveCourseRequest>())).Returns(course);
@@ -79,7 +81,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			_mockDomainEvents.Verify(c => c.Raise<CourseCreated>(
 		        It.Is<CourseCreated>(p => p.Code.Equals("PSY101") &&
 		                                  p.Description.Equals("Psych!") &&
-		                                  p.Name.Equals("Psychology 101") )), Times.Once());
+		                                  p.Name.Equals("Psychology 101") &&
+                                          p.OrganizationId.Equals(saveCourseRequest.OrganizationId) &&
+                                          p.TemplateCourseId.Equals(saveCourseRequest.TemplateCourseId) )), Times.Once());
 			
         }
 
@@ -207,7 +211,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                             Code = "PSY101",
                             Description = "Psych!",
                             Name = "Psychology 101",
-                            ActiveFlag = true
+                            ActiveFlag = true,
+                            OrganizationId = Guid.NewGuid(),
+                            TemplateCourseId = Guid.NewGuid()
                         },
                     new Domain.Entities.Course
                         {
@@ -215,7 +221,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                             Code = "PSY102",
                             Description = "Psych!",
                             Name = "Psychology 102",
-                            ActiveFlag = true
+                            ActiveFlag = true,
+                            OrganizationId = Guid.NewGuid(),
+                            TemplateCourseId = Guid.NewGuid()
                         },
                     new Domain.Entities.Course
                         {
@@ -223,7 +231,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                             Code = "PSY103",
                             Description = "Psych!",
                             Name = "Psychology 103",
-                            ActiveFlag = true
+                            ActiveFlag = true,
+                            OrganizationId = Guid.NewGuid(),
+                            TemplateCourseId = Guid.NewGuid()
                         }
                 };
             _mockCourseRepository.Setup(t => t.Query<Domain.Entities.Course>()).Returns(courses.AsQueryable());
