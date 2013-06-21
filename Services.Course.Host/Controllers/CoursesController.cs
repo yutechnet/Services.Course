@@ -112,7 +112,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		            Code = course.Code,
 		            Description = course.Description,
 		            Name = course.Name,
-                    OrganizationId = course.OrganizationId,
 					ActiveFlag = course.ActiveFlag,
 		            Course = course
 	            });

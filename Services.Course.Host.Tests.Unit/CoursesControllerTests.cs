@@ -79,8 +79,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			_mockDomainEvents.Verify(c => c.Raise<CourseCreated>(
 		        It.Is<CourseCreated>(p => p.Code.Equals("PSY101") &&
 		                                  p.Description.Equals("Psych!") &&
-		                                  p.Name.Equals("Psychology 101") &&
-                                          p.OrganizationId.Equals(saveCourseRequest.OrganizationId))), Times.Once());
+		                                  p.Name.Equals("Psychology 101") )), Times.Once());
 			
         }
 
