@@ -28,6 +28,7 @@ And the following course exists:
 	| Code        | ENG101                        |
 	| Description | Ranji's awesome English class |
 	| TenantId    | 1                             |
+	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 
 Scenario: Add a new learning outcome to a program and get it
 	When I associate to the 'program' 'BA' a new learning outcome with the description 'SomeDescription'

@@ -44,7 +44,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
                 TenantId = 1,
-                OrganizationId = Guid.NewGuid()
+                OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
                 
             };
 
@@ -83,7 +83,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
                 TenantId = 1,
-                OrganizationId = Guid.NewGuid()
+                OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
             };
 
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);
@@ -177,7 +177,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
                     Description = row["Description"],
                     TenantId = 1,
-                    OrganizationId = Guid.NewGuid()
+                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
                 };
 
                 var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;

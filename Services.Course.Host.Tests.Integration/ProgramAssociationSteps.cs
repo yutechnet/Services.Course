@@ -61,7 +61,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         Code = row["Code"],
                         Description = row["Description"],
                         Name = row["Name"],
-                        TenantId = 1
+                        TenantId = 1,
+                        OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
                     };
                 CreateCourse(saveCourseRequest);
             }
@@ -84,7 +85,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
-                TenantId = 1
+                TenantId = 1, 
+                OrganizationId = courseInfo.OrganizationId
             };
             var programs = ScenarioContext.Current.Get<List<ProgramResponse>>("programs");
             saveCourseRequest.ProgramIds.Add(programs.Find(p => p.Name == programName).Id);
@@ -103,7 +105,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
-                TenantId = 1
+                TenantId = 1, 
+                OrganizationId = courseInfo.OrganizationId
             };
             var programs = ScenarioContext.Current.Get<List<ProgramResponse>>("programs");
             foreach (var row in table.Rows)
@@ -126,7 +129,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
-                TenantId = 1
+                TenantId = 1,
+                OrganizationId = courseInfo.OrganizationId
             };
 
             // Find out the id of the program to remove

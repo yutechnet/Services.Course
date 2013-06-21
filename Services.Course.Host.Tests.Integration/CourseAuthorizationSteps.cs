@@ -73,7 +73,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 					Name = "Test",
 					Code = "Test",
 					Description = "Test",
-					TenantId = 1					              
+					TenantId = 1,
+					OrganizationId = Guid.NewGuid()
 				};
 			var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
 

@@ -10,9 +10,9 @@ Background:
 	| Bachelor of Art     | BA Program  | BA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	| Bachelor of Science | BS program  | BS          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	And the following courses exist:
-	| Name           | Code   | Description    |
-	| English 101    | ENG101 | English 101    |
-	| Psychology 101 | PSY101 | Psychology 101 |
+	| Name           | Code   | Description    | OrganizationId |
+	| English 101    | ENG101 | English 101    | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Psychology 101 | PSY101 | Psychology 101 | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 
 Scenario Template: Associate a course with a program
 	When I associate '<Course Name>' course with '<Program Name>' program

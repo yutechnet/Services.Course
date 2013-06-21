@@ -6,11 +6,12 @@ Feature: CourseVersioning
 
 Background: 
 	Given I create the following course
-	| Field       | Value                         |
-	| Name        | English 1010                  |
-	| Code        | ENG101                        |
-	| Description | Ranji's awesome English class |
-	| TenantId    | 1                             |
+	| Field          | Value                         |
+	| Name           | English 1010                  |
+	| Code           | ENG101                        |
+	| Description    | Ranji's awesome English class |
+	| TenantId       | 1                             |
+	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 
 Scenario: Create a default version
 	When I retrieve 'ENG101' course
@@ -28,12 +29,14 @@ Scenario: Edit a course version
 	| Code        | ENG101                         |
 	| Description | Ranji's terrible English class |
 	| TenantId    | 1                              |
+	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	Then the course 'ENG101' should have the following info
 	| Field         | Value                          |
 	| Name          | English 10101                  |
 	| Code          | ENG101                         |
 	| Description   | Ranji's terrible English class |
 	| VersionNumber | 1.0.0.0                        |
+	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 
 Scenario: Publish a course version
 	When I publish 'ENG101' course with the following info
@@ -58,6 +61,7 @@ Scenario: Published version cannot be modified
 	| Code        | ENG101                         |
 	| Description | Ranji's terrible English class |
 	| TenantId    | 1                              |
+	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	Then I get 'Forbidden' response
 
 Scenario: Published version cannot be deleted
@@ -100,5 +104,3 @@ Scenario: Cannot create a version off non-existing version
 Scenario: Cannot publish without a version
 	When I create a course without a version
 	Then I get 'BadRequest' response
-
-
