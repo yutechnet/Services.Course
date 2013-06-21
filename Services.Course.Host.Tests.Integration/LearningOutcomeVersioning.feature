@@ -8,6 +8,7 @@ Background:
 	Given I create the following learning outcome
 	| Field       | Value                  |
 	| Description | first learning outcome |
+	| TenantId    | 1                      |
 
 Scenario: Create a default version
 	When I retrieve 'first learning outcome' learning outcome
@@ -20,6 +21,7 @@ Scenario: Edit a learning outcome version
 	When I update 'first learning outcome' learning outcome with the following info
 	| Field       | Value                   |
 	| Description | second learning outcome |
+	| TenantId    | 1                       |
 	Then the learning outcome 'second learning outcome' should have the following info
 	| Field         | Value                   |
 	| Description   | second learning outcome |
@@ -37,12 +39,13 @@ Scenario: Publish a learning outcome version
 	| PublishNote   | Blah blah              |
 
 Scenario: Published version cannot be modified
-	Given I publish 'first learning outcome' course with the following info
+	Given I publish 'first learning outcome' learning outcome with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
 	When I update 'first learning outcome' learning outcome with the following info
 	| Field       | Value                  |
 	| Description | third learning outcome |
+	| TenantId    | 1                      |
 	Then I get 'Forbidden' response
 
 Scenario: Published version cannot be deleted
