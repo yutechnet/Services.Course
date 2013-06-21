@@ -28,6 +28,7 @@ namespace BpeProducts.Services.Course.Domain
                     ActiveFlag = true,
                     OriginalEntityId = courseId,
                     ParentEntityId = null,
+                    OrganizationId = request.OrganizationId,
                     VersionNumber = new Version(1, 0, 0, 0).ToString()
                 };
 
