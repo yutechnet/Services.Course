@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -10,14 +13,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     [TestFixture]
     public class UpdateModelOnCourseCreationTests
     {
+        private Mock<ICourseFactory> _mockCourseFactory;
         private Mock<ICourseRepository> _mockCourseRepository;
+        private Mock<IDomainEvents> _mockDomainEvents;
         private UpdateModelOnCourseCreation _updateModelOnCourseCreationTests;
 
         [SetUp]
         public void SetUp()
         {
             _mockCourseRepository = new Mock<ICourseRepository>();
-            _updateModelOnCourseCreationTests = new UpdateModelOnCourseCreation(_mockCourseRepository.Object);
+            _mockDomainEvents = new Mock<IDomainEvents>();
+            _mockCourseFactory = new Mock<ICourseFactory>();
+            _updateModelOnCourseCreationTests = new UpdateModelOnCourseCreation(_mockCourseFactory.Object, _mockCourseRepository.Object, _mockDomainEvents.Object);
         }
 
         [Test]
@@ -36,6 +43,42 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             _updateModelOnCourseCreationTests.Handle(new CourseCreated { Course = course });
 
             _mockCourseRepository.Verify(c => c.Add(course), Times.Once());
+        }
+
+        [Test]
+        public void Add_New_Course_From_Template_To_Repository()
+        {
+            var course = new Domain.Entities.Course();
+            course.TemplateCourseId = Guid.NewGuid();
+
+            _mockCourseFactory.Setup(c => c.Reconstitute(It.IsAny<Guid>()))
+                              .Returns(new Domain.Entities.Course()
+                                  {
+                                      Segments =
+                                          new List<CourseSegment>()
+                                              {
+                                                  new CourseSegment()
+                                                      {
+                                                          Id = Guid.NewGuid(),
+                                                          Description = "Parent",
+                                                          ChildrenSegments =
+                                                              new List<CourseSegment>()
+                                                                  {
+                                                                      new CourseSegment()
+                                                                          {
+                                                                              Id = Guid.NewGuid(),
+                                                                              Description = "Child"
+                                                                          }
+                                                                  }
+                                                      }
+                                              }
+                                  });
+
+            _updateModelOnCourseCreationTests.Handle(new CourseCreated { Course = course });
+
+            _mockCourseRepository.Verify(c => c.Add(course), Times.Once());
+            _mockDomainEvents.Verify(c => c.Raise<CourseSegmentAdded>(It.IsAny<CourseSegmentAdded>()), Times.Exactly(2));
+            
         }
     }
 }

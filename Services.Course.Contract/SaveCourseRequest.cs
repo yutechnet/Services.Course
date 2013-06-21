@@ -15,7 +15,7 @@ namespace BpeProducts.Services.Course.Contract
 
         public Guid Id { get; set; }
 
-        public Guid TemplateCourseId { get; set; }
+        public Guid? TemplateCourseId { get; set; }
 
         public string Name { get; set; }
         public string Code { get; set; }

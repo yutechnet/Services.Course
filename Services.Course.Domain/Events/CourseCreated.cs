@@ -11,6 +11,6 @@ namespace BpeProducts.Services.Course.Domain.Events
 	    public Entities.Course Course { get; set; }
 		public bool ActiveFlag { get; set; }
 		public Guid AggregateId { get; set; }
-        public Guid TemplateCourseId { get; set; }
+        public Guid? TemplateCourseId { get; set; }
 	}
 }

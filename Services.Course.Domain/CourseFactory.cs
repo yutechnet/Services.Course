@@ -76,6 +76,4 @@ namespace BpeProducts.Services.Course.Domain
 			return course;
 		}
 	}
-
-	
 }
