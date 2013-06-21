@@ -7,6 +7,7 @@ using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration
 {
@@ -74,8 +75,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 		                          .Result.Content.ReadAsAsync<CourseSegment>()
 		                          .Result;
 
-		            Assert.That(parentSegment.Name, Is.EqualTo(row["ParentSegment"]));
-		        }
+                    Assert.That(parentSegment.Name, Is.EqualTo(row["ParentSegment"]));
+                }
+
+                Assert.That(courseSegment.Description, Is.EqualTo(row["Description"]));
 		    }
 		}
 
@@ -114,5 +117,48 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             }
         }
 
+        [When(@"I add the following content to '(.*)' segment")]
+        public void WhenIAddTheFollowingContentToSegment(string courseSegmentName, Table table)
+        {
+            var segmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(courseSegmentName);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(segmentResourceLocation).Result;
+            response.EnsureSuccessStatusCode();
+
+            var segmentInfo = response.Content.ReadAsAsync<CourseSegment>().Result;
+
+            var saveCourseSegmentRequest = new SaveCourseSegmentRequest
+                {
+                    Name = segmentInfo.Name,
+                    Type = segmentInfo.Type,
+                    Description = segmentInfo.Description,
+                    // TenantId = 1,
+                    Content = table.CreateSet<ContentRequest>().ToList()
+                };
+
+            response =
+                ApiFeature.ApiTestHost.Client.PutAsync(segmentResourceLocation.ToString(), saveCourseSegmentRequest,
+                                                       new JsonMediaTypeFormatter()).Result;
+            response.EnsureSuccessStatusCode();
+
+            ScenarioContext.Current.Add("SaveSegmentRequest", saveCourseSegmentRequest);
+        }
+
+        [Then(@"the course segment '(.*)' should have this content")]
+        public void ThenTheCourseSegmentShouldHaveThisContent(string courseSegmentName)
+        {
+            var segmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(courseSegmentName);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(segmentResourceLocation).Result;
+            response.EnsureSuccessStatusCode();
+
+            var savedContent = ScenarioContext.Current.Get<SaveCourseSegmentRequest>("SaveSegmentRequest").Content;
+            var retrievedContent = response.Content.ReadAsAsync<CourseSegment>().Result.Content;
+
+            Assert.That(savedContent.Count, Is.EqualTo(retrievedContent.Count));
+            foreach (var contentRequest in savedContent)
+            {
+                var content = retrievedContent.First(c => c.Id == contentRequest.Id);
+                Assert.That(contentRequest.Type, Is.EqualTo(content.Type));
+            }
+        }
     }
 }

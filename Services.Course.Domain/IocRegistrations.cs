@@ -71,7 +71,9 @@ namespace BpeProducts.Services.Course.Domain
 
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseSegmentAdded>>();
             containerBuilder.RegisterType<UpdateModelOnAddingCourseSegment>().As<IHandle<CourseSegmentAdded>>();
+
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseSegmentUpdated>>();
+            containerBuilder.RegisterType<UpdateModelOnUpdatingCourseSegment>().As<IHandle<CourseSegmentUpdated>>();
 
 			containerBuilder.RegisterType<UpdateModelOnCourseUpdating>().As<IHandle<CourseUpdated>>();
 			containerBuilder.RegisterType<CourseUpdatedHandler>().As<IHandle<CourseUpdated>>();
@@ -84,9 +86,6 @@ namespace BpeProducts.Services.Course.Domain
 
             containerBuilder.RegisterType<CourseEventPersisterHandler>().As<IHandle<CourseVersionPublished>>();
             containerBuilder.RegisterType<UpdateModelOnCourseVersionPublish>().As<IHandle<CourseVersionPublished>>();
-
         }
     }
-
-    
 }

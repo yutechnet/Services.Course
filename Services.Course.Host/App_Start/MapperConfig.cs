@@ -33,6 +33,8 @@ namespace BpeProducts.Services.Course.Host.App_Start
 			Mapper.CreateMap<Contract.SaveCourseSegmentRequest, CourseSegment>();
 
 		    Mapper.CreateMap<CourseSegmentAdded, CourseSegment>();
+
+		    Mapper.CreateMap<ContentRequest, Content>();
 		}
 
         private static void OutcomeMappings()

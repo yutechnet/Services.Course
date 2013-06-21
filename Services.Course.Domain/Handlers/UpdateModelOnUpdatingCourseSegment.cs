@@ -6,34 +6,30 @@ using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
 {
-    public class UpdateModelOnAddingCourseSegment : IHandle<CourseSegmentAdded>
+    public class UpdateModelOnUpdatingCourseSegment : IHandle<CourseSegmentUpdated>
     {
         private readonly ICourseRepository _courseRepository;
 
-        public UpdateModelOnAddingCourseSegment(ICourseRepository courseRepository)
+        public UpdateModelOnUpdatingCourseSegment(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
         }
 
         public void Handle(IDomainEvent domainEvent)
         {
-            var e = domainEvent as CourseSegmentAdded;
+            var e = domainEvent as CourseSegmentUpdated;
             if (e == null)
             {
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
             Entities.Course courseInDb = _courseRepository.GetById(e.AggregateId);
-            var newSegment = Mapper.Map<CourseSegment>(e);
-            if (newSegment.ParentSegmentId == Guid.Empty)
-            {
-                courseInDb.Segments.Add(newSegment);
-            }
-            else
-            {
-                var parentSegment = courseInDb.SegmentIndex[e.ParentSegmentId];
-                parentSegment.AddSubSegment(newSegment);
-            }
+            var courseSegment = courseInDb.SegmentIndex[e.SegmentId];
+            courseSegment.Name = e.Name;
+            courseSegment.Description = e.Description;
+            courseSegment.Type = e.Type;
+            courseSegment.Content = e.Content;
+
             _courseRepository.Update(courseInDb);
         }
     }

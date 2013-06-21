@@ -237,7 +237,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // courses/<courseId>/segments/<segmentId>
         [HttpPut]
 		[Transaction]
-        public void Segments(Guid courseId, Guid segmentId, Contract.SaveCourseSegmentRequest saveCourseSegmentRequest)
+        public void Segments(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             // Updates the specified segment
             var courseInDb = _courseFactory.Reconstitute(courseId);
@@ -257,7 +257,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		            Name = courseSegment.Name,
 		            ParentSegmentId = courseSegment.ParentSegmentId,
 		            SegmentId = courseSegment.Id,
-		            Type = courseSegment.Type
+		            Type = courseSegment.Type, 
+                    Content = courseSegment.Content
 	            });
         }
 
