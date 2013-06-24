@@ -7,6 +7,7 @@ using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration
 {
@@ -48,10 +49,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 
             };
 
-
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
             ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
             ScenarioContext.Current.Add("courseCode", table.Rows[0]["Code"]);
+            ScenarioContext.Current.Add("orgId", saveCourseRequest.OrganizationId);
         }
 
         [When(@"I submit a creation request")]
@@ -154,6 +155,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("getCourseName");
             var expected = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), "NotFound");
             Assert.That(response.StatusCode, Is.EqualTo(expected));
+        }
+
+        [Then(@"the organization id is returned as part of the request")]
+        public void ThenTheOrganizationIdIsReturnedAsPartOfTheRequest()
+        {
+            var orgId = ScenarioContext.Current.Get<Guid>("orgId");
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
+            Assert.That(courseInfoResponse.OrganizationId, Is.Not.Null);
+            Assert.That(courseInfoResponse.OrganizationId, Is.EqualTo(orgId));
         }
 
         [Given(@"I have an existing course with following info:")]
@@ -284,6 +296,5 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var responseList = new List<CourseInfoResponse>(getResponse);
             Assert.That(responseList.Count, Is.AtLeast(count));
         }
-
     }
 }

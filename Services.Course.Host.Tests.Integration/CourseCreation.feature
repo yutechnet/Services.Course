@@ -103,3 +103,10 @@ Scenario: Return course by partial name
 		| StartsWith | C*%23             | 0     |
 		| StartsWith | A%26              | 0     |
 	Then the course count is atleast '6' when search term is ''
+
+Scenario: Add organization id to a course
+	Given I have a course with following info:
+	| Name        | Code   | Description                   | Tenant Id | OrganizationId							| TemplateCourseId						|
+	| English 101 | ENG101 | Ranji's awesome English Class | 1		   | C3885307-BDAD-480F-8E7C-51DFE5D80387	| ECB05E38-02A6-4F2F-B020-00AA2F619727	|
+	When I submit a creation request
+	Then the organization id is returned as part of the request
