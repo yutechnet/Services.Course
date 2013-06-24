@@ -10,5 +10,6 @@ namespace BpeProducts.Services.Course.Domain.Events
         public string Description { get; set; }
         public string Type { get; set; }
         public Guid AggregateId { get; set; }
+        public long DiscussionId { get; set; }
     }
 }

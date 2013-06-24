@@ -26,6 +26,7 @@ namespace BpeProducts.Services.Course.Domain
 					ParentSegmentId = msg.ParentSegmentId,
 					Id = msg.Id,
 					Description = msg.Description,
+                    DiscussionId = msg.DiscussionId, 
 					Name = msg.Name
 				};
 			parentSegmentCollection.Add(segment);

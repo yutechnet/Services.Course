@@ -50,6 +50,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                     {
                         AggregateId = courseId,
                         Description = segment.Description,
+                        DiscussionId = segment.DiscussionId,
                         Name = segment.Name,
                         ParentSegmentId = parentSegmentId,
                         Id = newId,

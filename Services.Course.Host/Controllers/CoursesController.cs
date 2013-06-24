@@ -223,6 +223,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 	            {
 		            AggregateId = courseId,
 		            Description = saveCourseSegmentRequest.Description,
+                    DiscussionId = saveCourseSegmentRequest.DiscussionId,
 		            Name = saveCourseSegmentRequest.Name,
 		            ParentSegmentId = Guid.Empty,
 		            Id = newSegmentId,
@@ -320,6 +321,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		            AggregateId = courseId,
 		            Name = saveCourseSegmentRequest.Name,
 		            Description = saveCourseSegmentRequest.Description,
+                    DiscussionId = saveCourseSegmentRequest.DiscussionId,
 		            ParentSegmentId = segmentId,
 		            Type = saveCourseSegmentRequest.Type,
 		            Id = newSegmentId

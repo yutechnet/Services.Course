@@ -19,6 +19,8 @@ namespace BpeProducts.Services.Course.Contract
         public virtual string Type { get; set; }
         public virtual int DisplayOrder { get; set; }
 
+        public virtual long DiscussionId { get; set; }
+
         public virtual List<CourseSegment> ChildrenSegments { get; set; }
         public virtual Guid ParentSegmentId { get; set; } 
 
