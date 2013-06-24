@@ -147,6 +147,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content.cs" />
     <Compile Include="CourseInfoResponse.cs" />
     <Compile Include="CoursePublishRequest.cs" />
     <Compile Include="CourseSegment.cs" />

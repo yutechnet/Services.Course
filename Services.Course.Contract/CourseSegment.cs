@@ -37,10 +37,4 @@ namespace BpeProducts.Services.Course.Contract
             ChildrenSegments.Add(segment);
         }
     }
-
-    public class Content
-    {
-        public Guid Id { get; set; }
-        public string Type { get; set; }
-    }
 }
