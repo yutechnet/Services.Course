@@ -493,6 +493,38 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Add template course id to a course")]
+        public virtual void AddTemplateCourseIdToACourse()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add template course id to a course", ((string[])(null)));
+#line 115
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Code",
+                        "Description",
+                        "Tenant Id",
+                        "OrganizationId",
+                        "TemplateCourseId"});
+            table12.AddRow(new string[] {
+                        "English 101",
+                        "ENG101",
+                        "Ranji\'s awesome English Class",
+                        "1",
+                        "C3885307-BDAD-480F-8E7C-51DFE5D80387",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727"});
+#line 116
+ testRunner.Given("I have a course with following info:", ((string)(null)), table12, "Given ");
+#line 119
+ testRunner.When("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 120
+ testRunner.Then("the template course id is returned as part of the request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

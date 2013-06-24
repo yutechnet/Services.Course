@@ -45,7 +45,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
                 TenantId = 1,
-                OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
+                OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                TemplateCourseId = new Guid(table.Rows[0]["TemplateCourseId"])
                 
             };
 
@@ -53,6 +54,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
             ScenarioContext.Current.Add("courseCode", table.Rows[0]["Code"]);
             ScenarioContext.Current.Add("orgId", saveCourseRequest.OrganizationId);
+            ScenarioContext.Current.Add("templateId", saveCourseRequest.TemplateCourseId);
         }
 
         [When(@"I submit a creation request")]
@@ -167,6 +169,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.That(courseInfoResponse.OrganizationId, Is.Not.Null);
             Assert.That(courseInfoResponse.OrganizationId, Is.EqualTo(orgId));
         }
+
+        [Then(@"the template course id is returned as part of the request")]
+        public void ThenTheTemplateCourseIdIsReturnedAsPartOfTheRequest()
+        {
+            var templateId = ScenarioContext.Current.Get<Guid>("templateId");
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
+            Assert.That(courseInfoResponse.TemplateCourseId, Is.Not.Null);
+            Assert.That(courseInfoResponse.TemplateCourseId, Is.EqualTo(templateId));
+        }
+
 
         [Given(@"I have an existing course with following info:")]
         public void GivenIHaveAnExistingCourseWithFollowingInfo(Table table)
