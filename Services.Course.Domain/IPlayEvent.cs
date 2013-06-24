@@ -2,15 +2,15 @@
 
 namespace BpeProducts.Services.Course.Domain
 {
-	public interface IPlayEvent<in T>:IPlayEvent
-	{
-		Entities.Course Apply(T msg, Entities.Course course);
-	}
+    public interface IPlayEvent<in T, TE> : IPlayEvent where T : IDomainEvent where TE : class
+    {
+        TE Apply(T msg, TE entity);
+    }
 
-	public interface IPlayEvent
-	{
-		Entities.Course Apply<T>(T msg, Entities.Course course) where T:IDomainEvent;
-	}
-
-
+    public interface IPlayEvent
+    {
+        TE Apply<T, TE>(T msg, TE entity)
+            where T : IDomainEvent
+            where TE : class;
+    }
 }

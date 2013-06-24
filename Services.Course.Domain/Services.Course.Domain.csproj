@@ -66,9 +66,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.11\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.36.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.36\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+    <Reference Include="BpeProducts.Common.NHibernate">
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.38\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -161,15 +160,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Outcomes\IOutcomeFactory.cs" />
     <Compile Include="Entities\IHaveOutcomes.cs" />
     <Compile Include="Events\CourseVersionCreated.cs" />
     <Compile Include="Events\CourseVersionPublished.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionCreation.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionPublish.cs" />
+    <Compile Include="Outcomes\OutcomeFactory.cs" />
+    <Compile Include="Outcomes\OutcomeVersionCreated.cs" />
+    <Compile Include="Outcomes\OutcomeVersionPublished.cs" />
+    <Compile Include="Outcomes\PlayOutcomeVersionCreated.cs" />
+    <Compile Include="Outcomes\PlayOutcomeVersionPublished.cs" />
+    <Compile Include="Outcomes\UpdateModelOnOutcomeVersionCreation.cs" />
+    <Compile Include="Outcomes\UpdateModelOnOutcomeVersionPublished.cs" />
     <Compile Include="PLayCourseDisassociatedWithProgram.cs" />
     <Compile Include="CourseFactory.cs" />
     <Compile Include="PlayCourseInfoUpated.cs" />
-    <Compile Include="PLayCourseSegmentAdded.cs" />
+    <Compile Include="PlayCourseSegmentAdded.cs" />
     <Compile Include="PlayCourseSegmentUpdated.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="Entities\Course.cs" />
@@ -210,6 +217,7 @@
     <Compile Include="Repositories\ILearningOutcomeRepository.cs" />
     <Compile Include="Repositories\LearningOutcomeRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="VersionFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CourseBuilderClassDiagram.cd" />

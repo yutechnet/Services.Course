@@ -2,7 +2,7 @@
 
 namespace BpeProducts.Services.Course.Domain
 {
-	public  class PlayCourseDeleted:IPlayEvent<CourseDeleted>
+	public  class PlayCourseDeleted:IPlayEvent<CourseDeleted, Entities.Course>
 	{
 		public Entities.Course Apply(CourseDeleted msg, Entities.Course course)
 		{
@@ -10,9 +10,9 @@ namespace BpeProducts.Services.Course.Domain
 			return course;
 		}
 
-		public Entities.Course Apply<T>(T msg, Entities.Course course) where T : IDomainEvent
-		{
-			return Apply(msg as CourseDeleted, course);
-		}
+	    public TE Apply<T, TE>(T msg, TE entity) where T : IDomainEvent where TE : class
+	    {
+            return Apply(msg as CourseDeleted, entity as Entities.Course) as TE;
+	    }
 	}
 }
