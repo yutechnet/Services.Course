@@ -71,7 +71,7 @@ Scenario: Create a course version from a previously-published version
 	Given I publish 'ENG101' course with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	When I create a new version of 'ENG101' with the following info
+	When I create a new version of 'ENG101' course with the following info
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the course 'ENG101' should have the following info
@@ -86,13 +86,13 @@ Scenario: Cannot publish the same version twice
 	Given I publish 'ENG101' course with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	When I create a new version of 'ENG101' with the following info
+	When I create a new version of 'ENG101' course with the following info
 	| Field         | Value   |
 	| VersionNumber | 1.0.0.0 |
 	Then I get 'Conflict' response
 
 Scenario: Cannot create a version off non-existing version
-	When I create a new version of 'RandomCourse' with the following info
+	When I create a new version of 'RandomCourse' course with the following info
 	| Field         | Value   |
 	| VersionNumber | 1.0.0.0 |
 	Then I get 'NotFound' response

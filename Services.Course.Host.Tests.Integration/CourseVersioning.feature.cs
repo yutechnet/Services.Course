@@ -313,7 +313,7 @@ this.FeatureBackground();
                         "VersionNumber",
                         "2.0a"});
 #line 74
- testRunner.When("I create a new version of \'ENG101\' with the following info", ((string)(null)), table11, "When ");
+ testRunner.When("I create a new version of \'ENG101\' course with the following info", ((string)(null)), table11, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -365,7 +365,7 @@ this.FeatureBackground();
                         "VersionNumber",
                         "1.0.0.0"});
 #line 89
- testRunner.When("I create a new version of \'ENG101\' with the following info", ((string)(null)), table14, "When ");
+ testRunner.When("I create a new version of \'ENG101\' course with the following info", ((string)(null)), table14, "When ");
 #line 92
  testRunner.Then("I get \'Conflict\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -389,7 +389,7 @@ this.FeatureBackground();
                         "VersionNumber",
                         "1.0.0.0"});
 #line 95
- testRunner.When("I create a new version of \'RandomCourse\' with the following info", ((string)(null)), table15, "When ");
+ testRunner.When("I create a new version of \'RandomCourse\' course with the following info", ((string)(null)), table15, "When ");
 #line 98
  testRunner.Then("I get \'NotFound\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

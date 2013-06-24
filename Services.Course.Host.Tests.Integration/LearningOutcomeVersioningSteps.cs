@@ -108,14 +108,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 //            ScenarioContext.Current["ResponseToValidate"] = response;
         }
 
-        [Then(@"I get '(.*)' response")]
-        public void ThenIGetResponse(string status)
-        {
-            var response = ScenarioContext.Current.Get<HttpResponseMessage>("ResponseToValidate");
-            var expectedStatusCode = (HttpStatusCode) Enum.Parse(typeof (HttpStatusCode), status);
+        //[Then(@"I get '(.*)' response")]
+        //public void ThenIGetResponse(string status)
+        //{
+        //    var response = ScenarioContext.Current.Get<HttpResponseMessage>("ResponseToValidate");
+        //    var expectedStatusCode = (HttpStatusCode) Enum.Parse(typeof (HttpStatusCode), status);
 
-            Assert.That(response.StatusCode, Is.EqualTo(expectedStatusCode));
-        }
+        //    Assert.That(response.StatusCode, Is.EqualTo(expectedStatusCode));
+        //}
 
         [Then(@"the learning outcome should have the following info")]
         public void ThenTheLearningOutcomeShouldHaveTheFollowingInfo(Table table)

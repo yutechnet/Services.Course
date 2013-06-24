@@ -100,7 +100,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             ScenarioContext.Current.Add("ResponseToValidate", response);
         }
 
-        [When(@"I create a new version of '(.*)' with the following info")]
+        [When(@"I create a new version of '(.*)' course with the following info")]
         public void WhenICreateANewVersionOfWithTheFollowingInfo(string courseCode, Table table)
         {
             var versionRequest = table.CreateInstance<CourseVersionRequest>();
