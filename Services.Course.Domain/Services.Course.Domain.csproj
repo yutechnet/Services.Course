@@ -166,10 +166,10 @@
     <Compile Include="Events\CourseVersionPublished.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionCreation.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionPublish.cs" />
-    <Compile Include="PLayCourseDisassociatedWithProgram.cs" />
+    <Compile Include="PlayCourseDisassociatedWithProgram.cs" />
     <Compile Include="CourseFactory.cs" />
     <Compile Include="PlayCourseInfoUpated.cs" />
-    <Compile Include="PLayCourseSegmentAdded.cs" />
+    <Compile Include="PlayCourseSegmentAdded.cs" />
     <Compile Include="PlayCourseSegmentUpdated.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="Entities\Course.cs" />

@@ -5,7 +5,7 @@ using BpeProducts.Services.Course.Domain.Events;
 
 namespace BpeProducts.Services.Course.Domain
 {
-	public class PLayCourseSegmentAdded:IPlayEvent<CourseSegmentAdded>
+	public class PlayCourseSegmentAdded:IPlayEvent<CourseSegmentAdded>
 	{
 		public Entities.Course Apply(Events.CourseSegmentAdded msg, Entities.Course course)
 		{
