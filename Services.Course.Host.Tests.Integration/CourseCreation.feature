@@ -48,16 +48,16 @@ Scenario: Edit a course
 
 Scenario: Delete a course
 	Given I have an existing course with following info:
-	 | Name           | Code   | Description                     | OrganizationId						| TemplateCourseId						|
-	 | Psychology 101 | PSY101 | Amro's awesome Psychology class | C3885307-BDAD-480F-8E7C-51DFE5D80387	| ECB05E38-02A6-4F2F-B020-00AA2F619727	|
+	 | Name        | Code   | Description                   | Tenant Id | OrganizationId                       | TemplateCourseId                     |
+	 | English 101 | ENG101 | Ranji's awesome English Class | 1         | C3885307-BDAD-480F-8E7C-51DFE5D80387 | ECB05E38-02A6-4F2F-B020-00AA2F619727 |
 	And I delete this course
 	Then I should get a success confirmation message
 	And my course no longer exists
 
 Scenario Template: Can create a course with same name or code
 	Given I have an existing course with following info:
-	 | Name           | Code   | Description                     | OrganizationId						| TemplateCourseId						|
-	 | Psychology 101 | PSY101 | Amro's awesome Psychology class | C3885307-BDAD-480F-8E7C-51DFE5D80387	| ECB05E38-02A6-4F2F-B020-00AA2F619727	|
+	 | Name        | Code   | Description                   | Tenant Id | OrganizationId                       | TemplateCourseId                     |
+	 | English 101 | ENG101 | Ranji's awesome English Class | 1         | C3885307-BDAD-480F-8E7C-51DFE5D80387 | ECB05E38-02A6-4F2F-B020-00AA2F619727 |
 	When I create a new course with <Name>, <Code>, <Description>
 	And I submit a creation request
 	Then I should get the status code <Status>

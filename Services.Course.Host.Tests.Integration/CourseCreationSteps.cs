@@ -44,7 +44,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
-                TenantId = 1,
+                TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
                 OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                 TemplateCourseId = new Guid(table.Rows[0]["TemplateCourseId"])
                 
@@ -85,7 +85,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
-                TenantId = 1,
+                TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
                 OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
             };
 
@@ -202,7 +202,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Name = ScenarioContext.Current.Get<long>("ticks") + row["Name"],
                     Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
                     Description = row["Description"],
-                    TenantId = 1,
+                    TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
                     OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
                 };
 
@@ -309,6 +309,41 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
             var responseList = new List<CourseInfoResponse>(getResponse);
             Assert.That(responseList.Count, Is.AtLeast(count));
+        }
+
+        [When(@"I create the following course using a previous course template:")]
+        public void WhenICreateTheFollowingCourseUsingAPreviousCourseTemplate(Table table)
+        {
+            var course = ScenarioContext.Current.Get<SaveCourseRequest>("createCourseRequest");
+            var courseWithTemplateId = new SaveCourseRequest
+                {
+                    Name = table.Rows[0]["Name"],
+                    Code = table.Rows[0]["Code"],
+                    Description = table.Rows[0]["Description"],
+                    TenantId = course.TenantId,
+                    TemplateCourseId = course.TemplateCourseId
+                };
+
+            ScenarioContext.Current.Add("courseTemplate", courseWithTemplateId);
+
+            var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, courseWithTemplateId, new JsonMediaTypeFormatter()).Result;
+            response.EnsureSuccessStatusCode();
+
+            ScenarioContext.Current.Add("ResponseToValidate", response);
+        }
+
+        [Then(@"my course contains the following:")]
+        public void ThenMyCourseContainsTheFollowing(Table table)
+        {
+            var originalRequest = ScenarioContext.Current.Get<SaveCourseRequest>("courseTemplate");
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>();
+            var info = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
+            Assert.That(info.Name, Is.EqualTo(originalRequest.Name));
+            Assert.That(info.Code, Is.EqualTo(originalRequest.Code));
+            Assert.That(info.Description, Is.EqualTo(originalRequest.Description));
+            Assert.That(info.OrganizationId, Is.EqualTo(originalRequest.OrganizationId));
+            Assert.That(info.TemplateCourseId, Is.EqualTo(originalRequest.TemplateCourseId));
         }
     }
 }
