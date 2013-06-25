@@ -90,7 +90,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Ranji\'s awesome English Class",
                         "1",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
-                        "ECB05E38-02A6-4F2F-B020-00AA2F619727",
+                        "",
                         "Traditional",
                         "false"});
 #line 8
