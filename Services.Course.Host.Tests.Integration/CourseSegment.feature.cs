@@ -99,7 +99,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type",
+                        "CourseType",
                         "ParentSegment"});
             table2.AddRow(new string[] {
                         "Week1",
@@ -117,7 +117,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type",
+                        "CourseType",
                         "ParentSegment"});
             table3.AddRow(new string[] {
                         "Week1",
@@ -148,7 +148,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type",
+                        "CourseType",
                         "ParentSegment"});
             table4.AddRow(new string[] {
                         "Week1",
@@ -176,7 +176,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type",
+                        "CourseType",
                         "ParentSegment"});
             table5.AddRow(new string[] {
                         "Week1",
@@ -217,7 +217,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type",
+                        "CourseType",
                         "ParentSegment"});
             table6.AddRow(new string[] {
                         "Week1",
@@ -240,7 +240,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type"});
+                        "CourseType"});
             table7.AddRow(new string[] {
                         "Discussion",
                         "Discussion is important",
@@ -255,7 +255,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type",
+                        "CourseType",
                         "ParentSegment"});
             table8.AddRow(new string[] {
                         "Week1",
@@ -291,7 +291,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type",
+                        "CourseType",
                         "ParentSegment"});
             table9.AddRow(new string[] {
                         "Week1",
@@ -319,7 +319,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type"});
+                        "CourseType"});
             table10.AddRow(new string[] {
                         "Topic",
                         "Topic for a discussion",
@@ -343,7 +343,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "Type",
+                        "CourseType",
                         "ParentSegment"});
             table11.AddRow(new string[] {
                         "Week1",
@@ -360,7 +360,7 @@ this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
-                        "Type"});
+                        "CourseType"});
             table12.AddRow(new string[] {
                         "10257797-ab74-4796-a2f7-4722f8f96abe",
                         "Discussion"});

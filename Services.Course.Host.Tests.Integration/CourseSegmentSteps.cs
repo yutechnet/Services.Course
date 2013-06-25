@@ -25,7 +25,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 				{
 					Name = row["Name"], 
                     Description = row["Description"], 
-                    Type = row["Type"]
+                    Type = row["CourseType"]
 				}}).ToList();
 
 			var courseInfoResponse = ScenarioContext.Current.Get<CourseInfoResponse>(courseName);
@@ -94,7 +94,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     {
                         Name = courseSegmentName,
                         Description = row["Description"],
-                        Type = row["Type"]
+                        Type = row["CourseType"]
                     }, new JsonMediaTypeFormatter()).Result;
                 response.EnsureSuccessStatusCode();
             }
@@ -113,7 +113,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             foreach (var row in table.Rows)
             {
                 Assert.That(parentSegment.ChildrenSegments.Any(
-                    s => s.Name == row["Name"] && s.Description == row["Description"] && s.Type == row["Type"]));
+                    s => s.Name == row["Name"] && s.Description == row["Description"] && s.Type == row["CourseType"]));
             }
         }
 

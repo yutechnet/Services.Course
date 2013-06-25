@@ -13,6 +13,8 @@ namespace BpeProducts.Services.Course.Domain
 			course.Description = msg.Description;
 			course.ActiveFlag = msg.ActiveFlag;
 		    course.OrganizationId = msg.OrganizationId;
+		    course.CourseType = msg.CourseType;
+		    course.IsTemplate = msg.IsTemplate;
 			return course;
 		}
 

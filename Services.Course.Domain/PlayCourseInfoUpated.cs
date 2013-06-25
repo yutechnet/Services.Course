@@ -9,6 +9,8 @@ namespace BpeProducts.Services.Course.Domain
 			course.Name = msg.Name;
 			course.Code = msg.Code;
 			course.Description = msg.Description;
+		    course.CourseType = msg.CourseType;
+		    course.IsTemplate = msg.IsTemplate;
 
 			return course;
 		}

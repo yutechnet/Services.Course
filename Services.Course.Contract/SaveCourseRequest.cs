@@ -31,11 +31,17 @@ namespace BpeProducts.Services.Course.Contract
         public string Description { get; set; }
 
         [DataMember(IsRequired = true)]
+        public ECourseType CourseType { get; set; }
+
+        [DataMember(IsRequired = true)]
+        public bool IsTemplate { get; set; }
+
+        [DataMember(IsRequired = true)]
         public int TenantId { get; set; }
 
         [DataMember(IsRequired = true)]
         public Guid OrganizationId { get; set; }
-        
+
         [DataMember]
         public List<Guid> ProgramIds { get; set; }
 

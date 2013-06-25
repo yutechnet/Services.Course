@@ -115,6 +115,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		            Description = course.Description,
 		            Name = course.Name,
 					ActiveFlag = course.ActiveFlag,
+                    CourseType = course.CourseType,
+                    IsTemplate = course.IsTemplate,
 		            Course = course
 	            });
 

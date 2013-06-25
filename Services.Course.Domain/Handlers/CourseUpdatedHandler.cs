@@ -45,14 +45,18 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 //bus.Publish<CourseCreatedEvent>(new CourseCreatedEvent {});
                 if (@event.Request.Name != @event.Old.Name ||
                     @event.Request.Code != @event.Old.Code ||
-                    @event.Request.Description != @event.Old.Description)
+                    @event.Request.Description != @event.Old.Description ||
+                    @event.Request.CourseType != @event.Old.CourseType ||
+                    @event.Request.IsTemplate != @event.Old.IsTemplate)
                 {
                     _domainEvents.Raise<CourseInfoUpdated>(new CourseInfoUpdated
                         {
                             AggregateId = @event.AggregateId,
+                            Name = @event.Request.Name,
                             Code = @event.Request.Code,
                             Description = @event.Request.Description,
-                            Name = @event.Request.Name
+                            CourseType = @event.Request.CourseType,
+                            IsTemplate = @event.Request.IsTemplate
                         });
                 }
             }

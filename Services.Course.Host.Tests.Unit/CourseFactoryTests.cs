@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Features.Indexed;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Events;
 using EventStore;
@@ -57,7 +58,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 				 Description = "mui blah",
 				 Name = "blah",
                  OrganizationId = Guid.NewGuid(),
-                 TemplateCourseId = Guid.NewGuid()
+                 TemplateCourseId = Guid.NewGuid(),
+                 CourseType = ECourseType.Traditional,
+                 IsTemplate = false
 			 };
 			 var messages = new List<EventMessage>();
 			 var msg = new EventMessage();

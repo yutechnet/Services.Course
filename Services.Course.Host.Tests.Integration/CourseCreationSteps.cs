@@ -46,15 +46,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Description = table.Rows[0]["Description"],
                 TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
                 OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
-                TemplateCourseId = new Guid(table.Rows[0]["TemplateCourseId"])
-                
+                TemplateCourseId = new Guid(table.Rows[0]["TemplateCourseId"]),
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false
             };
 
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
             ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
             ScenarioContext.Current.Add("courseCode", table.Rows[0]["Code"]);
             ScenarioContext.Current.Add("orgId", saveCourseRequest.OrganizationId);
-            ScenarioContext.Current.Add("templateId", saveCourseRequest.TemplateCourseId);
+            ScenarioContext.Current.Add("templateId", saveCourseRequest.TemplateCourseId); 
+            ScenarioContext.Current.Add("courseType", saveCourseRequest.CourseType);
+            ScenarioContext.Current.Add("isTemplate", saveCourseRequest.IsTemplate);
         }
 
         [When(@"I submit a creation request")]
@@ -86,7 +89,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
                 TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
-                OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
+                OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false
             };
 
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);
@@ -203,7 +208,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
                     Description = row["Description"],
                     TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
-                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
+                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                    CourseType = ECourseType.Traditional,
+                    IsTemplate = false
                 };
 
                 var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
@@ -239,7 +246,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Code = string.IsNullOrEmpty(code) ? code : ScenarioContext.Current.Get<long>("ticks") + code,
                 Description = description,
                 TenantId = 1,
-                OrganizationId = Guid.NewGuid()
+                OrganizationId = Guid.NewGuid(),
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false
             };
 
             if (ScenarioContext.Current.ContainsKey("createCourseRequest"))
@@ -321,7 +330,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Code = table.Rows[0]["Code"],
                     Description = table.Rows[0]["Description"],
                     TenantId = course.TenantId,
-                    TemplateCourseId = course.TemplateCourseId
+                    TemplateCourseId = course.TemplateCourseId,
+                    CourseType = ECourseType.Traditional,
+                    IsTemplate = false
                 };
 
             ScenarioContext.Current.Add("courseTemplate", courseWithTemplateId);
@@ -344,6 +355,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.That(info.Description, Is.EqualTo(originalRequest.Description));
             Assert.That(info.OrganizationId, Is.EqualTo(originalRequest.OrganizationId));
             Assert.That(info.TemplateCourseId, Is.EqualTo(originalRequest.TemplateCourseId));
+            Assert.That(info.CourseType, Is.EqualTo(originalRequest.CourseType));
+            Assert.That(info.IsTemplate, Is.EqualTo(originalRequest.IsTemplate));
         }
     }
 }

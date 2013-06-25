@@ -30,7 +30,9 @@ namespace BpeProducts.Services.Course.Domain
                     OriginalEntityId = courseId,
                     ParentEntityId = null,
                     OrganizationId = request.OrganizationId,
-                    VersionNumber = new Version(1, 0, 0, 0).ToString()
+                    VersionNumber = new Version(1, 0, 0, 0).ToString(),
+                    CourseType = request.CourseType,
+                    IsTemplate = false
                 };
 
 			Mapper.Map(request, course);
