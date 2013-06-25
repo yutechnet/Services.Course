@@ -10,20 +10,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     public class CourseEventPersisterHandlerTests
     {
         private Mock<IStoreCourseEvents> _mockCourseEventStore;
-        private CourseEventPersisterHandler _courseEventPersisterHandler;
+        private EventPersisterHandler _eventPersisterHandler;
 
         [SetUp]
         public void SetUp()
         {
             _mockCourseEventStore = new Mock<IStoreCourseEvents>();
-            _courseEventPersisterHandler = new CourseEventPersisterHandler(_mockCourseEventStore.Object);
+            _eventPersisterHandler = new EventPersisterHandler(_mockCourseEventStore.Object);
         }
 
         [Test]
         public void Persist_event_to_event_store()
         {
             var domainEvent = new FakeDomainEvent();
-            _courseEventPersisterHandler.Handle(domainEvent);
+            _eventPersisterHandler.Handle(domainEvent);
 
             _mockCourseEventStore.Verify(c => c.Store(domainEvent as IDomainEvent), Times.Once());
         }

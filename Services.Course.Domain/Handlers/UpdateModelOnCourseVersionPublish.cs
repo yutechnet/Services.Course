@@ -18,11 +18,11 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             {
                 throw new InvalidOperationException("Invalid domain event.");
             }
-            var courseInDb = _courseRepository.GetById(e.AggregateId);
-            courseInDb.IsPublished = true;
-            courseInDb.PublishNote = e.PublishNote;
 
-            _courseRepository.Update(courseInDb);
+            var course = _courseRepository.Load(e.AggregateId);
+            course.Publish(e.PublishNote);
+
+            _courseRepository.Save(course);
         }
     }
 }

@@ -15,11 +15,11 @@ namespace BpeProducts.Services.Course.Host.Controllers
 {
     public class CourseVersionController : ApiController
     {
-        private readonly IRepository _courseRepository;
+        private readonly ICourseRepository _courseRepository;
         private readonly IDomainEvents _domainEvents;
 	    private readonly ICourseFactory _courseFactory;
 
-        public CourseVersionController(IRepository courseRepository, IDomainEvents domainEvents, ICourseFactory courseFactory)
+        public CourseVersionController(ICourseRepository courseRepository, IDomainEvents domainEvents, ICourseFactory courseFactory)
         {
             _courseRepository = courseRepository;
             _domainEvents = domainEvents;
@@ -31,7 +31,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [CheckModelForNull]
         [ValidateModelState]
         [HttpPut]
-        public void PublishVersion(Guid id, CoursePublishRequest request)
+        public void PublishVersion(Guid id, PublishRequest request)
         {
             // /courses/<id>/publish -- publish a course
             // /program/<id>/publish -- publish a program
@@ -63,9 +63,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [CheckModelForNull]
         [ValidateModelState]
         [HttpPost]
-        public HttpResponseMessage CreateVersion(CourseVersionRequest request)
+        public HttpResponseMessage CreateVersion(VersionRequest request)
         {
-            var courseInDb = _courseRepository.Query<Domain.Entities.Course>().FirstOrDefault(c => c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true));
+            var courseInDb = _courseRepository.Load(request.ParentVersionId);
             if (courseInDb == null)
             {
                 throw new HttpResponseException(new HttpResponseMessage
@@ -75,32 +75,15 @@ namespace BpeProducts.Services.Course.Host.Controllers
                     });
             }
 
-            var versionExists =
-                _courseRepository.Query<Domain.Entities.Course>()
-                                 .Any(
-                                     c =>
-                                     c.OriginalEntityId.Equals(courseInDb.OriginalEntityId) && c.ActiveFlag.Equals(true) &&
-                                     c.VersionNumber.Equals(request.VersionNumber));
-            if (versionExists)
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                    {
-                        StatusCode = HttpStatusCode.Conflict,
-                        ReasonPhrase = string.Format("Version {0} for the course {1} already exists", request.VersionNumber, courseInDb.OriginalEntityId)
-                    });
-            }
+            var newVersion = _courseFactory.BuildNewVersion(courseInDb, request.VersionNumber);
 
-            var courseId = Guid.NewGuid();
             _domainEvents.Raise<CourseVersionCreated>(new CourseVersionCreated
                 {
-                    AggregateId = courseId,
-                    IsPublished = false,
-                    OriginalCourseId = courseInDb.OriginalEntityId,
-                    ParentCourseId = request.ParentVersionId,
-                    VersionNumber = request.VersionNumber
+                    AggregateId = newVersion.Id,
+                    NewVersion = newVersion
                 });
 
-            var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_courseRepository.Get<Domain.Entities.Course>(courseId));
+            var courseInfoResponse = Mapper.Map<CourseInfoResponse>(newVersion);
             HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("DefaultApi", new { controller = "courses", id = courseInfoResponse.Id });

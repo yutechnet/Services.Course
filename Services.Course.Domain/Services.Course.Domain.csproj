@@ -160,6 +160,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\OutcomeCreated.cs" />
     <Compile Include="Outcomes\IOutcomeFactory.cs" />
     <Compile Include="Entities\IHaveOutcomes.cs" />
     <Compile Include="Events\CourseVersionCreated.cs" />
@@ -169,8 +170,10 @@
     <Compile Include="Outcomes\OutcomeFactory.cs" />
     <Compile Include="Outcomes\OutcomeVersionCreated.cs" />
     <Compile Include="Outcomes\OutcomeVersionPublished.cs" />
+    <Compile Include="Outcomes\PlayCourseCreated.cs" />
     <Compile Include="Outcomes\PlayOutcomeVersionCreated.cs" />
     <Compile Include="Outcomes\PlayOutcomeVersionPublished.cs" />
+    <Compile Include="Outcomes\UpdateModelOnCourseCreation.cs" />
     <Compile Include="Outcomes\UpdateModelOnOutcomeVersionCreation.cs" />
     <Compile Include="Outcomes\UpdateModelOnOutcomeVersionPublished.cs" />
     <Compile Include="PLayCourseDisassociatedWithProgram.cs" />
@@ -191,7 +194,7 @@
     <Compile Include="Events\CourseSegmentUpdated.cs" />
     <Compile Include="Events\CourseUpdated.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
-    <Compile Include="Handlers\CourseEventPersisterHandler.cs" />
+    <Compile Include="Handlers\EventPersisterHandler.cs" />
     <Compile Include="Handlers\IHandle.cs" />
     <Compile Include="Handlers\IStoreCourseEvents.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCourseSegment.cs" />

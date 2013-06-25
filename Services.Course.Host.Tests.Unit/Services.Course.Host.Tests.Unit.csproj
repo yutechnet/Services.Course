@@ -44,6 +44,9 @@
     <Reference Include="Autofac.Extras.DynamicProxy2">
       <HintPath>..\packages\Autofac.Extras.DynamicProxy2.3.0.2\lib\net40\Autofac.Extras.DynamicProxy2.dll</HintPath>
     </Reference>
+    <Reference Include="Autofac.Extras.Moq">
+      <HintPath>..\packages\Autofac.Extras.Moq.3.0.0\lib\net40\Autofac.Extras.Moq.dll</HintPath>
+    </Reference>
     <Reference Include="Autofac.Extras.NHibernate">
       <HintPath>..\packages\Autofac.Extras.NHibernate.3.0.0\lib\net40\Autofac.Extras.NHibernate.dll</HintPath>
     </Reference>

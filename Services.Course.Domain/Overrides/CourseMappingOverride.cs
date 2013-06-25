@@ -13,8 +13,14 @@ namespace BpeProducts.Services.Course.Domain.Overrides
     {
         public void Override(AutoMapping<Entities.Course> mapping)
         {
+            const string uniqueVersion = "UniqueVersion";
+
             mapping.IgnoreProperty(course => course.SegmentIndex);
             mapping.IgnoreProperty(course => course.Segments);
+            
+            mapping.Map(c => c.OriginalEntityId).UniqueKey(uniqueVersion);
+            mapping.Map(c => c.VersionNumber).UniqueKey(uniqueVersion);
+
             mapping.Map(course => course.CourseSegmentJson).CustomSqlType("nvarchar(max)");
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
             mapping

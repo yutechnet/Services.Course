@@ -7,8 +7,10 @@ using BpeProducts.Common.NHibernate;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
 {
-    public interface ICourseRepository : IRepository<Entities.Course>
+    public interface ICourseRepository
     {
-        T Load<T>(Guid programId) where T:TenantEntity;
+        Entities.Course Load(Guid programId);
+        void Save(Entities.Course course);
+        void Delete(Entities.Course course);
     }
 }

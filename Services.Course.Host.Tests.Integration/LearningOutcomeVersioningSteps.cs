@@ -47,41 +47,41 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             ScenarioContext.Current.Add("outcomeResponse", outcomeResponse);
         }
 
-        [When(@"I create a new version of '(.*)' with the following info")]
+        [When(@"I create a new version of '(.*)' outcome with the following info")]
         public void WhenICreateANewVersionOfWithTheFollowingInfo(string description, Table table)
         {
-//            var versionRequest = table.CreateInstance(OutcomeVersionRequest);
-//
-//            if (description.Equals("RandomOutcome"))
-//            {
-//                versionRequest.ParentVersionId = Guid.NewGuid();
-//            }
-//            else
-//            {
-//                var resourceUri = ScenarioContext.Current.Get<Uri>(description);
-//                versionRequest.ParentVersionId = Guid.Parse(ExtractGuid(resourceUri.ToString(), 0));
-//            }
-//
-//            var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("OutcomeLeadingPath"));
-//
-//            var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
-//
-//            ScenarioContext.Current[description] = response.Headers.Location;
-            //ScenarioContext.Current["ResponseToValidate"] = response;
+            var versionRequest = table.CreateInstance<VersionRequest>();
+
+            if (description.Equals("RandomOutcome"))
+            {
+                versionRequest.ParentVersionId = Guid.NewGuid();
+            }
+            else
+            {
+                var resourceUri = ScenarioContext.Current.Get<Uri>(description);
+                versionRequest.ParentVersionId = Guid.Parse(ExtractGuid(resourceUri.ToString(), 0));
+            }
+
+            var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("OutcomeLeadingPath"));
+
+            var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
+
+            ScenarioContext.Current[description] = response.Headers.Location;
+            ScenarioContext.Current["ResponseToValidate"] = response;
         }
 
         [Given(@"I publish '(.*)' learning outcome with the following info")]
         [When(@"I publish '(.*)' learning outcome with the following info")]
         public void WhenIPublishLearningOutcomeWithTheFollowingInfo(string description, Table table)
         {
-//            var resourceUri = ScenarioContext.Current.Get<Uri>(description);
-//            var publishUri = string.Format("{0}/publish", resourceUri);
-//            var publishRequest = table.CreateInstance<OutcomePublishRequest>();
-//
-//            var response = ApiFeature.ApiTestHost.Client.PutAsync(publishUri, publishRequest, new JsonMediaTypeFormatter()).Result;
-//            response.EnsureSuccessStatusCode();
-//
-//            ScenarioContext.Current.Add("ResponseToValidate", response);
+            var resourceUri = ScenarioContext.Current.Get<Uri>(description);
+            var publishUri = string.Format("{0}/publish", resourceUri);
+            var publishRequest = table.CreateInstance<PublishRequest>();
+
+            var response = ApiFeature.ApiTestHost.Client.PutAsync(publishUri, publishRequest, new JsonMediaTypeFormatter()).Result;
+            response.EnsureSuccessStatusCode();
+
+            ScenarioContext.Current.Add("ResponseToValidate", response);
         }
         
         [When(@"I delete '(.*)' learning outcome")]

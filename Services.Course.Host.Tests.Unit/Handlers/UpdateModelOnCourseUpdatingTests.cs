@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
@@ -15,6 +16,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     public class UpdateModelOnCourseUpdatingTests
     {
         private Mock<ICourseRepository> _mockCourseRepository;
+        private Mock<IProgramRepository> _mockProgramRepository;
         private UpdateModelOnCourseUpdating _updateModelOnCourseUpdating;
 
         [TestFixtureSetUp]
@@ -26,8 +28,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         [SetUp]
         public void SetUp()
         {
-            _mockCourseRepository = new Mock<ICourseRepository>();
-            _updateModelOnCourseUpdating = new UpdateModelOnCourseUpdating(_mockCourseRepository.Object);
+            var autoMock = AutoMock.GetLoose();
+            _mockCourseRepository = autoMock.Mock<ICourseRepository>();
+            _mockProgramRepository = autoMock.Mock<IProgramRepository>();
+            _updateModelOnCourseUpdating = autoMock.Create<UpdateModelOnCourseUpdating>();
         }
 
         [Test]
@@ -44,16 +48,27 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         {
             var courseUpdatedEvent = CreateCourseUpdatedEventWithNewAndOldPrograms();
 
-            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(courseUpdatedEvent.Old);
-            _mockCourseRepository.Setup(c => c.Load<Program>(It.IsAny<Guid>())).Returns(new Program());
+            _mockCourseRepository.Setup(c => c.Load(It.IsAny<Guid>())).Returns(courseUpdatedEvent.Old);
+            _mockProgramRepository.Setup(c => c.Get(It.IsAny<Guid>())).Returns(new Program());
+            _mockProgramRepository.Setup(p => p.Get(It.IsAny<List<Guid>>())).Returns(new List<Program>
+                {
+                    new Program { Id = courseUpdatedEvent.Request.ProgramIds[0] },
+                    new Program { Id = courseUpdatedEvent.Request.ProgramIds[1] },
+                    new Program { Id = courseUpdatedEvent.Request.ProgramIds[2] }
+                });
 
             _updateModelOnCourseUpdating.Handle(courseUpdatedEvent);
 
-            _mockCourseRepository.Verify(c => c.GetById(courseUpdatedEvent.AggregateId), Times.Once());
-            _mockCourseRepository.Verify(c => c.Update(It.Is<Domain.Entities.Course>(x => x.Name == courseUpdatedEvent.Request.Name 
-                && x.Description == courseUpdatedEvent.Request.Description
-                && x.Code == courseUpdatedEvent.Request.Code
-                && x.Programs.Count == courseUpdatedEvent.Request.ProgramIds.Count)), Times.Once());
+            _mockCourseRepository.Verify(c => c.Load(courseUpdatedEvent.AggregateId), Times.Once());
+            _mockCourseRepository.Verify(
+                c => c.Save(It.Is<Domain.Entities.Course>(x => x.Name == courseUpdatedEvent.Request.Name
+                                                               &&
+                                                               x.Description == courseUpdatedEvent.Request.Description
+                                                               && x.Code == courseUpdatedEvent.Request.Code
+                                                               &&
+                                                               x.Programs.Count ==
+                                                               courseUpdatedEvent.Request.ProgramIds.Count)),
+                Times.Once());
         }
 
         private CourseUpdated CreateCourseUpdatedEventWithNewAndOldPrograms()
@@ -61,38 +76,37 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var courseId = Guid.NewGuid();
 
             var saveCourseRequest = new SaveCourseRequest
-            {
-                Code = "NewCode1",
-                Description = "NewDescription",
-                Id = courseId,
-                Name = "NewName1",
-                ProgramIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }
-            };
+                {
+                    Code = "NewCode1",
+                    Description = "NewDescription",
+                    Id = courseId,
+                    Name = "NewName1",
+                    ProgramIds = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()}
+                };
 
             var course = new Domain.Entities.Course
-            {
-                Code = "OldCode1",
-                Description = "OldDescription1",
-                Id = courseId,
-                Name = "OldName1",
-                Programs = new List<Program>
+                {
+                    Code = "OldCode1",
+                    Description = "OldDescription1",
+                    Id = courseId,
+                    Name = "OldName1",
+                    Programs = new List<Program>
                         {
-                            new Program { Id = Guid.NewGuid() },
-                            new Program { Id = Guid.NewGuid() },
-                            new Program { Id = Guid.NewGuid() },
-                            new Program { Id = Guid.NewGuid() },
-                            new Program { Id = Guid.NewGuid() }
+                            new Program {Id = Guid.NewGuid()},
+                            new Program {Id = Guid.NewGuid()},
+                            new Program {Id = Guid.NewGuid()},
+                            new Program {Id = Guid.NewGuid()},
+                            new Program {Id = Guid.NewGuid()}
                         }
-            };
+                };
 
             return new CourseUpdated
-            {
-                AggregateId = Guid.NewGuid(),
-                Request = saveCourseRequest,
-                Old = course
-            };
+                {
+                    AggregateId = Guid.NewGuid(),
+                    Request = saveCourseRequest,
+                    Old = course
+                };
 
         }
-
     }
 }

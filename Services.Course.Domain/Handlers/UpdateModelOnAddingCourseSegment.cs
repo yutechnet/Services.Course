@@ -21,7 +21,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-            Entities.Course courseInDb = _courseRepository.GetById(e.AggregateId);
+            Entities.Course courseInDb = _courseRepository.Load(e.AggregateId);
             var newSegment = Mapper.Map<CourseSegment>(e);
             if (newSegment.ParentSegmentId == Guid.Empty)
             {
@@ -32,7 +32,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 var parentSegment = courseInDb.SegmentIndex[e.ParentSegmentId];
                 parentSegment.AddSubSegment(newSegment); 
             }
-            _courseRepository.Update(courseInDb);
+            _courseRepository.Save(courseInDb);
         }
     }
 }

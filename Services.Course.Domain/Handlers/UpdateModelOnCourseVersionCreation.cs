@@ -25,17 +25,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             }
 
             // create a new version based on the parent version
-            var courseInDb = _courseRepository.GetById(e.ParentCourseId);
-
-            var newCourseVersion = new Entities.Course(courseInDb);
-            newCourseVersion.Id = e.AggregateId;
-            newCourseVersion.OriginalEntityId = e.OriginalCourseId;
-            newCourseVersion.ParentEntityId = e.ParentCourseId;
-
-            newCourseVersion.IsPublished = e.IsPublished;
-            newCourseVersion.VersionNumber = e.VersionNumber;
-
-            _courseRepository.Add(newCourseVersion);
+            _courseRepository.Save(e.NewVersion);
         }
     }
 }

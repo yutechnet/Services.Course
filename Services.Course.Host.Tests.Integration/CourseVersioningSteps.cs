@@ -74,7 +74,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             var resourceUri = ScenarioContext.Current.Get<Uri>(courseCode);
             var publishUri = string.Format("{0}/publish", resourceUri);
-            var publishRequest = table.CreateInstance<CoursePublishRequest>();
+            var publishRequest = table.CreateInstance<PublishRequest>();
 
             var response =
                 ApiFeature.ApiTestHost.Client.PutAsync(publishUri, publishRequest, new JsonMediaTypeFormatter()).Result;
@@ -103,7 +103,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I create a new version of '(.*)' course with the following info")]
         public void WhenICreateANewVersionOfWithTheFollowingInfo(string courseCode, Table table)
         {
-            var versionRequest = table.CreateInstance<CourseVersionRequest>();
+            var versionRequest = table.CreateInstance<VersionRequest>();
 
             if (courseCode.Equals("RandomCourse"))
             {
@@ -127,7 +127,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I create a course without a version")]
         public void WhenICreateACourseWithoutAVersion()
         {
-            var versionRequest = new CourseVersionRequest
+            var versionRequest = new VersionRequest
                 {
                     ParentVersionId = Guid.NewGuid(),
                     VersionNumber = null

@@ -31,7 +31,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [CheckModelForNull]
         [ValidateModelState]
         [HttpPut]
-        public void PublishVersion(Guid id, CoursePublishRequest request)
+        public void PublishVersion(Guid id, PublishRequest request)
         {
             var courseInDb = _outcomeFactory.Reconstitute(id);
 
@@ -51,7 +51,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [CheckModelForNull]
         [ValidateModelState]
         [HttpPost]
-        public HttpResponseMessage CreateVersion(string entityType, CourseVersionRequest request)
+        public HttpResponseMessage CreateVersion(VersionRequest request)
         {
             var outcomeInDb = _repository.Query<Domain.Entities.LearningOutcome>().FirstOrDefault(c => c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true));
             if (outcomeInDb == null)
@@ -74,24 +74,24 @@ namespace BpeProducts.Services.Course.Host.Controllers
                 throw new HttpResponseException(new HttpResponseMessage
                     {
                         StatusCode = HttpStatusCode.Conflict,
-                        ReasonPhrase = string.Format("Version {0} for the course {1} already exists", request.VersionNumber, outcomeInDb.OriginalEntityId)
+                        ReasonPhrase = string.Format("NewVersion {0} for the course {1} already exists", request.VersionNumber, outcomeInDb.OriginalEntityId)
                     });
             }
 
-            var courseId = Guid.NewGuid();
+            var outcomeId = Guid.NewGuid();
             _domainEvents.Raise<OutcomeVersionCreated>(new OutcomeVersionCreated
                 {
-                    AggregateId = courseId,
+                    AggregateId = outcomeId,
                     IsPublished = false,
                     OriginalEntityId = outcomeInDb.OriginalEntityId,
                     ParentEntityId = request.ParentVersionId,
                     VersionNumber = request.VersionNumber
                 });
+            var outcome = _repository.Get<Domain.Entities.LearningOutcome>(outcomeId);
+            var outcomeResponse = Mapper.Map<OutcomeResponse>(outcome);
+            HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
 
-            var courseInfoResponse = Mapper.Map<CourseInfoResponse>(_repository.Get<Domain.Entities.Course>(courseId));
-            HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
-
-            string uri = Url.Link("DefaultApi", new { controller = "outcome", id = courseInfoResponse.Id });
+            string uri = Url.Link("DefaultApi", new { controller = "outcome", id = outcomeResponse.Id });
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);

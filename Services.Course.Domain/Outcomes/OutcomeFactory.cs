@@ -22,11 +22,13 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
                     Id = outcomeId,
                     ActiveFlag = true,
                     OriginalEntityId = outcomeId,
-                    Description = request.Description
+                    Description = request.Description,
+                    VersionNumber = new Version(1, 0, 0, 0).ToString(),
+                    TenantId = request.TenantId
                 };
         }
 
-        public LearningOutcome BuildNewVersion(LearningOutcome entity)
+        public LearningOutcome BuildNewVersion(LearningOutcome entity, string version)
         {
             return new LearningOutcome
             {
@@ -35,7 +37,9 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
                 Outcomes = new List<LearningOutcome>(entity.Outcomes),
                 ActiveFlag = true,
                 OriginalEntityId = entity.OriginalEntityId,
-                ParentEntityId = entity.Id
+                ParentEntityId = entity.Id,
+                TenantId = entity.TenantId,
+                VersionNumber = version
             };
         }
     }

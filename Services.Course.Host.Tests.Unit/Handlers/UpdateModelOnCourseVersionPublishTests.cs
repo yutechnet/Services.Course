@@ -43,7 +43,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     PublishNote = "Blah blah"
                 };
 
-            _mockCourseRepository.Setup(c => c.GetById(courseVersionId)).Returns(new Domain.Entities.Course
+            _mockCourseRepository.Setup(c => c.Load(courseVersionId)).Returns(new Domain.Entities.Course
                 {
                     Id = courseVersionId,
                     IsPublished = false,
@@ -52,8 +52,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             _updateModelOnCourseVersionPublish.Handle(courseVersionPublished);
 
-            _mockCourseRepository.Verify(c => c.GetById(courseVersionId), Times.Once());
-            _mockCourseRepository.Verify(c => c.Update(It.Is<Domain.Entities.Course>(x =>
+            _mockCourseRepository.Verify(c => c.Load(courseVersionId), Times.Once());
+            _mockCourseRepository.Verify(c => c.Save(It.Is<Domain.Entities.Course>(x =>
                 x.IsPublished &&
                 x.PublishNote.Equals(courseVersionPublished.PublishNote))), Times.Once());
         }

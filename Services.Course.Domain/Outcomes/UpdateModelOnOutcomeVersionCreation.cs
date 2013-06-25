@@ -12,9 +12,9 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
     public class UpdateModelOnOutcomeVersionCreation : IHandle<OutcomeVersionCreated>
     {
         private readonly IRepository _repository;
-        private readonly OutcomeFactory _outcomeFactory;
+        private readonly IOutcomeFactory _outcomeFactory;
 
-        public UpdateModelOnOutcomeVersionCreation(IRepository repository, OutcomeFactory outcomeFactory)
+        public UpdateModelOnOutcomeVersionCreation(IRepository repository, IOutcomeFactory outcomeFactory)
         {
             _repository = repository;
             _outcomeFactory = outcomeFactory;
@@ -30,7 +30,7 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
 
             var entity = _repository.Query<Entities.LearningOutcome>().SingleOrDefault(r => r.Id.Equals(e.ParentEntityId));
 
-            var newVersion = _outcomeFactory.BuildNewVersion(entity);
+            var newVersion = _outcomeFactory.BuildNewVersion(entity, e.VersionNumber);
             _repository.Save(newVersion);
         }
     }

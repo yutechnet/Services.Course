@@ -6,14 +6,7 @@ namespace BpeProducts.Services.Course.Domain
     {
         public Entities.Course Apply(CourseVersionCreated msg, Entities.Course course)
         {
-            course.Id = msg.AggregateId;
-            course.ParentEntityId = msg.ParentCourseId;
-            course.OriginalEntityId = msg.OriginalCourseId;
-            course.VersionNumber = msg.VersionNumber;
-            course.IsPublished = msg.IsPublished;
-
-            return course;
-
+            return msg.NewVersion;
         }
 
         public TE Apply<T, TE>(T msg, TE entity)

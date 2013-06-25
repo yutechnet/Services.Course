@@ -19,7 +19,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-			_courseRepository.Add(e.Course);
+			_courseRepository.Save(e.Course);
 		}
 	}
 }

@@ -7,9 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Hosting;
+using System.Web.Http.Routing;
+using Autofac.Extras.Moq;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Outcomes;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Host.App_Start;
 using BpeProducts.Services.Course.Host.Controllers;
@@ -26,20 +29,39 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         private Mock<ILearningOutcomeRepository> _mockLearningOutcomeRepository;
         private OutcomeController _outcomeController;
 		private Mock<IRepository> _repositoryOfObjecWithOutcomes;
-
-	    [SetUp]
+        private Mock<IOutcomeFactory> _mockOutcomeFactory;
+            
+        [SetUp]
         public void SetUp()
-        {
-            _mockLearningOutcomeRepository = new Mock<ILearningOutcomeRepository>();
-	        _repositoryOfObjecWithOutcomes = new Mock<IRepository>();
-            _outcomeController = new OutcomeController(_mockLearningOutcomeRepository.Object,_repositoryOfObjecWithOutcomes.Object);
+	    {
+	        var autoMock = AutoMock.GetLoose();
 
-            var httpConfiguration = new HttpConfiguration();
-            _outcomeController.Request = new HttpRequestMessage();
-            _outcomeController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, httpConfiguration);
+            _mockLearningOutcomeRepository = autoMock.Mock<ILearningOutcomeRepository>();
+            _repositoryOfObjecWithOutcomes = autoMock.Mock<IRepository>();
+	        _mockOutcomeFactory = autoMock.Mock<IOutcomeFactory>();
+            _outcomeController = autoMock.Create<OutcomeController>();
+
+            //var httpConfiguration = new HttpConfiguration();
+            //_outcomeController.Request = new HttpRequestMessage();
+            //_outcomeController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, httpConfiguration);
 
             MapperConfig.ConfigureMappers();
-            WebApiConfig.Register(httpConfiguration);
+            //WebApiConfig.Register(httpConfiguration);
+
+            var configuration = new HttpConfiguration();
+            // Register the route
+            WebApiConfig.Register(configuration);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("http://localhost/Outcome"),
+                Content = new HttpMessageContent(new HttpRequestMessage(HttpMethod.Post, "http://localhost/Outcome"))
+            };
+
+            _outcomeController.Request = request;
+            _outcomeController.Request.Properties["MS_HttpConfiguration"] = configuration;
+            _outcomeController.Url = new UrlHelper(_outcomeController.Request);
+
         }
 
         [Test]
@@ -66,13 +88,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Description = "SomeDescription"
                 };
 
-            //_outcomeController.Request = new HttpRequestMessage(HttpMethod.Post, "http://server.com/foos");
+
+            _mockOutcomeFactory.Setup(o => o.Build(It.IsAny<OutcomeRequest>())).Returns(new LearningOutcome
+                {
+                    Id = Guid.NewGuid(),
+                    Description = outcomeRequest.Description
+                });
+
+            //outcomeController.Request = new HttpRequestMessage(HttpMethod.Post, "http://server.com/foos");
             ////The line below was needed in WebApi RC as null config caused an issue after upgrade from Beta
-            //_outcomeController.Configuration = new System.Web.Http.HttpConfiguration(new System.Web.Http.HttpRouteCollection());
+            //outcomeController.Configuration = new System.Web.Http.HttpConfiguration(new System.Web.Http.HttpRouteCollection());
 
             var response = _outcomeController.Post(outcomeRequest);
-
-            _mockLearningOutcomeRepository.Verify(o => o.Add(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
+            _mockOutcomeFactory.Verify(o => o.Build(outcomeRequest));
         }
 
 		[Test]
@@ -87,13 +115,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 					Id = Guid.NewGuid()
 				};
 
-			_repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
-			
-			
+            _mockOutcomeFactory.Setup(o => o.Build(It.IsAny<OutcomeRequest>())).Returns(new LearningOutcome
+            {
+                Id = Guid.NewGuid(),
+                Description = outcomeRequest.Description
+            });
+            
+            _repositoryOfObjecWithOutcomes.Setup(s => s.Query<IHaveOutcomes>()).Returns((new List<Program> { program }).AsQueryable());
 
 			var response = _outcomeController.Post("program",program.Id,outcomeRequest);
 
-			_repositoryOfObjecWithOutcomes.Verify(o => o.Save(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
+			_repositoryOfObjecWithOutcomes.Verify(o => o.Save(It.Is<Program>(x => x.Outcomes[0].Description == outcomeRequest.Description)));
 		}
 
         [Test]
@@ -374,6 +406,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             Assert.That(outcomes, Is.Not.Null);
             Assert.That(outcomes.Count, Is.EqualTo(0));
+        }
+
+        private void SetUpApiController()
+        {
+            var configuration = new HttpConfiguration();
+            // Register the route
+            WebApiConfig.Register(configuration);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri("http://localhost/Outcome"),
+                Content = new HttpMessageContent(new HttpRequestMessage(HttpMethod.Post, "http://localhost/Outcome"))
+            };
+
+            _outcomeController.Request = request;
+            _outcomeController.Request.Properties["MS_HttpConfiguration"] = configuration;
+            _outcomeController.Url = new UrlHelper(_outcomeController.Request);
         }
 
     }

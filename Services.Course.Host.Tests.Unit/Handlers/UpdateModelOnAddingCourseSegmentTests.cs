@@ -50,7 +50,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     Description = "Description"
                 };
 
-            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(course);
+            _mockCourseRepository.Setup(c => c.Load(It.IsAny<Guid>())).Returns(course);
 
             var courseSegementId = Guid.NewGuid();
             var courseSegmentAddedEvent = new CourseSegmentAdded
@@ -64,8 +64,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             _updateModelOnAddingCourseSegment.Handle(courseSegmentAddedEvent);
 
-            _mockCourseRepository.Verify(c => c.GetById(courseId), Times.Once());
-            _mockCourseRepository.Verify(c => c.Update(It.Is<Domain.Entities.Course>(d => d.Segments.Count == 1 && d.Segments[0].Id == courseSegementId)), 
+            _mockCourseRepository.Verify(c => c.Load(courseId), Times.Once());
+            _mockCourseRepository.Verify(c => c.Save(It.Is<Domain.Entities.Course>(d => d.Segments.Count == 1 && d.Segments[0].Id == courseSegementId)), 
                 Times.Once());
         }
 
@@ -90,7 +90,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     }
             };
 
-            _mockCourseRepository.Setup(c => c.GetById(It.IsAny<Guid>())).Returns(course);
+            _mockCourseRepository.Setup(c => c.Load(It.IsAny<Guid>())).Returns(course);
 
             var courseSegmentId = Guid.NewGuid();
             var courseSegmentAddedEvent = new CourseSegmentAdded
@@ -105,8 +105,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             _updateModelOnAddingCourseSegment.Handle(courseSegmentAddedEvent);
 
-            _mockCourseRepository.Verify(c => c.GetById(courseId), Times.Once());
-            _mockCourseRepository.Verify(c => c.Update(It.Is<Domain.Entities.Course>(d => d.Segments.Count == 1 
+            _mockCourseRepository.Verify(c => c.Load(courseId), Times.Once());
+            _mockCourseRepository.Verify(c => c.Save(It.Is<Domain.Entities.Course>(d => d.Segments.Count == 1 
                 && d.Segments[0].ChildrenSegments.Count == 1
                 && d.Segments[0].ChildrenSegments[0].Id == courseSegmentId)),
                 Times.Once());

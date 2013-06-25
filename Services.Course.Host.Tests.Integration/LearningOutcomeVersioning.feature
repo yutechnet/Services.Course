@@ -59,7 +59,7 @@ Scenario: Create a learning outcome version from a previously-published version
 	Given I publish 'first learning outcome' learning outcome with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	When I create a new version of 'first learning outcome' with the following info
+	When I create a new version of 'first learning outcome' outcome with the following info
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the learning outcome 'first learning outcome' should have the following info
@@ -72,13 +72,13 @@ Scenario: Cannot publish the same version twice
 	Given I publish 'first learning outcome' learning outcome with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	When I create a new version of 'first learning outcome' with the following info
+	When I create a new version of 'first learning outcome' outcome with the following info
 	| Field         | Value   |
 	| VersionNumber | 1.0.0.0 |
 	Then I get 'Conflict' response
 
 Scenario: Cannot create a version off non-existing version
-	When I create a new version of 'RandomOutcome' with the following info
+	When I create a new version of 'RandomOutcome' outcome with the following info
 	| Field         | Value   |
 	| VersionNumber | 1.0.0.0 |
 	Then I get 'NotFound' response

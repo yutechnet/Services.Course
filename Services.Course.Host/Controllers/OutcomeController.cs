@@ -10,7 +10,11 @@ using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Common.WebApi.Authorization;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Events;
+using BpeProducts.Services.Course.Domain.Handlers;
+using BpeProducts.Services.Course.Domain.Outcomes;
 using BpeProducts.Services.Course.Domain.Repositories;
 using NHibernate;
 using NHibernate.Linq;
@@ -23,11 +27,15 @@ namespace BpeProducts.Services.Course.Host.Controllers
     {
         private readonly ILearningOutcomeRepository _learningOutcomeRepository;
 	    private readonly IRepository _repository;
-	 
-		public OutcomeController(ILearningOutcomeRepository learningOutcomeRepository, IRepository repository)
+        private readonly IOutcomeFactory _outcomeFactory;
+        private readonly IDomainEvents _domainEvents;
+
+        public OutcomeController(ILearningOutcomeRepository learningOutcomeRepository, IRepository repository, IOutcomeFactory outcomeFactory, IDomainEvents domainEvents)
         {
 	        _learningOutcomeRepository = learningOutcomeRepository;
 		    _repository = repository;
+		    _outcomeFactory = outcomeFactory;
+            _domainEvents = domainEvents;
         }
 
 		[Transaction]
@@ -93,8 +101,17 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [ClaimsAuthorize()]
         public HttpResponseMessage Post(OutcomeRequest request)
         {
-            var learningOutcome = Mapper.Map<LearningOutcome>(request);
-            _learningOutcomeRepository.Add(learningOutcome);
+            var learningOutcome = _outcomeFactory.Build(request);
+            _domainEvents.Raise<OutcomeCreated>(new OutcomeCreated
+            {
+                AggregateId = learningOutcome.Id,
+                Description = learningOutcome.Description,
+                ActiveFlag = learningOutcome.ActiveFlag,
+                Outcome = learningOutcome
+            });
+
+            //var learningOutcome = Mapper.Map<LearningOutcome>(request);
+            //_learningOutcomeRepository.Add(learningOutcome);
 
             var outcomeResponse = Mapper.Map<OutcomeResponse>(learningOutcome);
             var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
@@ -122,10 +139,19 @@ namespace BpeProducts.Services.Course.Host.Controllers
 			var learningOutcome=entity.Outcomes.SingleOrDefault(o => o.Description.ToLower() == request.Description.ToLower());
 			if (learningOutcome==null)
 			{
-				//create an outcome and associate to an entity
-				learningOutcome = Mapper.Map<LearningOutcome>(request);
-				//learningOutcome.Id = Guid.NewGuid();
-				_repository.Save(learningOutcome);
+                learningOutcome = _outcomeFactory.Build(request);
+                _domainEvents.Raise<OutcomeCreated>(new OutcomeCreated
+                {
+                    AggregateId = learningOutcome.Id,
+                    Description = learningOutcome.Description,
+                    ActiveFlag = learningOutcome.ActiveFlag,
+                    Outcome = learningOutcome
+                });
+                
+                ////create an outcome and associate to an entity
+                //learningOutcome = Mapper.Map<LearningOutcome>(request);
+                ////learningOutcome.Id = Guid.NewGuid();
+                //_repository.Save(learningOutcome);
 
 				entity.Outcomes.Add(learningOutcome);
 

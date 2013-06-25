@@ -147,9 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CourseInfoResponse.cs" />
-    <Compile Include="CoursePublishRequest.cs" />
+    <Compile Include="PublishRequest.cs" />
     <Compile Include="CourseSegment.cs" />
-    <Compile Include="CourseVersionRequest.cs" />
+    <Compile Include="VersionRequest.cs" />
     <Compile Include="OutcomeRequest.cs" />
     <Compile Include="OutcomeResponse.cs" />
     <Compile Include="SaveCourseSegmentRequest.cs" />

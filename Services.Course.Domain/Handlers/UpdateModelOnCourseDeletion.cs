@@ -19,10 +19,8 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-			var course = _courseRepository.GetById(e.AggregateId);
-			course.ActiveFlag = false;
-			_courseRepository.Update(course);
-
+			var course = _courseRepository.Load(e.AggregateId);
+			_courseRepository.Delete(course);
 		}
 	}
 }
