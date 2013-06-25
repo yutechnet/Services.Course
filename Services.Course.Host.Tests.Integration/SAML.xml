@@ -1,0 +1,60 @@
+﻿<Assertion ID="_d8a75a74-a63b-4d6f-be03-d8f2d144e9af" IssueInstant="2013-06-07T22:40:02.692Z" Version="2.0" xmlns="urn:oasis:names:tc:SAML:2.0:assertion">
+  <Issuer>https://devaccounts.thuze.com/issue/hrd</Issuer>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" />
+      <Reference URI="#_d8a75a74-a63b-4d6f-be03-d8f2d144e9af">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+          <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <DigestValue>uFkHx3k9tUFOUll1J7Tud3ARow+p56QSwGJFUgH7DaI=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>LRfp6MHrkG24mAp/TksN7e6sJK+0WUDhPOBUPL3GllsChUt0AapZmBII50inOEMUVksWw4yWwGzrOW+RNcuXr5a8DlshKFZoseCfmesKzjRG9Ymi7JcWGaEP1bFdcaj6U7/M1PgSy+J1u23ZAML5yCr4qnSVD7i5FAvG9jSzLYo=</SignatureValue>
+    <KeyInfo>
+      <X509Data>
+        <X509Certificate>MIICKjCCAZegAwIBAgIQrBhl92t1QpFNAzNKmmYIzTAJBgUrDgMCHQUAMCgxJjAkBgNVBAMTHWRldi5pZGVudGl0eXNpZ25pbmcudGh1emUuY29tMB4XDTEzMDUxNjIyMjAwOFoXDTM5MTIzMTIzNTk1OVowKDEmMCQGA1UEAxMdZGV2LmlkZW50aXR5c2lnbmluZy50aHV6ZS5jb20wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALByEte04RHdSj/uWMHQpsu7ARqKviF8a0kfrgWqcN6jIf7CbfIC/wzzcz9DnyJf79mSMfW6dQPpWQ/XkxPDUxCCY0oYB0aFbEe4g50wrZOpMIvNGIsyTgj8Pq5C1RwMPcQXkfJ0jGSwq4BJAtOGOxeQ0D/61B4jJInezV9Iw8NnAgMBAAGjXTBbMFkGA1UdAQRSMFCAEGTnIx7EfxcqeHPi/Oo6UDihKjAoMSYwJAYDVQQDEx1kZXYuaWRlbnRpdHlzaWduaW5nLnRodXplLmNvbYIQrBhl92t1QpFNAzNKmmYIzTAJBgUrDgMCHQUAA4GBAKbSI8yA4NPvLzg4s5dA1+tDPk613TXrXJGNPXXXyDdJRp1pvFRdi+foJTThV6BKFOTnjLh30wOHTJIrzbNBJVCcRFY9hPwtrLG5TA/ofHVHnBJNDS+ZJYs0Us8BR4AUJ1OIYDTFtzjSBJWbXJLft1tELU33CjBdAbyljMzU4I3M</X509Certificate>
+      </X509Data>
+    </KeyInfo>
+  </Signature>
+  <Subject>
+    <SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer" />
+  </Subject>
+  <Conditions NotBefore="2013-06-07T22:40:02.689Z" NotOnOrAfter="2033-06-02T22:40:02.689Z">
+    <AudienceRestriction>
+      <Audience>urn:ExampleWeb</Audience>
+    </AudienceRestriction>
+  </Conditions>
+  <AttributeStatement>
+    <Attribute Name="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name" a:OriginalIssuer="Parabotype" xmlns:a="http://schemas.xmlsoap.org/ws/2009/09/identity/claims">
+      <AttributeValue>admin</AttributeValue>
+    </Attribute>
+    <Attribute Name="urn:BPEP/UserGuid" a:OriginalIssuer="Parabotype" xmlns:a="http://schemas.xmlsoap.org/ws/2009/09/identity/claims">
+      <AttributeValue>ed6dee98-a88e-4030-bedf-a1d601014da8</AttributeValue>
+    </Attribute>
+    <Attribute Name="http://identityserver.thinktecture.com/claims/profileclaims/userguid" a:OriginalIssuer="Parabotype" xmlns:a="http://schemas.xmlsoap.org/ws/2009/09/identity/claims">
+      <AttributeValue>ed6dee98-a88e-4030-bedf-a1d601014da8</AttributeValue>
+    </Attribute>
+    <Attribute Name="urn:BPEP/TenantId" a:OriginalIssuer="Parabotype" xmlns:a="http://schemas.xmlsoap.org/ws/2009/09/identity/claims">
+      <AttributeValue>999999</AttributeValue>
+    </Attribute>
+    <Attribute Name="urn:BPEP/FirstName" a:OriginalIssuer="Parabotype" xmlns:a="http://schemas.xmlsoap.org/ws/2009/09/identity/claims">
+      <AttributeValue>admin</AttributeValue>
+    </Attribute>
+    <Attribute Name="urn:BPEP/LastName" a:OriginalIssuer="Parabotype" xmlns:a="http://schemas.xmlsoap.org/ws/2009/09/identity/claims">
+      <AttributeValue>admin</AttributeValue>
+    </Attribute>
+    <Attribute Name="urn:BPEP/UserName" a:OriginalIssuer="Parabotype" xmlns:a="http://schemas.xmlsoap.org/ws/2009/09/identity/claims">
+      <AttributeValue>admin</AttributeValue>
+    </Attribute>
+    <Attribute Name="http://identityserver.thinktecture.com/claims/profileclaims/tenant" a:OriginalIssuer="Parabotype" xmlns:a="http://schemas.xmlsoap.org/ws/2009/09/identity/claims">
+      <AttributeValue>999999</AttributeValue>
+    </Attribute>
+    <Attribute Name="http://identityserver.thinktecture.com/claims/identityprovider">
+      <AttributeValue>Parabotype</AttributeValue>
+    </Attribute>
+  </AttributeStatement>
+</Assertion>

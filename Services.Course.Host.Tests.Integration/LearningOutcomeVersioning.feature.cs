@@ -79,7 +79,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "first learning outcome"});
             table1.AddRow(new string[] {
                         "TenantId",
-                        "1"});
+                        "999999"});
 #line 8
  testRunner.Given("I create the following learning outcome", ((string)(null)), table1, "Given ");
 #line hidden
@@ -130,7 +130,7 @@ this.FeatureBackground();
                         "second learning outcome"});
             table3.AddRow(new string[] {
                         "TenantId",
-                        "1"});
+                        "999999"});
 #line 21
  testRunner.When("I update \'first learning outcome\' learning outcome with the following info", ((string)(null)), table3, "When ");
 #line hidden
@@ -216,7 +216,7 @@ this.FeatureBackground();
                         "third learning outcome"});
             table8.AddRow(new string[] {
                         "TenantId",
-                        "1"});
+                        "999999"});
 #line 45
  testRunner.When("I update \'first learning outcome\' learning outcome with the following info", ((string)(null)), table8, "When ");
 #line 49

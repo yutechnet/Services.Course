@@ -19,6 +19,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         private string _coursesLeadingPath;
         private string _programsLeadingPath;
 
+        private const int Tenant = 999999;
+
         public ProgramAssociationSteps()
         {
             var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
@@ -43,7 +45,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     {
                         Description = row["Description"],
                         Name = row["Name"],
-                        TenantId = "1",
+                        TenantId = Tenant.ToString(),
                         ProgramType = "BA",
                         OrganizationId = Guid.NewGuid()
                     };
@@ -61,7 +63,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         Code = row["Code"],
                         Description = row["Description"],
                         Name = row["Name"],
-                        TenantId = 1
+                        TenantId = Tenant,
                     };
                 CreateCourse(saveCourseRequest);
             }
@@ -84,7 +86,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
-                TenantId = 1
+                TenantId = Tenant
             };
             var programs = ScenarioContext.Current.Get<List<ProgramResponse>>("programs");
             saveCourseRequest.ProgramIds.Add(programs.Find(p => p.Name == programName).Id);
@@ -103,7 +105,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
-                TenantId = 1
+                TenantId = Tenant
             };
             var programs = ScenarioContext.Current.Get<List<ProgramResponse>>("programs");
             foreach (var row in table.Rows)
@@ -126,7 +128,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
-                TenantId = 1
+                TenantId = Tenant
             };
 
             // Find out the id of the program to remove

@@ -8,7 +8,7 @@ Background:
 	Given I create the following learning outcome
 	| Field       | Value                  |
 	| Description | first learning outcome |
-	| TenantId    | 1                      |
+	| TenantId    | 999999                 |
 
 Scenario: Create a default version
 	When I retrieve 'first learning outcome' learning outcome
@@ -21,7 +21,7 @@ Scenario: Edit a learning outcome version
 	When I update 'first learning outcome' learning outcome with the following info
 	| Field       | Value                   |
 	| Description | second learning outcome |
-	| TenantId    | 1                       |
+	| TenantId    | 999999                  |
 	Then the learning outcome 'second learning outcome' should have the following info
 	| Field         | Value                   |
 	| Description   | second learning outcome |
@@ -45,7 +45,7 @@ Scenario: Published version cannot be modified
 	When I update 'first learning outcome' learning outcome with the following info
 	| Field       | Value                  |
 	| Description | third learning outcome |
-	| TenantId    | 1                      |
+	| TenantId    | 999999                 |
 	Then I get 'Forbidden' response
 
 Scenario: Published version cannot be deleted

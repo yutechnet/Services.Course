@@ -104,13 +104,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description",
-                        "Tenant Id"});
+                        "Description"});
             table2.AddRow(new string[] {
                         "English 101",
                         "ENG101",
-                        "Ranji\'s awesome English Class",
-                        "1"});
+                        "Ranji\'s awesome English Class"});
 #line 15
  testRunner.Given("I have a course with following info:", ((string)(null)), table2, "Given ");
 #line 18
@@ -134,13 +132,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description",
-                        "Tenant Id"});
+                        "Description"});
             table3.AddRow(new string[] {
                         "English 101",
                         "ENG101",
-                        "Ranji\'s awesome English Class",
-                        "1"});
+                        "Ranji\'s awesome English Class"});
 #line 23
  testRunner.Given("I have a course with following info:", ((string)(null)), table3, "Given ");
 #line 26
@@ -164,13 +160,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description",
-                        "Tenant Id"});
+                        "Description"});
             table4.AddRow(new string[] {
                         "English 101",
                         "ENG101",
-                        "Ranji\'s awesome English Class",
-                        "1"});
+                        "Ranji\'s awesome English Class"});
 #line 31
  testRunner.Given("I have a course with following info:", ((string)(null)), table4, "Given ");
 #line 34
@@ -282,10 +276,10 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("cannot create a course with missing data")]
-        [NUnit.Framework.TestCaseAttribute("Psychology 101", "", "Amro\'s another awesome Psychology class", "1", "BadRequest", null)]
-        [NUnit.Framework.TestCaseAttribute("", "PSY101", "Amro\'s another awesome Psychology class", "1", "BadRequest", null)]
-        [NUnit.Framework.TestCaseAttribute("Physcology 103", "PSY103", "", "1", "Created", null)]
-        public virtual void CannotCreateACourseWithMissingData(string name, string code, string description, string tenantId, string status, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("Psychology 101", "", "Amro\'s another awesome Psychology class", "BadRequest", null)]
+        [NUnit.Framework.TestCaseAttribute("", "PSY101", "Amro\'s another awesome Psychology class", "BadRequest", null)]
+        [NUnit.Framework.TestCaseAttribute("Physcology 103", "PSY103", "", "Created", null)]
+        public virtual void CannotCreateACourseWithMissingData(string name, string code, string description, string status, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("cannot create a course with missing data", exampleTags);
 #line 70
@@ -311,38 +305,31 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
-                        "Description",
-                        "Tenant Id"});
+                        "Description"});
             table9.AddRow(new string[] {
                         "English 101",
                         "ENGL101",
-                        "Learn to read and write",
-                        "1"});
+                        "Learn to read and write"});
             table9.AddRow(new string[] {
                         "Engineering 200",
                         "ENG200",
-                        "If you build it, they will come",
-                        "1"});
+                        "If you build it, they will come"});
             table9.AddRow(new string[] {
                         "English 220",
                         "ENGL220",
-                        "Essays",
-                        "1"});
+                        "Essays"});
             table9.AddRow(new string[] {
                         "Philosophy 100",
                         "PHIL100",
-                        "To be, or not to be",
-                        "1"});
+                        "To be, or not to be"});
             table9.AddRow(new string[] {
                         "Philanthropy 101",
                         "PHILA101",
-                        "Don\'t be greedy",
-                        "1"});
+                        "Don\'t be greedy"});
             table9.AddRow(new string[] {
                         "Chemistry 350",
                         "CHEM350",
-                        "Periodic table of elements to the max",
-                        "1"});
+                        "Periodic table of elements to the max"});
 #line 82
  testRunner.Given("I have existing courses with following info:", ((string)(null)), table9, "Given ");
 #line hidden

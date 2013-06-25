@@ -25,7 +25,7 @@ namespace BpeProducts.Services.Course.Domain
             var updateSchema = false;
             bool.TryParse(ConfigurationManager.AppSettings["UpdateSchema"], out updateSchema);
 
-            Common.NHibernate.IocRegistrations.RegisterSessionFactory(containerBuilder, connectionString, dropSchema: false, updateSchema: updateSchema);
+            Common.NHibernate.IocRegistrations.RegisterSessionFactory(containerBuilder, connectionString, dropSchema: true, updateSchema: true);
 			containerBuilder.Register<ILog>(c => LogManager.GetLogger("CourseBuilder"));
             containerBuilder
                 .RegisterType<CourseRepository>().As<ICourseRepository>()

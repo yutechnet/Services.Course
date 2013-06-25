@@ -23,7 +23,7 @@ using ServiceStack.Text;
 namespace BpeProducts.Services.Course.Host.Controllers
 {
 //    [DefaultHttpRouteConvention]
-    [Authorize]
+    //[Authorize]
     public class CoursesController : ApiController
     {
         private readonly IRepository _courseRepository;
@@ -99,9 +99,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [CheckModelForNull]
-        [ValidateModelState]
-        [ClaimsAuthorize()]
+        //[CheckModelForNull]
+        //[ValidateModelState]
+        //[ClaimsAuthorize()]
         // POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {

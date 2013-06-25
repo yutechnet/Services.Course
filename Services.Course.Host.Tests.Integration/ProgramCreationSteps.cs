@@ -49,7 +49,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 {
                     Name = table.Rows[0]["Name"] + _tempId,
                     Description = table.Rows[0]["Description"],
-                    TenantId = "1",
+                    TenantId = table.Rows[0]["Tenant"],
                     OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                     ProgramType = table.Rows[0]["ProgramType"]
                 };
@@ -79,7 +79,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 {
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                     Description = table.Rows[0]["Description"],
-                    TenantId = "1",
+                    TenantId = table.Rows[0]["Tenant"],
                     OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                     ProgramType = table.Rows[0]["ProgramType"]
                 };
@@ -95,14 +95,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             _responseMessageToValidate.EnsureSuccessStatusCode();
         }
 
-        [When(@"I create a new program with (.*), (.*)")]
-        public void WhenICreateANewProgramWith(string name, string description)
+        [When(@"I create a new program with (.*), (.*), (.*)")]
+        public void WhenICreateANewProgramWith(string tenant, string name, string description)
         {
             _programRequest = new SaveProgramRequest
                 {
                     Name = string.IsNullOrEmpty(name) ? name : name + ScenarioContext.Current.Get<long>("ticks"),
                     Description = description,
-                    TenantId =  "1",
+                    TenantId = tenant,
                     OrganizationId = Guid.NewGuid(),
                     ProgramType = "BA"
                 };
@@ -124,7 +124,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 {
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                     Description = table.Rows[0]["Description"],
-                    TenantId = "1",
+                    TenantId = table.Rows[0]["Tenant"],
                     OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                     ProgramType = table.Rows[0]["ProgramType"]
                 };

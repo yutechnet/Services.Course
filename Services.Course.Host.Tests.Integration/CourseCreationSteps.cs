@@ -14,6 +14,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     public class CourseCreationSteps
     {
         private readonly string _leadingPath;
+        private const int Tenant = 999999;
 
         public CourseCreationSteps()
         {
@@ -43,7 +44,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
-                TenantId = 1
+                TenantId = Tenant
             };
 
 
@@ -80,7 +81,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
-                TenantId = 1
+                TenantId = Tenant
             };
 
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);
@@ -173,7 +174,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Name = ScenarioContext.Current.Get<long>("ticks") + row["Name"],
                     Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
                     Description = row["Description"],
-                    TenantId = 1
+                    TenantId = Tenant
                 };
 
                 var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
@@ -208,7 +209,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Name = string.IsNullOrEmpty(name) ? name : ScenarioContext.Current.Get<long>("ticks") + name,
                 Code = string.IsNullOrEmpty(code) ? code : ScenarioContext.Current.Get<long>("ticks") + code,
                 Description = description,
-                TenantId = 1
+                TenantId = Tenant
             };
 
             if (ScenarioContext.Current.ContainsKey("createCourseRequest"))

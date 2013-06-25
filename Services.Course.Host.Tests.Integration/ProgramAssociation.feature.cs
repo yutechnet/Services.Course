@@ -33,8 +33,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ProgramAssociation", "In order to add course to programs\nAs a course builder\nI want to associate course" +
-                    " to programs", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ProgramAssociation", "In order to add course to programs\r\nAs a course builder\r\nI want to associate cour" +
+                    "se to programs", ProgrammingLanguage.CSharp, new string[] {
                         "Api"});
             testRunner.OnFeatureStart(featureInfo);
         }
