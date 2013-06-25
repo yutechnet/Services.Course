@@ -15,11 +15,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [Binding]
     public class CourseVersioningSteps
     {
+        private const int Tenant = 999999;
+
         [Given(@"I create the following course")]
         public void GivenICreateTheFollowingCourse(Table table)
         {
             var postUri = FeatureContext.Current.Get<string>("CourseLeadingPath");
             var saveCourseRequest = table.CreateInstance<SaveCourseRequest>();
+            saveCourseRequest.TenantId = Tenant;
 
             var response =
                 ApiFeature.ApiTestHost.Client.PostAsync(postUri, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
@@ -50,8 +53,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             var putUri = ScenarioContext.Current.Get<Uri>(courseCode);
             var saveCourseRequest = table.CreateInstance<SaveCourseRequest>();
-            var response =
-                ApiFeature.ApiTestHost.Client.PutAsync(putUri.ToString(), saveCourseRequest,
+            saveCourseRequest.TenantId = Tenant;
+
+            var response = ApiFeature.ApiTestHost.Client.PutAsync(putUri.ToString(), saveCourseRequest,
                                                        new JsonMediaTypeFormatter()).Result;
             
             ScenarioContext.Current.Add("ResponseToValidate", response);
@@ -76,8 +80,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var publishUri = string.Format("{0}/publish", resourceUri);
             var publishRequest = table.CreateInstance<PublishRequest>();
 
-            var response =
-                ApiFeature.ApiTestHost.Client.PutAsync(publishUri, publishRequest, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PutAsync(publishUri, publishRequest, new JsonMediaTypeFormatter()).Result;
             response.EnsureSuccessStatusCode();
         }
 

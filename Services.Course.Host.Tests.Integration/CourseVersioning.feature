@@ -27,7 +27,6 @@ Scenario: Edit a course version
 	| Name        | English 10101                  |
 	| Code        | ENG101                         |
 	| Description | Ranji's terrible English class |
-	| TenantId    | 1                              |
 	Then the course 'ENG101' should have the following info
 	| Field         | Value                          |
 	| Name          | English 10101                  |
@@ -57,7 +56,6 @@ Scenario: Published version cannot be modified
 	| Name        | English 10101                  |
 	| Code        | ENG101                         |
 	| Description | Ranji's terrible English class |
-	| TenantId    | 1                              |
 	Then I get 'Forbidden' response
 
 Scenario: Published version cannot be deleted

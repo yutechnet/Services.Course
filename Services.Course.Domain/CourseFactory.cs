@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using AutoMapper;
 using Autofac.Features.Indexed;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Repositories;
 using EventStore;
+using NHibernate;
 
 namespace BpeProducts.Services.Course.Domain
 {
 	public class CourseFactory : VersionFactory<Entities.Course>, ICourseFactory
 	{
-	    public CourseFactory(IStoreEvents store, IIndex<string, IPlayEvent> index) : base(store, index)
+	    private readonly ICourseRepository _courseRepository;
+
+	    public CourseFactory(IStoreEvents store, IIndex<string, IPlayEvent> index, ICourseRepository courseRepository) : base(store, index)
 	    {
+	        _courseRepository = courseRepository;
 	    }
 
 	    public Entities.Course Create(SaveCourseRequest request)
@@ -33,6 +39,11 @@ namespace BpeProducts.Services.Course.Domain
 
 	    public Entities.Course BuildNewVersion(Entities.Course course, string version)
 	    {
+	        var existing = _courseRepository.GetVersion(course.OriginalEntityId, version);
+
+            if(existing != null)
+                throw new BadRequestException(string.Format("Course version {0} already exists for CourseId {1}", version, course.OriginalEntityId));
+
 	        var newVersion = new Entities.Course
 	            {
                     Id = Guid.NewGuid(),

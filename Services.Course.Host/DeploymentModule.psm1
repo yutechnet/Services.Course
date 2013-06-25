@@ -1,4 +1,4 @@
-# Deployment Module v0.1.29
+# Deployment Module v0.1.32
 
 $script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -254,7 +254,7 @@ function Deployment-RemoveDefaultWebSite
 	
 	if (-not (ConfigureIIS)) {return}
 	
-	Import-Module ServerManager
+	#Import-Module ServerManager
 	Import-Module WebAdministration
 	
 	# find the Default Web Site website
@@ -737,7 +737,7 @@ function Deployment-PurgeOldOctopusVersions
 					} catch { }
 				}
 			}
-}
+		}
 	}
 }
 
@@ -746,13 +746,21 @@ function Deployment-CleanupDeploymentModules
 	param (
 		[string]$modulePath
 	)
-	if ($Caller -eq "Octopus") 
-	{ 
-		Write-Host "Cleaning up deployment modules"
-		Get-ChildItem $modulePath\*.psm1 | ForEach ($_) {
+
+	Write-Host "Cleaning up deployment files"
+	Get-ChildItem $modulePath -Include DeploymentModule.psm1 -Recurse | 
+		ForEach-Object {
 			Write-Host "Removing deployment module file $($_.Name)"
 			Remove-Item $_.Fullname -Force
 		}
+		
+	if ($Caller -ne "Octopus")
+	{
+		Get-ChildItem $modulePath -Include PreDeploy.ps1,Deploy.ps1,PostDeploy.ps1 -Recurse | 
+			ForEach-Object {
+				Write-Host "Removing deployment file $($_.Name)"
+				Remove-Item $_.Fullname -Force
+			}
 	}
 }
 
@@ -761,15 +769,13 @@ function Deployment-CleanupDeploymentConfigs
 	param (
 		[string]$modulePath
 	)
-	
-	if ($Caller -eq "Octopus") 
-	{ 
-		Write-Host "Cleaning up deployment configs"
-		Get-ChildItem $modulePath -Include *.debug.config,*.release.config,*.local.config,*.dev.config,*.qa.config,*.stg.config,*.test.config,*.test2.config,*.prod.config -Recurse | ForEach ($_) {
+
+	Write-Host "Cleaning up deployment configs"
+	Get-ChildItem $modulePath -Include *.debug.config,*.release.config,*.local.config,*.dev.config,*.qa.config,*.stg.config,*.test.config,*.test2.config,*.prod.config,packages.config,*.nuspec -Recurse | 
+		ForEach-Object {
 			Write-Host "Removing config file $($_.Name)"
 			Remove-Item $_.Fullname -Force
 		}
-	}
 }
 
 #endregion
@@ -1381,6 +1387,12 @@ function Deployment-InstallWindowsFeature
 		[string]$total
 	)
 	
+	$serverManagerAvailable = Get-Module -ListAvailable | Where {$_.Name -eq "ServerManager"}
+	if (-not $serverManagerAvailable)
+	{
+		Write-Host "Skip checking Windows feature [$index/$total] $featureName ($description) for installation (module ServerManager not supported)"
+		return
+	}
 	Import-Module ServerManager
 	
 	$osVersion = Deployment-GetOSVersion
@@ -1395,21 +1407,24 @@ function Deployment-InstallWindowsFeature
 	}
 	$feature = Get-WindowsFeature -Name $featureName
 	
-	if (-not ($feature.Installed))
+	if ($feature -ne $null)
 	{
-		Write-Host "Installing Windows feature $featureName ($description)"
-
-		switch ($osVersion) 
-		{ 
-			6.1 {  # Windows 2008 R2
-					Add-WindowsFeature -Name $featureName | Out-Null
-				}
-			6.2 { # Windows 2012
-					Install-WindowsFeature -Name $featureName | Out-Null
-				}
-			default {
-				Throw "Windws OS version is $osVersion, undefined method for Windows Feature management"
-				}
+		if (-not ($feature.Installed))
+		{
+			Write-Host "Installing Windows feature $featureName ($description)"
+			
+			switch ($osVersion) 
+			{ 
+				6.1 {  # Windows 2008 R2
+						Add-WindowsFeature -Name $featureName | Out-Null
+					}
+				6.2 { # Windows 2012
+						Install-WindowsFeature -Name $featureName | Out-Null
+					}
+				default {
+					Throw "Windws OS version is $osVersion, undefined method for Windows Feature management"
+					}
+			}
 		}
 	}
 }
@@ -1423,6 +1438,12 @@ function Deployment-RemoveWindowsFeature
 		[string]$total
 	)
 	
+	$serverManagerAvailable = Get-Module -ListAvailable | Where {$_.Name -eq "ServerManager"}
+	if (-not $serverManagerAvailable)
+	{
+		Write-Host "Skip checking Windows feature [$index/$total] $featureName ($description) for removal (module ServerManager not supported)"
+		return
+	}
 	Import-Module ServerManager
 	
 	if ($index -and $total)

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.NHibernate;
 using NHibernate;
+using NHibernate.Linq;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
 {
@@ -29,6 +31,15 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         {
             course.ActiveFlag = false;
             _session.SaveOrUpdate(course);
+        }
+
+        public Entities.Course GetVersion(Guid originalEntityId, string versionNumber)
+        {
+            var version = (from c in _session.Query<Entities.Course>()
+                           where c.OriginalEntityId == originalEntityId && c.VersionNumber == versionNumber
+                         select c).FirstOrDefault();
+
+            return version;
         }
     }
 }
