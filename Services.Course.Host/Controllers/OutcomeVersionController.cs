@@ -15,13 +15,13 @@ namespace BpeProducts.Services.Course.Host.Controllers
 {
     public class OutcomeVersionController : ApiController
     {
-        private readonly IRepository _repository;
+        private readonly ILearningOutcomeRepository _learningOutcomeRepository;
         private readonly IDomainEvents _domainEvents;
 	    private readonly IOutcomeFactory _outcomeFactory;
 
-        public OutcomeVersionController(IRepository repository, IDomainEvents domainEvents, IOutcomeFactory outcomeFactory)
+        public OutcomeVersionController(ILearningOutcomeRepository learningOutcomeRepository, IDomainEvents domainEvents, IOutcomeFactory outcomeFactory)
         {
-            _repository = repository;
+            _learningOutcomeRepository = learningOutcomeRepository;
             _domainEvents = domainEvents;
             _outcomeFactory = outcomeFactory;
         }
@@ -53,42 +53,25 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPost]
         public HttpResponseMessage CreateVersion(VersionRequest request)
         {
-            var outcomeInDb = _repository.Query<Domain.Entities.LearningOutcome>().FirstOrDefault(c => c.Id.Equals(request.ParentVersionId) && c.ActiveFlag.Equals(true));
+            var outcomeInDb = _learningOutcomeRepository.Load(request.ParentVersionId);
             if (outcomeInDb == null)
             {
                 throw new HttpResponseException(new HttpResponseMessage
-                    {
-                        StatusCode = HttpStatusCode.NotFound,
-                        ReasonPhrase = string.Format("Parent version {0} not found.", request.ParentVersionId)
-                    });
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    ReasonPhrase = string.Format("Parent version {0} not found.", request.ParentVersionId)
+                });
             }
 
-            var versionExists =
-                _repository.Query<Domain.Entities.Course>()
-                                 .Any(
-                                     c =>
-                                     c.OriginalEntityId.Equals(outcomeInDb.OriginalEntityId) && c.ActiveFlag.Equals(true) &&
-                                     c.VersionNumber.Equals(request.VersionNumber));
-            if (versionExists)
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                    {
-                        StatusCode = HttpStatusCode.Conflict,
-                        ReasonPhrase = string.Format("NewVersion {0} for the course {1} already exists", request.VersionNumber, outcomeInDb.OriginalEntityId)
-                    });
-            }
+            var newVersion = _outcomeFactory.BuildNewVersion(outcomeInDb, request.VersionNumber);
 
-            var outcomeId = Guid.NewGuid();
             _domainEvents.Raise<OutcomeVersionCreated>(new OutcomeVersionCreated
                 {
-                    AggregateId = outcomeId,
-                    IsPublished = false,
-                    OriginalEntityId = outcomeInDb.OriginalEntityId,
-                    ParentEntityId = request.ParentVersionId,
-                    VersionNumber = request.VersionNumber
+                    AggregateId = newVersion.Id,
+                    NewVersion = newVersion
                 });
-            var outcome = _repository.Get<Domain.Entities.LearningOutcome>(outcomeId);
-            var outcomeResponse = Mapper.Map<OutcomeResponse>(outcome);
+
+            var outcomeResponse = Mapper.Map<OutcomeResponse>(newVersion);
             HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
 
             string uri = Url.Link("DefaultApi", new { controller = "outcome", id = outcomeResponse.Id });

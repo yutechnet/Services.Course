@@ -40,10 +40,10 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
 		[Transaction]
 	    public OutcomeResponse Get(Guid id)
-        {
-            var learningOutcome =
-                _learningOutcomeRepository.GetAll().FirstOrDefault(l => l.Id == id && l.ActiveFlag);
-            if (learningOutcome == null)
+		{
+		    var learningOutcome =
+		        _learningOutcomeRepository.Load(id);
+            if (learningOutcome == null || learningOutcome.ActiveFlag == false)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
@@ -175,14 +175,27 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [ValidateModelState]
         public void Put(Guid id, OutcomeRequest request)
         {
-            var learningOutcome = _learningOutcomeRepository.GetById(id);
+            LearningOutcome learningOutcome = _outcomeFactory.Reconstitute(id);
+
             if (learningOutcome == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            learningOutcome.Description = request.Description;
-            _learningOutcomeRepository.Update(learningOutcome);
+            if (learningOutcome.IsPublished)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.Forbidden,
+                    ReasonPhrase = string.Format("Learning outcome {0} is published and cannot be modified.", id)
+                });
+            }
+
+            _domainEvents.Raise<OutcomeUpdated>(new OutcomeUpdated
+            {
+                AggregateId = id,
+                Description = request.Description
+            });
         }
 
         [Transaction]
@@ -203,8 +216,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
             if (learningOutcome == null)
             {
                 learningOutcome =
-                    _learningOutcomeRepository.GetAll().FirstOrDefault(l => l.Id == outcomeId && l.ActiveFlag);
-                if (learningOutcome == null)
+                    _learningOutcomeRepository.Load(outcomeId);
+                if (learningOutcome == null || learningOutcome.ActiveFlag == false)
                 {
                     throw new HttpResponseException(new HttpResponseMessage
                         {
@@ -222,13 +235,26 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         public void Delete(Guid id)
         {
-            var learningOutcome = _learningOutcomeRepository.GetById(id);
-            if (learningOutcome == null)
+            var outcomeInDb = _outcomeFactory.Reconstitute(id);
+
+            if (outcomeInDb == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-            learningOutcome.ActiveFlag = false;
-            _learningOutcomeRepository.Update(learningOutcome);
+
+            if (outcomeInDb.IsPublished)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.Forbidden,
+                    ReasonPhrase = string.Format("Learning outcome {0} is published and cannot be deleted.", id)
+                });
+            }
+
+            _domainEvents.Raise<OutcomeDeleted>(new OutcomeDeleted
+            {
+                AggregateId = id,
+            });
         }
 
 		[Transaction]

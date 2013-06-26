@@ -28,10 +28,7 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-            var entity = _repository.Query<Entities.LearningOutcome>().SingleOrDefault(r => r.Id.Equals(e.ParentEntityId));
-
-            var newVersion = _outcomeFactory.BuildNewVersion(entity, e.VersionNumber);
-            _repository.Save(newVersion);
+            _repository.Save(e.NewVersion);
         }
     }
 }

@@ -12,13 +12,7 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
     {
         public Entities.LearningOutcome Apply(OutcomeVersionCreated msg, LearningOutcome entity)
         {
-            entity.Id = msg.AggregateId;
-            entity.ParentEntityId = msg.ParentEntityId;
-            entity.OriginalEntityId = msg.OriginalEntityId;
-            entity.VersionNumber = msg.VersionNumber;
-            entity.IsPublished = msg.IsPublished;
-
-            return entity;
+            return msg.NewVersion;
         }
 
         public TE Apply<T, TE>(T msg, TE entity) where T : IDomainEvent where TE : class

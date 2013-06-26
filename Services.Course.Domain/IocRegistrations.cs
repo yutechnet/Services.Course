@@ -35,7 +35,6 @@ namespace BpeProducts.Services.Course.Domain
                 .RegisterType<ProgramRepository>().As<IProgramRepository>()
                 .EnableInterfaceInterceptors().EnableValidation()
                 .InterceptedBy(typeof(PublicInterfaceLoggingInterceptor));
-
             containerBuilder
                 .RegisterType<LearningOutcomeRepository>().As<ILearningOutcomeRepository>()
                 .EnableInterfaceInterceptors().EnableValidation()
@@ -61,6 +60,8 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<PlayCourseVersionPublished>().Keyed<IPlayEvent>(typeof(CourseVersionPublished).Name);
 
             containerBuilder.RegisterType<PlayOutcomeCreated>().Keyed<IPlayEvent>(typeof(OutcomeCreated).Name);
+            containerBuilder.RegisterType<PlayOutcomeUpdated>().Keyed<IPlayEvent>(typeof(OutcomeUpdated).Name);
+            containerBuilder.RegisterType<PlayOutcomeDeleted>().Keyed<IPlayEvent>(typeof(OutcomeDeleted).Name);
             containerBuilder.RegisterType<PlayOutcomeVersionCreated>()
                             .Keyed<IPlayEvent>(typeof(OutcomeVersionCreated).Name);
             containerBuilder.RegisterType<PlayOutcomeVersionPublished>()
@@ -97,6 +98,12 @@ namespace BpeProducts.Services.Course.Domain
 
             containerBuilder.RegisterType<UpdateModelOnOutcomeCreation>().As<IHandle<OutcomeCreated>>();
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeCreated>>();
+
+            containerBuilder.RegisterType<UpdateModelOnOutcomeUpdate>().As<IHandle<OutcomeUpdated>>();
+            containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeUpdated>>();
+
+            containerBuilder.RegisterType<UpdateModelOnOutcomeDeletion>().As<IHandle<OutcomeDeleted>>();
+            containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeDeleted>>();
 
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeVersionCreated>>();
             containerBuilder.RegisterType<UpdateModelOnOutcomeVersionCreation>().As<IHandle<OutcomeVersionCreated>>();

@@ -1,17 +1,22 @@
 using System;
 using System.Collections.Generic;
 using Autofac.Features.Indexed;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
+using BpeProducts.Services.Course.Domain.Repositories;
 using EventStore;
 
 namespace BpeProducts.Services.Course.Domain.Outcomes
 {
     public class OutcomeFactory : VersionFactory<LearningOutcome>, IOutcomeFactory
     {
-        public OutcomeFactory(IStoreEvents store, IIndex<string, IPlayEvent> index) : base(store, index)
+        private readonly ILearningOutcomeRepository _learningOutcomeRepository;
+
+        public OutcomeFactory(IStoreEvents store, IIndex<string, IPlayEvent> index, ILearningOutcomeRepository learningOutcomeRepository ) : base(store, index)
         {
+            _learningOutcomeRepository = learningOutcomeRepository;
         }
 
         public LearningOutcome Build(OutcomeRequest request)
@@ -30,6 +35,11 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
 
         public LearningOutcome BuildNewVersion(LearningOutcome entity, string version)
         {
+            var existing = _learningOutcomeRepository.GetVersion(entity.OriginalEntityId, version);
+
+            if (existing != null)
+                throw new BadRequestException(string.Format("Version {0} already exists for Outcome {1}", version, entity.OriginalEntityId));
+
             return new LearningOutcome
             {
                 Id =  Guid.NewGuid(),

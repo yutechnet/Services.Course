@@ -33,18 +33,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPut]
         public void PublishVersion(Guid id, PublishRequest request)
         {
-            // /courses/<id>/publish -- publish a course
-            // /program/<id>/publish -- publish a program
-            // /outcome/<id>/publish --
-            // /sang/<id>
-
-            // /course/version {parentEntityId} -- create a new version based on the parent version
-            // /program/version {parentEntityId} -- create a new version based on the parent version
-            // /outcome/version {parentEntityId} -- create a new version based on the parent version
-
-
-            // Get the entity from Repository using IVersionable interface
-
             var courseInDb = _courseFactory.Reconstitute(id);
 
             if (courseInDb == null)

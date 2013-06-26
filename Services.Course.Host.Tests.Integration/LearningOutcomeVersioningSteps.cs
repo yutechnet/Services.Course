@@ -41,7 +41,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var outComeRequest = table.CreateInstance<OutcomeRequest>();
             var putUrl = ScenarioContext.Current.Get<Uri>(description);
             var response = ApiFeature.ApiTestHost.Client.PutAsync(putUrl.ToString(), outComeRequest, new JsonMediaTypeFormatter()).Result;
-            response.EnsureSuccessStatusCode();
+            // response.EnsureSuccessStatusCode();
 
             var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
             ScenarioContext.Current.Add("outcomeResponse", outcomeResponse);
@@ -90,22 +90,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var resourceUri = ScenarioContext.Current.Get<Uri>(description);
             var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resourceUri).Result;
 
-            ScenarioContext.Current.Add("ResponseToValidate", response);
+            ScenarioContext.Current["ResponseToValidate"] = response;
         }
         
         [When(@"I create a learning outcome without a version")]
         public void WhenICreateALearningOutcomeWithoutAVersion()
         {
-//            var versionRequest = new OutcomeVersionRequest
-//            {
-//                ParentVersionId = Guid.NewGuid(),
-//                VersionNumber = null
-//            };
-//            var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("OutcomeLeadingPath"));
-//
-//            var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
-//
-//            ScenarioContext.Current["ResponseToValidate"] = response;
+            var versionRequest = new VersionRequest
+            {
+                ParentVersionId = Guid.NewGuid(),
+                VersionNumber = null
+            };
+            var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("OutcomeLeadingPath"));
+
+            var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
+
+            ScenarioContext.Current["ResponseToValidate"] = response;
         }
 
         //[Then(@"I get '(.*)' response")]

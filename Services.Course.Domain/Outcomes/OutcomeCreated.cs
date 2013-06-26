@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BpeProducts.Services.Course.Domain.Events;
 
-namespace BpeProducts.Services.Course.Domain.Handlers
+namespace BpeProducts.Services.Course.Domain.Outcomes
 {
     public class OutcomeCreated : IDomainEvent
     {

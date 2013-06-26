@@ -183,11 +183,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     ActiveFlag = false
                 };
             var learningOutcomes = new List<LearningOutcome> {learningOutcome1, learningOutcome2};
-            _mockLearningOutcomeRepository.Setup(o => o.GetAll()).Returns(learningOutcomes.AsQueryable);
+            _mockLearningOutcomeRepository.Setup(o => o.Load(It.IsAny<Guid>())).Returns(learningOutcome1);
 
             var outcomeResponse = _outcomeController.Get(learningOutcome1.Id);
 
-            _mockLearningOutcomeRepository.Verify(o => o.GetAll(), Times.Once());
+            _mockLearningOutcomeRepository.Verify(o => o.Load(learningOutcome1.Id), Times.Once());
             Assert.That(outcomeResponse.Description, Is.EqualTo(learningOutcome1.Description));
 			
         }
@@ -196,26 +196,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         public void Updates_Existing_LearningOutcome()
         {
             var learningOutcome = new LearningOutcome { Description = "SomeDescription" };
-            _mockLearningOutcomeRepository.Setup(o => o.GetById(It.IsAny<Guid>())).Returns(learningOutcome);
+            _mockLearningOutcomeRepository.Setup(o => o.Load(It.IsAny<Guid>())).Returns(learningOutcome);
 
             var outcomeRequest = new OutcomeRequest {Description = "OtherDescription"};
 
             _outcomeController.Put(Guid.NewGuid(), outcomeRequest);
 
-            _mockLearningOutcomeRepository.Verify(o => o.GetById(It.IsAny<Guid>()));
-            _mockLearningOutcomeRepository.Verify(o => o.Update(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
+            _mockLearningOutcomeRepository.Verify(o => o.Load(It.IsAny<Guid>()));
+            _mockLearningOutcomeRepository.Verify(o => o.Save(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
         }
 
         [Test]
         public void Soft_Delete_Existing_LearningOutcome()
         {
             var learningOutcome = new LearningOutcome { Description = "SomeDescription" };
-            _mockLearningOutcomeRepository.Setup(o => o.GetById(It.IsAny<Guid>())).Returns(learningOutcome);
+            _mockLearningOutcomeRepository.Setup(o => o.Load(It.IsAny<Guid>())).Returns(learningOutcome);
 
             _outcomeController.Delete(Guid.NewGuid());
 
-            _mockLearningOutcomeRepository.Verify(o => o.GetById(It.IsAny<Guid>()));
-            _mockLearningOutcomeRepository.Verify(o => o.Update(It.Is<LearningOutcome>(x => x.ActiveFlag == false)));
+            _mockLearningOutcomeRepository.Verify(o => o.Load(It.IsAny<Guid>()));
+            _mockLearningOutcomeRepository.Verify(o => o.Save(It.Is<LearningOutcome>(x => x.ActiveFlag == false)));
         }
 
         [Test]

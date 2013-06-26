@@ -327,7 +327,7 @@ this.FeatureBackground();
  testRunner.When("I create a new version of \'first learning outcome\' outcome with the following inf" +
                     "o", ((string)(null)), table14, "When ");
 #line 78
- testRunner.Then("I get \'Conflict\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

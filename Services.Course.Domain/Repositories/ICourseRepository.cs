@@ -1,4 +1,5 @@
 ﻿using System;
+using BpeProducts.Common.NHibernate.Version;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
 {

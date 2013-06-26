@@ -162,7 +162,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\OutcomeCreated.cs" />
+    <Compile Include="Outcomes\UpdateModelOnOutcomeUpdate.cs" />
+    <Compile Include="Outcomes\PlayOutcomeUpdated.cs" />
+    <Compile Include="Outcomes\OutcomeUpdated.cs" />
+    <Compile Include="Outcomes\OutcomeCreated.cs" />
+    <Compile Include="Outcomes\OutcomeDeleted.cs" />
     <Compile Include="Outcomes\IOutcomeFactory.cs" />
     <Compile Include="Entities\IHaveOutcomes.cs" />
     <Compile Include="Events\CourseVersionCreated.cs" />
@@ -172,13 +176,15 @@
     <Compile Include="Outcomes\OutcomeFactory.cs" />
     <Compile Include="Outcomes\OutcomeVersionCreated.cs" />
     <Compile Include="Outcomes\OutcomeVersionPublished.cs" />
-    <Compile Include="Outcomes\PlayCourseCreated.cs" />
+    <Compile Include="Outcomes\PlayOutcomeDeleted.cs" />
+    <Compile Include="Outcomes\PlayOutcomeCreated.cs" />
     <Compile Include="Outcomes\PlayOutcomeVersionCreated.cs" />
     <Compile Include="Outcomes\PlayOutcomeVersionPublished.cs" />
-    <Compile Include="Outcomes\UpdateModelOnCourseCreation.cs" />
+    <Compile Include="Outcomes\UpdateModelOnOutcomeCreation.cs" />
+    <Compile Include="Outcomes\UpdateModelOnOutcomeDeletion.cs" />
     <Compile Include="Outcomes\UpdateModelOnOutcomeVersionCreation.cs" />
     <Compile Include="Outcomes\UpdateModelOnOutcomeVersionPublished.cs" />
-    <Compile Include="PLayCourseDisassociatedWithProgram.cs" />
+    <Compile Include="PlayCourseDisassociatedWithProgram.cs" />
     <Compile Include="CourseFactory.cs" />
     <Compile Include="PlayCourseInfoUpated.cs" />
     <Compile Include="PlayCourseSegmentAdded.cs" />
