@@ -17,7 +17,9 @@ namespace BpeProducts.Services.Course.Domain.Entities
         [Required]
         public virtual string Code { get; set; }
         public virtual string Description { get; set; }
+        [Required]
         public virtual ECourseType CourseType { get; set; }
+        [Required]
         public virtual bool IsTemplate { get; set; }
         public virtual IList<Program> Programs { get; set; }
         public virtual string CourseSegmentJson { 
