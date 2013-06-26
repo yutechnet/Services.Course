@@ -361,7 +361,7 @@ this.FeatureBackground();
 #line 87
  testRunner.When("I create a new version of \'ENG101\' course with the following info", ((string)(null)), table14, "When ");
 #line 90
- testRunner.Then("I get \'Conflict\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

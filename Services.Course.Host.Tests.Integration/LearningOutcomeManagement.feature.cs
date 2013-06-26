@@ -33,8 +33,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LearningOutcomeManagement", "In order to specify the expected outcome of a course or program\nAs a course build" +
-                    "er or program coordinator\nI want to manage learning outcomes", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LearningOutcomeManagement", "In order to specify the expected outcome of a course or program\r\nAs a course buil" +
+                    "der or program coordinator\r\nI want to manage learning outcomes", ProgrammingLanguage.CSharp, new string[] {
                         "Api"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -80,7 +80,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "BA",
                         "BA Program",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "1"});
+                        "999999"});
 #line 22
 testRunner.Given("the following programs exist:", ((string)(null)), table1, "Given ");
 #line hidden
@@ -98,7 +98,7 @@ testRunner.Given("the following programs exist:", ((string)(null)), table1, "Giv
                         "Ranji\'s awesome English class"});
             table2.AddRow(new string[] {
                         "TenantId",
-                        "1"});
+                        "999999"});
 #line 25
 testRunner.And("the following course exists:", ((string)(null)), table2, "And ");
 #line hidden
@@ -332,10 +332,10 @@ this.FeatureBackground();
                         "TenantId"});
             table13.AddRow(new string[] {
                         "first program learning outcome",
-                        "1"});
+                        "999999"});
             table13.AddRow(new string[] {
                         "second program learning outcome",
-                        "1"});
+                        "999999"});
 #line 82
  testRunner.Given("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table13, "Given ");
 #line hidden
@@ -344,10 +344,10 @@ this.FeatureBackground();
                         "TenantId"});
             table14.AddRow(new string[] {
                         "first course learning outcome",
-                        "1"});
+                        "999999"});
             table14.AddRow(new string[] {
                         "second course learning outcome",
-                        "1"});
+                        "999999"});
 #line 86
  testRunner.And("I assoicate the following learning outcomes to \'ENG101\' course:", ((string)(null)), table14, "And ");
 #line hidden
@@ -390,10 +390,10 @@ this.FeatureBackground();
                         "TenantId"});
             table17.AddRow(new string[] {
                         "first program learning outcome",
-                        "1"});
+                        "999999"});
             table17.AddRow(new string[] {
                         "second program learning outcome",
-                        "1"});
+                        "999999"});
 #line 100
  testRunner.Given("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table17, "Given ");
 #line hidden
@@ -402,10 +402,10 @@ this.FeatureBackground();
                         "TenantId"});
             table18.AddRow(new string[] {
                         "first course learning outcome",
-                        "1"});
+                        "999999"});
             table18.AddRow(new string[] {
                         "second course learning outcome",
-                        "1"});
+                        "999999"});
 #line 104
  testRunner.And("I assoicate the following learning outcomes to \'ENG101\' course:", ((string)(null)), table18, "And ");
 #line hidden

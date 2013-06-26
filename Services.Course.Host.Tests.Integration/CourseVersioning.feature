@@ -87,7 +87,7 @@ Scenario: Cannot publish the same version twice
 	When I create a new version of 'ENG101' course with the following info
 	| Field         | Value   |
 	| VersionNumber | 1.0.0.0 |
-	Then I get 'Conflict' response
+	Then I get 'BadRequest' response
 
 Scenario: Cannot create a version off non-existing version
 	When I create a new version of 'RandomCourse' course with the following info
