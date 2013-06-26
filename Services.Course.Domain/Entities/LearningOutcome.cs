@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BpeProducts.Common.NHibernate;
+using BpeProducts.Common.NHibernate.Version;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
-    public class LearningOutcome : TenantEntity,IHaveOutcomes
+    public class LearningOutcome : TenantEntity,IHaveOutcomes, IVersionable
     {
         [Required]
         public virtual string Description { get; set; }
@@ -20,5 +21,11 @@ namespace BpeProducts.Services.Course.Domain.Entities
 		    Outcomes = new List<LearningOutcome>();
 			//AssociatedEntities = new List<IHaveOutcomes>();
 	    }
+
+        public virtual Guid OriginalEntityId { get; set; }
+        public virtual Guid? ParentEntityId { get; set; }
+        public virtual string VersionNumber { get; set; }
+        public virtual string PublishNote { get; set; }
+        public virtual bool IsPublished { get; set; }
     }
 }

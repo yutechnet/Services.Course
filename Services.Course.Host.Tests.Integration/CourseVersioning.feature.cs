@@ -150,9 +150,6 @@ this.FeatureBackground();
                         "Description",
                         "Ranji\'s terrible English class"});
             table3.AddRow(new string[] {
-                        "TenantId",
-                        "1"});
-            table3.AddRow(new string[] {
                         "OrganizationId",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 26
@@ -259,9 +256,7 @@ this.FeatureBackground();
             table8.AddRow(new string[] {
                         "Description",
                         "Ranji\'s terrible English class"});
-            table8.AddRow(new string[] {
-                        "TenantId",
-                        "1"});
+#line 54
             table8.AddRow(new string[] {
                         "OrganizationId",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
@@ -325,7 +320,7 @@ this.FeatureBackground();
                         "VersionNumber",
                         "2.0a"});
 #line 78
- testRunner.When("I create a new version of \'ENG101\' with the following info", ((string)(null)), table11, "When ");
+ testRunner.When("I create a new version of \'ENG101\' course with the following info", ((string)(null)), table11, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -377,9 +372,9 @@ this.FeatureBackground();
                         "VersionNumber",
                         "1.0.0.0"});
 #line 93
- testRunner.When("I create a new version of \'ENG101\' with the following info", ((string)(null)), table14, "When ");
+ testRunner.When("I create a new version of \'ENG101\' course with the following info", ((string)(null)), table14, "When ");
 #line 96
- testRunner.Then("I get \'Conflict\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -401,7 +396,7 @@ this.FeatureBackground();
                         "VersionNumber",
                         "1.0.0.0"});
 #line 99
- testRunner.When("I create a new version of \'RandomCourse\' with the following info", ((string)(null)), table15, "When ");
+ testRunner.When("I create a new version of \'RandomCourse\' course with the following info", ((string)(null)), table15, "When ");
 #line 102
  testRunner.Then("I get \'NotFound\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

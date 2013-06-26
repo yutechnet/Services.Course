@@ -33,8 +33,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ProgramCreation", "In order to publish a program\nAs a program builder\nI want to create, edit and del" +
-                    "ete a program", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ProgramCreation", "In order to publish a program\r\nAs a program builder\r\nI want to create, edit and d" +
+                    "elete a program", ProgrammingLanguage.CSharp, new string[] {
                         "Api"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -86,7 +86,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Economics",
                         "MA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "1"});
+                        "999999"});
 #line 8
  testRunner.Given("I have a program with following info:", ((string)(null)), table1, "Given ");
 #line 11
@@ -103,7 +103,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Economics",
                         "MA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "1"});
+                        "999999"});
 #line 12
  testRunner.Then("my program information is as follows:", ((string)(null)), table2, "Then ");
 #line hidden
@@ -129,7 +129,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Economics",
                         "BA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "1"});
+                        "999999"});
 #line 17
  testRunner.Given("I have a program with following info:", ((string)(null)), table3, "Given ");
 #line 20
@@ -146,7 +146,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English",
                         "BA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "1"});
+                        "999999"});
 #line 21
  testRunner.And("I modify the program info to reflect the following:", ((string)(null)), table4, "And ");
 #line 24
@@ -174,7 +174,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Economics",
                         "BA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "1"});
+                        "999999"});
 #line 27
  testRunner.Given("I have an existing program with following info:", ((string)(null)), table5, "Given ");
 #line 30
@@ -204,7 +204,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Economics",
                         "AA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "1"});
+                        "999999"});
 #line 34
  testRunner.Given("I have a program with following info:", ((string)(null)), table6, "Given ");
 #line 37
@@ -221,7 +221,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Philosophy",
                         "AA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "1"});
+                        "999999"});
 #line 38
  testRunner.And("I submit another request to create another program", ((string)(null)), table7, "And ");
 #line 41
@@ -250,15 +250,15 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Unable to create program due to missing info")]
-        [NUnit.Framework.TestCaseAttribute("Bachelor\'s of Science", "", "BadRequest", null)]
-        [NUnit.Framework.TestCaseAttribute("", "Economics", "BadRequest", null)]
-        public virtual void UnableToCreateProgramDueToMissingInfo(string name, string description, string status, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("Bachelor\'s of Science", "", "BadRequest", "999999", null)]
+        [NUnit.Framework.TestCaseAttribute("", "Economics", "BadRequest", "999999", null)]
+        public virtual void UnableToCreateProgramDueToMissingInfo(string name, string description, string status, string tenant, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unable to create program due to missing info", exampleTags);
 #line 52
 this.ScenarioSetup(scenarioInfo);
 #line 53
- testRunner.When(string.Format("I create a new program with {0}, {1}", name, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When(string.Format("I create a new program with {0}, {1}, {2}", tenant, name, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 54
  testRunner.Then(string.Format("I should get the expected status code {0}", status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

@@ -80,7 +80,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "BA",
                         "BA Program",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "1"});
+                        "999999"});
 #line 22
 testRunner.Given("the following programs exist:", ((string)(null)), table1, "Given ");
 #line hidden
@@ -98,7 +98,7 @@ testRunner.Given("the following programs exist:", ((string)(null)), table1, "Giv
                         "Ranji\'s awesome English class"});
             table2.AddRow(new string[] {
                         "TenantId",
-                        "1"});
+                        "999999"});
             table2.AddRow(new string[] {
                         "OrganizationId",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
@@ -335,10 +335,10 @@ this.FeatureBackground();
                         "TenantId"});
             table13.AddRow(new string[] {
                         "first program learning outcome",
-                        "1"});
+                        "999999"});
             table13.AddRow(new string[] {
                         "second program learning outcome",
-                        "1"});
+                        "999999"});
 #line 83
  testRunner.Given("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table13, "Given ");
 #line hidden
@@ -347,10 +347,10 @@ this.FeatureBackground();
                         "TenantId"});
             table14.AddRow(new string[] {
                         "first course learning outcome",
-                        "1"});
+                        "999999"});
             table14.AddRow(new string[] {
                         "second course learning outcome",
-                        "1"});
+                        "999999"});
 #line 87
  testRunner.And("I assoicate the following learning outcomes to \'ENG101\' course:", ((string)(null)), table14, "And ");
 #line hidden
@@ -393,10 +393,10 @@ this.FeatureBackground();
                         "TenantId"});
             table17.AddRow(new string[] {
                         "first program learning outcome",
-                        "1"});
+                        "999999"});
             table17.AddRow(new string[] {
                         "second program learning outcome",
-                        "1"});
+                        "999999"});
 #line 101
  testRunner.Given("I associate the following learning outcomes to \'BA\' program:", ((string)(null)), table17, "Given ");
 #line hidden
@@ -405,10 +405,10 @@ this.FeatureBackground();
                         "TenantId"});
             table18.AddRow(new string[] {
                         "first course learning outcome",
-                        "1"});
+                        "999999"});
             table18.AddRow(new string[] {
                         "second course learning outcome",
-                        "1"});
+                        "999999"});
 #line 105
  testRunner.And("I assoicate the following learning outcomes to \'ENG101\' course:", ((string)(null)), table18, "And ");
 #line hidden

@@ -19,6 +19,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         private string _coursesLeadingPath;
         private string _programsLeadingPath;
 
+        private const int Tenant = 999999;
+
         public ProgramAssociationSteps()
         {
             var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
@@ -43,7 +45,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     {
                         Description = row["Description"],
                         Name = row["Name"],
-                        TenantId = "1",
+                        TenantId = Tenant.ToString(),
                         ProgramType = "BA",
                         OrganizationId = Guid.NewGuid()
                     };
@@ -61,7 +63,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         Code = row["Code"],
                         Description = row["Description"],
                         Name = row["Name"],
-                        TenantId = 1,
+                        TenantId = 999999,
                         OrganizationId = new Guid(table.Rows[0]["OrganizationId"])
                     };
                 CreateCourse(saveCourseRequest);
@@ -85,7 +87,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
-                TenantId = 1, 
+                TenantId = 999999, 
                 OrganizationId = courseInfo.OrganizationId
             };
             var programs = ScenarioContext.Current.Get<List<ProgramResponse>>("programs");
@@ -105,7 +107,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
-                TenantId = 1, 
+                TenantId = 999999, 
                 OrganizationId = courseInfo.OrganizationId
             };
             var programs = ScenarioContext.Current.Get<List<ProgramResponse>>("programs");
@@ -129,7 +131,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
-                TenantId = 1,
+                TenantId = 999999,
                 OrganizationId = courseInfo.OrganizationId
             };
 

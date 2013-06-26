@@ -23,14 +23,14 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-            Entities.Course courseInDb = _courseRepository.GetById(e.AggregateId);
+            Entities.Course courseInDb = _courseRepository.Load(e.AggregateId);
             var courseSegment = courseInDb.SegmentIndex[e.SegmentId];
             courseSegment.Name = e.Name;
             courseSegment.Description = e.Description;
             courseSegment.Type = e.Type;
             courseSegment.Content = e.Content;
 
-            _courseRepository.Update(courseInDb);
+            _courseRepository.Save(courseInDb);
         }
     }
 }

@@ -10,21 +10,31 @@ namespace BpeProducts.Services.Course.Host
 		{
 			config.EnableQuerySupport();
 
-            config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/outcome/{outcomeId}",
-			                           new {controller="outcome",outcomeId = RouteParameter.Optional});
-
             // Had to send to a separate controller because I couldn't figure out how to allow two PUT methods
             // with a similar function signature
             // http://stackoverflow.com/a/13128870
             config.Routes.MapHttpRoute(
                 "CoursePublish",
                 "courses/{id}/publish",
-                new { controller = "CourseVersion", action = "Publish" });
+                new { controller = "CourseVersion", action = "PublishVersion" });
 
 		    config.Routes.MapHttpRoute(
 		        "CourseVersion",
 		        "courses/version",
                 new { controller = "CourseVersion", action = "CreateVersion" });
+
+            config.Routes.MapHttpRoute(
+                "OutcomePublish",
+                "outcome/{id}/publish",
+                new { controller = "OutcomeVersion", action = "PublishVersion" });
+
+            config.Routes.MapHttpRoute(
+                "OutcomeVersion",
+                "outcome/version",
+                new { controller = "OutcomeVersion",  action = "CreateVersion" });
+
+            config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/outcome/{outcomeId}",
+                                       new { controller = "outcome", outcomeId = RouteParameter.Optional });
 
             config.Routes.MapHttpRoute("CourseSegmentsApi2", "{controller}/{courseId}/{action}");
 

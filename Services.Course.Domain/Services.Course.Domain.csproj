@@ -50,9 +50,12 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Authorization, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.10\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+    <Reference Include="BpeProducts.Common.Authorization">
+      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.13\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="BpeProducts.Common.Capability">
+      <HintPath>..\packages\BpeProducts.Common.Capability.1.0.6\lib\net40\BpeProducts.Common.Capability.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -74,9 +77,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.11\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApi, Version=1.0.55.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.55\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
+    <Reference Include="BpeProducts.Common.WebApi">
+      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.60\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
@@ -115,21 +117,21 @@
     <Reference Include="NHibernate.OData">
       <HintPath>..\packages\NHibernate.OData.0.2.4.0\lib\net35\NHibernate.OData.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Common, Version=3.9.48.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Common, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.48\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Interfaces, Version=3.9.48.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Interfaces, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Common.3.9.48\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Common.3.9.54\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Redis, Version=3.9.48.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Redis, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Redis.3.9.48\lib\net35\ServiceStack.Redis.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Redis.3.9.54\lib\net35\ServiceStack.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Text, Version=3.9.45.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Text, Version=3.9.54.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Text.3.9.48\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Text.3.9.54\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -146,10 +148,10 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -161,12 +163,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Outcomes\UpdateModelOnOutcomeUpdate.cs" />
+    <Compile Include="Outcomes\PlayOutcomeUpdated.cs" />
+    <Compile Include="Outcomes\OutcomeUpdated.cs" />
+    <Compile Include="Outcomes\OutcomeCreated.cs" />
+    <Compile Include="Outcomes\OutcomeDeleted.cs" />
+    <Compile Include="Outcomes\IOutcomeFactory.cs" />
     <Compile Include="Entities\IHaveOutcomes.cs" />
     <Compile Include="Events\CourseVersionCreated.cs" />
     <Compile Include="Events\CourseVersionPublished.cs" />
     <Compile Include="Handlers\UpdateModelOnUpdatingCourseSegment.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionCreation.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionPublish.cs" />
+    <Compile Include="Outcomes\OutcomeFactory.cs" />
+    <Compile Include="Outcomes\OutcomeVersionCreated.cs" />
+    <Compile Include="Outcomes\OutcomeVersionPublished.cs" />
+    <Compile Include="Outcomes\PlayOutcomeDeleted.cs" />
+    <Compile Include="Outcomes\PlayOutcomeCreated.cs" />
+    <Compile Include="Outcomes\PlayOutcomeVersionCreated.cs" />
+    <Compile Include="Outcomes\PlayOutcomeVersionPublished.cs" />
+    <Compile Include="Outcomes\UpdateModelOnOutcomeCreation.cs" />
+    <Compile Include="Outcomes\UpdateModelOnOutcomeDeletion.cs" />
+    <Compile Include="Outcomes\UpdateModelOnOutcomeVersionCreation.cs" />
+    <Compile Include="Outcomes\UpdateModelOnOutcomeVersionPublished.cs" />
     <Compile Include="PlayCourseDisassociatedWithProgram.cs" />
     <Compile Include="CourseFactory.cs" />
     <Compile Include="PlayCourseInfoUpated.cs" />
@@ -185,7 +204,7 @@
     <Compile Include="Events\CourseSegmentUpdated.cs" />
     <Compile Include="Events\CourseUpdated.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
-    <Compile Include="Handlers\CourseEventPersisterHandler.cs" />
+    <Compile Include="Handlers\EventPersisterHandler.cs" />
     <Compile Include="Handlers\IHandle.cs" />
     <Compile Include="Handlers\IStoreCourseEvents.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCourseSegment.cs" />
@@ -211,6 +230,7 @@
     <Compile Include="Repositories\ILearningOutcomeRepository.cs" />
     <Compile Include="Repositories\LearningOutcomeRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="VersionFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CourseBuilderClassDiagram.cd" />

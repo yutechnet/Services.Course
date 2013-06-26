@@ -8,6 +8,7 @@ using Autofac.Features.Indexed;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Events;
+using BpeProducts.Services.Course.Domain.Repositories;
 using EventStore;
 using Moq;
 using NUnit.Framework;
@@ -30,6 +31,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			 var containerBuilder = new ContainerBuilder();
 			
 			 containerBuilder.Register(e => new Mock<IStoreEvents>().Object);
+		     containerBuilder.Register(e => new Mock<ICourseRepository>().Object);
 
 			 containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
 				

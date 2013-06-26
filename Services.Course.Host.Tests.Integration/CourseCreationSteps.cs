@@ -15,6 +15,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     public class CourseCreationSteps
     {
         private readonly string _leadingPath;
+        private const int Tenant = 999999;
 
         public CourseCreationSteps()
         {
@@ -245,7 +246,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Name = string.IsNullOrEmpty(name) ? name : ScenarioContext.Current.Get<long>("ticks") + name,
                 Code = string.IsNullOrEmpty(code) ? code : ScenarioContext.Current.Get<long>("ticks") + code,
                 Description = description,
-                TenantId = 1,
+                TenantId = 999999,
                 OrganizationId = Guid.NewGuid(),
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false

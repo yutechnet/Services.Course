@@ -15,11 +15,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [Binding]
     public class LearningOutcomeManagementSteps
     {
+        private const int Tenant = 999999;
+
         [When(@"I create a learning outcome with the description '(.*)'")]
         [Given(@"I have a learning outcome with the description '(.*)'")]
         public void WhenICreateALearningOutcomeWithTheDescription(string description)
         {
-            var outcomeRequest = new OutcomeRequest {Description = description, TenantId = 1};
+            var outcomeRequest = new OutcomeRequest { Description = description, TenantId = Tenant };
             var postUrl = FeatureContext.Current.Get<String>("OutcomeLeadingPath");
             var response =
                 ApiFeature.ApiTestHost.Client.PostAsync(postUrl, outcomeRequest, new JsonMediaTypeFormatter()).Result;
@@ -31,7 +33,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I change the description to '(.*)'")]
         public void WhenIChangeTheDescriptionTo(string description)
         {
-            var outcomeRequest = new OutcomeRequest { Description = description, TenantId = 1 };
+            var outcomeRequest = new OutcomeRequest { Description = description, TenantId = Tenant };
             var putUrl = ScenarioContext.Current.Get<Uri>("learningoutcomeResourceUrl");
             var response =
                 ApiFeature.ApiTestHost.Client.PutAsync(putUrl.ToString(), outcomeRequest, new JsonMediaTypeFormatter()).Result;
@@ -83,7 +85,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			var request = new OutcomeRequest
 				{
 					Description = outCome,
-					TenantId = 1
+                    TenantId = Tenant
 				};
 			var response = ApiFeature.ApiTestHost.Client.PostAsync(postUrl,request,new JsonMediaTypeFormatter()).Result;
 			response.EnsureSuccessStatusCode();
@@ -114,7 +116,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 				var request = new OutcomeRequest
 				{
 					Description = item["Description"],
-					TenantId = 1
+                    TenantId = Tenant
 				};
 				var response = ApiFeature.ApiTestHost.Client.PostAsync(postUrl, request, new JsonMediaTypeFormatter()).Result;
 				response.EnsureSuccessStatusCode();

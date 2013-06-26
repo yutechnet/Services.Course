@@ -10,7 +10,11 @@ using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Common.WebApi.Authorization;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Events;
+using BpeProducts.Services.Course.Domain.Handlers;
+using BpeProducts.Services.Course.Domain.Outcomes;
 using BpeProducts.Services.Course.Domain.Repositories;
 using NHibernate;
 using NHibernate.Linq;
@@ -23,19 +27,23 @@ namespace BpeProducts.Services.Course.Host.Controllers
     {
         private readonly ILearningOutcomeRepository _learningOutcomeRepository;
 	    private readonly IRepository _repository;
-	 
-		public OutcomeController(ILearningOutcomeRepository learningOutcomeRepository, IRepository repository)
+        private readonly IOutcomeFactory _outcomeFactory;
+        private readonly IDomainEvents _domainEvents;
+
+        public OutcomeController(ILearningOutcomeRepository learningOutcomeRepository, IRepository repository, IOutcomeFactory outcomeFactory, IDomainEvents domainEvents)
         {
 	        _learningOutcomeRepository = learningOutcomeRepository;
 		    _repository = repository;
+		    _outcomeFactory = outcomeFactory;
+            _domainEvents = domainEvents;
         }
 
 		[Transaction]
 	    public OutcomeResponse Get(Guid id)
-        {
-            var learningOutcome =
-                _learningOutcomeRepository.GetAll().FirstOrDefault(l => l.Id == id && l.ActiveFlag);
-            if (learningOutcome == null)
+		{
+		    var learningOutcome =
+		        _learningOutcomeRepository.Load(id);
+            if (learningOutcome == null || learningOutcome.ActiveFlag == false)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
@@ -93,8 +101,17 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [ClaimsAuthorize()]
         public HttpResponseMessage Post(OutcomeRequest request)
         {
-            var learningOutcome = Mapper.Map<LearningOutcome>(request);
-            _learningOutcomeRepository.Add(learningOutcome);
+            var learningOutcome = _outcomeFactory.Build(request);
+            _domainEvents.Raise<OutcomeCreated>(new OutcomeCreated
+            {
+                AggregateId = learningOutcome.Id,
+                Description = learningOutcome.Description,
+                ActiveFlag = learningOutcome.ActiveFlag,
+                Outcome = learningOutcome
+            });
+
+            //var learningOutcome = Mapper.Map<LearningOutcome>(request);
+            //_learningOutcomeRepository.Add(learningOutcome);
 
             var outcomeResponse = Mapper.Map<OutcomeResponse>(learningOutcome);
             var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
@@ -122,10 +139,19 @@ namespace BpeProducts.Services.Course.Host.Controllers
 			var learningOutcome=entity.Outcomes.SingleOrDefault(o => o.Description.ToLower() == request.Description.ToLower());
 			if (learningOutcome==null)
 			{
-				//create an outcome and associate to an entity
-				learningOutcome = Mapper.Map<LearningOutcome>(request);
-				//learningOutcome.Id = Guid.NewGuid();
-				_repository.Save(learningOutcome);
+                learningOutcome = _outcomeFactory.Build(request);
+                _domainEvents.Raise<OutcomeCreated>(new OutcomeCreated
+                {
+                    AggregateId = learningOutcome.Id,
+                    Description = learningOutcome.Description,
+                    ActiveFlag = learningOutcome.ActiveFlag,
+                    Outcome = learningOutcome
+                });
+                
+                ////create an outcome and associate to an entity
+                //learningOutcome = Mapper.Map<LearningOutcome>(request);
+                ////learningOutcome.Id = Guid.NewGuid();
+                //_repository.Save(learningOutcome);
 
 				entity.Outcomes.Add(learningOutcome);
 
@@ -149,14 +175,27 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [ValidateModelState]
         public void Put(Guid id, OutcomeRequest request)
         {
-            var learningOutcome = _learningOutcomeRepository.GetById(id);
+            LearningOutcome learningOutcome = _outcomeFactory.Reconstitute(id);
+
             if (learningOutcome == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            learningOutcome.Description = request.Description;
-            _learningOutcomeRepository.Update(learningOutcome);
+            if (learningOutcome.IsPublished)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.Forbidden,
+                    ReasonPhrase = string.Format("Learning outcome {0} is published and cannot be modified.", id)
+                });
+            }
+
+            _domainEvents.Raise<OutcomeUpdated>(new OutcomeUpdated
+            {
+                AggregateId = id,
+                Description = request.Description
+            });
         }
 
         [Transaction]
@@ -177,8 +216,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
             if (learningOutcome == null)
             {
                 learningOutcome =
-                    _learningOutcomeRepository.GetAll().FirstOrDefault(l => l.Id == outcomeId && l.ActiveFlag);
-                if (learningOutcome == null)
+                    _learningOutcomeRepository.Load(outcomeId);
+                if (learningOutcome == null || learningOutcome.ActiveFlag == false)
                 {
                     throw new HttpResponseException(new HttpResponseMessage
                         {
@@ -196,13 +235,26 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         public void Delete(Guid id)
         {
-            var learningOutcome = _learningOutcomeRepository.GetById(id);
-            if (learningOutcome == null)
+            var outcomeInDb = _outcomeFactory.Reconstitute(id);
+
+            if (outcomeInDb == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-            learningOutcome.ActiveFlag = false;
-            _learningOutcomeRepository.Update(learningOutcome);
+
+            if (outcomeInDb.IsPublished)
+            {
+                throw new HttpResponseException(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.Forbidden,
+                    ReasonPhrase = string.Format("Learning outcome {0} is published and cannot be deleted.", id)
+                });
+            }
+
+            _domainEvents.Raise<OutcomeDeleted>(new OutcomeDeleted
+            {
+                AggregateId = id,
+            });
         }
 
 		[Transaction]

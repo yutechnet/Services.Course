@@ -1,4 +1,4 @@
-# Deployment Module v0.1.31
+# Deployment Module v0.1.32
 
 $script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -1407,21 +1407,24 @@ function Deployment-InstallWindowsFeature
 	}
 	$feature = Get-WindowsFeature -Name $featureName
 	
-	if (-not ($feature.Installed))
+	if ($feature -ne $null)
 	{
-		Write-Host "Installing Windows feature $featureName ($description)"
-
-		switch ($osVersion) 
-		{ 
-			6.1 {  # Windows 2008 R2
-					Add-WindowsFeature -Name $featureName | Out-Null
-				}
-			6.2 { # Windows 2012
-					Install-WindowsFeature -Name $featureName | Out-Null
-				}
-			default {
-				Throw "Windws OS version is $osVersion, undefined method for Windows Feature management"
-				}
+		if (-not ($feature.Installed))
+		{
+			Write-Host "Installing Windows feature $featureName ($description)"
+			
+			switch ($osVersion) 
+			{ 
+				6.1 {  # Windows 2008 R2
+						Add-WindowsFeature -Name $featureName | Out-Null
+					}
+				6.2 { # Windows 2012
+						Install-WindowsFeature -Name $featureName | Out-Null
+					}
+				default {
+					Throw "Windws OS version is $osVersion, undefined method for Windows Feature management"
+					}
+			}
 		}
 	}
 }

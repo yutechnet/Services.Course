@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BpeProducts.Common.NHibernate;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
 {
-    public interface ILearningOutcomeRepository : IRepository<Entities.LearningOutcome>
+    public interface ILearningOutcomeRepository
     {
+        Entities.LearningOutcome Load(Guid programId);
+        void Save(Entities.LearningOutcome outcome);
+        void Delete(Entities.LearningOutcome outcome);
+        Entities.LearningOutcome GetVersion(Guid originalEntityId, string versionNumber);
     }
 }

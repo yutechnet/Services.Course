@@ -13,7 +13,14 @@ namespace BpeProducts.Services.Course.Domain.Overrides
     {
         public void Override(AutoMapping<LearningOutcome> mapping)
         {
-			mapping.Map(outcome => outcome.Description).CustomSqlType("nvarchar(max)");
+            const string uniqueVersion = "UniqueVersion";
+
+            mapping.Id(x => x.Id).GeneratedBy.Assigned();
+            mapping.Map(outcome => outcome.Description).CustomSqlType("nvarchar(max)");
+
+            mapping.Map(c => c.OriginalEntityId).UniqueKey(uniqueVersion);
+            mapping.Map(c => c.VersionNumber).UniqueKey(uniqueVersion);
+
             mapping
                 .HasManyToMany<LearningOutcome>(x => x.Outcomes)
                 .ParentKeyColumn("EntityId")

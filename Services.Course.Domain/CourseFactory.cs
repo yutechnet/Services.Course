@@ -2,24 +2,26 @@
 using System.Collections.Generic;
 using AutoMapper;
 using Autofac.Features.Indexed;
+using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Events;
+using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Repositories;
 using EventStore;
+using NHibernate;
 
 namespace BpeProducts.Services.Course.Domain
 {
-	public class CourseFactory : ICourseFactory
+	public class CourseFactory : VersionFactory<Entities.Course>, ICourseFactory
 	{
-		private readonly IStoreEvents _store;
-		public readonly IIndex<string, IPlayEvent> _index;
+	    private readonly ICourseRepository _courseRepository;
 
-		public CourseFactory(IStoreEvents store, IIndex<string, IPlayEvent> index )
-		{
-			_store = store;
-			_index = index;
-		}
-		
-		public Entities.Course Create(SaveCourseRequest request)
+	    public CourseFactory(IStoreEvents store, IIndex<string, IPlayEvent> index, ICourseRepository courseRepository) : base(store, index)
+	    {
+	        _courseRepository = courseRepository;
+	    }
+
+	    public Entities.Course Create(SaveCourseRequest request)
 		{
 		    var courseId = Guid.NewGuid();
 			var course = new Entities.Course
@@ -32,50 +34,40 @@ namespace BpeProducts.Services.Course.Domain
                     OrganizationId = request.OrganizationId,
                     VersionNumber = new Version(1, 0, 0, 0).ToString(),
                     CourseType = request.CourseType,
-                    IsTemplate = false
+                    IsTemplate = false 
                 };
 
 			Mapper.Map(request, course);
 			return course;
 		}
 
-		public Entities.Course Reconstitute(Guid aggregateId)
-		{
-			Entities.Course course;
+	    public Entities.Course BuildNewVersion(Entities.Course course, string version)
+	    {
+	        var existing = _courseRepository.GetVersion(course.OriginalEntityId, version);
 
-			// Get the latest snapshot
-			Snapshot latestSnapshot = _store.Advanced.GetSnapshot(aggregateId, int.MaxValue);
-			if (latestSnapshot == null)
-			{
-				using (IEventStream stream = _store.OpenStream(aggregateId, 0, int.MaxValue))
-				{
-					//throw if it is a new
-					course = Reconstitute(stream.CommittedEvents);
-				}
-			}
-			else
-			{
-				using (IEventStream stream = _store.OpenStream(latestSnapshot, int.MaxValue))
-				{
-					//throw if it is a new
-					course = Reconstitute(stream.CommittedEvents, latestSnapshot.Payload as Entities.Course);
-				}
-			}
-			return course;
-		}
+            if(existing != null)
+                throw new BadRequestException(string.Format("Course version {0} already exists for CourseId {1}", version, course.OriginalEntityId));
 
-		public Entities.Course Reconstitute(ICollection<EventMessage> events, Entities.Course course = null)
-		{
-			course = course ?? new Entities.Course();
+	        var newVersion = new Entities.Course
+	            {
+                    Id = Guid.NewGuid(),
+                    OriginalEntityId = course.OriginalEntityId,
+                    ParentEntityId = course.Id,
+	                Name = course.Name,
+	                Code = course.Code,
+	                Description = course.Description,
 
-			foreach (EventMessage eventMessage in events)
-			{
-				object eventBody = eventMessage.Body;
-				var eventPlayer= _index[eventBody.GetType().Name];
-				eventPlayer.Apply(eventBody as IDomainEvent, course);
-			}
+	                Programs = new List<Program>(course.Programs),
+	                Segments = new List<CourseSegment>(course.Segments),
+	                Outcomes = new List<LearningOutcome>(course.Outcomes),
 
-			return course;
-		}
+	                CourseSegmentJson = course.CourseSegmentJson,
+	                TenantId = course.TenantId,
+                    VersionNumber = version,
+                    OrganizationId = course.OriginalEntityId
+	            };
+
+	        return newVersion;
+	    }
 	}
 }

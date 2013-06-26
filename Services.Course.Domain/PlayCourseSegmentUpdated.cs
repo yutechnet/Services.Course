@@ -2,7 +2,7 @@
 
 namespace BpeProducts.Services.Course.Domain
 {
-	public class PlayCourseSegmentUpdated:IPlayEvent<CourseSegmentUpdated>
+	public class PlayCourseSegmentUpdated:IPlayEvent<CourseSegmentUpdated, Entities.Course>
 	{
 		public Entities.Course Apply(Events.CourseSegmentUpdated msg, Entities.Course course)
 		{
@@ -14,9 +14,11 @@ namespace BpeProducts.Services.Course.Domain
 			return course;
 		}
 
-		public Entities.Course Apply<T>(T msg, Entities.Course course) where T : IDomainEvent
-		{
-			return Apply(msg as CourseSegmentUpdated, course);
-		}
+        public TE Apply<T, TE>(T msg, TE entity)
+            where T : IDomainEvent
+            where TE : class
+	    {
+            return Apply(msg as CourseSegmentUpdated, entity as Entities.Course) as TE;
+	    }
 	}
 }

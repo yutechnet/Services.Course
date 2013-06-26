@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Net.Http;
-using System.Web.Http;
 using System.Web.Http.Routing;
-using BpeProducts.Common.NHibernate;
+using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Events;
@@ -23,7 +20,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
     [TestFixture]
     public class CourseVersionControllerTests
     {
-        private Mock<IRepository> _mockRepository;
+        private Mock<ICourseRepository> _mockRepository;
         private Mock<IDomainEvents> _mockDomainEvents;
         private Mock<ICourseFactory> _mockCourseFactory;
 
@@ -34,11 +31,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
             MapperConfig.ConfigureMappers();
 
-            _mockRepository = new Mock<IRepository>();
-            _mockDomainEvents = new Mock<IDomainEvents>();
-            _mockCourseFactory = new Mock<ICourseFactory>();
+            var autoMock = AutoMock.GetLoose();
 
-            _courseVersionController = new CourseVersionController(_mockRepository.Object, _mockDomainEvents.Object, _mockCourseFactory.Object);
+            _mockRepository = autoMock.Mock<ICourseRepository>();
+            _mockDomainEvents = autoMock.Mock<IDomainEvents>();
+            _mockCourseFactory = autoMock.Mock<ICourseFactory>();
+
+            _courseVersionController = autoMock.Create<CourseVersionController>();
         }
 
         [Test]
@@ -48,7 +47,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             var response =
                 Assert.Throws<HttpResponseException>(
-                    () => _courseVersionController.Publish(Guid.NewGuid(), new CoursePublishRequest())).Response;
+                    () => _courseVersionController.PublishVersion(Guid.NewGuid(), new PublishRequest())).Response;
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
@@ -56,14 +55,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         public void Can_publish_a_version()
         {
             var courseVersionId = Guid.NewGuid();
-            var coursePublishRequest = new CoursePublishRequest
+            var coursePublishRequest = new PublishRequest
                 {
                     PublishNote = "blah blah"
                 };
 
             _mockCourseFactory.Setup(c => c.Reconstitute(courseVersionId)).Returns(new Domain.Entities.Course());
 
-            _courseVersionController.Publish(courseVersionId, coursePublishRequest);
+            _courseVersionController.PublishVersion(courseVersionId, coursePublishRequest);
 
             _mockCourseFactory.Verify(c => c.Reconstitute(courseVersionId), Times.Once());
             _mockDomainEvents.Verify(d => d.Raise<CourseVersionPublished>(It.Is<CourseVersionPublished>(e => e.PublishNote.Equals(coursePublishRequest.PublishNote))));
@@ -75,47 +74,28 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
             SetUpApiController();
 
-            var originalCourseId = Guid.NewGuid();
-            var parentVersionId = Guid.NewGuid();
-            var courses = new List<Domain.Entities.Course>
-                {
-                    new Domain.Entities.Course
-                        {
-                            Id = originalCourseId,
-                            OriginalEntityId = originalCourseId,
-                            ActiveFlag = true,
-                            VersionNumber = "1.0"
-                        },
-                    new Domain.Entities.Course
-                        {
-                            Id = parentVersionId,
-                            OriginalEntityId = originalCourseId,
-                            ParentEntityId = originalCourseId,
-                            ActiveFlag = true,
-                            VersionNumber = "1.1"
-                        },
-                };
-            var courseVersionRequest = new CourseVersionRequest
+            var baseVersion = new Domain.Entities.Course();
+            var newVersion = new Domain.Entities.Course();
+            var courseVersionRequest = new VersionRequest
             {
-                ParentVersionId = parentVersionId,
+                ParentVersionId = Guid.NewGuid(),
                 VersionNumber = "1.2"
             };
 
-            _mockRepository.Setup(c => c.Query<Domain.Entities.Course>()).Returns(courses.AsQueryable);
+            _mockRepository.Setup(r => r.Load(It.IsAny<Guid>())).Returns(baseVersion);
+            _mockCourseFactory.Setup(c => c.BuildNewVersion(It.IsAny<Domain.Entities.Course>(), It.IsAny<string>()))
+                              .Returns(newVersion);
 
-            _courseVersionController.CreateVersion(courseVersionRequest);
+            // _courseVersionController.CreateVersion("courses", courseVersionRequest);
             var response = _courseVersionController.CreateVersion(courseVersionRequest);
             var actual = response.Headers.Location;
 
             Assert.That(actual, Is.Not.Null);
 
+            _mockRepository.Verify(r => r.Load(courseVersionRequest.ParentVersionId));
+            _mockCourseFactory.Verify(c => c.BuildNewVersion(baseVersion, courseVersionRequest.VersionNumber));
             _mockDomainEvents.Verify(c => c.Raise<CourseVersionCreated>(
-                It.Is<CourseVersionCreated>(p => p.IsPublished == false &&
-                    p.OriginalCourseId == originalCourseId &&
-                    p.ParentCourseId == parentVersionId &&
-                    p.VersionNumber == courseVersionRequest.VersionNumber
-                    )), Times.Once());
-
+                It.Is<CourseVersionCreated>(p => p.AggregateId == newVersion.Id && p.NewVersion == newVersion)));
         }
 
         [Test]
@@ -123,55 +103,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
             var courses = new List<Domain.Entities.Course>();
             var parentVersionId = Guid.NewGuid();
-            var courseVersionRequest = new CourseVersionRequest
+            var courseVersionRequest = new VersionRequest
                 {
                     ParentVersionId = parentVersionId,
                     VersionNumber = "1.0"
                 };
 
-            _mockRepository.Setup(c => c.Query<Domain.Entities.Course>()).Returns(courses.AsQueryable);
+            _mockRepository.Setup(r => r.Load(It.IsAny<Guid>())).Returns((Domain.Entities.Course)null);
 
             var response =
                 Assert.Throws<HttpResponseException>(
                     () => _courseVersionController.CreateVersion(courseVersionRequest)).Response;
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
-        }
-
-        [Test]
-        public void can_check_for_duplicate_version()
-        {
-            var originalCourseId = Guid.NewGuid();
-            var parentVersionId = Guid.NewGuid();
-            var courses = new List<Domain.Entities.Course>
-                {
-                    new Domain.Entities.Course
-                        {
-                            Id = originalCourseId,
-                            OriginalEntityId = originalCourseId,
-                            ActiveFlag = true,
-                            VersionNumber = "1.0"
-                        },
-                    new Domain.Entities.Course
-                        {
-                            Id = parentVersionId,
-                            OriginalEntityId = originalCourseId,
-                            ParentEntityId = originalCourseId,
-                            ActiveFlag = true,
-                            VersionNumber = "1.1"
-                        },
-                };
-            var courseVersionRequest = new CourseVersionRequest
-            {
-                ParentVersionId = parentVersionId,
-                VersionNumber = "1.1"
-            };
-
-            _mockRepository.Setup(c => c.Query<Domain.Entities.Course>()).Returns(courses.AsQueryable);
-
-            var response =
-                Assert.Throws<HttpResponseException>(
-                    () => _courseVersionController.CreateVersion(courseVersionRequest)).Response;
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
         }
 
         private void SetUpApiController()

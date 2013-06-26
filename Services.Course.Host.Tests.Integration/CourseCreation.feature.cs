@@ -88,9 +88,9 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
-                        "",
+                        "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
                         "false"});
 #line 8
@@ -124,7 +124,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -162,7 +162,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -200,7 +200,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -238,7 +238,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -261,7 +261,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -297,7 +297,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -337,7 +337,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -356,10 +356,10 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("cannot create a course with missing data")]
-        [NUnit.Framework.TestCaseAttribute("Psychology 101", "", "Amro\'s another awesome Psychology class", "1", "BadRequest", null)]
-        [NUnit.Framework.TestCaseAttribute("", "PSY101", "Amro\'s another awesome Psychology class", "1", "BadRequest", null)]
-        [NUnit.Framework.TestCaseAttribute("Physcology 103", "PSY103", "", "1", "Created", null)]
-        public virtual void CannotCreateACourseWithMissingData(string name, string code, string description, string tenantId, string status, string[] exampleTags)
+        [NUnit.Framework.TestCaseAttribute("Psychology 101", "", "Amro\'s another awesome Psychology class", "BadRequest", null)]
+        [NUnit.Framework.TestCaseAttribute("", "PSY101", "Amro\'s another awesome Psychology class", "BadRequest", null)]
+        [NUnit.Framework.TestCaseAttribute("Physcology 103", "PSY103", "", "Created", null)]
+        public virtual void CannotCreateACourseWithMissingData(string name, string code, string description, string status, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("cannot create a course with missing data", exampleTags);
 #line 70
@@ -395,7 +395,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENGL101",
                         "Learn to read and write",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -404,7 +404,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Engineering 200",
                         "ENG200",
                         "If you build it, they will come",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -413,7 +413,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 220",
                         "ENGL220",
                         "Essays",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -422,7 +422,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Philosophy 100",
                         "PHIL100",
                         "To be, or not to be",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -431,7 +431,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Philanthropy 101",
                         "PHILA101",
                         "Don\'t be greedy",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -440,7 +440,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Chemistry 350",
                         "CHEM350",
                         "Periodic table of elements to the max",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -533,7 +533,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
@@ -569,7 +569,7 @@ this.ScenarioSetup(scenarioInfo);
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English Class",
-                        "1",
+                        "999999",
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "ECB05E38-02A6-4F2F-B020-00AA2F619727",
                         "Traditional",
