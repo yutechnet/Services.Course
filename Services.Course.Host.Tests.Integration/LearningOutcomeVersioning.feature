@@ -22,7 +22,7 @@ Scenario: Edit a learning outcome version
 	| Field       | Value                   |
 	| Description | second learning outcome |
 	| TenantId    | 999999                  |
-	Then the learning outcome 'second learning outcome' should have the following info
+	Then the learning outcome 'first learning outcome' should have the following info
 	| Field         | Value                   |
 	| Description   | second learning outcome |
 	| VersionNumber | 1.0.0.0                 |

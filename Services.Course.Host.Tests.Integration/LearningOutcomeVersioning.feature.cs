@@ -144,7 +144,7 @@ this.FeatureBackground();
                         "VersionNumber",
                         "1.0.0.0"});
 #line 25
- testRunner.Then("the learning outcome \'second learning outcome\' should have the following info", ((string)(null)), table4, "Then ");
+ testRunner.Then("the learning outcome \'first learning outcome\' should have the following info", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

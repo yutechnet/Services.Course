@@ -11,6 +11,7 @@ using System.Web.Http.Routing;
 using Autofac.Extras.Moq;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Outcomes;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -30,6 +31,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         private OutcomeController _outcomeController;
 		private Mock<IRepository> _repositoryOfObjecWithOutcomes;
         private Mock<IOutcomeFactory> _mockOutcomeFactory;
+        private Mock<IDomainEvents> _mockDomainEvents;
             
         [SetUp]
         public void SetUp()
@@ -39,6 +41,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             _mockLearningOutcomeRepository = autoMock.Mock<ILearningOutcomeRepository>();
             _repositoryOfObjecWithOutcomes = autoMock.Mock<IRepository>();
 	        _mockOutcomeFactory = autoMock.Mock<IOutcomeFactory>();
+            _mockDomainEvents = autoMock.Mock<IDomainEvents>();
             _outcomeController = autoMock.Create<OutcomeController>();
 
             //var httpConfiguration = new HttpConfiguration();
@@ -196,26 +199,27 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         public void Updates_Existing_LearningOutcome()
         {
             var learningOutcome = new LearningOutcome { Description = "SomeDescription" };
-            _mockLearningOutcomeRepository.Setup(o => o.Load(It.IsAny<Guid>())).Returns(learningOutcome);
+            _mockOutcomeFactory.Setup(o => o.Reconstitute(It.IsAny<Guid>())).Returns(learningOutcome);
 
             var outcomeRequest = new OutcomeRequest {Description = "OtherDescription"};
 
             _outcomeController.Put(Guid.NewGuid(), outcomeRequest);
-
-            _mockLearningOutcomeRepository.Verify(o => o.Load(It.IsAny<Guid>()));
-            _mockLearningOutcomeRepository.Verify(o => o.Save(It.Is<LearningOutcome>(x => x.Description == outcomeRequest.Description)));
+            _mockDomainEvents.Verify(c => c.Raise<OutcomeUpdated>(It.Is<OutcomeUpdated>(d => d.Description == outcomeRequest.Description)), Times.Once());
         }
 
         [Test]
         public void Soft_Delete_Existing_LearningOutcome()
         {
             var learningOutcome = new LearningOutcome { Description = "SomeDescription" };
-            _mockLearningOutcomeRepository.Setup(o => o.Load(It.IsAny<Guid>())).Returns(learningOutcome);
+            // _mockLearningOutcomeRepository.Setup(o => o.Load(It.IsAny<Guid>())).Returns(learningOutcome);
+            _mockOutcomeFactory.Setup(o => o.Reconstitute(It.IsAny<Guid>())).Returns(learningOutcome);
 
-            _outcomeController.Delete(Guid.NewGuid());
+            var id = Guid.NewGuid();
+            _outcomeController.Delete(id);
 
-            _mockLearningOutcomeRepository.Verify(o => o.Load(It.IsAny<Guid>()));
-            _mockLearningOutcomeRepository.Verify(o => o.Save(It.Is<LearningOutcome>(x => x.ActiveFlag == false)));
+            _mockOutcomeFactory.Verify(o => o.Reconstitute(id));
+            _mockDomainEvents.Verify(c => c.Raise<OutcomeDeleted>(It.Is<OutcomeDeleted>(d => d.AggregateId == id)), Times.Once());
+
         }
 
         [Test]

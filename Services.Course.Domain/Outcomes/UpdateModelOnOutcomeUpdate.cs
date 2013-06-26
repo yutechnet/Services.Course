@@ -22,7 +22,7 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
 
 			var outcome = _outcomeRepository.Load(e.AggregateId);
 		    outcome.Description = e.Description;
-            _outcomeRepository.Delete(outcome);
+            _outcomeRepository.Save(outcome);
 		}
 	}
 }

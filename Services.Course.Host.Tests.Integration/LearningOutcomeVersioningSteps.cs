@@ -43,8 +43,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ApiFeature.ApiTestHost.Client.PutAsync(putUrl.ToString(), outComeRequest, new JsonMediaTypeFormatter()).Result;
             // response.EnsureSuccessStatusCode();
 
-            var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
-            ScenarioContext.Current.Add("outcomeResponse", outcomeResponse);
+            ScenarioContext.Current["ResponseToValidate"] = response;
+
+            //var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
+            //ScenarioContext.Current.Add("outcomeResponse", outcomeResponse);
         }
 
         [When(@"I create a new version of '(.*)' outcome with the following info")]
