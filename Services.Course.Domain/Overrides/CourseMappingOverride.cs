@@ -38,6 +38,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
 
             mapping
                 .References(c => c.Template)
+                .Column("TemplateCourseId")
                 .ForeignKey("FK_Course_Course3");
         }
     }
