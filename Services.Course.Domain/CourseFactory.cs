@@ -24,10 +24,17 @@ namespace BpeProducts.Services.Course.Domain
 	    public Entities.Course Create(SaveCourseRequest request)
 		{
 		    var courseId = Guid.NewGuid();
-			var course = new Entities.Course
+
+	        Entities.Course template = null;
+	        if (request.TemplateCourseId.HasValue)
+	        {
+	            template = new Entities.Course {Id = request.TemplateCourseId.Value};
+	        }
+
+	        var course = new Entities.Course
 			    {
                     Id = courseId,
-                    TemplateCourseId = request.TemplateCourseId,
+                    Template = template,
                     ActiveFlag = true,
                     OriginalEntityId = courseId,
                     ParentEntityId = null,
@@ -64,10 +71,39 @@ namespace BpeProducts.Services.Course.Domain
 	                CourseSegmentJson = course.CourseSegmentJson,
 	                TenantId = course.TenantId,
                     VersionNumber = version,
-                    OrganizationId = course.OriginalEntityId
+                    OrganizationId = course.OriginalEntityId,
+
+                    Template = course.Template
 	            };
 
 	        return newVersion;
 	    }
+
+        public Entities.Course BuildFromTemplate(Entities.Course template)
+        {
+            var courseId = Guid.NewGuid();
+            var course = new Entities.Course
+            {
+                Id = courseId,
+                OriginalEntityId = courseId,
+                ParentEntityId = null,
+                Name = template.Name,
+                Code = template.Code,
+                Description = template.Description,
+
+                Programs = new List<Program>(template.Programs),
+                Segments = new List<CourseSegment>(template.Segments),
+                Outcomes = new List<LearningOutcome>(template.Outcomes),
+
+                CourseSegmentJson = template.CourseSegmentJson,
+                TenantId = template.TenantId,
+                VersionNumber = new Version(1, 0, 0, 0).ToString(),
+                OrganizationId = template.OriginalEntityId,
+
+                Template = template
+            };
+
+            return course;
+        }
 	}
 }

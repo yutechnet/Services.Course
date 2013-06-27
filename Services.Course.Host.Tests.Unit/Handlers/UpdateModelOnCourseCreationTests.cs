@@ -49,30 +49,27 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         public void Add_New_Course_From_Template_To_Repository()
         {
             var course = new Domain.Entities.Course();
-            course.TemplateCourseId = Guid.NewGuid();
-
-            _mockCourseFactory.Setup(c => c.Reconstitute(It.IsAny<Guid>()))
-                              .Returns(new Domain.Entities.Course()
-                                  {
-                                      Segments =
-                                          new List<CourseSegment>()
-                                              {
-                                                  new CourseSegment()
-                                                      {
-                                                          Id = Guid.NewGuid(),
-                                                          Description = "Parent",
-                                                          ChildrenSegments =
-                                                              new List<CourseSegment>()
-                                                                  {
-                                                                      new CourseSegment()
-                                                                          {
-                                                                              Id = Guid.NewGuid(),
-                                                                              Description = "Child"
-                                                                          }
-                                                                  }
-                                                      }
-                                              }
-                                  });
+            course.Template = new Domain.Entities.Course()
+                {
+                    Segments =
+                        new List<CourseSegment>()
+                            {
+                                new CourseSegment()
+                                    {
+                                        Id = Guid.NewGuid(),
+                                        Description = "Parent",
+                                        ChildrenSegments =
+                                            new List<CourseSegment>()
+                                                {
+                                                    new CourseSegment()
+                                                        {
+                                                            Id = Guid.NewGuid(),
+                                                            Description = "Child"
+                                                        }
+                                                }
+                                    }
+                            }
+                };
 
             _updateModelOnCourseCreationTests.Handle(new CourseCreated { Course = course });
 

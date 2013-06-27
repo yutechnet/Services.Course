@@ -35,6 +35,10 @@ namespace BpeProducts.Services.Course.Domain.Overrides
 				.ChildKeyColumn("LearningOutcomeId")
 				.ForeignKeyConstraintNames("none","none")
 				.Table("EntityLearningOutcome");
-	    }
+
+            mapping
+                .References(c => c.Template)
+                .ForeignKey("FK_Course_Course3");
+        }
     }
 }

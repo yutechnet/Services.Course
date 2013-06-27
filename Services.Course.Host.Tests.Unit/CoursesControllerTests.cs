@@ -58,43 +58,93 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Description = "Psych!",
                     Name = "Psychology 101", 
                     OrganizationId = organizationId,
-                    TemplateCourseId = Guid.NewGuid(),
+                    TemplateCourseId = null,
                     CourseType = ECourseType.Traditional,
                     IsTemplate = false
                 };
 
-            var course = new Domain.Entities.Course
-                {
-                    ActiveFlag = true,
-                    Code = saveCourseRequest.Code,
-                    Description = saveCourseRequest.Description,
-                    Name = saveCourseRequest.Name,
-                    Id = saveCourseRequest.Id, 
-                    OrganizationId = saveCourseRequest.OrganizationId,
-                    TemplateCourseId = saveCourseRequest.TemplateCourseId,
-                    CourseType = ECourseType.Traditional,
-                    IsTemplate = false
-                };
+             var course = new Domain.Entities.Course
+                 {
+                     ActiveFlag = true,
+                     Code = saveCourseRequest.Code,
+                     Description = saveCourseRequest.Description,
+                     Name = saveCourseRequest.Name,
+                     Id = saveCourseRequest.Id,
+                     OrganizationId = saveCourseRequest.OrganizationId,
+                     CourseType = ECourseType.Traditional,
+                     IsTemplate = false
+                 };
 
             _mockCourseFactory.Setup(c => c.Create(It.IsAny<SaveCourseRequest>())).Returns(course);
-			_mockCourseRepository.Setup(c => c.Get<Domain.Entities.Course>(It.IsAny<Guid>())).Returns(course);
 
             var response = _coursesController.Post(saveCourseRequest);
             var actual = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
-
-	       
 	        
 			_mockDomainEvents.Verify(c => c.Raise<CourseCreated>(
 		        It.Is<CourseCreated>(p => p.Code.Equals("PSY101") &&
 		                                  p.Description.Equals("Psych!") &&
 		                                  p.Name.Equals("Psychology 101") &&
                                           p.OrganizationId.Equals(saveCourseRequest.OrganizationId) &&
-                                          p.TemplateCourseId.Equals(saveCourseRequest.TemplateCourseId) &&
                                           p.CourseType.Equals(saveCourseRequest.CourseType) &&
                                           p.IsTemplate.Equals(saveCourseRequest.IsTemplate))), Times.Once());
 			
         }
 
+        [Test]
+        public void can_create_a_course_from_template()
+        {
+            SetUpApiController();
+
+            var organizationId = Guid.NewGuid();
+            var templateId = Guid.NewGuid();
+            var template = new Domain.Entities.Course
+                {
+                    Id = templateId
+                };
+            var saveCourseRequest = new SaveCourseRequest
+            {
+                Id = Guid.NewGuid(),
+                Code = "PSY101",
+                Description = "Psych!",
+                Name = "Psychology 101",
+                OrganizationId = organizationId,
+                TemplateCourseId = templateId,
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false
+            };
+
+            var course = new Domain.Entities.Course
+            {
+                ActiveFlag = true,
+                Code = saveCourseRequest.Code,
+                Description = saveCourseRequest.Description,
+                Name = saveCourseRequest.Name,
+                Id = saveCourseRequest.Id,
+                Template = template,
+                OrganizationId = saveCourseRequest.OrganizationId,
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false
+            };
+
+            _mockCourseFactory.Setup(c => c.Reconstitute(It.IsAny<Guid>()))
+                              .Returns(template);
+            _mockCourseFactory.Setup(c => c.BuildFromTemplate(It.IsAny<Domain.Entities.Course>())).Returns(course);
+
+            var response = _coursesController.Post(saveCourseRequest);
+            var actual = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
+            _mockCourseFactory.Verify(c => c.Reconstitute(templateId));
+            _mockCourseFactory.Verify(c => c.BuildFromTemplate(template));
+            _mockDomainEvents.Verify(c => c.Raise<CourseCreated>(
+                It.Is<CourseCreated>(p => p.Code.Equals("PSY101") &&
+                                          p.Description.Equals("Psych!") &&
+                                          p.Name.Equals("Psychology 101") &&
+                                          p.OrganizationId.Equals(saveCourseRequest.OrganizationId) &&
+                                          p.CourseType.Equals(saveCourseRequest.CourseType) &&
+                                          p.Template.Equals(template) &&
+                                          p.IsTemplate.Equals(saveCourseRequest.IsTemplate))), Times.Once());
+
+        }
         [Test]
         public void can_update_an_existing_course()
         {
@@ -222,7 +272,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                             Name = "Psychology 101",
                             ActiveFlag = true,
                             OrganizationId = _organizationIds[1],
-                            TemplateCourseId = Guid.NewGuid(),
+                            Template = new Domain.Entities.Course {Id = Guid.NewGuid()},
                             CourseType = ECourseType.Traditional,
                             IsTemplate = false
                         },
@@ -234,7 +284,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                             Name = "Psychology 102",
                             ActiveFlag = true,
                             OrganizationId = _organizationIds[2],
-                            TemplateCourseId = Guid.NewGuid(),
+                            Template = new Domain.Entities.Course {Id = Guid.NewGuid()},
                              CourseType = ECourseType.Traditional,
                              IsTemplate = false
                         },
@@ -246,7 +296,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                             Name = "Psychology 103",
                             ActiveFlag = true,
                             OrganizationId = _organizationIds[3],
-                            TemplateCourseId = Guid.NewGuid(),
+                            Template = new Domain.Entities.Course {Id = Guid.NewGuid()},
                              CourseType = ECourseType.Traditional,
                              IsTemplate = false
                         }

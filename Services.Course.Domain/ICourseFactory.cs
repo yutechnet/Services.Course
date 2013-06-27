@@ -11,5 +11,6 @@ namespace BpeProducts.Services.Course.Domain
 		Entities.Course Reconstitute(Guid aggregateId);
 		Entities.Course Reconstitute(ICollection<EventMessage> stream, Entities.Course course = null);
 	    Entities.Course BuildNewVersion(Entities.Course course, string version);
+	    Entities.Course BuildFromTemplate(Entities.Course template);
 	}
 }

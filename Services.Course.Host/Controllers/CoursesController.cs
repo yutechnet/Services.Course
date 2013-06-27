@@ -106,11 +106,31 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
-            var course = _courseFactory.Create(request);
+            Domain.Entities.Course template = null;
+            Domain.Entities.Course course;
+            if (request.TemplateCourseId.HasValue)
+            {
+                template = _courseFactory.Reconstitute(request.TemplateCourseId.Value);
+                if (template == null)
+                {
+                    throw new HttpResponseException(new HttpResponseMessage
+                        {
+                            StatusCode = HttpStatusCode.NotFound,
+                            ReasonPhrase =
+                                string.Format("Course template {0} not found.", request.TemplateCourseId.Value)
+                        });
+                }
+                course = _courseFactory.BuildFromTemplate(template);
+            }
+            else
+            {
+                course = _courseFactory.Create(request);
+            }
+
             _domainEvents.Raise<CourseCreated>(new CourseCreated
                 {
                     AggregateId = course.Id,
-                    TemplateCourseId = course.TemplateCourseId,
+                    Template = template,
                     OrganizationId = course.OrganizationId,
                     Code = course.Code,
                     Description = course.Description,
@@ -122,7 +142,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
                 });
 
             var courseInfoResponse =
-                Mapper.Map<CourseInfoResponse>(_courseRepository.Get<Domain.Entities.Course>(course.Id));
+                Mapper.Map<CourseInfoResponse>(course);
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("DefaultApi", new {id = courseInfoResponse.Id});

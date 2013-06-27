@@ -12,7 +12,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
     public class Course : OrganizationEntity, IVersionable ,IHaveOutcomes
     {
         private Dictionary<Guid, CourseSegment> _segmentIndex;
-        public virtual Guid? TemplateCourseId { get; set; }
+        public virtual Course Template { get; set; }
         [Required]
         public virtual string Name { get; set; }
 

@@ -267,6 +267,7 @@
   <ItemGroup>
     <Content Include="DeploymentModule.psm1" />
     <None Include="Properties\PublishProfiles\Course.pubxml" />
+    <None Include="Properties\PublishProfiles\Local Debug.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
