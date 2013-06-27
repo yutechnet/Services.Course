@@ -47,7 +47,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Description = table.Rows[0]["Description"],
                 TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
                 OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
-                TemplateCourseId = new Guid(table.Rows[0]["TemplateCourseId"]),
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false
             };
@@ -56,7 +55,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
             ScenarioContext.Current.Add("courseCode", table.Rows[0]["Code"]);
             ScenarioContext.Current.Add("orgId", saveCourseRequest.OrganizationId);
-            ScenarioContext.Current.Add("templateId", saveCourseRequest.TemplateCourseId); 
             ScenarioContext.Current.Add("courseType", saveCourseRequest.CourseType);
             ScenarioContext.Current.Add("isTemplate", saveCourseRequest.IsTemplate);
         }
@@ -331,7 +329,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Code = table.Rows[0]["Code"],
                     Description = table.Rows[0]["Description"],
                     TenantId = course.TenantId,
-                    TemplateCourseId = course.TemplateCourseId,
                     CourseType = ECourseType.Traditional,
                     IsTemplate = false
                 };
