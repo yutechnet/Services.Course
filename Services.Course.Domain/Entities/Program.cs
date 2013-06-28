@@ -6,7 +6,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
 {
     public class Program : TenantEntity, IHaveOutcomes
     {
-        public virtual String Name { get; set; }
+        public virtual string Name { get; set; }
 
         public virtual string Description { get; set; }
 
