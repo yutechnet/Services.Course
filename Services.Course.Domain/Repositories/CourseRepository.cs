@@ -36,7 +36,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         public Entities.Course GetVersion(Guid originalEntityId, string versionNumber)
         {
             var version = (from c in _session.Query<Entities.Course>()
-                           where c.OriginalEntityId == originalEntityId && c.VersionNumber == versionNumber
+                           where c.OriginalEntity.Id == originalEntityId && c.VersionNumber == versionNumber
                          select c).FirstOrDefault();
 
             return version;

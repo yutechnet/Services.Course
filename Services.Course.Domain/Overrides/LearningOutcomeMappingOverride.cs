@@ -18,8 +18,8 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
             mapping.Map(outcome => outcome.Description).CustomSqlType("nvarchar(max)");
 
-            mapping.Map(c => c.OriginalEntityId).UniqueKey(uniqueVersion);
-            mapping.Map(c => c.VersionNumber).UniqueKey(uniqueVersion);
+            //mapping.Map(c => c.OriginalEntity).UniqueKey(uniqueVersion);
+            //mapping.Map(c => c.VersionNumber).UniqueKey(uniqueVersion);
 
             mapping
                 .HasManyToMany<LearningOutcome>(x => x.Outcomes)

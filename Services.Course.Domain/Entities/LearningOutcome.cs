@@ -9,7 +9,7 @@ using BpeProducts.Common.NHibernate.Version;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
-    public class LearningOutcome : TenantEntity,IHaveOutcomes, IVersionable
+    public class LearningOutcome : TenantEntity,IHaveOutcomes, IVersionable<LearningOutcome>
     {
         [Required]
         public virtual string Description { get; set; }
@@ -22,8 +22,13 @@ namespace BpeProducts.Services.Course.Domain.Entities
 			//AssociatedEntities = new List<IHaveOutcomes>();
 	    }
 
-        public virtual Guid OriginalEntityId { get; set; }
-        public virtual Guid? ParentEntityId { get; set; }
+        public virtual void SetOriginalEntity(LearningOutcome originalEntity)
+        {
+            this.OriginalEntity = originalEntity;
+        }
+
+        public virtual LearningOutcome OriginalEntity { get; set; }
+        public virtual LearningOutcome ParentEntity { get; set; }
         public virtual string VersionNumber { get; set; }
         public virtual string PublishNote { get; set; }
         public virtual bool IsPublished { get; set; }

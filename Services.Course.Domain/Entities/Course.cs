@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
-    public class Course : OrganizationEntity, IVersionable ,IHaveOutcomes
+    public class Course : OrganizationEntity, IVersionable<Course> ,IHaveOutcomes
     {
         private Dictionary<Guid, CourseSegment> _segmentIndex;
         public virtual Course Template { get; set; }
@@ -74,8 +74,13 @@ namespace BpeProducts.Services.Course.Domain.Entities
 
         public virtual IList<LearningOutcome> Outcomes { get; set; }
 
-        public virtual Guid OriginalEntityId { get; set; }
-        public virtual Guid? ParentEntityId { get; set; }
+        public virtual void SetOriginalEntity(Course originalEntity)
+        {
+            this.OriginalEntity = originalEntity;
+        }
+
+        public virtual Course OriginalEntity { get; set; }
+        public virtual Course ParentEntity { get; set; }
         public virtual string VersionNumber { get; set; }
         public virtual string PublishNote { get; set; }
         public virtual bool IsPublished { get; set; }

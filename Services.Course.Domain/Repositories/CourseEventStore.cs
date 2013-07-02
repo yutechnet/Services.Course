@@ -25,7 +25,9 @@ namespace BpeProducts.Services.Course.Domain.Repositories
                                 .EnlistInAmbientTransaction() // two-phase commit
                                 .InitializeStorageEngine()
                                 //.TrackPerformanceInstance("example")
-                                .UsingJsonSerialization()
+                                //.UsingJsonSerialization()
+                                // Use the custom JsonSerializer because the built-in one does not support self-reference loop
+                                .UsingCustomSerialization(new CustomJsonSerializer())
                                 .Compress()
                                 //.EncryptWith(EncryptionKey)
                                 //.HookIntoPipelineUsing(new[] { new AuthorizationPipelineHook() })
@@ -66,7 +68,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             {
                 using (IEventStream stream = _eventStore.OpenStream(domainEvent.AggregateId, 0, int.MaxValue))
                 {
-                    stream.Add(new EventMessage {Body = domainEvent});
+                    stream.Add(new EventMessage { Body = domainEvent });
                     stream.CommitChanges(Guid.NewGuid());
                 }
                 scope.Complete();
@@ -82,7 +84,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
                 {
                     foreach (T domainEvent in domainEvents)
                     {
-                        stream.Add(new EventMessage {Body = domainEvent});
+                        stream.Add(new EventMessage { Body = domainEvent });
                         stream.CommitChanges(Guid.NewGuid());
                     }
                 }

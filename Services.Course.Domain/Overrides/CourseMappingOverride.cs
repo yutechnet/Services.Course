@@ -18,8 +18,8 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping.IgnoreProperty(course => course.SegmentIndex);
             mapping.IgnoreProperty(course => course.Segments);
             
-            mapping.Map(c => c.OriginalEntityId).UniqueKey(uniqueVersion);
-            mapping.Map(c => c.VersionNumber).UniqueKey(uniqueVersion);
+            //mapping.Map(c => c.OriginalEntity).UniqueKey(uniqueVersion);
+            //mapping.Map(c => c.VersionNumber).UniqueKey(uniqueVersion);
 
             mapping.Map(course => course.CourseSegmentJson).CustomSqlType("nvarchar(max)");
             mapping.Id(x => x.Id).GeneratedBy.Assigned();

@@ -22,23 +22,24 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
         public LearningOutcome Build(OutcomeRequest request)
         {
             var outcomeId = Guid.NewGuid();
-            return new LearningOutcome
+            var outcome = new LearningOutcome
                 {
                     Id = outcomeId,
                     ActiveFlag = true,
-                    OriginalEntityId = outcomeId,
                     Description = request.Description,
                     VersionNumber = new Version(1, 0, 0, 0).ToString(),
                     TenantId = request.TenantId
                 };
+            outcome.SetOriginalEntity(outcome);
+            return outcome;
         }
 
         public LearningOutcome BuildNewVersion(LearningOutcome entity, string version)
         {
-            var existing = _learningOutcomeRepository.GetVersion(entity.OriginalEntityId, version);
+            var existing = _learningOutcomeRepository.GetVersion(entity.OriginalEntity.Id, version);
 
             if (existing != null)
-                throw new BadRequestException(string.Format("Version {0} already exists for Outcome {1}", version, entity.OriginalEntityId));
+                throw new BadRequestException(string.Format("Version {0} already exists for Outcome {1}", version, entity.OriginalEntity.Id));
 
             return new LearningOutcome
             {
@@ -46,8 +47,8 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
                 Description = entity.Description,
                 Outcomes = new List<LearningOutcome>(entity.Outcomes),
                 ActiveFlag = true,
-                OriginalEntityId = entity.OriginalEntityId,
-                ParentEntityId = entity.Id,
+                OriginalEntity = entity.OriginalEntity,
+                ParentEntity = entity,
                 TenantId = entity.TenantId,
                 VersionNumber = version
             };

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Autofac.Features.Indexed;
 using BpeProducts.Services.Course.Domain.Events;
 using EventStore;
+using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain
 {

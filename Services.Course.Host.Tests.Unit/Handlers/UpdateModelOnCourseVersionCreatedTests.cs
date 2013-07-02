@@ -48,8 +48,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     NewVersion = new Domain.Entities.Course
                         {
                             Id = courseId,
-                            ParentEntityId = Guid.NewGuid(),
-                            OriginalEntityId = Guid.NewGuid(),
+                            ParentEntity = new Domain.Entities.Course(),
+                            OriginalEntity = new Domain.Entities.Course(),
                             VersionNumber = "2.0a",
                             IsPublished = false
                         }

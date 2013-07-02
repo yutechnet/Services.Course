@@ -36,13 +36,12 @@ namespace BpeProducts.Services.Course.Domain
                     Id = courseId,
                     Template = template,
                     ActiveFlag = true,
-                    OriginalEntityId = courseId,
-                    ParentEntityId = null,
                     OrganizationId = request.OrganizationId,
                     VersionNumber = new Version(1, 0, 0, 0).ToString(),
                     CourseType = request.CourseType,
                     IsTemplate = false 
                 };
+            course.SetOriginalEntity(course);
 
 			Mapper.Map(request, course);
 			return course;
@@ -50,16 +49,16 @@ namespace BpeProducts.Services.Course.Domain
 
 	    public Entities.Course BuildNewVersion(Entities.Course course, string version)
 	    {
-	        var existing = _courseRepository.GetVersion(course.OriginalEntityId, version);
+	        var existing = _courseRepository.GetVersion(course.OriginalEntity.Id, version);
 
             if(existing != null)
-                throw new BadRequestException(string.Format("Course version {0} already exists for CourseId {1}", version, course.OriginalEntityId));
+                throw new BadRequestException(string.Format("Course version {0} already exists for CourseId {1}", version, course.OriginalEntity.Id));
 
 	        var newVersion = new Entities.Course
 	            {
                     Id = Guid.NewGuid(),
-                    OriginalEntityId = course.OriginalEntityId,
-                    ParentEntityId = course.Id,
+                    OriginalEntity = course.OriginalEntity,
+                    ParentEntity = course,
 	                Name = course.Name,
 	                Code = course.Code,
 	                Description = course.Description,
@@ -71,7 +70,7 @@ namespace BpeProducts.Services.Course.Domain
 	                CourseSegmentJson = course.CourseSegmentJson,
 	                TenantId = course.TenantId,
                     VersionNumber = version,
-                    OrganizationId = course.OriginalEntityId,
+                    OrganizationId = course.OrganizationId,
 
                     Template = course.Template
 	            };
@@ -85,8 +84,6 @@ namespace BpeProducts.Services.Course.Domain
             var course = new Entities.Course
             {
                 Id = courseId,
-                OriginalEntityId = courseId,
-                ParentEntityId = null,
                 Name = template.Name,
                 Code = template.Code,
                 Description = template.Description,
@@ -98,10 +95,11 @@ namespace BpeProducts.Services.Course.Domain
                 CourseSegmentJson = template.CourseSegmentJson,
                 TenantId = template.TenantId,
                 VersionNumber = new Version(1, 0, 0, 0).ToString(),
-                OrganizationId = template.OriginalEntityId,
+                OrganizationId = template.OrganizationId,
 
                 Template = template
             };
+            course.SetOriginalEntity(course);
 
             return course;
         }
