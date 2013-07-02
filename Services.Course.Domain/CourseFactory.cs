@@ -39,7 +39,8 @@ namespace BpeProducts.Services.Course.Domain
                     OrganizationId = request.OrganizationId,
                     VersionNumber = new Version(1, 0, 0, 0).ToString(),
                     CourseType = request.CourseType,
-                    IsTemplate = false 
+                    IsTemplate = false ,
+                    TenantId = request.TenantId
                 };
             course.SetOriginalEntity(course);
 
@@ -97,7 +98,7 @@ namespace BpeProducts.Services.Course.Domain
                 VersionNumber = new Version(1, 0, 0, 0).ToString(),
                 OrganizationId = template.OrganizationId,
 
-                Template = template
+                Template = template,
             };
             course.SetOriginalEntity(course);
 

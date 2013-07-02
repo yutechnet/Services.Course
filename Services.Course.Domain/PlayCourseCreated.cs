@@ -15,6 +15,7 @@ namespace BpeProducts.Services.Course.Domain
 		    course.OrganizationId = msg.OrganizationId;
 		    course.CourseType = msg.CourseType;
 		    course.IsTemplate = msg.IsTemplate;
+		    course.TenantId = msg.Course.TenantId;
 			return course;
 		}
 
