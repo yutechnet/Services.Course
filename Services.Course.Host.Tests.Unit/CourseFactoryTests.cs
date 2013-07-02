@@ -60,7 +60,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 				 Description = "mui blah",
 				 Name = "blah",
                  OrganizationId = Guid.NewGuid(),
-                 Template = new Domain.Entities.Course { Id = Guid.NewGuid() },
+                 Template = new Domain.Entities.Course { Id = Guid.NewGuid(), TenantId = 1},
+                 Course = new Domain.Entities.Course { Id = Guid.NewGuid(), TenantId = 1 },
                  CourseType = ECourseType.Traditional,
                  IsTemplate = false
 			 };
