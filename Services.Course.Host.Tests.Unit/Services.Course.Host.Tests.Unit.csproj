@@ -87,9 +87,6 @@
     <Reference Include="BpeProducts.Common.WebApi, Version=1.0.65.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.65\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
-    <Reference Include="BpeProducts.Common.WebApi, Version=1.0.63.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.63\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
