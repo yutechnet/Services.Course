@@ -1,4 +1,4 @@
-# Deployment Module v0.1.32
+# Deployment Module v0.1.34
 
 $script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -180,10 +180,6 @@ function Deployment-AssociateSSLCertificateWithBinding
 		{
 			New-Item -Path "IIS:\SslBindings\$bindingPath" -Value $cert
 			Write-Host "SSL binding created for certificate with subject `"$($cert.Subject)`" and thumbprint `"$($cert.Thumbprint)`""
-		}
-		else
-		{
-			Write-Host "Existing SSL binding found `"$bindingPath`""
 		}
 	}
 	else
@@ -1362,8 +1358,24 @@ function Deployment-InstallWindowsFeatures
 		$featureArray = $(throw 'An array with Windows feature names and descriptions is required')
 	)
 	
+	$serverManagerAvailable = Get-Module -ListAvailable | Where {$_.Name -eq "ServerManager"}
+	if (-not $serverManagerAvailable)
+	{
+		Write-Host "Skip checking Windows feature [$index/$total] $featureName ($description) for installation (module ServerManager not supported)"
+		return
+	}
+	Import-Module ServerManager
+	
+	Write-Host "Checking Windows features for installation"
+	# get all of the Windows Features
+	$features = Get-WindowsFeature
+	
 	for($index = 0; $index -lt $featureArray.Count; $index++) {
-		Deployment-InstallWindowsFeature -FeatureName $featureArray[$index][0] -Description $featureArray[$index][1] -Index $($index+1) -Total $featureArray.Count
+		$testFeature = $features | Where {$_.Name -eq $featureArray[$index][0]}
+		if ($testFeature -ne $null -and -not $($testFeature.Installed))
+		{
+			Deployment-InstallWindowsFeature -FeatureName $featureArray[$index][0] -Description $featureArray[$index][1]
+		}
 	}
 }
 
@@ -1373,8 +1385,24 @@ function Deployment-RemoveWindowsFeatures
 		$featureArray = $(throw 'An array with Windows feature names and descriptions is required')
 	)
 	
+	$serverManagerAvailable = Get-Module -ListAvailable | Where {$_.Name -eq "ServerManager"}
+	if (-not $serverManagerAvailable)
+	{
+		Write-Host "Skip checking Windows feature [$index/$total] $featureName ($description) for installation (module ServerManager not supported)"
+		return
+	}
+	Import-Module ServerManager
+	
+	Write-Host "Checking Windows features for removal"
+	# get all of the Windows Features
+	$features = Get-WindowsFeature
+	
 	for($index = 0; $index -lt $featureArray.Count; $index++) {
-		Deployment-RemoveWindowsFeature -FeatureName $featureArray[$index][0] -Description $featureArray[$index][1] -Index $($index+1) -Total $featureArray.Count
+		$testFeature = $features | Where {$_.Name -eq $featureArray[$index][0]}
+		if ($testFeature -ne $null -and $($testFeature.Installed))
+		{
+			Deployment-RemoveWindowsFeature -FeatureName $featureArray[$index][0] -Description $featureArray[$index][1]
+		}
 	}
 }
 
