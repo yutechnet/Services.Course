@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
@@ -25,7 +26,8 @@ namespace BpeProducts.Services.Course.Host.App_Start
 		{
 			// From Domain entities to DTOs
 		    Mapper.CreateMap<Domain.Entities.Course, CourseInfoResponse>()
-		          .ForMember(dest => dest.ProgramIds, opt => opt.MapFrom(course => course.Programs.Select(p => p.Id).ToList()));
+		          .ForMember(dest => dest.ProgramIds, opt => opt.MapFrom(course => course.Programs.Select(p => p.Id).ToList()))
+                  .ForMember(dest => dest.TemplateCourseId, opt=> opt.MapFrom(course => course.Template == null ? Guid.Empty : course.Template.Id));
 
 			// From DTOs to Domain Entities
 			Mapper.CreateMap<SaveCourseRequest, Domain.Entities.Course>()
