@@ -79,6 +79,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
             this.OriginalEntity = originalEntity;
         }
 
+        [NotNullable]
         public virtual Course OriginalEntity { get; set; }
         public virtual Course ParentEntity { get; set; }
         public virtual string VersionNumber { get; set; }

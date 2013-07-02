@@ -27,6 +27,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
             this.OriginalEntity = originalEntity;
         }
 
+        [NotNullable]
         public virtual LearningOutcome OriginalEntity { get; set; }
         public virtual LearningOutcome ParentEntity { get; set; }
         public virtual string VersionNumber { get; set; }
