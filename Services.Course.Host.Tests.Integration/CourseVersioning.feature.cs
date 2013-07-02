@@ -104,7 +104,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 17
- testRunner.When("I retrieve \'ENG101\' course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I retrieve \'English 1010\' course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -153,7 +153,7 @@ this.FeatureBackground();
                         "OrganizationId",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 26
- testRunner.When("I update \'ENG101\' course with the following info", ((string)(null)), table3, "When ");
+ testRunner.When("I update \'English 1010\' course with the following info", ((string)(null)), table3, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -173,8 +173,8 @@ this.FeatureBackground();
             table4.AddRow(new string[] {
                         "OrganizationId",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 33
- testRunner.Then("the course \'ENG101\' should have the following info", ((string)(null)), table4, "Then ");
+#line 32
+ testRunner.Then("the course \'English 1010\' should have the following info", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -184,7 +184,7 @@ this.FeatureBackground();
         public virtual void PublishACourseVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Publish a course version", ((string[])(null)));
-#line 41
+#line 40
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -195,8 +195,8 @@ this.FeatureBackground();
             table5.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 42
- testRunner.When("I publish \'ENG101\' course with the following info", ((string)(null)), table5, "When ");
+#line 41
+ testRunner.When("I publish \'English 1010\' course with the following info", ((string)(null)), table5, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -219,8 +219,8 @@ this.FeatureBackground();
             table6.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 45
- testRunner.Then("the course \'ENG101\' should have the following info", ((string)(null)), table6, "Then ");
+#line 44
+ testRunner.Then("the course \'English 1010\' should have the following info", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -230,7 +230,7 @@ this.FeatureBackground();
         public virtual void PublishedVersionCannotBeModified()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Published version cannot be modified", ((string[])(null)));
-#line 54
+#line 53
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -241,8 +241,8 @@ this.FeatureBackground();
             table7.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 55
- testRunner.Given("I publish \'ENG101\' course with the following info", ((string)(null)), table7, "Given ");
+#line 54
+ testRunner.Given("I publish \'English 1010\' course with the following info", ((string)(null)), table7, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -256,13 +256,12 @@ this.FeatureBackground();
             table8.AddRow(new string[] {
                         "Description",
                         "Ranji\'s terrible English class"});
-#line 54
             table8.AddRow(new string[] {
                         "OrganizationId",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 58
- testRunner.When("I update \'ENG101\' course with the following info", ((string)(null)), table8, "When ");
-#line 65
+#line 57
+ testRunner.When("I update \'English 1010\' course with the following info", ((string)(null)), table8, "When ");
+#line 63
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -273,7 +272,7 @@ this.FeatureBackground();
         public virtual void PublishedVersionCannotBeDeleted()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Published version cannot be deleted", ((string[])(null)));
-#line 67
+#line 65
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -284,11 +283,11 @@ this.FeatureBackground();
             table9.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 68
- testRunner.Given("I publish \'ENG101\' course with the following info", ((string)(null)), table9, "Given ");
-#line 71
- testRunner.When("I delete \'ENG101\' course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 72
+#line 66
+ testRunner.Given("I publish \'English 1010\' course with the following info", ((string)(null)), table9, "Given ");
+#line 69
+ testRunner.When("I delete \'English 1010\' course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 70
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -299,7 +298,7 @@ this.FeatureBackground();
         public virtual void CreateACourseVersionFromAPreviously_PublishedVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a course version from a previously-published version", ((string[])(null)));
-#line 74
+#line 72
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -310,8 +309,8 @@ this.FeatureBackground();
             table10.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 75
- testRunner.Given("I publish \'ENG101\' course with the following info", ((string)(null)), table10, "Given ");
+#line 73
+ testRunner.Given("I publish \'English 1010\' course with the following info", ((string)(null)), table10, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -319,8 +318,8 @@ this.FeatureBackground();
             table11.AddRow(new string[] {
                         "VersionNumber",
                         "2.0a"});
-#line 78
- testRunner.When("I create a new version of \'ENG101\' course with the following info", ((string)(null)), table11, "When ");
+#line 76
+ testRunner.When("I create a new version of \'English 1010\' course with the following info", ((string)(null)), table11, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -340,8 +339,8 @@ this.FeatureBackground();
             table12.AddRow(new string[] {
                         "IsPublished",
                         "false"});
-#line 81
- testRunner.Then("the course \'ENG101\' should have the following info", ((string)(null)), table12, "Then ");
+#line 79
+ testRunner.Then("the course \'English 1010\' should have the following info", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -351,7 +350,7 @@ this.FeatureBackground();
         public virtual void CannotPublishTheSameVersionTwice()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot publish the same version twice", ((string[])(null)));
-#line 89
+#line 87
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -362,8 +361,8 @@ this.FeatureBackground();
             table13.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 90
- testRunner.Given("I publish \'ENG101\' course with the following info", ((string)(null)), table13, "Given ");
+#line 88
+ testRunner.Given("I publish \'English 1010\' course with the following info", ((string)(null)), table13, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -371,9 +370,9 @@ this.FeatureBackground();
             table14.AddRow(new string[] {
                         "VersionNumber",
                         "1.0.0.0"});
-#line 93
- testRunner.When("I create a new version of \'ENG101\' course with the following info", ((string)(null)), table14, "When ");
-#line 96
+#line 91
+ testRunner.When("I create a new version of \'English 1010\' course with the following info", ((string)(null)), table14, "When ");
+#line 94
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -384,7 +383,7 @@ this.FeatureBackground();
         public virtual void CannotCreateAVersionOffNon_ExistingVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot create a version off non-existing version", ((string[])(null)));
-#line 98
+#line 96
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -395,9 +394,9 @@ this.FeatureBackground();
             table15.AddRow(new string[] {
                         "VersionNumber",
                         "1.0.0.0"});
-#line 99
+#line 97
  testRunner.When("I create a new version of \'RandomCourse\' course with the following info", ((string)(null)), table15, "When ");
-#line 102
+#line 100
  testRunner.Then("I get \'NotFound\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -408,13 +407,13 @@ this.FeatureBackground();
         public virtual void CannotPublishWithoutAVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot publish without a version", ((string[])(null)));
-#line 104
+#line 102
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 105
+#line 103
  testRunner.When("I create a course without a version", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 106
+#line 104
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

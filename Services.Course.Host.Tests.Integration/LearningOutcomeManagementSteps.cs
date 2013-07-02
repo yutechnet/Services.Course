@@ -321,6 +321,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             });
         }
 
+        [Given(@"I assoicate the following outcomes to '(.*)'")]
         [When(@"I assoicate the following outcomes to '(.*)'")]
         public void WhenIAssoicateTheFollowingOutcomesTo(string outcomeDescription, Table table)
         {

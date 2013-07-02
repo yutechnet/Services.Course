@@ -79,7 +79,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I associate '(.*)' course with '(.*)' program")]
         public void WhenIAssociateCourseWithProgram(string courseName, string programName)
         {
-            var courseInfo = ScenarioContext.Current.Get<CourseInfoResponse>(courseName);
+            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
+            response.EnsureSuccessStatusCode();
+
+            var courseInfo = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
             var saveCourseRequest = new SaveCourseRequest
             {
                 Code = courseInfo.Code,
@@ -92,14 +97,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             };
             var programs = ScenarioContext.Current.Get<List<ProgramResponse>>("programs");
             saveCourseRequest.ProgramIds.Add(programs.Find(p => p.Name == programName).Id);
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(_coursesLeadingPath + "/" + courseInfo.Id, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+            response = ApiFeature.ApiTestHost.Client.PutAsync(resourceUri.ToString(), saveCourseRequest, new JsonMediaTypeFormatter()).Result;
             response.EnsureSuccessStatusCode();
         }
 
         [When(@"I associate '(.*)' course with the following programs:")]
         public void WhenIAssociateCourseWithTheFollowingPrograms(string courseName, Table table)
         {
-            var courseInfo = ScenarioContext.Current.Get<CourseInfoResponse>(courseName);
+            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
+            response.EnsureSuccessStatusCode();
+
+            var courseInfo = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
             var saveCourseRequest = new SaveCourseRequest
             {
                 Code = courseInfo.Code,
@@ -115,15 +125,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             {
                 saveCourseRequest.ProgramIds.Add(programs.Find(p => p.Name == row["Program Name"]).Id);
             }
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(_coursesLeadingPath + "/" + courseInfo.Id, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+            response = ApiFeature.ApiTestHost.Client.PutAsync(resourceUri.ToString(), saveCourseRequest, new JsonMediaTypeFormatter()).Result;
             response.EnsureSuccessStatusCode();
         }
 
         [When(@"I remove '(.*)' course from '(.*)'")]
         public void WhenIRemoveCourseFrom(string courseName, string programName)
         {
-            var courseInfo = ScenarioContext.Current.Get<CourseInfoResponse>(courseName);
-            courseInfo = GetCourseById(courseInfo.Id).Content.ReadAsAsync<CourseInfoResponse>().Result;
+            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
+            response.EnsureSuccessStatusCode();
+
+            var courseInfo = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
             var saveCourseRequest = new SaveCourseRequest
             {
                 Code = courseInfo.Code,
@@ -147,7 +160,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 }
             }
             // Save
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(_coursesLeadingPath + "/" + courseInfo.Id, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+            response = ApiFeature.ApiTestHost.Client.PutAsync(resourceUri.ToString(), saveCourseRequest, new JsonMediaTypeFormatter()).Result;
             response.EnsureSuccessStatusCode();
 
             // ScenarioContext.Current.Add(courseName, response.Content.ReadAsAsync<CourseInfoResponse>().Result);
@@ -156,8 +169,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"the course '(.*)' includes '(.*)' program association")]
         public void ThenTheCourseIncludesProgramAssociation(string courseName, string programName)
         {
-            var createCourseResponse = ScenarioContext.Current.Get<CourseInfoResponse>(courseName);
-            var courseInfoResponse = GetCourseById(createCourseResponse.Id).Content.ReadAsAsync<CourseInfoResponse>().Result;
+            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
+            response.EnsureSuccessStatusCode();
+
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
             var programs = ScenarioContext.Current.Get<IList<ProgramResponse>>("programs");
             var program = programs.First(p => p.Name.Equals(programName));
@@ -169,8 +185,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"the course '(.*)' includes the following program information:")]
         public void ThenTheCourseIncludesTheFollowingProgramInformation(string courseName, Table table)
         {
-            var createCourseResponse = ScenarioContext.Current.Get<CourseInfoResponse>(courseName);
-            var courseInfoResponse = GetCourseById(createCourseResponse.Id).Content.ReadAsAsync<CourseInfoResponse>().Result;
+            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
+            response.EnsureSuccessStatusCode();
+
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
             var programs = ScenarioContext.Current.Get<IList<ProgramResponse>>("programs");
             var programIds = (from programResponse in programs select programResponse.Id).ToList(); 
@@ -186,8 +205,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             var response = ApiFeature.ApiTestHost.Client.PostAsync(_coursesLeadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
             response.EnsureSuccessStatusCode();
-            var course = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
-            ScenarioContext.Current[course.Name] = course;
+
+            ScenarioContext.Current.Add(saveCourseRequest.Name, response.Headers.Location);
         }
 
         private void CreateProgram(SaveProgramRequest saveProgramRequest)

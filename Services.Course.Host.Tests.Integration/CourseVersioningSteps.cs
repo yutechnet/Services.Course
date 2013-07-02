@@ -28,13 +28,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 ApiFeature.ApiTestHost.Client.PostAsync(postUri, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
             response.EnsureSuccessStatusCode();
 
-            ScenarioContext.Current.Add(saveCourseRequest.Code, response.Headers.Location);
+            ScenarioContext.Current.Add(saveCourseRequest.Name, response.Headers.Location);
         }
         
         [When(@"I retrieve '(.*)' course")]
-        public void WhenIRetrieveCourse(string courseCode)
+        public void WhenIRetrieveCourse(string courseName)
         {
-            var getUri = ScenarioContext.Current.Get<Uri>(courseCode);
+            var getUri = ScenarioContext.Current.Get<Uri>(courseName);
             var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri).Result;
             response.EnsureSuccessStatusCode();
 
@@ -49,9 +49,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         }
 
         [When(@"I update '(.*)' course with the following info")]
-        public void WhenIUpdateCourseWithTheFollowingInfo(string courseCode, Table table)
+        public void WhenIUpdateCourseWithTheFollowingInfo(string courseName, Table table)
         {
-            var putUri = ScenarioContext.Current.Get<Uri>(courseCode);
+            var putUri = ScenarioContext.Current.Get<Uri>(courseName);
             var saveCourseRequest = table.CreateInstance<SaveCourseRequest>();
             saveCourseRequest.TenantId = Tenant;
 
@@ -62,9 +62,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         }
 
         [Then(@"the course '(.*)' should have the following info")]
-        public void ThenTheCourseShouldHaveTheFollowingInfo(string courseCode, Table table)
+        public void ThenTheCourseShouldHaveTheFollowingInfo(string courseName, Table table)
         {
-            var getUri = ScenarioContext.Current.Get<Uri>(courseCode);
+            var getUri = ScenarioContext.Current.Get<Uri>(courseName);
             var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri.ToString()).Result;
             response.EnsureSuccessStatusCode();
 
@@ -74,9 +74,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
         [When(@"I publish '(.*)' course with the following info")]
         [Given(@"I publish '(.*)' course with the following info")]
-        public void WhenIPublishCourseWithTheFollowingInfo(string courseCode, Table table)
+        public void WhenIPublishCourseWithTheFollowingInfo(string courseName, Table table)
         {
-            var resourceUri = ScenarioContext.Current.Get<Uri>(courseCode);
+            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
             var publishUri = string.Format("{0}/publish", resourceUri);
             var publishRequest = table.CreateInstance<PublishRequest>();
 
@@ -95,26 +95,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         }
 
         [When(@"I delete '(.*)' course")]
-        public void WhenIDeleteCourse(string courseCode)
+        public void WhenIDeleteCourse(string courseName)
         {
-            var resourceUri = ScenarioContext.Current.Get<Uri>(courseCode);
+            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
             var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resourceUri).Result;
 
             ScenarioContext.Current.Add("ResponseToValidate", response);
         }
 
         [When(@"I create a new version of '(.*)' course with the following info")]
-        public void WhenICreateANewVersionOfWithTheFollowingInfo(string courseCode, Table table)
+        public void WhenICreateANewVersionOfWithTheFollowingInfo(string courseName, Table table)
         {
             var versionRequest = table.CreateInstance<VersionRequest>();
 
-            if (courseCode.Equals("RandomCourse"))
+            if (courseName.Equals("RandomCourse"))
             {
                 versionRequest.ParentVersionId = Guid.NewGuid();
             }
             else
             {
-                var resourceUri = ScenarioContext.Current.Get<Uri>(courseCode);
+                var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
                 versionRequest.ParentVersionId = Guid.Parse(ExtractGuid(resourceUri.ToString(), 0));
             }
 
@@ -123,7 +123,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response =
                 ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
 
-            ScenarioContext.Current[courseCode] = response.Headers.Location;
+            ScenarioContext.Current[courseName] = response.Headers.Location;
             ScenarioContext.Current["ResponseToValidate"] = response;
         }
 

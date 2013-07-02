@@ -14,7 +14,7 @@ Background:
 	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 
 Scenario: Create a default version
-	When I retrieve 'ENG101' course
+	When I retrieve 'English 1010' course
 	Then the course should have the following info
 	| Field         | Value                         |
 	| Name          | English 1010                  |
@@ -23,13 +23,13 @@ Scenario: Create a default version
 	| VersionNumber | 1.0.0.0                       |
 
 Scenario: Edit a course version
-	When I update 'ENG101' course with the following info
+	When I update 'English 1010' course with the following info
 	| Field       | Value                          |
 	| Name        | English 10101                  |
 	| Code        | ENG101                         |
 	| Description | Ranji's terrible English class |
 	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	Then the course 'ENG101' should have the following info
+	Then the course 'English 1010' should have the following info
 	| Field         | Value                          |
 	| Name          | English 10101                  |
 	| Code          | ENG101                         |
@@ -38,10 +38,10 @@ Scenario: Edit a course version
 	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 
 Scenario: Publish a course version
-	When I publish 'ENG101' course with the following info
+	When I publish 'English 1010' course with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	Then the course 'ENG101' should have the following info
+	Then the course 'English 1010' should have the following info
 	| Field         | Value                         |
 	| Name          | English 1010                  |
 	| Code          | ENG101                        |
@@ -51,10 +51,10 @@ Scenario: Publish a course version
 	| PublishNote   | Blah blah                     |
 
 Scenario: Published version cannot be modified
-	Given I publish 'ENG101' course with the following info
+	Given I publish 'English 1010' course with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	When I update 'ENG101' course with the following info
+	When I update 'English 1010' course with the following info
 	| Field       | Value                          |
 	| Name        | English 10101                  |
 	| Code        | ENG101                         |
@@ -63,20 +63,20 @@ Scenario: Published version cannot be modified
 	Then I get 'Forbidden' response
 
 Scenario: Published version cannot be deleted
-	Given I publish 'ENG101' course with the following info
+	Given I publish 'English 1010' course with the following info
 	| Field       | Value     |
 	| PublishNote | Blah blah |
-	When I delete 'ENG101' course
+	When I delete 'English 1010' course
 	Then I get 'Forbidden' response
 
 Scenario: Create a course version from a previously-published version
-	Given I publish 'ENG101' course with the following info
+	Given I publish 'English 1010' course with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	When I create a new version of 'ENG101' course with the following info
+	When I create a new version of 'English 1010' course with the following info
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
-	Then the course 'ENG101' should have the following info
+	Then the course 'English 1010' should have the following info
 	| Field         | Value                         |
 	| Name          | English 1010                  |
 	| Code          | ENG101                        |
@@ -85,10 +85,10 @@ Scenario: Create a course version from a previously-published version
 	| IsPublished   | false                         |
 
 Scenario: Cannot publish the same version twice
-	Given I publish 'ENG101' course with the following info
+	Given I publish 'English 1010' course with the following info
 	| Field         | Value     |
 	| PublishNote   | Blah blah |
-	When I create a new version of 'ENG101' course with the following info
+	When I create a new version of 'English 1010' course with the following info
 	| Field         | Value   |
 	| VersionNumber | 1.0.0.0 |
 	Then I get 'BadRequest' response
