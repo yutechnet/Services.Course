@@ -15,7 +15,7 @@ And I associate the following learning outcomes to 'Bachelor of Art' program:
 	| second program learning outcome | 999999   |
 And I have the following course template
 	| Name       | Code          | Description              | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
-	| Template 1 | TemplateCode1 | My First Course Template | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
+	| Template 1 | TemplateCode1 | My First Course Template | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | true       |
 And I associate 'Template 1' course with the following programs:
 	| Program Name        |
 	| Bachelor of Art     |
@@ -41,14 +41,26 @@ When I create a course from the template 'Template 1' with the following:
 	| Name     | Code        | Description              | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
 	| Course 1 | CourseCode1 | My First Course Template | 999999    | b50cada2-b1ba-4b2e-b82c-8ca7125fb39b | Traditional | false      |
 Then the course should have the following info:
-	| Name     | Code        | Description              | OrganizationId                       | CourseType  | IsTemplate |
-	| Course 1 | CourseCode1 | My First Course Template | b50cada2-b1ba-4b2e-b82c-8ca7125fb39b | Traditional | false      |
+	| Field          | Value                                |
+	| Name           | Course 1                             |
+	| Code           | CourseCode1                          |
+	| Description    | My First Course Template             |
+	| OrganizationId | b50cada2-b1ba-4b2e-b82c-8ca7125fb39b |
+	| CourseType     | Traditional                          |
+	| IsTemplate     | false                                |
 
-Scenario: Cannot alter coureType field
+Scenario: Ignore course Type in the request when creating from template
 When I create a course from the template 'Template 1' with the following:
-	| Name       | Code          | Description              | Tenant Id | OrganizationId                       | CourseType | IsTemplate |
-	| Template 1 | TemplateCode1 | My First Course Template | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Competency | false      |
-Then I should get a 'BadRequest' status
+	| Name     | Code        | Description              | Tenant Id | OrganizationId                       | CourseType | IsTemplate |
+	| Course 2 | CourseCode2 | My First Course Template | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Competency | false      |
+Then the course should have the following info:
+	| Field          | Value                                |
+	| Name           | Course 2                             |
+	| Code           | CourseCode2                          |
+	| Description    | My First Course Template             |
+	| OrganizationId | C3885307-BDAD-480F-8E7C-51DFE5D80387 |
+	| CourseType     | Traditional                          |
+	| IsTemplate     | false                                |
 
 Scenario: Verify programs are copied from course template
 When I create a course from the template 'Template 1' with the following:

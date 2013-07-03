@@ -53,7 +53,7 @@ namespace BpeProducts.Services.Course.Domain
             {
                 object eventBody = eventMessage.Body;
                 var eventPlayer = Index[eventBody.GetType().Name];
-                eventPlayer.Apply(eventBody as IDomainEvent, entity);
+                entity = eventPlayer.Apply(eventBody as IDomainEvent, entity);
             }
 
             return entity;

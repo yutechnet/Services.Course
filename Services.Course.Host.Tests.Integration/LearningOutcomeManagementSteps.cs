@@ -338,7 +338,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     FeatureContext.Current.Get<string>("OutcomeLeadingPath"), parentOutcomeId, childOutcomeId);
 
                 var response =
-                    ApiFeature.ApiTestHost.Client.PutAsync(putUri, new OutcomeRequest(), new JsonMediaTypeFormatter())
+                    ApiFeature.ApiTestHost.Client.PutAsync(putUri, new OutcomeRequest { TenantId = 999999 }, new JsonMediaTypeFormatter())
                               .Result;
                 response.EnsureSuccessStatusCode();
             }

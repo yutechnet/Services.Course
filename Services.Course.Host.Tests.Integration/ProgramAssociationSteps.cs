@@ -45,7 +45,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     {
                         Description = row["Description"],
                         Name = row["Name"],
-                        TenantId = Tenant.ToString(),
+                        TenantId = "999999",
                         ProgramType = "BA",
                         OrganizationId = Guid.NewGuid()
                     };
