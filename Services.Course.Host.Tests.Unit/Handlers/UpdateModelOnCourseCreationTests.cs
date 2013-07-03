@@ -44,38 +44,5 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             _mockCourseRepository.Verify(c => c.Save(course), Times.Once());
         }
-
-        [Test]
-        public void Add_New_Course_From_Template_To_Repository()
-        {
-            var course = new Domain.Entities.Course();
-            course.Template = new Domain.Entities.Course()
-                {
-                    Segments =
-                        new List<CourseSegment>()
-                            {
-                                new CourseSegment()
-                                    {
-                                        Id = Guid.NewGuid(),
-                                        Description = "Parent",
-                                        ChildrenSegments =
-                                            new List<CourseSegment>()
-                                                {
-                                                    new CourseSegment()
-                                                        {
-                                                            Id = Guid.NewGuid(),
-                                                            Description = "Child"
-                                                        }
-                                                }
-                                    }
-                            }
-                };
-
-            _updateModelOnCourseCreationTests.Handle(new CourseCreated { Course = course });
-
-            _mockCourseRepository.Verify(c => c.Save(course), Times.Once());
-            _mockDomainEvents.Verify(c => c.Raise<CourseSegmentAdded>(It.IsAny<CourseSegmentAdded>()), Times.Exactly(2));
-            
-        }
     }
 }

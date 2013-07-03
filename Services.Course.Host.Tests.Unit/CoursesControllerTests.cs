@@ -81,12 +81,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             var actual = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 	        
 			_mockDomainEvents.Verify(c => c.Raise<CourseCreated>(
-		        It.Is<CourseCreated>(p => p.Code.Equals("PSY101") &&
-		                                  p.Description.Equals("Psych!") &&
-		                                  p.Name.Equals("Psychology 101") &&
-                                          p.OrganizationId.Equals(saveCourseRequest.OrganizationId) &&
-                                          p.CourseType.Equals(saveCourseRequest.CourseType) &&
-                                          p.IsTemplate.Equals(saveCourseRequest.IsTemplate))), Times.Once());
+                It.Is<CourseCreated>(p => p.Course.Code.Equals("PSY101") &&
+                                          p.Course.Description.Equals("Psych!") &&
+                                          p.Course.Name.Equals("Psychology 101") &&
+                                          p.Course.OrganizationId.Equals(saveCourseRequest.OrganizationId) &&
+                                          p.Course.CourseType.Equals(saveCourseRequest.CourseType) &&
+                                          p.Course.IsTemplate.Equals(saveCourseRequest.IsTemplate))), Times.Once());
 			
         }
 
@@ -126,23 +126,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                 IsTemplate = false
             };
 
-            _mockCourseFactory.Setup(c => c.Reconstitute(It.IsAny<Guid>()))
-                              .Returns(template);
-            _mockCourseFactory.Setup(c => c.BuildFromTemplate(It.IsAny<Domain.Entities.Course>())).Returns(course);
+            _mockCourseFactory.Setup(c => c.Create(It.IsAny<SaveCourseRequest>())).Returns(course);
 
             var response = _coursesController.Post(saveCourseRequest);
             var actual = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
-            _mockCourseFactory.Verify(c => c.Reconstitute(templateId));
-            _mockCourseFactory.Verify(c => c.BuildFromTemplate(template));
+            _mockCourseFactory.Verify(c => c.Create(saveCourseRequest));
             _mockDomainEvents.Verify(c => c.Raise<CourseCreated>(
-                It.Is<CourseCreated>(p => p.Code.Equals("PSY101") &&
-                                          p.Description.Equals("Psych!") &&
-                                          p.Name.Equals("Psychology 101") &&
-                                          p.OrganizationId.Equals(saveCourseRequest.OrganizationId) &&
-                                          p.CourseType.Equals(saveCourseRequest.CourseType) &&
-                                          p.Template.Equals(template) &&
-                                          p.IsTemplate.Equals(saveCourseRequest.IsTemplate))), Times.Once());
+                It.Is<CourseCreated>(p => p.Course.Code.Equals("PSY101") &&
+                                          p.Course.Description.Equals("Psych!") &&
+                                          p.Course.Name.Equals("Psychology 101") &&
+                                          p.Course.OrganizationId.Equals(saveCourseRequest.OrganizationId) &&
+                                          p.Course.CourseType.Equals(saveCourseRequest.CourseType) &&
+                                          p.Course.Template.Equals(template) &&
+                                          p.Course.IsTemplate.Equals(saveCourseRequest.IsTemplate))), Times.Once());
 
         }
         [Test]

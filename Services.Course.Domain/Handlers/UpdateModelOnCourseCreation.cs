@@ -32,12 +32,12 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 
 			_courseRepository.Save(e.Course);
 
-	        if (e.Course.Template != null)
-	        {
-	            DeepCopySegments(e.Course.Id, Guid.Empty, e.Course.Template.Segments);
+            //if (e.Course.Template != null)
+            //{
+            //    DeepCopySegments(e.Course.Id, Guid.Empty, e.Course.Template.Segments);
 
-                //TODO - Copy everything else (learning objectives, required materials, programs, etc.)
-	        }
+            //    //TODO - Copy everything else (learning objectives, required materials, programs, etc.)
+            //}
 		}
 
         private void DeepCopySegments(Guid courseId, Guid parentSegmentId, IEnumerable<CourseSegment> segments)

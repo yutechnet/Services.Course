@@ -9,7 +9,9 @@ namespace BpeProducts.Services.Course.Domain
 		{
 			course.Programs.Add(new Program
 				{
-					Id = msg.ProgramId
+					Id = msg.ProgramId,
+                    TenantId = course.TenantId,
+                    OrganizationId = course.OrganizationId
 				});
 			return course;
 		}

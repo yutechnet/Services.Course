@@ -22,30 +22,25 @@ namespace BpeProducts.Services.Course.Domain
 	    }
 
 	    public Entities.Course Create(SaveCourseRequest request)
-		{
-		    var courseId = Guid.NewGuid();
+	    {
+	        Entities.Course course = null;
+            if (request.TemplateCourseId.HasValue)
+            {
+                var template = Reconstitute(request.TemplateCourseId.Value);
+                if (template == null)
+                {
+                    throw new NotFoundException(string.Format("Course template {0} not found.", request.TemplateCourseId.Value));
+                }
 
-	        Entities.Course template = null;
-	        if (request.TemplateCourseId.HasValue)
-	        {
-	            template = new Entities.Course {Id = request.TemplateCourseId.Value};
-	        }
+                course = BuildFromTemplate(template, request);
+            }
+            else
+            {
+                course = BuildFromScratch(request);
+            }
 
-	        var course = new Entities.Course
-			    {
-                    Id = courseId,
-                    Template = template,
-                    ActiveFlag = true,
-                    OrganizationId = request.OrganizationId,
-                    VersionNumber = new Version(1, 0, 0, 0).ToString(),
-                    CourseType = request.CourseType,
-                    IsTemplate = false 
-                };
-            course.SetOriginalEntity(course);
-
-			Mapper.Map(request, course);
-			return course;
-		}
+	        return course;
+	    }
 
 	    public Entities.Course BuildNewVersion(Entities.Course course, string version)
 	    {
@@ -72,33 +67,42 @@ namespace BpeProducts.Services.Course.Domain
                     VersionNumber = version,
                     OrganizationId = course.OrganizationId,
 
-                    Template = course.Template
+                    Template = course.Template,
+                    ActiveFlag = true
 	            };
 
 	        return newVersion;
 	    }
 
-        public Entities.Course BuildFromTemplate(Entities.Course template)
+        private Entities.Course BuildFromTemplate(Entities.Course template, SaveCourseRequest request)
         {
-            var courseId = Guid.NewGuid();
-            var course = new Entities.Course
-            {
-                Id = courseId,
-                Name = template.Name,
-                Code = template.Code,
-                Description = template.Description,
+            var course = Mapper.Map<Entities.Course>(request);
 
-                Programs = new List<Program>(template.Programs),
-                Segments = new List<CourseSegment>(template.Segments),
-                Outcomes = new List<LearningOutcome>(template.Outcomes),
+            course.Id = Guid.NewGuid();
+            course.CourseType = template.CourseType;
+            course.Programs = new List<Program>(template.Programs);
+            course.Segments = new List<CourseSegment>(template.Segments);
+            course.Outcomes = new List<LearningOutcome>(template.Outcomes);
+            course.CourseSegmentJson = template.CourseSegmentJson;
+            course.TenantId = request.TenantId;
+            course.VersionNumber = new Version(1, 0, 0, 0).ToString();
+            course.OrganizationId = request.OrganizationId;
+            course.Template = template;
+            course.ActiveFlag = true;
+            course.SetOriginalEntity(course);
 
-                CourseSegmentJson = template.CourseSegmentJson,
-                TenantId = template.TenantId,
-                VersionNumber = new Version(1, 0, 0, 0).ToString(),
-                OrganizationId = template.OrganizationId,
+            return course;
+        }
 
-                Template = template
-            };
+        private Entities.Course BuildFromScratch(SaveCourseRequest request)
+        {
+            var course = Mapper.Map<Entities.Course>(request);
+
+            course.Id = Guid.NewGuid();
+            course.ActiveFlag = true;
+            course.OrganizationId = request.OrganizationId;
+            course.VersionNumber = new Version(1, 0, 0, 0).ToString();
+            course.CourseType = request.CourseType;
             course.SetOriginalEntity(course);
 
             return course;

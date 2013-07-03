@@ -14,9 +14,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [Binding]
     public class CourseSegmentSteps
     {
-		
-		[When(@"I add following course segments to '(.*)':")]
-		public void WhenIAddFollowingCourseSegmentsTo(string courseName, Table table)
+
+        [Given(@"I add following course segments to '(.*)':")]
+        [When(@"I add following course segments to '(.*)':")]
+        public void WhenIAddFollowingCourseSegmentsTo(string courseName, Table table)
 		{
             
 			var segments = table.Rows.Select(row =>new{
@@ -25,15 +26,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 				{
 					Name = row["Name"], 
                     Description = row["Description"], 
-                    Type = row["CourseType"]
+                    Type = row["Type"]
 				}}).ToList();
 
-			var courseInfoResponse = ScenarioContext.Current.Get<CourseInfoResponse>(courseName);
+            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
+            response.EnsureSuccessStatusCode();
 
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
             segments.ForEach(s =>
                 {
-                    HttpResponseMessage response = null;
+                    response = null;
                     if (string.IsNullOrEmpty(s.ParentSegment))
                     {
                         var postUrl = string.Format("{0}/{1}/segments", FeatureContext.Current.Get<String>("CourseLeadingPath"),
@@ -60,11 +64,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 		[Then(@"the course '(.*)' should have these course segments:")]
 		public void ThenTheCourseShouldHaveTheseCourseSegments(string courseName, Table table)
 		{
-			var courseInfoResponse = ScenarioContext.Current.Get<CourseInfoResponse>(courseName);
-		    foreach (var row in table.Rows)
+            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
+            response.EnsureSuccessStatusCode();
+
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+            foreach (var row in table.Rows)
 		    {
 		        var segmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(row["Name"]);
-		        var response = ApiFeature.ApiTestHost.Client.GetAsync(segmentResourceLocation).Result;
+		        response = ApiFeature.ApiTestHost.Client.GetAsync(segmentResourceLocation).Result;
 		        var courseSegment = response.Content.ReadAsAsync<CourseSegment>().Result;
 
 		        if (!string.IsNullOrEmpty(row["ParentSegment"]))
@@ -94,7 +102,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     {
                         Name = courseSegmentName,
                         Description = row["Description"],
-                        Type = row["CourseType"]
+                        Type = row["Type"]
                     }, new JsonMediaTypeFormatter()).Result;
                 response.EnsureSuccessStatusCode();
             }
@@ -113,7 +121,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             foreach (var row in table.Rows)
             {
                 Assert.That(parentSegment.ChildrenSegments.Any(
-                    s => s.Name == row["Name"] && s.Description == row["Description"] && s.Type == row["CourseType"]));
+                    s => s.Name == row["Name"] && s.Description == row["Description"] && s.Type == row["Type"]));
             }
         }
 
