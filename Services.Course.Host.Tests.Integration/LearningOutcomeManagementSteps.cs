@@ -385,6 +385,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             response.EnsureSuccessStatusCode();
         }
 
-
+        [Then(@"the course '(.*)' includes the following learning outcomes:")]
+        public void ThenTheCourseIncludesTheFollowingLearningOutcomes(string description, Table table)
+        {
+            var getUri = ScenarioContext.Current.Get<Uri>(description);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri.ToString() + "/" + "outcome").Result;
+            var outcomes = response.Content.ReadAsAsync<List<OutcomeResponse>>().Result;
+            table.CompareToSet(outcomes);
+        }
     }
 }
