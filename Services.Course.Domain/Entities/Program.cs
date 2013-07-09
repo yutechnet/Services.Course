@@ -6,12 +6,14 @@ namespace BpeProducts.Services.Course.Domain.Entities
 {
     public class Program : TenantEntity, IHaveOutcomes
     {
+        [NotNullable]
         public virtual string Name { get; set; }
 
         public virtual string Description { get; set; }
 
         public virtual Guid OrganizationId { get; set; }
 
+        [NotNullable]
         public virtual string ProgramType { get; set; }
 
         public Program()
