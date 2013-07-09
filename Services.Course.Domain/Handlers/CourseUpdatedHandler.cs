@@ -8,10 +8,12 @@ namespace BpeProducts.Services.Course.Domain.Handlers
     public class CourseUpdatedHandler : IHandle<CourseUpdated>
     {
         private readonly IDomainEvents _domainEvents;
+        private readonly IProgramRepository _programRepository;
 
-        public CourseUpdatedHandler(IDomainEvents domainEvents)
+        public CourseUpdatedHandler(IDomainEvents domainEvents, IProgramRepository programRepository)
         {
             _domainEvents = domainEvents;
+            _programRepository = programRepository;
         }
 
         public void Handle(IDomainEvent domainEvent)
@@ -23,10 +25,14 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 foreach (var programId in @event.Request.ProgramIds)
                     if (@event.Old.Programs.All(x => x.Id != programId))
                     {
+                        var program = _programRepository.Get(programId);
                         _domainEvents.Raise<CourseAssociatedWithProgram>(new CourseAssociatedWithProgram
                             {
                                 AggregateId = @event.AggregateId,
-                                ProgramId = programId
+                                ProgramId = programId, 
+                                Name = program.Name,
+                                Description = program.Description,
+                                ProgramType = program.ProgramType
                             });
                     }
 

@@ -14,13 +14,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     public class CourseUpdatedHandlerTests
     {
         private Mock<IDomainEvents> _mockDomainEvents;
+        private Mock<IProgramRepository> _mockProgramRepository;
         private CourseUpdatedHandler _courseUpdatedHandler;
 
         [SetUp]
         public void SetUp()
         {
             _mockDomainEvents = new Mock<IDomainEvents>();
-            _courseUpdatedHandler = new CourseUpdatedHandler(_mockDomainEvents.Object);
+            _mockProgramRepository = new Mock<IProgramRepository>();
+            _courseUpdatedHandler = new CourseUpdatedHandler(_mockDomainEvents.Object, _mockProgramRepository.Object);
+
+            _mockProgramRepository.Setup(p => p.Get(It.IsAny<Guid>())).Returns(new Program
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "program name",
+                    Description = "program description",
+                    ProgramType = "traditional"
+                }) ;
         }
 
         [Test]
