@@ -53,7 +53,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPost]
         public HttpResponseMessage CreateVersion(VersionRequest request)
         {
-            var courseInDb = _courseRepository.Load(request.ParentVersionId);
+            var courseInDb = _courseRepository.Get(request.ParentVersionId);
             if (courseInDb == null)
             {
                 throw new HttpResponseException(new HttpResponseMessage

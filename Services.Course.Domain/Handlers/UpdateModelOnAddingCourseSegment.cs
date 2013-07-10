@@ -23,7 +23,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-            Entities.Course courseInDb = _courseRepository.Load(e.AggregateId);
+            Entities.Course courseInDb = _courseRepository.Get(e.AggregateId);
             var newSegment = Mapper.Map<CourseSegment>(e);
             if (newSegment.ParentSegmentId == Guid.Empty)
             {

@@ -11,30 +11,6 @@ Scenario: Create a course
 	When I submit a creation request
 	Then I should get a success confirmation message
 
-Scenario: Return course by course name
-	Given I have a course with following info:
-	| Name        | Code   | Description                   | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
-	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-	When I submit a creation request
-	Then I should get a success confirmation message
-	And I can retrieve the course by course name
-
-Scenario: Return course by course code
-	Given I have a course with following info:
-	| Name        | Code   | Description                   | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
-	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-	When I submit a creation request
-	Then I should get a success confirmation message
-	And I can retrieve the course by course code
-
-Scenario: Return 404 when course name is not found
-	Given I have a course with following info:
-	| Name        | Code   | Description                   | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
-	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-	When I submit a creation request
-	And I request a course name that does not exist
-	Then I should get a not found message returned
-
 Scenario: Edit a course
 	Given I have a course with following info:
 	| Name        | Code   | Description                   | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |

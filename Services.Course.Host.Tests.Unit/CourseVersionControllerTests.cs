@@ -82,7 +82,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                 VersionNumber = "1.2"
             };
 
-            _mockRepository.Setup(r => r.Load(It.IsAny<Guid>())).Returns(baseVersion);
+            _mockRepository.Setup(r => r.Get(It.IsAny<Guid>())).Returns(baseVersion);
             _mockCourseFactory.Setup(c => c.BuildNewVersion(It.IsAny<Domain.Entities.Course>(), It.IsAny<string>()))
                               .Returns(newVersion);
 
@@ -92,7 +92,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             Assert.That(actual, Is.Not.Null);
 
-            _mockRepository.Verify(r => r.Load(courseVersionRequest.ParentVersionId));
+            _mockRepository.Verify(r => r.Get(courseVersionRequest.ParentVersionId));
             _mockCourseFactory.Verify(c => c.BuildNewVersion(baseVersion, courseVersionRequest.VersionNumber));
             _mockDomainEvents.Verify(c => c.Raise<CourseVersionCreated>(
                 It.Is<CourseVersionCreated>(p => p.AggregateId == newVersion.Id && p.NewVersion == newVersion)));
@@ -109,7 +109,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     VersionNumber = "1.0"
                 };
 
-            _mockRepository.Setup(r => r.Load(It.IsAny<Guid>())).Returns((Domain.Entities.Course)null);
+            _mockRepository.Setup(r => r.Get(It.IsAny<Guid>())).Returns((Domain.Entities.Course)null);
 
             var response =
                 Assert.Throws<HttpResponseException>(

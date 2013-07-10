@@ -58,9 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Capability.1.0.7\lib\net40\BpeProducts.Common.Capability.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.11\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.12\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Ioc, Version=1.0.30.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

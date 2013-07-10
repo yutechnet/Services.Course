@@ -38,7 +38,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     ActiveFlag = true
                 };
 
-            _mockCourseRepository.Setup(c => c.Load(It.IsAny<Guid>())).Returns(course);
+            _mockCourseRepository.Setup(c => c.Get(It.IsAny<Guid>())).Returns(course);
 
             var courseId = Guid.NewGuid();
             _updateModelOnCourseDeletion.Handle(new CourseDeleted
@@ -46,7 +46,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     AggregateId = courseId
                 });
 
-            _mockCourseRepository.Verify(c => c.Load(courseId), Times.Once());
+            _mockCourseRepository.Verify(c => c.Get(courseId), Times.Once());
             _mockCourseRepository.Verify(c => c.Delete(course));
         }
     }

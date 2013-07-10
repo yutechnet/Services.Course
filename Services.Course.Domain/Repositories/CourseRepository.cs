@@ -4,10 +4,12 @@ using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.NHibernate;
 using NHibernate;
 using NHibernate.Linq;
+using NHibernate.OData;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
 {
     [Validate]
+    // TODO Opportunity to use Repository base class.
     public class CourseRepository : ICourseRepository
     {
         private readonly ISession _session;
@@ -17,7 +19,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             _session = session;
         }
 
-        public Entities.Course Load(Guid programId)
+        public Entities.Course Get(Guid programId)
         {
             return _session.Get<Entities.Course>(programId);
         }
@@ -41,5 +43,11 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 
             return version;
         }
+
+        public ICriteria ODataQuery(string queryString)
+        {
+            return _session.ODataQuery<Entities.Course>(queryString);
+        }
+
     }
 }

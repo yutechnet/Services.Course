@@ -24,79 +24,25 @@ namespace BpeProducts.Services.Course.Host.Controllers
     [Authorize]
     public class CoursesController : ApiController
     {
-        private readonly IRepository _courseRepository;
-        private readonly IDomainEvents _domainEvents;
-        private readonly ICourseFactory _courseFactory;
+        private readonly ICourseService _courseService;
+        private readonly ICourseSegmentService _courseSegmentService;
 
-        public CoursesController(IRepository courseRepository, IDomainEvents domainEvents, ICourseFactory courseFactory)
+        public CoursesController(ICourseService courseService, ICourseSegmentService courseSegmentService)
         {
-            _courseRepository = courseRepository;
-            _domainEvents = domainEvents;
-            _courseFactory = courseFactory;
+            _courseService = courseService;
+            _courseSegmentService = courseSegmentService;
         }
 
         // GET api/programs
         public IEnumerable<CourseInfoResponse> Get(ODataQueryOptions options)
         {
-            var queryString = Request.RequestUri.Query.Split('?');
-            ICriteria criteria =
-                _courseRepository.ODataQuery<Domain.Entities.Course>(queryString.Length > 1 ? queryString[1] : "");
-            criteria.Add(Restrictions.Eq("ActiveFlag", true));
-            var courses = criteria.List<Domain.Entities.Course>();
-            var courseResponses = new List<CourseInfoResponse>();
-            Mapper.Map(courses, courseResponses);
-            return courseResponses;
+            return _courseService.Search(Request.RequestUri.Query);
         }
-
-        // GET api/courses
-        //public IEnumerable<CourseInfoResponse> Get()
-        //{
-        //	return _courseRepository.Query<Domain.Entities.Course>()
-        //							.Select(c => Mapper.Map<CourseInfoResponse>(c))
-        //							.ToList();
-        //}
 
         // GET api/courses/5
         public CourseInfoResponse Get(Guid id)
         {
-            Domain.Entities.Course course =
-                _courseRepository.Query<Domain.Entities.Course>()
-                                 .FirstOrDefault(c => c.Id.Equals(id) && c.ActiveFlag.Equals(true));
-            if (course == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            var courseResponse = Mapper.Map<CourseInfoResponse>(course);
-            courseResponse.Segments = course.Segments;
-            return courseResponse;
-        }
-
-        [HttpGet]
-        public CourseInfoResponse GetByCode(string code)
-        {
-            Domain.Entities.Course course = _courseRepository.Query<Domain.Entities.Course>()
-                                 .FirstOrDefault(c => c.Code == code && c.ActiveFlag.Equals(true));
-            if (course == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            return Mapper.Map<CourseInfoResponse>(course);
-        }
-
-        [HttpGet]
-        public CourseInfoResponse GetByName(string name)
-        {
-            Domain.Entities.Course course =
-                _courseRepository.Query<Domain.Entities.Course>()
-                                 .FirstOrDefault(c => c.Name == name && c.ActiveFlag.Equals(true));
-            if (course == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            return Mapper.Map<CourseInfoResponse>(course);
+            return _courseService.Get(id);
         }
 
         [Transaction]
@@ -106,16 +52,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
-            var course = _courseFactory.Create(request);
-
-            _domainEvents.Raise<CourseCreated>(new CourseCreated
-                {
-                    AggregateId = course.Id,
-                    Course = course
-                });
-
-            var courseInfoResponse =
-                Mapper.Map<CourseInfoResponse>(course);
+            var courseInfoResponse = _courseService.Create(request);
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("DefaultApi", new {id = courseInfoResponse.Id});
@@ -126,67 +63,20 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return response;
         }
 
-        
-
-
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
         // PUT api/courses/5
         public void Put(Guid id, SaveCourseRequest request)
         {
-            // We do not allow creation of a new resource by PUT.
-            Domain.Entities.Course courseInDb = _courseFactory.Reconstitute(id);
-
-            if (courseInDb == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            if (courseInDb.IsPublished)
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                    {
-                        StatusCode = HttpStatusCode.Forbidden,
-                        ReasonPhrase = string.Format("Course {0} is published and cannot be modified.", id)
-                    });
-            }
-            //Course.Update(request);
-            //update model
-
-            _domainEvents.Raise<CourseUpdated>(new CourseUpdated
-                {
-                    AggregateId = id,
-                    Old = courseInDb,
-                    Request = request
-                });
+            _courseService.Update(id, request);
         }
 
         [Transaction]
         // DELETE api/courses/5
         public void Delete(Guid id)
         {
-            Domain.Entities.Course courseInDb = _courseFactory.Reconstitute(id);
-
-            if (courseInDb == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            if (courseInDb.IsPublished)
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                    {
-                        StatusCode = HttpStatusCode.Forbidden,
-                        ReasonPhrase = string.Format("Course {0} is published and cannot be deleted.", id)
-                    });
-            }
-
-            _domainEvents.Raise<CourseDeleted>(new CourseDeleted
-                {
-                    AggregateId = id,
-                });
-
+            _courseService.Delete(id);
         }
 
         #region Course Segment Management
@@ -204,28 +94,15 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         public HttpResponseMessage Segments(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
-            // saves a root segment
-            var course = _courseFactory.Reconstitute(courseId);
-            if (course.Id == Guid.Empty) throw new HttpResponseException(HttpStatusCode.NotFound);
+            var courseSegment = _courseSegmentService.Create(courseId, saveCourseSegmentRequest);
 
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
-            var newSegmentId = Guid.NewGuid();
+            var newSegmentId = courseSegment.Id;
             string uri = Url.Link("CourseSegmentsApi", new {segmentId = newSegmentId});
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
             }
-
-            _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
-                {
-                    AggregateId = courseId,
-                    Description = saveCourseSegmentRequest.Description,
-                    DiscussionId = saveCourseSegmentRequest.DiscussionId,
-                    Name = saveCourseSegmentRequest.Name,
-                    ParentSegmentId = Guid.Empty,
-                    Id = newSegmentId,
-                    Type = saveCourseSegmentRequest.Type
-                });
 
             return response;
 
@@ -236,56 +113,21 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         public void Segments(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
-            // Updates the specified segment
-            var courseInDb = _courseFactory.Reconstitute(courseId);
-            if (courseInDb.Id == Guid.Empty)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            var courseSegment = courseInDb.SegmentIndex[segmentId];
-            Mapper.Map(saveCourseSegmentRequest, courseSegment);
-            courseSegment.Id = segmentId;
-
-            _domainEvents.Raise<CourseSegmentUpdated>(new CourseSegmentUpdated
-                {
-                    AggregateId = courseId,
-                    Description = courseSegment.Description,
-                    Name = courseSegment.Name,
-                    ParentSegmentId = courseSegment.ParentSegmentId,
-                    SegmentId = courseSegment.Id,
-		            Type = courseSegment.Type, 
-                    Content = courseSegment.Content
-                });
+            _courseSegmentService.Update(courseId, segmentId, saveCourseSegmentRequest);
         }
 
         // courses/<courseId>/segments/<segmentId>
         [HttpGet]
         public CourseSegment Segments(Guid courseId, Guid segmentId)
         {
-            // returns the specified segments (and its children)
-            var courseInDb = _courseRepository.Get<Domain.Entities.Course>(courseId);
-
-            if (courseInDb == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            return courseInDb.SegmentIndex[segmentId];
+            return _courseSegmentService.Get(courseId, segmentId);
         }
 
         // GET courses/<courseId>/segments/<segmentId>/segments -- returns children of the specified segment
         [HttpGet]
         public IEnumerable<CourseSegment> SubSegments(Guid courseId, Guid segmentId)
         {
-            var courseInDb = _courseRepository.Get<Domain.Entities.Course>(courseId);
-
-            if (courseInDb == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            return courseInDb.SegmentIndex[segmentId].ChildrenSegments;
+            return _courseSegmentService.GetSubSegments(courseId, segmentId);
         }
 
         // POST courses/<courseId>/segments/<segmentId>/segments -- creates a child segment for a segment
@@ -293,37 +135,19 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         public HttpResponseMessage SubSegments(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
-            var course = _courseFactory.Reconstitute(courseId);
-            if (course.Id == Guid.Empty || course.SegmentIndex[segmentId] == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            var newSegmentId = Guid.NewGuid();
+            var courseSegment = _courseSegmentService.Create(courseId, segmentId, saveCourseSegmentRequest);
 
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
 
             string uri = Url.Link("CourseSegmentsApi", new
                 {
                     action = "segments",
-                    segmentId = newSegmentId
+                    segmentId = courseSegment.Id
                 });
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
             }
-
-            //raise domain event
-            _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
-                {
-                    AggregateId = courseId,
-                    Name = saveCourseSegmentRequest.Name,
-                    Description = saveCourseSegmentRequest.Description,
-                    DiscussionId = saveCourseSegmentRequest.DiscussionId,
-                    ParentSegmentId = segmentId,
-                    Type = saveCourseSegmentRequest.Type,
-                    Id = newSegmentId
-                });
 
             return response;
 
@@ -333,7 +157,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPut]
         public void SubSegments(Guid courseId, Guid segmentId, IEnumerable<SaveCourseSegmentRequest> childrentSegments)
         {
-
+            throw new NotImplementedException();
         }
 
         #endregion
