@@ -32,18 +32,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         }
 
         [When(@"I create a course from the template '(.*)' with the following:")]
-        public void WhenICreateACourseFromTheTemplateWithTheFollowing(string courseName, Table table)
+        public void WhenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
         {
+            var postUri = FeatureContext.Current.Get<string>("CourseLeadingPath");
             var courseId = ScenarioContext.Current.Get<Guid>("CourseId");
-            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
+            var resourceUri = ScenarioContext.Current.Get<Uri>(templateName);
             var coureRequest = table.CreateInstance<SaveCourseRequest>();
             coureRequest.TemplateCourseId = courseId;
 
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(resourceUri.ToString(), coureRequest,new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, coureRequest,new JsonMediaTypeFormatter()).Result;
 
             var courseResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
             ScenarioContext.Current.Add("ResponseToValidate", response);
             ScenarioContext.Current.Add("CourseResponse", courseResponse);
+            ScenarioContext.Current.Add(coureRequest.Name, response.Headers.Location);
         }
 
         [When(@"I create a course from the template with the following:")]

@@ -93,7 +93,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
                 TenantId = 999999, 
-                OrganizationId = courseInfo.OrganizationId
+                OrganizationId = courseInfo.OrganizationId,
+                IsTemplate = courseInfo.IsTemplate
             };
             var programs = ScenarioContext.Current.Get<List<ProgramResponse>>("programs");
             saveCourseRequest.ProgramIds.Add(programs.Find(p => p.Name == programName).Id);

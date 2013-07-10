@@ -90,6 +90,7 @@ namespace BpeProducts.Services.Course.Domain
             course.Template = template;
             course.ActiveFlag = true;
             course.SetOriginalEntity(course);
+            course.IsTemplate = request.IsTemplate;
 
             return course;
         }

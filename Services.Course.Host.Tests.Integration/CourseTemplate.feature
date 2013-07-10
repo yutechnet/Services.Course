@@ -64,18 +64,18 @@ Then the course should have the following info:
 
 Scenario: Verify programs are copied from course template
 When I create a course from the template 'Template 1' with the following:
-	| Name       | Code          | Description              | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
-	| Template 1 | TemplateCode1 | My First Course Template | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-Then the course 'Template 1' includes the following program information:
+	| Name     | Code        | Description                   | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
+	| Course 3 | CourseCode3 | My First Course from Template | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
+Then the course 'Course 3' includes the following program information:
 	| Program Name        |
 	| Bachelor of Art     |
 	| Bachelor of Science |
 
 Scenario: Verify segments are copied from course template
 When I create a course from the template 'Template 1' with the following:
-	| Name       | Code          | Description              | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
-	| Template 1 | TemplateCode1 | My First Course Template | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-Then the course 'Template 1' should have these course segments:
+	| Name     | Code        | Description                   | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
+	| Course 4 | CourseCode4 | My First Course from Template | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
+Then the course 'Course 4' should have these course segments:
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
 	| Discussion  | Discussion for the first week  | Discussion | Week1         |
@@ -84,8 +84,8 @@ Then the course 'Template 1' should have these course segments:
 
 Scenario: Verify outcomes are copied from course template
 When I create a course from the template 'Template 1' with the following:
-	| Name       | Code          | Description              | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
-	| Template 1 | TemplateCode1 | My First Course Template | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
+	| Name     | Code        | Description                   | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
+	| Course 5 | CourseCode5 | My First Course from Template | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
 Then the course 'Template 1' includes the following learning outcomes:
 	| Description                    | 
 	| first course learning outcome  | 
