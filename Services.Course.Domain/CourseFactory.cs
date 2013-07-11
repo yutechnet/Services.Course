@@ -49,29 +49,7 @@ namespace BpeProducts.Services.Course.Domain
             if(existing != null)
                 throw new BadRequestException(string.Format("Course version {0} already exists for CourseId {1}", version, course.OriginalEntity.Id));
 
-	        var newVersion = new Entities.Course
-	            {
-                    Id = Guid.NewGuid(),
-                    OriginalEntity = course.OriginalEntity,
-                    ParentEntity = course,
-	                Name = course.Name,
-	                Code = course.Code,
-	                Description = course.Description,
-
-	                Programs = new List<Program>(course.Programs),
-	                Segments = new List<CourseSegment>(course.Segments),
-	                Outcomes = new List<LearningOutcome>(course.Outcomes),
-
-	                CourseSegmentJson = course.CourseSegmentJson,
-	                TenantId = course.TenantId,
-                    VersionNumber = version,
-                    OrganizationId = course.OrganizationId,
-
-                    Template = course.Template,
-                    ActiveFlag = true
-	            };
-
-	        return newVersion;
+	        return course.CreateVersion(version);
 	    }
 
         private Entities.Course BuildFromTemplate(Entities.Course template, SaveCourseRequest request)

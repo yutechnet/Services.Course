@@ -97,5 +97,30 @@ namespace BpeProducts.Services.Course.Domain.Entities
             IsPublished = true;
             PublishNote = publishNote;
         }
+
+        public virtual Course CreateVersion(string versionNumber)
+        {
+            return new Course
+                {
+                    Id = Guid.NewGuid(),
+                    OriginalEntity = this.OriginalEntity,
+                    ParentEntity = this,
+                    Name = this.Name,
+                    Code = this.Code,
+                    Description = this.Description,
+
+                    Programs = new List<Program>(this.Programs),
+                    Segments = new List<CourseSegment>(this.Segments),
+                    Outcomes = new List<LearningOutcome>(this.Outcomes),
+
+                    CourseSegmentJson = this.CourseSegmentJson,
+                    TenantId = this.TenantId,
+                    VersionNumber = versionNumber,
+                    OrganizationId = this.OrganizationId,
+
+                    Template = this.Template,
+                    ActiveFlag = true
+                };
+        }
     }
 }

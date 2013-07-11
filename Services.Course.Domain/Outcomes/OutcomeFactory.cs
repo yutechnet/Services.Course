@@ -41,17 +41,7 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
             if (existing != null)
                 throw new BadRequestException(string.Format("Version {0} already exists for Outcome {1}", version, entity.OriginalEntity.Id));
 
-            return new LearningOutcome
-            {
-                Id =  Guid.NewGuid(),
-                Description = entity.Description,
-                Outcomes = new List<LearningOutcome>(entity.Outcomes),
-                ActiveFlag = true,
-                OriginalEntity = entity.OriginalEntity,
-                ParentEntity = entity,
-                TenantId = entity.TenantId,
-                VersionNumber = version
-            };
+            return entity.CreateVersion(version);
         }
     }
 }

@@ -16,7 +16,14 @@ namespace BpeProducts.Services.Course.Domain.Entities
 		public virtual IList<LearningOutcome> Outcomes { get; set; }
 		//public virtual IList<IHaveOutcomes> AssociatedEntities { get; set; } 
 
-	    public LearningOutcome()
+        [NotNullable]
+        public virtual LearningOutcome OriginalEntity { get; set; }
+        public virtual LearningOutcome ParentEntity { get; set; }
+        public virtual string VersionNumber { get; set; }
+        public virtual string PublishNote { get; set; }
+        public virtual bool IsPublished { get; set; }
+        
+        public LearningOutcome()
 	    {
 		    Outcomes = new List<LearningOutcome>();
 			//AssociatedEntities = new List<IHaveOutcomes>();
@@ -27,11 +34,25 @@ namespace BpeProducts.Services.Course.Domain.Entities
             this.OriginalEntity = originalEntity;
         }
 
-        [NotNullable]
-        public virtual LearningOutcome OriginalEntity { get; set; }
-        public virtual LearningOutcome ParentEntity { get; set; }
-        public virtual string VersionNumber { get; set; }
-        public virtual string PublishNote { get; set; }
-        public virtual bool IsPublished { get; set; }
+        public virtual void Publish(string publishNote)
+        {
+            this.IsPublished = true;
+            this.PublishNote = publishNote;
+        }
+
+        public virtual LearningOutcome CreateVersion(string versionNumber)
+        {
+            return new LearningOutcome
+                {
+                    Id = Guid.NewGuid(),
+                    Description = this.Description,
+                    Outcomes = new List<LearningOutcome>(this.Outcomes),
+                    ActiveFlag = true,
+                    OriginalEntity = this.OriginalEntity,
+                    ParentEntity = this,
+                    TenantId = this.TenantId,
+                    VersionNumber = versionNumber
+                };
+        }
     }
 }
