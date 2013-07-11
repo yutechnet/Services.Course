@@ -20,7 +20,7 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-			var outcome = _outcomeRepository.Load(e.AggregateId);
+			var outcome = _outcomeRepository.Get(e.AggregateId);
 		    outcome.Description = e.Description;
             _outcomeRepository.Save(outcome);
 		}

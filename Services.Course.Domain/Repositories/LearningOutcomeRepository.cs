@@ -16,7 +16,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             _session = session;
         }
 
-        public Entities.LearningOutcome Load(Guid outcomeId)
+        public Entities.LearningOutcome Get(Guid outcomeId)
         {
             return _session.Get<Entities.LearningOutcome>(outcomeId);
         }
