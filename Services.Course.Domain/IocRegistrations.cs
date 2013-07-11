@@ -50,6 +50,7 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<OutcomeFactory>().As<IOutcomeFactory>();
             containerBuilder.RegisterType<CourseService>().As<ICourseService>();
             containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
+            containerBuilder.RegisterType<CourseService>().As<IHandleVersioning<Entities.Course>>();
 
 			containerBuilder.RegisterType<PlayCourseCreated>().Keyed<IPlayEvent>(typeof(CourseCreated).Name);
 			containerBuilder.RegisterType<PlayCourseAssociatedWithProgram>().Keyed<IPlayEvent>(typeof(CourseAssociatedWithProgram).Name);

@@ -15,15 +15,11 @@ namespace BpeProducts.Services.Course.Host.Controllers
 {
     public class CourseVersionController : ApiController
     {
-        private readonly ICourseRepository _courseRepository;
-        private readonly IDomainEvents _domainEvents;
-	    private readonly ICourseFactory _courseFactory;
+        private readonly IHandleVersioning<Domain.Entities.Course> _versionHandler; 
 
-        public CourseVersionController(ICourseRepository courseRepository, IDomainEvents domainEvents, ICourseFactory courseFactory)
+        public CourseVersionController(IHandleVersioning<Domain.Entities.Course> versionHandler)
         {
-            _courseRepository = courseRepository;
-            _domainEvents = domainEvents;
-	        _courseFactory = courseFactory;
+            _versionHandler = versionHandler;
         }
 
 
@@ -33,18 +29,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPut]
         public void PublishVersion(Guid id, PublishRequest request)
         {
-            var courseInDb = _courseFactory.Reconstitute(id);
-
-            if (courseInDb == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            _domainEvents.Raise<CourseVersionPublished>(new CourseVersionPublished
-            {
-                AggregateId = id,
-                PublishNote = request.PublishNote
-            });
+            _versionHandler.PublishVersion(id, request.PublishNote);
         }
 
         [Transaction]
@@ -53,23 +38,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [HttpPost]
         public HttpResponseMessage CreateVersion(VersionRequest request)
         {
-            var courseInDb = _courseRepository.Get(request.ParentVersionId);
-            if (courseInDb == null)
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                    {
-                        StatusCode = HttpStatusCode.NotFound,
-                        ReasonPhrase = string.Format("Parent version {0} not found.", request.ParentVersionId)
-                    });
-            }
-
-            var newVersion = _courseFactory.BuildNewVersion(courseInDb, request.VersionNumber);
-
-            _domainEvents.Raise<CourseVersionCreated>(new CourseVersionCreated
-                {
-                    AggregateId = newVersion.Id,
-                    NewVersion = newVersion
-                });
+            var newVersion = _versionHandler.CreateVersion(request);
 
             var courseInfoResponse = Mapper.Map<CourseInfoResponse>(newVersion);
             HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);

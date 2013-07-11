@@ -10,7 +10,7 @@ using NHibernate.Criterion;
 
 namespace BpeProducts.Services.Course.Domain
 {
-    public class CourseService : ICourseService
+    public class CourseService : ICourseService, IHandleVersioning<Entities.Course>
     {
         private readonly ICourseFactory _courseFactory;
         private readonly IDomainEvents _domainEvents;
@@ -102,6 +102,41 @@ namespace BpeProducts.Services.Course.Domain
             {
                 AggregateId = courseId,
             });
+        }
+
+        public void PublishVersion(Guid entityId, string publishNote)
+        {
+            var course = _courseFactory.Reconstitute(entityId);
+
+            if (course == null)
+            {
+                throw new NotFoundException(string.Format("Course {0} not found.", entityId));
+            }
+
+            _domainEvents.Raise<CourseVersionPublished>(new CourseVersionPublished
+            {
+                AggregateId = entityId,
+                PublishNote = publishNote
+            });
+        }
+
+        public Entities.Course CreateVersion(VersionRequest request)
+        {
+            var course = _courseRepository.Get(request.ParentVersionId);
+            if (course == null)
+            {
+                throw new NotFoundException(string.Format("Parent course {0} not found.", request.ParentVersionId));
+            }
+
+            var newVersion = _courseFactory.BuildNewVersion(course, request.VersionNumber);
+
+            _domainEvents.Raise<CourseVersionCreated>(new CourseVersionCreated
+            {
+                AggregateId = newVersion.Id,
+                NewVersion = newVersion
+            });
+
+            return newVersion;
         }
     }
 }

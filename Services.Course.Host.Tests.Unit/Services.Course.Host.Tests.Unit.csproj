@@ -227,7 +227,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CourseFactoryTests.cs" />
-    <Compile Include="CourseVersionControllerTests.cs" />
     <Compile Include="Handlers\CourseEventPersisterHandlerTests.cs" />
     <Compile Include="Handlers\CourseUpdatedHandlerTests.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCourseSegmentTests.cs" />

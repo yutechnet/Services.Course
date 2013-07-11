@@ -185,6 +185,7 @@
     <Compile Include="CustomJsonSerializer.cs" />
     <Compile Include="ICourseService.cs" />
     <Compile Include="ICourseSegmentService.cs" />
+    <Compile Include="IHandleVersioning.cs" />
     <Compile Include="Outcomes\UpdateModelOnOutcomeUpdate.cs" />
     <Compile Include="Outcomes\PlayOutcomeUpdated.cs" />
     <Compile Include="Outcomes\OutcomeUpdated.cs" />
