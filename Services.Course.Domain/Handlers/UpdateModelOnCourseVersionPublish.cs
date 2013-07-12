@@ -6,11 +6,13 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 {
     public class UpdateModelOnCourseVersionPublish : IHandle<CourseVersionPublished>
     {
-        private readonly ICourseRepository _courseRepository;
-        public UpdateModelOnCourseVersionPublish(ICourseRepository courseRepository)
+        private readonly IRepository _repository;
+
+        public UpdateModelOnCourseVersionPublish(IRepository repository)
         {
-            _courseRepository = courseRepository;
+            _repository = repository;
         }
+
         public void Handle(IDomainEvent domainEvent)
         {
             var e = domainEvent as CourseVersionPublished;
@@ -19,10 +21,10 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-            var course = _courseRepository.Get(e.AggregateId);
+            var course = _repository.Get<Entities.Course>(e.AggregateId);
             course.Publish(e.PublishNote);
 
-            _courseRepository.Save(course);
+            _repository.Save(course);
         }
     }
 }

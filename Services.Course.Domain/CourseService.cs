@@ -15,12 +15,14 @@ namespace BpeProducts.Services.Course.Domain
         private readonly ICourseFactory _courseFactory;
         private readonly IDomainEvents _domainEvents;
         private readonly ICourseRepository _courseRepository;
+        private readonly IRepository _repository;
 
-        public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository)
+        public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository, IRepository repository)
         {
             _courseFactory = courseFactory;
             _domainEvents = domainEvents;
             _courseRepository = courseRepository;
+            _repository = repository;
         }
 
         public CourseInfoResponse Create(SaveCourseRequest request)
@@ -60,7 +62,8 @@ namespace BpeProducts.Services.Course.Domain
 
         public CourseInfoResponse Get(Guid courseId)
         {
-            var course = _courseRepository.Get(courseId);
+            var course = _repository.Get<Entities.Course>(courseId);
+            // var course = _courseRepository.Get(courseId);
             if (course == null || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
@@ -75,8 +78,7 @@ namespace BpeProducts.Services.Course.Domain
         public IEnumerable<CourseInfoResponse> Search(string queryString)
         {
             var queryArray = queryString.Split('?');
-            ICriteria criteria =
-                _courseRepository.ODataQuery(queryArray.Length > 1 ? queryArray[1] : "");
+            var criteria =_repository.ODataQuery<Entities.Course>(queryArray.Length > 1 ? queryArray[1] : "");
             criteria.Add(Restrictions.Eq("ActiveFlag", true));
             var courses = criteria.List<Domain.Entities.Course>();
             var courseResponses = new List<CourseInfoResponse>();
@@ -122,7 +124,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public Entities.Course CreateVersion(VersionRequest request)
         {
-            var course = _courseRepository.Get(request.ParentVersionId);
+            var course = _courseFactory.Reconstitute(request.ParentVersionId);
             if (course == null)
             {
                 throw new NotFoundException(string.Format("Parent course {0} not found.", request.ParentVersionId));

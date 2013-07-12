@@ -11,15 +11,11 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 {
 	public class UpdateModelOnCourseCreation : IHandle<CourseCreated>
 	{
-	    private readonly ICourseFactory _courseFactory;
-	    private readonly ICourseRepository _courseRepository;
-	    private readonly IDomainEvents _domainEvents;
+	    private readonly IRepository _repository;
 
-	    public UpdateModelOnCourseCreation(ICourseFactory courseFactory, ICourseRepository courseRepository, IDomainEvents domainEvents)
+	    public UpdateModelOnCourseCreation(IRepository repository)
 		{
-	        _courseFactory = courseFactory;
-	        _courseRepository = courseRepository;
-		    _domainEvents = domainEvents;
+	        _repository = repository;
 		}
 
 	    public void Handle(IDomainEvent domainEvent)
@@ -30,35 +26,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-			_courseRepository.Save(e.Course);
-
-            //if (e.Course.Template != null)
-            //{
-            //    DeepCopySegments(e.Course.Id, Guid.Empty, e.Course.Template.Segments);
-
-            //    //TODO - Copy everything else (learning objectives, required materials, programs, etc.)
-            //}
-		}
-
-        private void DeepCopySegments(Guid courseId, Guid parentSegmentId, IEnumerable<CourseSegment> segments)
-        {
-            foreach (var segment in segments)
-            {
-                var newId = Guid.NewGuid();
-                _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
-                    {
-                        AggregateId = courseId,
-                        Description = segment.Description,
-                        DiscussionId = segment.DiscussionId,
-                        Name = segment.Name,
-                        ParentSegmentId = parentSegmentId,
-                        Id = newId,
-                        Type = segment.Type
-                    });
-
-                if (segment.ChildrenSegments.Any())
-                    DeepCopySegments(courseId, newId, segment.ChildrenSegments);
-            }
+	        _repository.Save(e.Course);
         }
 	}
 }

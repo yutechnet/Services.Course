@@ -38,7 +38,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         public void Create_course_version_in_repository()
         {
             var autoMock = AutoMock.GetLoose();
-            var mockCourseRepository = autoMock.Mock<ICourseRepository>();
+            var mockRepository = autoMock.Mock<IRepository>();
 
             var courseId = Guid.NewGuid();
 
@@ -58,7 +58,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var updateModelOnCourseVersionCreation = autoMock.Create<UpdateModelOnCourseVersionCreation>();
             updateModelOnCourseVersionCreation.Handle(courseVersionCreated);
 
-            mockCourseRepository.Verify(c => c.Save(courseVersionCreated.NewVersion), Times.Once());
+            mockRepository.Verify(c => c.Save(courseVersionCreated.NewVersion), Times.Once());
 
         }
 

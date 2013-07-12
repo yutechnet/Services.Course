@@ -46,6 +46,9 @@ namespace BpeProducts.Services.Course.Domain
 
         public T Reconstitute(ICollection<EventMessage> events, T entity = null)
         {
+            if (events.Count == 0)
+                return null;
+
             if (entity == null)
                 entity = Activator.CreateInstance<T>();
 

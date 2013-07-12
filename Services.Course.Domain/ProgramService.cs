@@ -5,6 +5,7 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Handlers;
+using BpeProducts.Services.Course.Domain.Repositories;
 using NHibernate;
 using NHibernate.Criterion;
 

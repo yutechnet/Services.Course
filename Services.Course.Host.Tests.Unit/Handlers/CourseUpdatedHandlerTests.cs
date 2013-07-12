@@ -5,6 +5,7 @@ using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
+using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
 

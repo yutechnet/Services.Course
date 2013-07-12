@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BpeProducts.Services.Course.Domain.Entities;
 using NHibernate;
 
-namespace BpeProducts.Services.Course.Domain.Handlers
+namespace BpeProducts.Services.Course.Domain.Repositories
 {
     public interface IProgramRepository
     {

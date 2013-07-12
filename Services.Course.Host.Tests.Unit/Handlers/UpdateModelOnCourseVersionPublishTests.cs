@@ -14,14 +14,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     [TestFixture]
     public class UpdateModelOnCourseVersionPublishTests
     {
-        private Mock<ICourseRepository> _mockCourseRepository;
+        private Mock<IRepository> _mcokRepository;
         private UpdateModelOnCourseVersionPublish _updateModelOnCourseVersionPublish;
 
         [SetUp]
         public void SetUp()
         {
-            _mockCourseRepository = new Mock<ICourseRepository>();
-            _updateModelOnCourseVersionPublish = new UpdateModelOnCourseVersionPublish(_mockCourseRepository.Object);
+            _mcokRepository = new Mock<IRepository>();
+            _updateModelOnCourseVersionPublish = new UpdateModelOnCourseVersionPublish(_mcokRepository.Object);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     PublishNote = "Blah blah"
                 };
 
-            _mockCourseRepository.Setup(c => c.Get(courseVersionId)).Returns(new Domain.Entities.Course
+            _mcokRepository.Setup(c => c.Get<Domain.Entities.Course>(courseVersionId)).Returns(new Domain.Entities.Course
                 {
                     Id = courseVersionId,
                     IsPublished = false,
@@ -52,8 +52,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             _updateModelOnCourseVersionPublish.Handle(courseVersionPublished);
 
-            _mockCourseRepository.Verify(c => c.Get(courseVersionId), Times.Once());
-            _mockCourseRepository.Verify(c => c.Save(It.Is<Domain.Entities.Course>(x =>
+            _mcokRepository.Verify(c => c.Get<Domain.Entities.Course>(courseVersionId), Times.Once());
+            _mcokRepository.Verify(c => c.Save(It.Is<Domain.Entities.Course>(x =>
                 x.IsPublished &&
                 x.PublishNote.Equals(courseVersionPublished.PublishNote))), Times.Once());
         }

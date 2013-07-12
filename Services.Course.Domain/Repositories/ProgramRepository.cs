@@ -5,7 +5,7 @@ using BpeProducts.Services.Course.Domain.Entities;
 using NHibernate;
 using NHibernate.OData;
 
-namespace BpeProducts.Services.Course.Domain.Handlers
+namespace BpeProducts.Services.Course.Domain.Repositories
 {
     public class ProgramRepository : IProgramRepository
     {

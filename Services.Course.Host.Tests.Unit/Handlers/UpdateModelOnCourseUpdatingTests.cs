@@ -17,6 +17,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     {
         private Mock<ICourseRepository> _mockCourseRepository;
         private Mock<IProgramRepository> _mockProgramRepository;
+        private Mock<IRepository> _mockRepository; 
         private UpdateModelOnCourseUpdating _updateModelOnCourseUpdating;
 
         [TestFixtureSetUp]
@@ -29,6 +30,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         public void SetUp()
         {
             var autoMock = AutoMock.GetLoose();
+            _mockRepository = autoMock.Mock<IRepository>();
             _mockCourseRepository = autoMock.Mock<ICourseRepository>();
             _mockProgramRepository = autoMock.Mock<IProgramRepository>();
             _updateModelOnCourseUpdating = autoMock.Create<UpdateModelOnCourseUpdating>();
@@ -48,7 +50,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         {
             var courseUpdatedEvent = CreateCourseUpdatedEventWithNewAndOldPrograms();
 
-            _mockCourseRepository.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseUpdatedEvent.Old);
+            _mockRepository.Setup(c => c.Get<Domain.Entities.Course>(It.IsAny<Guid>())).Returns(courseUpdatedEvent.Old);
             _mockProgramRepository.Setup(c => c.Get(It.IsAny<Guid>())).Returns(new Program());
             _mockProgramRepository.Setup(p => p.Get(It.IsAny<List<Guid>>())).Returns(new List<Program>
                 {
@@ -59,8 +61,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             _updateModelOnCourseUpdating.Handle(courseUpdatedEvent);
 
-            _mockCourseRepository.Verify(c => c.Get(courseUpdatedEvent.AggregateId), Times.Once());
-            _mockCourseRepository.Verify(
+            _mockRepository.Verify(c => c.Get<Domain.Entities.Course>(courseUpdatedEvent.AggregateId), Times.Once());
+            _mockRepository.Verify(
                 c => c.Save(It.Is<Domain.Entities.Course>(x => x.Name == courseUpdatedEvent.Request.Name
                                                                &&
                                                                x.Description == courseUpdatedEvent.Request.Description

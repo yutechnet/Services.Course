@@ -13,18 +13,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     [TestFixture]
     public class UpdateModelOnCourseCreationTests
     {
-        private Mock<ICourseFactory> _mockCourseFactory;
-        private Mock<ICourseRepository> _mockCourseRepository;
-        private Mock<IDomainEvents> _mockDomainEvents;
         private UpdateModelOnCourseCreation _updateModelOnCourseCreationTests;
-
+        private Mock<IRepository> _mockRepository;
+            
         [SetUp]
         public void SetUp()
         {
-            _mockCourseRepository = new Mock<ICourseRepository>();
-            _mockDomainEvents = new Mock<IDomainEvents>();
-            _mockCourseFactory = new Mock<ICourseFactory>();
-            _updateModelOnCourseCreationTests = new UpdateModelOnCourseCreation(_mockCourseFactory.Object, _mockCourseRepository.Object, _mockDomainEvents.Object);
+            _mockRepository = new Mock<IRepository>();
+            _updateModelOnCourseCreationTests = new UpdateModelOnCourseCreation(_mockRepository.Object);
         }
 
         [Test]
@@ -42,7 +38,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var course = new Domain.Entities.Course();
             _updateModelOnCourseCreationTests.Handle(new CourseCreated { Course = course });
 
-            _mockCourseRepository.Verify(c => c.Save(course), Times.Once());
+            _mockRepository.Verify(c => c.Save(course), Times.Once());
         }
     }
 }

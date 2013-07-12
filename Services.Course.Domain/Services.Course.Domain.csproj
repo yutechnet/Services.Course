@@ -183,8 +183,8 @@
     <Compile Include="CourseSegmentService.cs" />
     <Compile Include="CourseService.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
-    <Compile Include="Handlers\IProgramRepository.cs" />
-    <Compile Include="Handlers\ProgramRepository.cs" />
+    <Compile Include="Repositories\IProgramRepository.cs" />
+    <Compile Include="Repositories\ProgramRepository.cs" />
     <Compile Include="ICourseService.cs" />
     <Compile Include="ICourseSegmentService.cs" />
     <Compile Include="IHandleVersioning.cs" />

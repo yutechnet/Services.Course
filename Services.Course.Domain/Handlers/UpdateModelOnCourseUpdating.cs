@@ -9,13 +9,13 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 {
 	public class UpdateModelOnCourseUpdating : IHandle<CourseUpdated>
 	{
-		private readonly ICourseRepository _courseRepository;
 	    private readonly IProgramRepository _programRepository;
+	    private readonly IRepository _repository;
 
-	    public UpdateModelOnCourseUpdating(ICourseRepository courseRepository, IProgramRepository programRepository)
+	    public UpdateModelOnCourseUpdating(ICourseRepository courseRepository, IProgramRepository programRepository, IRepository repository)
         {
-            _courseRepository = courseRepository;
             _programRepository = programRepository;
+	        _repository = repository;
         }
 
 	    public void Handle(IDomainEvent domainEvent)
@@ -25,8 +25,8 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             {
                 throw new InvalidOperationException("Invalid domain event.");
             }
-			
-			var course = _courseRepository.Get(e.AggregateId);
+
+	        var course = _repository.Get<Entities.Course>(e.AggregateId);
 
 		    Mapper.Map(e.Request, course); // dangerous, should use immutable collections in entity
    
@@ -34,7 +34,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 		    var programs = _programRepository.Get(e.Request.ProgramIds);
 	        course.SetPrograms(programs);
 
-            _courseRepository.Save(course);
+	        _repository.Save(course);
 		}
 	}
 }

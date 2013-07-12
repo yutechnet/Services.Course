@@ -10,14 +10,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     [TestFixture]
     public class UpdateModelOnCourseDeletionTests
     {
-        private Mock<ICourseRepository> _mockCourseRepository;
+        private Mock<IRepository> _mockRepository;
         private UpdateModelOnCourseDeletion _updateModelOnCourseDeletion;
 
         [SetUp]
         public void SetUp()
         {
-            _mockCourseRepository = new Mock<ICourseRepository>();
-            _updateModelOnCourseDeletion = new UpdateModelOnCourseDeletion(_mockCourseRepository.Object);
+            _mockRepository = new Mock<IRepository>();
+            _updateModelOnCourseDeletion = new UpdateModelOnCourseDeletion(_mockRepository.Object);
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     ActiveFlag = true
                 };
 
-            _mockCourseRepository.Setup(c => c.Get(It.IsAny<Guid>())).Returns(course);
+            _mockRepository.Setup(c => c.Get<Domain.Entities.Course>(It.IsAny<Guid>())).Returns(course);
 
             var courseId = Guid.NewGuid();
             _updateModelOnCourseDeletion.Handle(new CourseDeleted
@@ -46,8 +46,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     AggregateId = courseId
                 });
 
-            _mockCourseRepository.Verify(c => c.Get(courseId), Times.Once());
-            _mockCourseRepository.Verify(c => c.Delete(course));
+            _mockRepository.Verify(c => c.Get<Domain.Entities.Course>(courseId), Times.Once());
+            _mockRepository.Verify(c => c.Save(It.Is<Domain.Entities.Course>(x => x.ActiveFlag == false)));
         }
     }
 }

@@ -10,20 +10,20 @@ namespace BpeProducts.Services.Course.Domain
 {
     public class CourseSegmentService : ICourseSegmentService
     {
-        private readonly ICourseRepository _courseRepository;
+        private readonly IRepository _repository;
         private readonly ICourseFactory _courseFactory;
         private readonly IDomainEvents _domainEvents;
 
-        public CourseSegmentService(ICourseRepository courseRepository, ICourseFactory courseFactory, IDomainEvents domainEvents)
+        public CourseSegmentService(IRepository repository, ICourseFactory courseFactory, IDomainEvents domainEvents)
         {
-            _courseRepository = courseRepository;
+            _repository = repository;
             _courseFactory = courseFactory;
             _domainEvents = domainEvents;
         }
 
         public IEnumerable<CourseSegment> Get(Guid courseId)
         {
-            var course = _courseRepository.Get(courseId);
+            var course = _repository.Get<Entities.Course>(courseId);
             if (course == null || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
@@ -34,7 +34,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public CourseSegment Get(Guid courseId, Guid segmentId)
         {
-            var course = _courseRepository.Get(courseId);
+            var course = _repository.Get<Entities.Course>(courseId);
             if (course == null || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
@@ -45,7 +45,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public IEnumerable<CourseSegment> GetSubSegments(Guid courseId, Guid segmentId)
         {
-            var course = _courseRepository.Get(courseId);
+            var course = _repository.Get<Entities.Course>(courseId);
             if (course == null || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));

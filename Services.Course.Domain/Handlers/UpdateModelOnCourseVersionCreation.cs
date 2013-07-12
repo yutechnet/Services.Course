@@ -10,10 +10,11 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 {
     public class UpdateModelOnCourseVersionCreation : IHandle<CourseVersionCreated>
     {
-        private readonly ICourseRepository _courseRepository;
-        public UpdateModelOnCourseVersionCreation(ICourseRepository courseRepository)
+        private readonly IRepository _repository;
+
+        public UpdateModelOnCourseVersionCreation(IRepository repository)
         {
-            _courseRepository = courseRepository;
+            _repository = repository;
         }
 
         public void Handle(IDomainEvent domainEvent)
@@ -25,7 +26,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             }
 
             // create a new version based on the parent version
-            _courseRepository.Save(e.NewVersion);
+            _repository.Save(e.NewVersion);
         }
     }
 }

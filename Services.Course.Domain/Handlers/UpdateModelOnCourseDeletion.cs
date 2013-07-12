@@ -6,12 +6,14 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 {
 	public class UpdateModelOnCourseDeletion : IHandle<CourseDeleted>
 	{
-		private readonly ICourseRepository _courseRepository;
-		public UpdateModelOnCourseDeletion(ICourseRepository courseRepository)
+	    private readonly IRepository _repository;
+
+	    public UpdateModelOnCourseDeletion(IRepository repository)
 		{
-			_courseRepository = courseRepository;
+		    _repository = repository;
 		}
-		public void Handle(IDomainEvent domainEvent)
+
+	    public void Handle(IDomainEvent domainEvent)
 		{
 			var e = domainEvent as CourseDeleted;
             if (e == null)
@@ -19,8 +21,9 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-			var course = _courseRepository.Get(e.AggregateId);
-			_courseRepository.Delete(course);
+	        var course = _repository.Get<Entities.Course>(e.AggregateId);
+	        course.ActiveFlag = false;
+	        _repository.Save(course);
 		}
 	}
 }
