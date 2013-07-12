@@ -235,7 +235,6 @@
     <Compile Include="Handlers\UpdateModelOnCourseUpdatingTests.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionCreatedTests.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionPublishTests.cs" />
-    <Compile Include="ProgramControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

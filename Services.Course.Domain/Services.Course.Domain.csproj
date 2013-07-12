@@ -183,10 +183,13 @@
     <Compile Include="CourseSegmentService.cs" />
     <Compile Include="CourseService.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
+    <Compile Include="Handlers\IProgramRepository.cs" />
+    <Compile Include="Handlers\ProgramRepository.cs" />
     <Compile Include="ICourseService.cs" />
     <Compile Include="ICourseSegmentService.cs" />
     <Compile Include="IHandleVersioning.cs" />
     <Compile Include="ILearningOutcomeService.cs" />
+    <Compile Include="IProgramService.cs" />
     <Compile Include="LearningOutcomeService.cs" />
     <Compile Include="Outcomes\UpdateModelOnOutcomeUpdate.cs" />
     <Compile Include="Outcomes\PlayOutcomeUpdated.cs" />
@@ -247,6 +250,7 @@
     <Compile Include="PlayCourseDeleted.cs" />
     <Compile Include="PlayCourseVersionCreated.cs" />
     <Compile Include="PlayCourseVersionPublished.cs" />
+    <Compile Include="ProgramService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CourseEventStore.cs" />
     <Compile Include="Repositories\CourseRepository.cs" />

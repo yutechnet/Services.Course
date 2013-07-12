@@ -53,6 +53,7 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<CourseService>().As<IHandleVersioning<Entities.Course>>();
             containerBuilder.RegisterType<LearningOutcomeService>().As<ILearningOutcomeService>();
             containerBuilder.RegisterType<LearningOutcomeService>().As<IHandleVersioning<Entities.LearningOutcome>>();
+            containerBuilder.RegisterType<ProgramService>().As<IProgramService>();
 
 			containerBuilder.RegisterType<PlayCourseCreated>().Keyed<IPlayEvent>(typeof(CourseCreated).Name);
 			containerBuilder.RegisterType<PlayCourseAssociatedWithProgram>().Keyed<IPlayEvent>(typeof(CourseAssociatedWithProgram).Name);
