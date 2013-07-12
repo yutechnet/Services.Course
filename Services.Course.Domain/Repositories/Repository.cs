@@ -140,7 +140,12 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 			return _session.Get<T>(id);
 		}
 
-		public object Get(string entityName, object id)
+        public IList<T> Get<T>(IList<object> ids)
+        {
+            return ids.Select(Get<T>).ToList();
+        }
+
+	    public object Get(string entityName, object id)
 		{
 			return _session.Get(entityName, id);
 		}
@@ -489,7 +494,8 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 
 	public interface IRepository:ISession
 	{
-		IQueryable<T> Query<T>();
+	    IList<T> Get<T>(IList<object> ids);
+        IQueryable<T> Query<T>();
 		ICriteria ODataQuery<T>(string queryString);
 		//object Save(object obj);
 		//IQueryOver<T, T> QueryOver<T>();

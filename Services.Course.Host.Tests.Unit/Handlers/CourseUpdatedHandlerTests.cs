@@ -15,17 +15,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     public class CourseUpdatedHandlerTests
     {
         private Mock<IDomainEvents> _mockDomainEvents;
-        private Mock<IProgramRepository> _mockProgramRepository;
+        private Mock<IRepository> _mockRepository;
         private CourseUpdatedHandler _courseUpdatedHandler;
 
         [SetUp]
         public void SetUp()
         {
             _mockDomainEvents = new Mock<IDomainEvents>();
-            _mockProgramRepository = new Mock<IProgramRepository>();
-            _courseUpdatedHandler = new CourseUpdatedHandler(_mockDomainEvents.Object, _mockProgramRepository.Object);
+            _mockRepository = new Mock<IRepository>();
+            _courseUpdatedHandler = new CourseUpdatedHandler(_mockDomainEvents.Object, _mockRepository.Object);
 
-            _mockProgramRepository.Setup(p => p.Get(It.IsAny<Guid>())).Returns(new Program
+            _mockRepository.Setup(p => p.Get<Domain.Entities.Program>(It.IsAny<Guid>())).Returns(new Program
                 {
                     Id = Guid.NewGuid(),
                     Name = "program name",

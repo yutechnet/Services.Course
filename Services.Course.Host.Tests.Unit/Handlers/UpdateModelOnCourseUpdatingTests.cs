@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
@@ -51,13 +52,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var courseUpdatedEvent = CreateCourseUpdatedEventWithNewAndOldPrograms();
 
             _mockRepository.Setup(c => c.Get<Domain.Entities.Course>(It.IsAny<Guid>())).Returns(courseUpdatedEvent.Old);
-            _mockProgramRepository.Setup(c => c.Get(It.IsAny<Guid>())).Returns(new Program());
-            _mockProgramRepository.Setup(p => p.Get(It.IsAny<List<Guid>>())).Returns(new List<Program>
+            _mockRepository.Setup(c => c.Query<Domain.Entities.Program>()).Returns(new List<Program>
                 {
-                    new Program { Id = courseUpdatedEvent.Request.ProgramIds[0] },
-                    new Program { Id = courseUpdatedEvent.Request.ProgramIds[1] },
-                    new Program { Id = courseUpdatedEvent.Request.ProgramIds[2] }
-                });
+                    new Program {Id = courseUpdatedEvent.Request.ProgramIds[0]},
+                    new Program {Id = courseUpdatedEvent.Request.ProgramIds[1]},
+                    new Program {Id = courseUpdatedEvent.Request.ProgramIds[2]}
+                }.AsQueryable());
 
             _updateModelOnCourseUpdating.Handle(courseUpdatedEvent);
 

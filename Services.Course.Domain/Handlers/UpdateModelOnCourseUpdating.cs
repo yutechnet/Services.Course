@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 using NHibernate.Linq;
@@ -9,12 +11,10 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 {
 	public class UpdateModelOnCourseUpdating : IHandle<CourseUpdated>
 	{
-	    private readonly IProgramRepository _programRepository;
 	    private readonly IRepository _repository;
 
-	    public UpdateModelOnCourseUpdating(ICourseRepository courseRepository, IProgramRepository programRepository, IRepository repository)
+	    public UpdateModelOnCourseUpdating(IRepository repository)
         {
-            _programRepository = programRepository;
 	        _repository = repository;
         }
 
@@ -31,8 +31,8 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 		    Mapper.Map(e.Request, course); // dangerous, should use immutable collections in entity
    
 			course.Programs.Clear();
-		    var programs = _programRepository.Get(e.Request.ProgramIds);
-	        course.SetPrograms(programs);
+	        var programs = _repository.Query<Program>().Where(p => e.Request.ProgramIds.Contains(p.Id));
+	        course.SetPrograms(programs.ToList());
 
 	        _repository.Save(course);
 		}
