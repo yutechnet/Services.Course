@@ -42,16 +42,6 @@ namespace BpeProducts.Services.Course.Domain
 	        return course;
 	    }
 
-	    public Entities.Course BuildNewVersion(Entities.Course course, string version)
-	    {
-	        var existing = _courseRepository.GetVersion(course.OriginalEntity.Id, version);
-
-            if(existing != null)
-                throw new BadRequestException(string.Format("Course version {0} already exists for CourseId {1}", version, course.OriginalEntity.Id));
-
-	        return course.CreateVersion(version);
-	    }
-
         private Entities.Course BuildFromTemplate(Entities.Course template, SaveCourseRequest request)
         {
             var course = Mapper.Map<Entities.Course>(request);

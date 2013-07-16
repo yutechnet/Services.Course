@@ -19,11 +19,11 @@ using NHibernate.OData;
 namespace BpeProducts.Services.Course.Host.Controllers
 {
 	[Authorize]
-	public class ProgramsController : ApiController
+	public class ProgramController : ApiController
 	{
 	    private readonly IProgramService _programService;
 
-	    public ProgramsController(IProgramService programService)
+	    public ProgramController(IProgramService programService)
 		{
 		    _programService = programService;
 		}

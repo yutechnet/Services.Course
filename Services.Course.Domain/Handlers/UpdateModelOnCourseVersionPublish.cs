@@ -1,10 +1,11 @@
 ﻿using System;
+using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
 {
-    public class UpdateModelOnCourseVersionPublish : IHandle<CourseVersionPublished>
+    public class UpdateModelOnCourseVersionPublish : IHandle<VersionPublished>
     {
         private readonly IRepository _repository;
 
@@ -15,16 +16,19 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 
         public void Handle(IDomainEvent domainEvent)
         {
-            var e = domainEvent as CourseVersionPublished;
+            var e = domainEvent as VersionPublished;
             if (e == null)
             {
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-            var course = _repository.Get<Entities.Course>(e.AggregateId);
-            course.Publish(e.PublishNote);
+            var entity = _repository.Get(e.EntityType, e.AggregateId) as VersionableEntity;
+            if (entity != null)
+            {
+                entity.Publish(e.PublishNote);
 
-            _repository.Save(course);
+                _repository.Save(entity);
+            }
         }
     }
 }

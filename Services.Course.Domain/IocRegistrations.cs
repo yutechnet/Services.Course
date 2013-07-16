@@ -50,10 +50,11 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<OutcomeFactory>().As<IOutcomeFactory>();
             containerBuilder.RegisterType<CourseService>().As<ICourseService>();
             containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
-            containerBuilder.RegisterType<CourseService>().As<IHandleVersioning<Entities.Course>>();
             containerBuilder.RegisterType<LearningOutcomeService>().As<ILearningOutcomeService>();
-            containerBuilder.RegisterType<LearningOutcomeService>().As<IHandleVersioning<Entities.LearningOutcome>>();
             containerBuilder.RegisterType<ProgramService>().As<IProgramService>();
+            containerBuilder.RegisterType<VersionHandler>().As<IVersionHandler>();
+            containerBuilder.RegisterType<VersionableEntityFactory>().As<IVersionableEntityFactory>();
+
 
 			containerBuilder.RegisterType<PlayCourseCreated>().Keyed<IPlayEvent>(typeof(CourseCreated).Name);
 			containerBuilder.RegisterType<PlayCourseAssociatedWithProgram>().Keyed<IPlayEvent>(typeof(CourseAssociatedWithProgram).Name);
@@ -62,8 +63,8 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<PlayCourseInfoUpated>().Keyed<IPlayEvent>(typeof(CourseInfoUpdated).Name);
 			containerBuilder.RegisterType<PlayCourseSegmentAdded>().Keyed<IPlayEvent>(typeof(CourseSegmentAdded).Name);
             containerBuilder.RegisterType<PlayCourseSegmentUpdated>().Keyed<IPlayEvent>(typeof(CourseSegmentUpdated).Name);
-            containerBuilder.RegisterType<PlayCourseVersionCreated>().Keyed<IPlayEvent>(typeof(CourseVersionCreated).Name);
-            containerBuilder.RegisterType<PlayCourseVersionPublished>().Keyed<IPlayEvent>(typeof(CourseVersionPublished).Name);
+            containerBuilder.RegisterType<PlayVersionCreated>().Keyed<IPlayEvent>(typeof(VersionCreated).Name);
+            containerBuilder.RegisterType<PlayVersionPublished>().Keyed<IPlayEvent>(typeof(VersionPublished).Name);
 
             containerBuilder.RegisterType<PlayOutcomeCreated>().Keyed<IPlayEvent>(typeof(OutcomeCreated).Name);
             containerBuilder.RegisterType<PlayOutcomeUpdated>().Keyed<IPlayEvent>(typeof(OutcomeUpdated).Name);
@@ -97,11 +98,11 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<UpdateModelOnCourseDeletion>().As<IHandle<CourseDeleted>>();
 			containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseDeleted>>();
 
-            containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseVersionCreated>>();
-            containerBuilder.RegisterType<UpdateModelOnCourseVersionCreation>().As<IHandle<CourseVersionCreated>>();
+            containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<VersionCreated>>();
+            containerBuilder.RegisterType<UpdateModelOnCourseVersionCreation>().As<IHandle<VersionCreated>>();
 
-            containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseVersionPublished>>();
-            containerBuilder.RegisterType<UpdateModelOnCourseVersionPublish>().As<IHandle<CourseVersionPublished>>();
+            containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<VersionPublished>>();
+            containerBuilder.RegisterType<UpdateModelOnCourseVersionPublish>().As<IHandle<VersionPublished>>();
             containerBuilder.RegisterType<UpdateModelOnOutcomeCreation>().As<IHandle<OutcomeCreated>>();
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeCreated>>();
             containerBuilder.RegisterType<UpdateModelOnOutcomeUpdate>().As<IHandle<OutcomeUpdated>>();

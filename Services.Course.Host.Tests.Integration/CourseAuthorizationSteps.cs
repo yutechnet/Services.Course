@@ -27,11 +27,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
             if (!targetUri.Host.Equals("localhost"))
             {
-                _leadingPath = targetUri.PathAndQuery + "/courses";
+                _leadingPath = targetUri.PathAndQuery + "/course";
             }
             else
             {
-                _leadingPath = "/courses";
+                _leadingPath = "/course";
             }
         }
 

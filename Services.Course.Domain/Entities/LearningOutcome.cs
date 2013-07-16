@@ -9,38 +9,20 @@ using BpeProducts.Common.NHibernate.Version;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
-    public class LearningOutcome : TenantEntity,IHaveOutcomes, IVersionable<LearningOutcome>
+    public class LearningOutcome : VersionableEntity, IHaveOutcomes 
     {
         [Required]
         public virtual string Description { get; set; }
 		public virtual IList<LearningOutcome> Outcomes { get; set; }
 		//public virtual IList<IHaveOutcomes> AssociatedEntities { get; set; } 
 
-        [NotNullable]
-        public virtual LearningOutcome OriginalEntity { get; set; }
-        public virtual LearningOutcome ParentEntity { get; set; }
-        public virtual string VersionNumber { get; set; }
-        public virtual string PublishNote { get; set; }
-        public virtual bool IsPublished { get; set; }
-        
         public LearningOutcome()
 	    {
 		    Outcomes = new List<LearningOutcome>();
 			//AssociatedEntities = new List<IHaveOutcomes>();
 	    }
 
-        public virtual void SetOriginalEntity(LearningOutcome originalEntity)
-        {
-            this.OriginalEntity = originalEntity;
-        }
-
-        public virtual void Publish(string publishNote)
-        {
-            this.IsPublished = true;
-            this.PublishNote = publishNote;
-        }
-
-        public virtual LearningOutcome CreateVersion(string versionNumber)
+        protected override VersionableEntity Clone()
         {
             return new LearningOutcome
                 {
@@ -48,10 +30,8 @@ namespace BpeProducts.Services.Course.Domain.Entities
                     Description = this.Description,
                     Outcomes = new List<LearningOutcome>(this.Outcomes),
                     ActiveFlag = true,
-                    OriginalEntity = this.OriginalEntity,
-                    ParentEntity = this,
                     TenantId = this.TenantId,
-                    VersionNumber = versionNumber
+                    OrganizationId = this.OrganizationId
                 };
         }
     }

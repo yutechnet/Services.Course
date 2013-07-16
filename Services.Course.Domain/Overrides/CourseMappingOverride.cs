@@ -21,6 +21,9 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             //mapping.Map(c => c.OriginalEntity).UniqueKey(uniqueVersion);
             //mapping.Map(c => c.VersionNumber).UniqueKey(uniqueVersion);
 
+            mapping.References<Entities.Course>(c => c.OriginalEntity);
+            mapping.References<Entities.Course>(c => c.ParentEntity);
+
             mapping.Map(course => course.CourseSegmentJson).CustomSqlType("nvarchar(max)");
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
             mapping

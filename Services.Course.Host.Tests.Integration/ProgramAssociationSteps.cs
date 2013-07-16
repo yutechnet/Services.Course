@@ -26,13 +26,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
             if (!targetUri.Host.Equals("localhost"))
             {
-                _coursesLeadingPath = targetUri.PathAndQuery + "/courses";
-                _programsLeadingPath = targetUri.PathAndQuery + "/programs";
+                _coursesLeadingPath = targetUri.PathAndQuery + "/course";
+                _programsLeadingPath = targetUri.PathAndQuery + "/program";
             }
             else
             {
-                _coursesLeadingPath = "/courses";
-                _programsLeadingPath = "/programs";
+                _coursesLeadingPath = "/course";
+                _programsLeadingPath = "/program";
             }
         }
 

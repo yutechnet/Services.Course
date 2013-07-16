@@ -33,15 +33,5 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
             outcome.SetOriginalEntity(outcome);
             return outcome;
         }
-
-        public LearningOutcome BuildNewVersion(LearningOutcome entity, string version)
-        {
-            var existing = _learningOutcomeRepository.GetVersion(entity.OriginalEntity.Id, version);
-
-            if (existing != null)
-                throw new BadRequestException(string.Format("Version {0} already exists for Outcome {1}", version, entity.OriginalEntity.Id));
-
-            return entity.CreateVersion(version);
-        }
     }
 }

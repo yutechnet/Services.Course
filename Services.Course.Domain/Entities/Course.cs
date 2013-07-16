@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
-    public class Course : OrganizationEntity, IVersionable<Course> ,IHaveOutcomes
+    public class Course : VersionableEntity, IHaveOutcomes
     {
         private Dictionary<Guid, CourseSegment> _segmentIndex;
         public virtual Course Template { get; set; }
@@ -74,37 +74,17 @@ namespace BpeProducts.Services.Course.Domain.Entities
 
         public virtual IList<LearningOutcome> Outcomes { get; set; }
 
-        public virtual void SetOriginalEntity(Course originalEntity)
-        {
-            this.OriginalEntity = originalEntity;
-        }
-
-        [NotNullable]
-        public virtual Course OriginalEntity { get; set; }
-        public virtual Course ParentEntity { get; set; }
-        public virtual string VersionNumber { get; set; }
-        public virtual string PublishNote { get; set; }
-        public virtual bool IsPublished { get; set; }
-
         public virtual void SetPrograms(IList<Program> programs)
         {
             Programs.Clear();
             Programs = programs;
         }
 
-        public virtual void Publish(string publishNote)
-        {
-            IsPublished = true;
-            PublishNote = publishNote;
-        }
-
-        public virtual Course CreateVersion(string versionNumber)
+        protected override VersionableEntity Clone()
         {
             return new Course
                 {
                     Id = Guid.NewGuid(),
-                    OriginalEntity = this.OriginalEntity,
-                    ParentEntity = this,
                     Name = this.Name,
                     Code = this.Code,
                     Description = this.Description,
@@ -115,7 +95,6 @@ namespace BpeProducts.Services.Course.Domain.Entities
 
                     CourseSegmentJson = this.CourseSegmentJson,
                     TenantId = this.TenantId,
-                    VersionNumber = versionNumber,
                     OrganizationId = this.OrganizationId,
 
                     Template = this.Template,

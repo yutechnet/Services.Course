@@ -42,7 +42,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             var courseId = Guid.NewGuid();
 
-            var courseVersionCreated = new CourseVersionCreated
+            var courseVersionCreated = new VersionCreated
                 {
                     AggregateId = courseId,
                     NewVersion = new Domain.Entities.Course

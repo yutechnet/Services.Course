@@ -9,8 +9,8 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                                                IHandle<CourseDisassociatedWithProgram>,
                                                IHandle<CourseCreated>, IHandle<CourseInfoUpdated>,
                                                IHandle<CourseDeleted>, IHandle<CourseSegmentAdded>,
-                                               IHandle<CourseSegmentUpdated>, IHandle<CourseVersionCreated>,
-                                               IHandle<CourseVersionPublished>, IHandle<OutcomeVersionCreated>,
+                                               IHandle<CourseSegmentUpdated>, IHandle<VersionCreated>,
+                                               IHandle<VersionPublished>, IHandle<OutcomeVersionCreated>,
                                                IHandle<OutcomeVersionPublished>, IHandle<OutcomeCreated>, 
                                                IHandle<OutcomeDeleted>, IHandle<OutcomeUpdated>
     {

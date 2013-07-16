@@ -16,23 +16,13 @@ namespace BpeProducts.Services.Course.Host
             // http://stackoverflow.com/a/13128870
             config.Routes.MapHttpRoute(
                 "CoursePublish",
-                "courses/{id}/publish",
-                new { controller = "CourseVersion", action = "PublishVersion" });
+                "{entityType}/{id}/publish",
+                new { controller = "Version", action = "PublishVersion" });
 
 		    config.Routes.MapHttpRoute(
 		        "CourseVersion",
-		        "courses/version",
-                new { controller = "CourseVersion", action = "CreateVersion" });
-
-            config.Routes.MapHttpRoute(
-                "OutcomePublish",
-                "outcome/{id}/publish",
-                new { controller = "OutcomeVersion", action = "PublishVersion" });
-
-            config.Routes.MapHttpRoute(
-                "OutcomeVersion",
-                "outcome/version",
-                new { controller = "OutcomeVersion",  action = "CreateVersion" });
+		        "{entityType}/version",
+                new { controller = "Version", action = "CreateVersion" });
 
             config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/outcome/{outcomeId}",
                                        new { controller = "outcome", outcomeId = RouteParameter.Optional });

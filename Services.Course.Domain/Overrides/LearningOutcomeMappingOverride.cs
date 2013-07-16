@@ -21,6 +21,9 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             //mapping.Map(c => c.OriginalEntity).UniqueKey(uniqueVersion);
             //mapping.Map(c => c.VersionNumber).UniqueKey(uniqueVersion);
 
+            mapping.References<Entities.LearningOutcome>(l => l.OriginalEntity);
+            mapping.References<Entities.LearningOutcome>(l => l.ParentEntity);
+
             mapping
                 .HasManyToMany<LearningOutcome>(x => x.Outcomes)
                 .ParentKeyColumn("EntityId")

@@ -8,7 +8,7 @@ using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
 {
-    public class UpdateModelOnCourseVersionCreation : IHandle<CourseVersionCreated>
+    public class UpdateModelOnCourseVersionCreation : IHandle<VersionCreated>
     {
         private readonly IRepository _repository;
 
@@ -19,7 +19,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 
         public void Handle(IDomainEvent domainEvent)
         {
-            var e = domainEvent as CourseVersionCreated;
+            var e = domainEvent as VersionCreated;
             if (e == null)
             {
                 throw new InvalidOperationException("Invalid domain event.");

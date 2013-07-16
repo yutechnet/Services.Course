@@ -22,12 +22,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
 {
     //    [DefaultHttpRouteConvention]
     [Authorize]
-    public class CoursesController : ApiController
+    public class CourseController : ApiController
     {
         private readonly ICourseService _courseService;
         private readonly ICourseSegmentService _courseSegmentService;
 
-        public CoursesController(ICourseService courseService, ICourseSegmentService courseSegmentService)
+        public CourseController(ICourseService courseService, ICourseSegmentService courseSegmentService)
         {
             _courseService = courseService;
             _courseSegmentService = courseSegmentService;

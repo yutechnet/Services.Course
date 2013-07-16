@@ -8,7 +8,6 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
 	public interface IOutcomeFactory
 	{
 		Entities.LearningOutcome Build(OutcomeRequest request);
-	    Entities.LearningOutcome BuildNewVersion(Entities.LearningOutcome entity, string version);
         Entities.LearningOutcome Reconstitute(Guid aggregateId);
         Entities.LearningOutcome Reconstitute(ICollection<EventMessage> stream, Entities.LearningOutcome outcome = null);
 	}

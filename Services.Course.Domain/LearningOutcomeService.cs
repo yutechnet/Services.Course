@@ -12,7 +12,7 @@ using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain
 {
-    public class LearningOutcomeService : ILearningOutcomeService, IHandleVersioning<LearningOutcome>
+    public class LearningOutcomeService : ILearningOutcomeService
     {
         private readonly ILearningOutcomeRepository _learningOutcomeRepository;
         private readonly IRepository _repository;
@@ -197,41 +197,6 @@ namespace BpeProducts.Services.Course.Domain
             }
             entity.Outcomes.Remove(outcome);
             _repository.Update(entity);
-        }
-
-        public void PublishVersion(Guid entityId, string publishNote)
-        {
-            var courseInDb = _outcomeFactory.Reconstitute(entityId);
-
-            if (courseInDb == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            }
-
-            _domainEvents.Raise<OutcomeVersionPublished>(new OutcomeVersionPublished
-            {
-                AggregateId = entityId,
-                PublishNote = publishNote
-            });
-        }
-
-        public LearningOutcome CreateVersion(VersionRequest request)
-        {
-            var outcomeInDb = _learningOutcomeRepository.Get(request.ParentVersionId);
-            if (outcomeInDb == null)
-            {
-                throw new NotFoundException(string.Format("Parent version {0} not found.", request.ParentVersionId));
-            }
-
-            var newVersion = _outcomeFactory.BuildNewVersion(outcomeInDb, request.VersionNumber);
-
-            _domainEvents.Raise<OutcomeVersionCreated>(new OutcomeVersionCreated
-            {
-                AggregateId = newVersion.Id,
-                NewVersion = newVersion
-            });
-
-            return newVersion;
         }
     }
 }
