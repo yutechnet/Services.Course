@@ -58,7 +58,7 @@ Scenario: Published version cannot be modified
 	| Field       | Value                          |
 	| Name        | English 10101                  |
 	| Code        | ENG101                         |
-	| Description | Ranji's terrible English class |
+	| Description | Johns's terrible English class |
 	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	Then I get 'Forbidden' response
 

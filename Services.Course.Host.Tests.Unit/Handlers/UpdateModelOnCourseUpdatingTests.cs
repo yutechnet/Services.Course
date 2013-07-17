@@ -51,18 +51,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         {
             var courseUpdatedEvent = CreateCourseUpdatedEventWithNewAndOldPrograms();
 
-            _mockRepository.Setup(c => c.Get<Domain.Entities.Course>(It.IsAny<Guid>())).Returns(courseUpdatedEvent.Old);
-            _mockRepository.Setup(c => c.Query<Domain.Entities.Program>()).Returns(new List<Program>
+            _mockCourseRepository.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseUpdatedEvent.Old);
+            _mockProgramRepository.Setup(c => c.Get(It.IsAny<List<Guid>>())).Returns(new List<Program>
                 {
                     new Program {Id = courseUpdatedEvent.Request.ProgramIds[0]},
                     new Program {Id = courseUpdatedEvent.Request.ProgramIds[1]},
                     new Program {Id = courseUpdatedEvent.Request.ProgramIds[2]}
-                }.AsQueryable());
+                });
 
             _updateModelOnCourseUpdating.Handle(courseUpdatedEvent);
 
-            _mockRepository.Verify(c => c.Get<Domain.Entities.Course>(courseUpdatedEvent.AggregateId), Times.Once());
-            _mockRepository.Verify(
+            _mockCourseRepository.Verify(c => c.Get(courseUpdatedEvent.AggregateId), Times.Once());
+            _mockCourseRepository.Verify(
                 c => c.Save(It.Is<Domain.Entities.Course>(x => x.Name == courseUpdatedEvent.Request.Name
                                                                &&
                                                                x.Description == courseUpdatedEvent.Request.Description

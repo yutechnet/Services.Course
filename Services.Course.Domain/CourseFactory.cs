@@ -39,6 +39,8 @@ namespace BpeProducts.Services.Course.Domain
                 course = BuildFromScratch(request);
             }
 
+	        course.IsBuilt = true;
+
 	        return course;
 	    }
 
@@ -59,6 +61,7 @@ namespace BpeProducts.Services.Course.Domain
             course.ActiveFlag = true;
             course.SetOriginalEntity(course);
             course.IsTemplate = request.IsTemplate;
+            course.IsBuilt = true;
 
             return course;
         }
@@ -74,6 +77,7 @@ namespace BpeProducts.Services.Course.Domain
             course.CourseType = request.CourseType;
             course.SetOriginalEntity(course);
 
+            course.IsBuilt = true;
             return course;
         }
 	}

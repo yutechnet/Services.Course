@@ -151,8 +151,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             var courseInfo = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
             var originalRequest = ScenarioContext.Current.Get<SaveCourseRequest>("editCourseRequest");
-            Assert.AreEqual(courseInfo.Name, originalRequest.Name);
-            Assert.AreEqual(courseInfo.Code, originalRequest.Code);
+            Assert.AreEqual(originalRequest.Name, courseInfo.Name);
+            Assert.AreEqual(originalRequest.Code, courseInfo.Code);
+            Assert.AreEqual(originalRequest.Description, courseInfo.Description);
         }
 
         [Then(@"I should get a not found message returned")]

@@ -7,9 +7,7 @@ namespace BpeProducts.Services.Course.Domain
     {
         public VersionableEntity Apply(VersionPublished msg, VersionableEntity entity)
         {
-            entity.IsPublished = true;
-            entity.PublishNote = msg.PublishNote;
-
+            entity.Publish(msg.PublishNote);
             return entity;
         }
 

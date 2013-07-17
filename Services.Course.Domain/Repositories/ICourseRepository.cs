@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BpeProducts.Common.NHibernate.Version;
 using NHibernate;
 
@@ -10,6 +11,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         void Save(Entities.Course course);
         void Delete(Entities.Course course);
         Entities.Course GetVersion(Guid originalCourseId, string versionNumber);
-        ICriteria ODataQuery(string queryString);
+        IList<Entities.Course> ODataQuery(string queryString);
     }
 }

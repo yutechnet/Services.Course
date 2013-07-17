@@ -18,7 +18,7 @@ Scenario: Edit a course
 	When I submit a creation request
 	And I change the info to reflect the following:
 	| Name        | Code   | Description                   | Tenant Id | OrganizationId                       | CourseType  | IsTemplate |
-	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
+	| English 101 | ENG101 | John's awesome English Class | 999999    | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
 	Then I should get a success confirmation message
 	And my course info is changed
 

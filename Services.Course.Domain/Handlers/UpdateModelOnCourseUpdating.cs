@@ -11,30 +11,38 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 {
 	public class UpdateModelOnCourseUpdating : IHandle<CourseUpdated>
 	{
-	    private readonly IRepository _repository;
+        private readonly ICourseRepository _courseRepository;
+	    private readonly IProgramRepository _programRepository;
 
-	    public UpdateModelOnCourseUpdating(IRepository repository)
-        {
-	        _repository = repository;
-        }
+	    public UpdateModelOnCourseUpdating(ICourseRepository courseRepository, IProgramRepository programRepository)
+	    {
+	        _courseRepository = courseRepository;
+	        _programRepository = programRepository;
+	    }
 
 	    public void Handle(IDomainEvent domainEvent)
 		{
-			var e = domainEvent as CourseUpdated;
+            var e = domainEvent as CourseUpdated;
             if (e == null)
             {
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-	        var course = _repository.Get<Entities.Course>(e.AggregateId);
+	        var course = _courseRepository.Get(e.AggregateId);
 
-		    Mapper.Map(e.Request, course); // dangerous, should use immutable collections in entity
-   
-			course.Programs.Clear();
-	        var programs = _repository.Query<Program>().Where(p => e.Request.ProgramIds.Contains(p.Id));
-	        course.SetPrograms(programs.ToList());
+	        course.Name = e.Request.Name;
+	        course.Description = e.Request.Description;
+	        course.Code = e.Request.Code;
+	        course.IsTemplate = e.Request.IsTemplate;
+	        course.CourseType = e.Request.CourseType;
 
-	        _repository.Save(course);
+		    //Mapper.Map(e.Request, course); // dangerous, should use immutable collections in entity
+
+            course.Programs.Clear();
+            var programs = _programRepository.Get(e.Request.ProgramIds);
+            course.SetPrograms(programs.ToList());
+
+	        _courseRepository.Save(course);
 		}
 	}
 }

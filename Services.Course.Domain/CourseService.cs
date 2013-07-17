@@ -15,14 +15,12 @@ namespace BpeProducts.Services.Course.Domain
         private readonly ICourseFactory _courseFactory;
         private readonly IDomainEvents _domainEvents;
         private readonly ICourseRepository _courseRepository;
-        private readonly IRepository _repository;
 
-        public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository, IRepository repository)
+        public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository)
         {
             _courseFactory = courseFactory;
             _domainEvents = domainEvents;
             _courseRepository = courseRepository;
-            _repository = repository;
         }
 
         public CourseInfoResponse Create(SaveCourseRequest request)
@@ -46,11 +44,6 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
 
-            if (course.IsPublished)
-            {
-                throw new ForbiddenException(string.Format("Course {0} is published and cannot be modified.", courseId));
-            }
-
             _domainEvents.Raise<CourseUpdated>(new CourseUpdated
             {
                 AggregateId = courseId,
@@ -62,7 +55,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public CourseInfoResponse Get(Guid courseId)
         {
-            var course = _repository.Get<Entities.Course>(courseId);
+            var course = _courseRepository.Get(courseId);
             // var course = _courseRepository.Get(courseId);
             if (course == null || !course.ActiveFlag)
             {
@@ -78,9 +71,8 @@ namespace BpeProducts.Services.Course.Domain
         public IEnumerable<CourseInfoResponse> Search(string queryString)
         {
             var queryArray = queryString.Split('?');
-            var criteria =_repository.ODataQuery<Entities.Course>(queryArray.Length > 1 ? queryArray[1] : "");
-            criteria.Add(Restrictions.Eq("ActiveFlag", true));
-            var courses = criteria.List<Domain.Entities.Course>();
+            var courses = _courseRepository.ODataQuery(queryArray.Length > 1 ? queryArray[1] : "");
+
             var courseResponses = new List<CourseInfoResponse>();
             Mapper.Map(courses, courseResponses);
             return courseResponses;
