@@ -7,6 +7,7 @@ using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using Newtonsoft.Json;
+using CourseSegment = BpeProducts.Services.Course.Domain.Courses.CourseSegment;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
@@ -103,25 +104,6 @@ namespace BpeProducts.Services.Course.Domain.Entities
             _segmentIndex = new Dictionary<Guid, CourseSegment>();
         }
 
-        public virtual string CourseSegmentJson
-        {
-            get
-            {
-                var settings = new JsonSerializerSettings
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Serialize
-                    };
-                var json = JsonConvert.SerializeObject(Segments, settings);
-                return json;
-            }
-            set
-            {
-                Segments = String.IsNullOrEmpty(value)
-                               ? new List<CourseSegment>()
-                               : JsonConvert.DeserializeObject<List<CourseSegment>>(value);
-            }
-        }
-
         public virtual Dictionary<Guid, CourseSegment> SegmentIndex
         {
             get
@@ -162,7 +144,6 @@ namespace BpeProducts.Services.Course.Domain.Entities
                     Segments = new List<CourseSegment>(this.Segments),
                     Outcomes = new List<LearningOutcome>(this.Outcomes),
 
-                    CourseSegmentJson = this.CourseSegmentJson,
                     TenantId = this.TenantId,
                     OrganizationId = this.OrganizationId,
 

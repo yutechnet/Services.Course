@@ -180,15 +180,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CourseSegmentService.cs" />
-    <Compile Include="CourseService.cs" />
+    <Compile Include="Courses\CourseSegmentService.cs" />
+    <Compile Include="Courses\CourseService.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
+    <Compile Include="Courses\CourseSegment.cs" />
     <Compile Include="IVersionableEntityFactory.cs" />
     <Compile Include="IVersionHandler.cs" />
+    <Compile Include="Overrides\CourseSegmentMappingOverride.cs" />
     <Compile Include="Repositories\IProgramRepository.cs" />
     <Compile Include="Repositories\ProgramRepository.cs" />
-    <Compile Include="ICourseService.cs" />
-    <Compile Include="ICourseSegmentService.cs" />
+    <Compile Include="Courses\ICourseService.cs" />
+    <Compile Include="Courses\ICourseSegmentService.cs" />
     <Compile Include="IHandleVersioning.cs" />
     <Compile Include="ILearningOutcomeService.cs" />
     <Compile Include="IProgramService.cs" />
@@ -216,13 +218,13 @@
     <Compile Include="Outcomes\UpdateModelOnOutcomeDeletion.cs" />
     <Compile Include="Outcomes\UpdateModelOnOutcomeVersionCreation.cs" />
     <Compile Include="Outcomes\UpdateModelOnOutcomeVersionPublished.cs" />
-    <Compile Include="PlayCourseDisassociatedWithProgram.cs" />
-    <Compile Include="CourseFactory.cs" />
-    <Compile Include="PlayCourseInfoUpated.cs" />
-    <Compile Include="PlayCourseSegmentAdded.cs" />
-    <Compile Include="PlayCourseSegmentUpdated.cs" />
+    <Compile Include="Courses\Events\PlayCourseDisassociatedWithProgram.cs" />
+    <Compile Include="Courses\CourseFactory.cs" />
+    <Compile Include="Courses\Events\PlayCourseInfoUpated.cs" />
+    <Compile Include="Courses\Events\PlayCourseSegmentAdded.cs" />
+    <Compile Include="Courses\Events\PlayCourseSegmentUpdated.cs" />
     <Compile Include="DomainEvents.cs" />
-    <Compile Include="Entities\Course.cs" />
+    <Compile Include="Courses\Course.cs" />
     <Compile Include="Entities\LearningOutcome.cs" />
     <Compile Include="Entities\Program.cs" />
     <Compile Include="Events\CourseAssociatedWithProgram.cs" />
@@ -241,23 +243,23 @@
     <Compile Include="Handlers\UpdateModelOnCourseCreation.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseDeletion.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseUpdating.cs" />
-    <Compile Include="ICourseFactory.cs" />
+    <Compile Include="Courses\ICourseFactory.cs" />
     <Compile Include="IocRegistrations.cs" />
     <Compile Include="IPlayEvent.cs" />
     <Compile Include="Overrides\CourseMappingOverride.cs" />
     <Compile Include="Overrides\LearningOutcomeMappingOverride.cs" />
     <Compile Include="Overrides\ProgramMappingOverride.cs" />
-    <Compile Include="PlayCourseAssociatedWithProgram.cs" />
-    <Compile Include="PlayCourseCreated.cs" />
-    <Compile Include="PlayCourseDeleted.cs" />
+    <Compile Include="Courses\Events\PlayCourseAssociatedWithProgram.cs" />
+    <Compile Include="Courses\Events\PlayCourseCreated.cs" />
+    <Compile Include="Courses\Events\PlayCourseDeleted.cs" />
     <Compile Include="PlayVersionCreated.cs" />
     <Compile Include="PlayVersionPublished.cs" />
     <Compile Include="ProgramService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\CourseEventStore.cs" />
-    <Compile Include="Repositories\CourseRepository.cs" />
+    <Compile Include="Courses\CourseEventStore.cs" />
+    <Compile Include="Courses\CourseRepository.cs" />
     <Compile Include="Handlers\CourseUpdatedHandler.cs" />
-    <Compile Include="Repositories\ICourseRepository.cs" />
+    <Compile Include="Courses\ICourseRepository.cs" />
     <Compile Include="Repositories\ILearningOutcomeRepository.cs" />
     <Compile Include="Repositories\LearningOutcomeRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
@@ -266,7 +268,6 @@
     <Compile Include="VersionHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CourseBuilderClassDiagram.cd" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

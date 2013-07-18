@@ -81,9 +81,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Code = "Code",
                 Name = "Name",
                 Description = "Description",
-                Segments = new List<CourseSegment>
+                Segments = new List<Domain.Courses.CourseSegment>
                     {
-                        new CourseSegment
+                        new Domain.Courses.CourseSegment
                             {
                                 Id = parentSegmentId
                             }

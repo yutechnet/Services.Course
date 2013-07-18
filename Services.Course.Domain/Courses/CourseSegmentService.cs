@@ -29,7 +29,7 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
 
-            return course.Segments;
+            return Mapper.Map<IList<CourseSegment>>(course.Segments);
         }
 
         public CourseSegment Get(Guid courseId, Guid segmentId)
@@ -40,7 +40,7 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
 
-            return course.SegmentIndex[segmentId];
+            return Mapper.Map<CourseSegment>(course.SegmentIndex[segmentId]);
         }
 
         public IEnumerable<CourseSegment> GetSubSegments(Guid courseId, Guid segmentId)
@@ -51,7 +51,7 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
 
-            return course.SegmentIndex[segmentId].ChildrenSegments;
+            return Mapper.Map<IList<CourseSegment>>(course.SegmentIndex[segmentId].ChildrenSegments);
         }
 
         public CourseSegment Create(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
@@ -69,7 +69,7 @@ namespace BpeProducts.Services.Course.Domain
             {
                 AggregateId = courseId,
                 Description = saveCourseSegmentRequest.Description,
-                DiscussionId = saveCourseSegmentRequest.DiscussionId,
+                Content = saveCourseSegmentRequest.Content,
                 Name = saveCourseSegmentRequest.Name,
                 ParentSegmentId = Guid.Empty,
                 Id = newSegmentId,
@@ -79,7 +79,7 @@ namespace BpeProducts.Services.Course.Domain
             return new CourseSegment
                 {
                     Description = saveCourseSegmentRequest.Description,
-                    DiscussionId = saveCourseSegmentRequest.DiscussionId,
+                    Content = new List<Contract.Content> { Mapper.Map<Contract.Content>(saveCourseSegmentRequest.Content) },
                     Name = saveCourseSegmentRequest.Name,
                     ParentSegmentId = Guid.Empty,
                     Id = newSegmentId,
@@ -103,7 +103,7 @@ namespace BpeProducts.Services.Course.Domain
                 AggregateId = courseId,
                 Name = saveCourseSegmentRequest.Name,
                 Description = saveCourseSegmentRequest.Description,
-                DiscussionId = saveCourseSegmentRequest.DiscussionId,
+                Content = saveCourseSegmentRequest.Content,
                 ParentSegmentId = segmentId,
                 Type = saveCourseSegmentRequest.Type,
                 Id = newSegmentId
@@ -113,7 +113,7 @@ namespace BpeProducts.Services.Course.Domain
                 {
                     Name = saveCourseSegmentRequest.Name,
                     Description = saveCourseSegmentRequest.Description,
-                    DiscussionId = saveCourseSegmentRequest.DiscussionId,
+                    Content = saveCourseSegmentRequest.Content,
                     ParentSegmentId = segmentId,
                     Type = saveCourseSegmentRequest.Type,
                     Id = newSegmentId

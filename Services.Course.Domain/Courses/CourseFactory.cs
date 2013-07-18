@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using AutoMapper;
 using Autofac.Features.Indexed;
 using BpeProducts.Common.Exceptions;
-using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
 using EventStore;
-using NHibernate;
 
-namespace BpeProducts.Services.Course.Domain
+namespace BpeProducts.Services.Course.Domain.Courses
 {
 	public class CourseFactory : VersionFactory<Entities.Course>, ICourseFactory
 	{
@@ -53,7 +51,6 @@ namespace BpeProducts.Services.Course.Domain
             course.Programs = new List<Program>(template.Programs);
             course.Segments = new List<CourseSegment>(template.Segments);
             course.Outcomes = new List<LearningOutcome>(template.Outcomes);
-            course.CourseSegmentJson = template.CourseSegmentJson;
             course.TenantId = request.TenantId;
             course.VersionNumber = new Version(1, 0, 0, 0).ToString();
             course.OrganizationId = request.OrganizationId;

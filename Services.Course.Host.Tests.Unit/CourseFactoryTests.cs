@@ -7,6 +7,8 @@ using Autofac;
 using Autofac.Features.Indexed;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
+using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.Courses.Events;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 using EventStore;

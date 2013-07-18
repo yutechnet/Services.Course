@@ -140,7 +140,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Type = segmentInfo.Type,
                     Description = segmentInfo.Description,
                     // TenantId = 1,
-                    Content = table.CreateSet<ContentRequest>().ToList()
+                    Content = table.CreateSet<Content>().ToList()
                 };
 
             response =

@@ -24,7 +24,6 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping.References<Entities.Course>(c => c.OriginalEntity);
             mapping.References<Entities.Course>(c => c.ParentEntity);
 
-            mapping.Map(course => course.CourseSegmentJson).CustomSqlType("nvarchar(max)");
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
             mapping
                 .HasManyToMany<Program>(x => x.Programs)

@@ -8,6 +8,8 @@ using Autofac;
 using Autofac.Extras.DynamicProxy2;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Log;
+using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.Courses.Events;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Outcomes;

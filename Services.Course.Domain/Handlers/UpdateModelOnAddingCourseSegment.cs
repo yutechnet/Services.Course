@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMapper;
-using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 

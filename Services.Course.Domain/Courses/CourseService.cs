@@ -63,7 +63,7 @@ namespace BpeProducts.Services.Course.Domain
             }
             var courseInfoResponse = Mapper.Map<CourseInfoResponse>(course);
             // TODO Is this necessary? Should be done in the AutoMapper
-            courseInfoResponse.Segments = course.Segments;
+            courseInfoResponse.Segments = Mapper.Map<List<CourseSegment>>(course.Segments);
 
             return courseInfoResponse;
         }

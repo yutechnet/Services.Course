@@ -5,12 +5,11 @@ using System.ComponentModel.DataAnnotations;
 namespace BpeProducts.Services.Course.Contract
 {
     //TODO: Move out of Contract
-    public class CourseSegment
+    public class CourseSegment 
     {
         public CourseSegment()
         {
             ChildrenSegments = new List<CourseSegment>();
-            Discussions = new List<Guid>();
             Content = new List<Content>();
         }
 
@@ -22,12 +21,8 @@ namespace BpeProducts.Services.Course.Contract
         public virtual string Type { get; set; }
         public virtual int DisplayOrder { get; set; }
 
-        public virtual long DiscussionId { get; set; }
-
         public virtual List<CourseSegment> ChildrenSegments { get; set; }
         public virtual Guid ParentSegmentId { get; set; }
-
-        public virtual List<Guid> Discussions { get; set; }
 
         public virtual List<Content> Content { get; set; }
 
