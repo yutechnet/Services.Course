@@ -18,15 +18,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Given(@"I add following course segments to '(.*)':")]
         [When(@"I add following course segments to '(.*)':")]
         public void WhenIAddFollowingCourseSegmentsTo(string courseName, Table table)
-		{
-            
+        {
 			var segments = table.Rows.Select(row =>new{
                 ParentSegment=row["ParentSegment"], 
                 Segment=new SaveCourseSegmentRequest
 				{
 					Name = row["Name"], 
                     Description = row["Description"], 
-                    Type = row["Type"]
+                    Type = row["Type"],
+                    TenantId = 999999
 				}}).ToList();
 
             var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
@@ -117,10 +117,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                           .Result.Content.ReadAsAsync<CourseSegment>()
                           .Result;
 
-            Assert.That(parentSegment.ChildrenSegments.Count, Is.EqualTo(table.Rows.Count));
+            Assert.That(parentSegment.ChildSegments.Count, Is.EqualTo(table.Rows.Count));
             foreach (var row in table.Rows)
             {
-                Assert.That(parentSegment.ChildrenSegments.Any(
+                Assert.That(parentSegment.ChildSegments.Any(
                     s => s.Name == row["Name"] && s.Description == row["Description"] && s.Type == row["Type"]));
             }
         }
@@ -140,7 +140,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Type = segmentInfo.Type,
                     Description = segmentInfo.Description,
                     // TenantId = 1,
-                    Content = table.CreateSet<Content>().ToList()
+                    Content = table.Rows.Select(row => new Content { Id = Guid.Parse(row["Id"]), Type = row["Type"] }).ToList()
                 };
 
             response =

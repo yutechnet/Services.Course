@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
@@ -17,6 +18,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping.References<Entities.Course>(c => c.ParentEntity);
 
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
+
             mapping
                 .HasManyToMany<Program>(x => x.Programs)
                 .ParentKeyColumn("CourseId")

@@ -9,6 +9,7 @@ namespace BpeProducts.Services.Course.Contract
 		public String Description { get; set; }
 		public String Type { get; set; }
 	    public long DiscussionId { get; set; }
-		public List<Content> Content { get; set; } 
+		public List<Content> Content { get; set; }
+        public int TenantId { get; set; }
 	}
 }

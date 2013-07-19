@@ -17,7 +17,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual Entities.Course Course { get; set; }
 
-        public virtual List<CourseSegment> ChildSegments { get; set; }
+        public virtual IList<CourseSegment> ChildSegments { get; set; }
 
         public virtual CourseSegment ParentSegment { get; set; }
 
@@ -31,7 +31,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual int DisplayOrder { get; set; }
 
-        public virtual List<Content> Content { get; set; }
+        public virtual IList<Content> Content { get; set; }
 
         public virtual string SerializedData
         {

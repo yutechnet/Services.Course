@@ -28,11 +28,13 @@ namespace BpeProducts.Services.Course.Host.App_Start
 		    Mapper.CreateMap<Domain.Entities.Course, CourseInfoResponse>()
 		          .ForMember(dest => dest.ProgramIds, opt => opt.MapFrom(course => course.Programs.Select(p => p.Id).ToList()))
                   .ForMember(dest => dest.TemplateCourseId, opt=> opt.MapFrom(course => course.Template == null ? Guid.Empty : course.Template.Id));
+		    Mapper.CreateMap<Domain.Courses.CourseSegment, CourseSegment>();
 
 			// From DTOs to Domain Entities
 			Mapper.CreateMap<SaveCourseRequest, Domain.Entities.Course>()
 			      .ForMember(x => x.Id, opt => opt.Ignore());
 			Mapper.CreateMap<Contract.SaveCourseSegmentRequest, CourseSegment>();
+		    Mapper.CreateMap<CourseSegment, Domain.Courses.CourseSegment>();
 
 		    Mapper.CreateMap<CourseSegmentAdded, CourseSegment>();
 		}

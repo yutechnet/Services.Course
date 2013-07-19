@@ -48,7 +48,8 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Segment {0} for Course {1} is not found.", segmentId, courseId));
             }
 
-            return Mapper.Map<CourseSegment>(segment);
+            var returnValue = Mapper.Map<CourseSegment>(segment);
+            return returnValue;
         }
 
         public IEnumerable<CourseSegment> GetSubSegments(Guid courseId, Guid segmentId)

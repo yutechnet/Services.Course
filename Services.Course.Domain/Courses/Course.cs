@@ -26,7 +26,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
         private string _code;
         private string _description;
         private ECourseType _courseType;
-        private List<CourseSegment> _segments = new List<CourseSegment>();
+        private IList<CourseSegment> _segments = new List<CourseSegment>();
         private IList<Program> _programs = new List<Program>();
         private IList<LearningOutcome> _outcomes = new List<LearningOutcome>();
 
@@ -103,7 +103,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
             }
         }
 
-        public virtual List<CourseSegment> Segments
+        public virtual IList<CourseSegment> Segments
         {
             get { return _segments; }
             set
@@ -156,16 +156,18 @@ namespace BpeProducts.Services.Course.Domain.Entities
             var newSegment = new CourseSegment
             {
                 Course = this,
-                ParentSegment = parentSegment,
                 Id = segmentId,
                 Name = request.Name,
                 Description = request.Description,
                 Type = request.Type,
-                Content = request.Content ?? new List<Content>()
+                Content = request.Content ?? new List<Content>(),
+                TenantId = TenantId
             };
 
-            if(parentSegment != null)
+            if (parentSegment != null)
+            {
                 parentSegment.AddSubSegment(newSegment);
+            }
 
             _segments.Add(newSegment);
 

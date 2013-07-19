@@ -9,7 +9,7 @@ namespace BpeProducts.Services.Course.Contract
     {
         public CourseSegment()
         {
-            ChildrenSegments = new List<CourseSegment>();
+            ChildSegments = new List<CourseSegment>();
             Content = new List<Content>();
         }
 
@@ -21,15 +21,15 @@ namespace BpeProducts.Services.Course.Contract
         public virtual string Type { get; set; }
         public virtual int DisplayOrder { get; set; }
 
-        public virtual List<CourseSegment> ChildrenSegments { get; set; }
+        public virtual IList<CourseSegment> ChildSegments { get; set; }
         public virtual Guid ParentSegmentId { get; set; }
 
-        public virtual List<Content> Content { get; set; }
+        public virtual IList<Content> Content { get; set; }
 
         public virtual void AddSubSegment(CourseSegment segment)
         {
             segment.ParentSegmentId = Id;
-            ChildrenSegments.Add(segment);
+            ChildSegments.Add(segment);
         }
     }
 }

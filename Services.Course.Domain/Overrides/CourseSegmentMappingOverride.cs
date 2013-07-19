@@ -15,6 +15,9 @@ namespace BpeProducts.Services.Course.Domain.Overrides
         {
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
 
+            mapping.References(x => x.ParentSegment).Column("ParentSegmentId");
+            mapping.HasMany(x => x.ChildSegments).KeyColumn("ParentSegmentId");
+           
             mapping.IgnoreProperty(segment => segment.Name);
             mapping.IgnoreProperty(segment => segment.Description);
             mapping.IgnoreProperty(segment => segment.Type);
