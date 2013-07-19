@@ -9,10 +9,12 @@ using BpeProducts.Services.Course.Domain.Courses;
 
 namespace BpeProducts.Services.Course.Domain.Overrides
 {
-    class CourseSegmentMappingOverride : IAutoMappingOverride<CourseSegment>
+    public class CourseSegmentMappingOverride : IAutoMappingOverride<CourseSegment>
     {
         public void Override(AutoMapping<CourseSegment> mapping)
         {
+            mapping.Id(x => x.Id).GeneratedBy.Assigned();
+
             mapping.IgnoreProperty(segment => segment.Name);
             mapping.IgnoreProperty(segment => segment.Description);
             mapping.IgnoreProperty(segment => segment.Type);

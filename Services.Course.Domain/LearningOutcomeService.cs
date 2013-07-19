@@ -108,7 +108,7 @@ namespace BpeProducts.Services.Course.Domain
 
                 ////create an outcome and associate to an entity
                 //learningOutcome = Mapper.Map<LearningOutcome>(request);
-                ////learningOutcome.Id = Guid.NewGuid();
+                ////learningOutcome.SegmentId = Guid.NewGuid();
                 //_repository.Save(learningOutcome);
 
                 entity.Outcomes.Add(learningOutcome);

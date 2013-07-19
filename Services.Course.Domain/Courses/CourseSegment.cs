@@ -11,13 +11,15 @@ namespace BpeProducts.Services.Course.Domain.Courses
     {
         public CourseSegment()
         {
-            ChildrenSegments = new List<CourseSegment>();
+            ChildSegments = new List<CourseSegment>();
             Content = new List<Content>();
         }
 
-        public virtual List<CourseSegment> ChildrenSegments { get; set; }
+        public virtual Entities.Course Course { get; set; }
 
-        public virtual Guid ParentSegmentId { get; set; }
+        public virtual List<CourseSegment> ChildSegments { get; set; }
+
+        public virtual CourseSegment ParentSegment { get; set; }
 
         [Required]
         public virtual string Name { get; set; }
@@ -78,8 +80,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual void AddSubSegment(CourseSegment segment)
         {
-            segment.ParentSegmentId = Id;
-            ChildrenSegments.Add(segment);
+            segment.ParentSegment = this;
+            ChildSegments.Add(segment);
         }
     }
 }

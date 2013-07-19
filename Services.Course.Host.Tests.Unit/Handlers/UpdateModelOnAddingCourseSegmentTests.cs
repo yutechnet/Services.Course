@@ -56,10 +56,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var courseSegmentAddedEvent = new CourseSegmentAdded
                 {
                     AggregateId = courseId,
-                    Description = "Description",
-                    Id = courseSegementId,
-                    Name = "Name",
-                    Type = "someType"
+                    ParentSegmentId = Guid.Empty,
+                    SegmentId = courseSegementId,
+                    Request = new SaveCourseSegmentRequest
+                        {
+                            Description = "Description",
+                            Name = "Name",
+                            Type = "Type"
+                        }
                 };
 
             _updateModelOnAddingCourseSegment.Handle(courseSegmentAddedEvent);
@@ -96,19 +100,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var courseSegmentAddedEvent = new CourseSegmentAdded
             {
                 AggregateId = courseId,
-                Description = "Description",
-                Id = courseSegmentId,
-                Name = "Name",
-                Type = "someType",
-                ParentSegmentId = parentSegmentId
+                ParentSegmentId = parentSegmentId,
+                SegmentId = courseSegmentId,
+                Request = new SaveCourseSegmentRequest
+                {
+                    Description = "Description",
+                    Name = "Name",
+                    Type = "Type"
+                }
             };
 
             _updateModelOnAddingCourseSegment.Handle(courseSegmentAddedEvent);
 
             _mockRepository.Verify(c => c.Get<Domain.Entities.Course>(courseId), Times.Once());
             _mockRepository.Verify(c => c.Save(It.Is<Domain.Entities.Course>(d => d.Segments.Count == 1 
-                && d.Segments[0].ChildrenSegments.Count == 1
-                && d.Segments[0].ChildrenSegments[0].Id == courseSegmentId)),
+                && d.Segments[0].ChildSegments.Count == 1
+                && d.Segments[0].ChildSegments[0].Id == courseSegmentId)),
                 Times.Once());
         }
 

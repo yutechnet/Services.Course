@@ -45,7 +45,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
-                TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
+                TenantId = int.Parse(table.Rows[0]["Tenant SegmentId"]),
                 OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false
@@ -87,7 +87,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
-                TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
+                TenantId = int.Parse(table.Rows[0]["Tenant SegmentId"]),
                 OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false
@@ -207,7 +207,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Name = ScenarioContext.Current.Get<long>("ticks") + row["Name"],
                     Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
                     Description = row["Description"],
-                    TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
+                    TenantId = int.Parse(table.Rows[0]["Tenant SegmentId"]),
                     OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                     CourseType = ECourseType.Traditional,
                     IsTemplate = false

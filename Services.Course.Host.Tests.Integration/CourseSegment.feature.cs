@@ -359,7 +359,7 @@ this.FeatureBackground();
  testRunner.When("I add following course segments to \'Math 101\':", ((string)(null)), table11, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Id",
+                        "SegmentId",
                         "Type"});
             table12.AddRow(new string[] {
                         "10257797-ab74-4796-a2f7-4722f8f96abe",

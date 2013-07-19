@@ -6,6 +6,7 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain.Events;
 using Newtonsoft.Json;
 using CourseSegment = BpeProducts.Services.Course.Domain.Courses.CourseSegment;
 
@@ -19,13 +20,15 @@ namespace BpeProducts.Services.Course.Domain.Entities
 
         #region Properties
 
-        private Dictionary<Guid, CourseSegment> _segmentIndex;
         private bool _isTemplate;
         private Course _template;
         private string _name;
         private string _code;
         private string _description;
         private ECourseType _courseType;
+        private List<CourseSegment> _segments = new List<CourseSegment>();
+        private IList<Program> _programs = new List<Program>();
+        private IList<LearningOutcome> _outcomes = new List<LearningOutcome>();
 
         public virtual Course Template
         {
@@ -88,38 +91,46 @@ namespace BpeProducts.Services.Course.Domain.Entities
                 _isTemplate = value;
             }
         }
-        #endregion
+        
 
-        public virtual IList<Program> Programs { get; set; }
-
-        public virtual List<CourseSegment> Segments { get; set; }
-
-        public virtual IList<LearningOutcome> Outcomes { get; set; }
-
-        public Course()
+        public virtual IList<Program> Programs
         {
-            Programs = new List<Program>();
-            Segments = new List<CourseSegment>();
-            Outcomes = new List<LearningOutcome>();
-            _segmentIndex = new Dictionary<Guid, CourseSegment>();
-        }
-
-        public virtual Dictionary<Guid, CourseSegment> SegmentIndex
-        {
-            get
+            get { return _programs; }
+            set
             {
-                if (_segmentIndex.Count == 0) BuildIndex(Segments, ref _segmentIndex);
-
-                return _segmentIndex;
+                CheckPublished();
+                _programs = value;
             }
         }
+
+        public virtual List<CourseSegment> Segments
+        {
+            get { return _segments; }
+            set
+            {
+                CheckPublished();
+                _segments = value;
+            }
+        }
+
+        public virtual IList<LearningOutcome> Outcomes
+        {
+            get { return _outcomes; }
+            set
+            {
+                CheckPublished();
+                _outcomes = value;
+            }
+        }
+        
+        #endregion
 
         public virtual void BuildIndex(IList<CourseSegment> segments, ref Dictionary<Guid, CourseSegment> index)
         {
             foreach (var courseSegment in segments)
             {
                 index.Add(courseSegment.Id, courseSegment);
-                if (courseSegment.ChildrenSegments.Count > 0) BuildIndex(courseSegment.ChildrenSegments, ref index);
+                if (courseSegment.ChildSegments.Count > 0) BuildIndex(courseSegment.ChildSegments, ref index);
             }
         }
 
@@ -129,6 +140,51 @@ namespace BpeProducts.Services.Course.Domain.Entities
 
             Programs.Clear();
             Programs = programs;
+        }
+
+        public virtual CourseSegment AddSegment(Guid segmentId, Guid parentSegmentId, SaveCourseSegmentRequest request)
+        {
+            CourseSegment parentSegment = null;
+            if (parentSegmentId != Guid.Empty)
+            {
+                parentSegment = _segments.FirstOrDefault(s => s.Id == parentSegmentId);
+
+                if (parentSegment == null) 
+                    throw new BadRequestException(string.Format("Cannot add segment to Course {0} with parent Segment SegmentId {1}. Parent segment SegmentId does not exists", Id, parentSegmentId));
+            }
+
+            var newSegment = new CourseSegment
+            {
+                Course = this,
+                ParentSegment = parentSegment,
+                Id = segmentId,
+                Name = request.Name,
+                Description = request.Description,
+                Type = request.Type,
+                Content = request.Content ?? new List<Content>()
+            };
+
+            if(parentSegment != null)
+                parentSegment.AddSubSegment(newSegment);
+
+            _segments.Add(newSegment);
+
+            return newSegment;
+        }
+
+        public virtual CourseSegment UpdateSegment(Guid segmentId, SaveCourseSegmentRequest request)
+        {
+            var segment = _segments.FirstOrDefault(s => s.Id == segmentId);
+
+            if (segment == null)
+                throw new NotFoundException(string.Format("Segment {0} for Course {1} is not found.", segmentId, Id));
+
+            segment.Name = request.Name;
+            segment.Description = request.Description;
+            segment.Type = request.Type;
+            segment.Content = request.Content ?? new List<Content>();
+
+            return segment;
         }
 
         protected override VersionableEntity Clone()
@@ -159,5 +215,6 @@ namespace BpeProducts.Services.Course.Domain.Entities
                 throw new ForbiddenException(string.Format("Course {0} is published and cannot be modified.", Id));
             }
         }
+
     }
 }

@@ -79,7 +79,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -113,7 +113,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -134,7 +134,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -168,7 +168,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -206,7 +206,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -262,7 +262,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -393,7 +393,7 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});

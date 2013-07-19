@@ -105,7 +105,7 @@ testRunner.And("I associate the following learning outcomes to \'Bachelor of Art
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -197,7 +197,7 @@ this.FeatureBackground();
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -253,7 +253,7 @@ this.FeatureBackground();
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -309,7 +309,7 @@ this.FeatureBackground();
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -350,7 +350,7 @@ this.FeatureBackground();
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});
@@ -410,7 +410,7 @@ this.FeatureBackground();
                         "Name",
                         "Code",
                         "Description",
-                        "Tenant Id",
+                        "Tenant SegmentId",
                         "OrganizationId",
                         "CourseType",
                         "IsTemplate"});

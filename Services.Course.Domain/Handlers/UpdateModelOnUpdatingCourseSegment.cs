@@ -24,11 +24,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             }
 
             var courseInDb = _repository.Get<Entities.Course>(e.AggregateId);
-            var courseSegment = courseInDb.SegmentIndex[e.SegmentId];
-            courseSegment.Name = e.Name;
-            courseSegment.Description = e.Description;
-            courseSegment.Type = e.Type;
-            courseSegment.Content = e.Content;
+            courseInDb.UpdateSegment(e.SegmentId, e.Request);
 
             _repository.Save(courseInDb);
         }

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
-using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
+using CourseSegment = BpeProducts.Services.Course.Domain.Courses.CourseSegment;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
 {
@@ -23,18 +25,10 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-            var courseInDb = _repository.Get<Entities.Course>(e.AggregateId);
-            var newSegment = Mapper.Map<CourseSegment>(e);
-            if (newSegment.ParentSegmentId == Guid.Empty)
-            {
-                courseInDb.Segments.Add(newSegment);
-            }
-            else
-            {
-                var parentSegment = courseInDb.SegmentIndex[e.ParentSegmentId];
-                parentSegment.AddSubSegment(newSegment);
-            }
-            _repository.Save(courseInDb);
+            var course = _repository.Get<Entities.Course>(e.AggregateId);
+            course.AddSegment(e.SegmentId, e.ParentSegmentId, e.Request);
+
+            _repository.Save(course);
         }
     }
 }

@@ -9,29 +9,7 @@ namespace BpeProducts.Services.Course.Domain.Courses.Events
 	{
 		public Entities.Course Apply(Domain.Events.CourseSegmentAdded msg, Entities.Course course)
 		{
-			// Look for the parent Segment Guid in the Segment Index and add the child.
-			IList<CourseSegment> parentSegmentCollection;
-			if (msg.ParentSegmentId == Guid.Empty)
-			{
-				parentSegmentCollection = course.Segments;
-			}
-			else
-			{
-				var parentSegment = course.SegmentIndex[msg.ParentSegmentId];
-				parentSegmentCollection = parentSegment.ChildrenSegments;
-			}
-
-			var segment = new CourseSegment
-				{
-					ParentSegmentId = msg.ParentSegmentId,
-					Id = msg.Id,
-					Description = msg.Description,
-					Name = msg.Name,
-                    Content = new List<Content>(msg.Content)
-				};
-			parentSegmentCollection.Add(segment);
-			course.SegmentIndex[msg.Id] = segment;
-
+		    course.AddSegment(msg.SegmentId, msg.ParentSegmentId, msg.Request);
 			return course;
 		}
 

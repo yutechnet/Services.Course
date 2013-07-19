@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
@@ -40,7 +42,13 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
 
-            return Mapper.Map<CourseSegment>(course.SegmentIndex[segmentId]);
+            var segment = course.Segments.FirstOrDefault(s => s.Id == segmentId);
+            if (segment == null)
+            {
+                throw new NotFoundException(string.Format("Segment {0} for Course {1} is not found.", segmentId, courseId));
+            }
+
+            return Mapper.Map<CourseSegment>(segment);
         }
 
         public IEnumerable<CourseSegment> GetSubSegments(Guid courseId, Guid segmentId)
@@ -51,13 +59,19 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
 
-            return Mapper.Map<IList<CourseSegment>>(course.SegmentIndex[segmentId].ChildrenSegments);
+            var segment = course.Segments.FirstOrDefault(s => s.Id == segmentId);
+            if (segment == null)
+            {
+                throw new NotFoundException(string.Format("Segment {0} for Course {1} is not found.", segmentId, courseId));
+            }
+
+            return Mapper.Map<IList<CourseSegment>>(segment.ChildSegments);
         }
 
         public CourseSegment Create(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             var course = _courseFactory.Reconstitute(courseId);
-            // TODO Need to validate this. Does the Event Store return a null object or Id with Guid.Empty?
+            // TODO Need to validate this. Does the Event Store return a null object or SegmentId with Guid.Empty?
             if (course.Id == Guid.Empty || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
@@ -68,18 +82,15 @@ namespace BpeProducts.Services.Course.Domain
             _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
             {
                 AggregateId = courseId,
-                Description = saveCourseSegmentRequest.Description,
-                Content = saveCourseSegmentRequest.Content,
-                Name = saveCourseSegmentRequest.Name,
+                SegmentId = newSegmentId,
                 ParentSegmentId = Guid.Empty,
-                Id = newSegmentId,
-                Type = saveCourseSegmentRequest.Type
+                Request = saveCourseSegmentRequest
             });
 
             return new CourseSegment
                 {
                     Description = saveCourseSegmentRequest.Description,
-                    Content = new List<Contract.Content> { Mapper.Map<Contract.Content>(saveCourseSegmentRequest.Content) },
+                    Content = saveCourseSegmentRequest.Content ?? new List<Content>(),
                     Name = saveCourseSegmentRequest.Name,
                     ParentSegmentId = Guid.Empty,
                     Id = newSegmentId,
@@ -90,7 +101,7 @@ namespace BpeProducts.Services.Course.Domain
         public CourseSegment Create(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             var course = _courseFactory.Reconstitute(courseId);
-            // TODO Need to validate this. Does the Event Store return a null object or Id with Guid.Empty?
+            // TODO Need to validate this. Does the Event Store return a null object or SegmentId with Guid.Empty?
             if (course.Id == Guid.Empty || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
@@ -101,12 +112,9 @@ namespace BpeProducts.Services.Course.Domain
             _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
             {
                 AggregateId = courseId,
-                Name = saveCourseSegmentRequest.Name,
-                Description = saveCourseSegmentRequest.Description,
-                Content = saveCourseSegmentRequest.Content,
+                SegmentId = newSegmentId,
                 ParentSegmentId = segmentId,
-                Type = saveCourseSegmentRequest.Type,
-                Id = newSegmentId
+                Request = saveCourseSegmentRequest
             });
 
             return new CourseSegment
@@ -123,25 +131,17 @@ namespace BpeProducts.Services.Course.Domain
         public void Update(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             var course = _courseFactory.Reconstitute(courseId);
-            // TODO Need to validate this. Does the Event Store return a null object or Id with Guid.Empty?
+            // TODO Need to validate this. Does the Event Store return a null object or SegmentId with Guid.Empty?
             if (course.Id == Guid.Empty || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
 
-            var courseSegment = course.SegmentIndex[segmentId];
-            Mapper.Map(saveCourseSegmentRequest, courseSegment);
-            courseSegment.Id = segmentId;
-
             _domainEvents.Raise<CourseSegmentUpdated>(new CourseSegmentUpdated
             {
                 AggregateId = courseId,
-                Description = courseSegment.Description,
-                Name = courseSegment.Name,
-                ParentSegmentId = courseSegment.ParentSegmentId,
-                SegmentId = courseSegment.Id,
-                Type = courseSegment.Type,
-                Content = courseSegment.Content
+                SegmentId = segmentId,
+                Request = saveCourseSegmentRequest
             });
         }
 
