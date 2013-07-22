@@ -21,30 +21,30 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             _session = session;
         }
 
-        public Entities.Course Get(Guid programId)
+        public Courses.Course Get(Guid programId)
         {
-            var course = _session.Get<Entities.Course>(programId);
+            var course = _session.Get<Courses.Course>(programId);
             course.IsBuilt = true;
 
             return course;
         }
 
-        public void Save(Entities.Course course)
+        public void Save(Courses.Course course)
         {
             course.IsBuilt = false;
             _session.SaveOrUpdate(course);
         }
 
-        public void Delete(Entities.Course course)
+        public void Delete(Courses.Course course)
         {
             course.IsBuilt = false;
             course.ActiveFlag = false;
             _session.SaveOrUpdate(course);
         }
 
-        public Entities.Course GetVersion(Guid originalEntityId, string versionNumber)
+        public Courses.Course GetVersion(Guid originalEntityId, string versionNumber)
         {
-            var version = (from c in _session.Query<Entities.Course>()
+            var version = (from c in _session.Query<Courses.Course>()
                            where c.OriginalEntity.Id == originalEntityId && c.VersionNumber == versionNumber
                          select c).FirstOrDefault();
 
@@ -54,11 +54,11 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             return version;
         }
 
-        public IList<Entities.Course> ODataQuery(string queryString)
+        public IList<Courses.Course> ODataQuery(string queryString)
         {
-            var criteria = _session.ODataQuery<Entities.Course>(queryString);
+            var criteria = _session.ODataQuery<Courses.Course>(queryString);
             criteria.Add(Restrictions.Eq("ActiveFlag", true));
-            var courses = criteria.List<Entities.Course>();
+            var courses = criteria.List<Courses.Course>();
 
             foreach (var course in courses)
             {

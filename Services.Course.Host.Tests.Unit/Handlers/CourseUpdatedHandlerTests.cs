@@ -84,18 +84,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     ProgramIds = new List<Guid> { programId }
                 };
 
-            var course = new Domain.Entities.Course
-            {
-                Code = "NewCode1",
-                Description = "NewDescription1",
-                Id = courseId,
-                Name = "NewName1",
-                OrganizationId = organizationId,
-                Programs = new List<Program>
+            var course = new Domain.Courses.Course
+                {
+                    Code = "NewCode1",
+                    Description = "NewDescription1",
+                    Id = courseId,
+                    Name = "NewName1",
+                    OrganizationId = organizationId
+                };
+
+            course.SetPrograms(new List<Program>
                         {
                             new Program { Id = programId }
-                        }
-            };
+                        });
 
             return new CourseUpdated
             {
@@ -121,18 +122,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 ProgramIds = new List<Guid> { programId }
             };
 
-            var course = new Domain.Entities.Course
+            var course = new Domain.Courses.Course
             {
                 Code = "OldCode1",
                 Description = "OldDescription1",
                 Id = courseId,
                 Name = "OldName1",
-                OrganizationId = organizationId,
-                Programs = new List<Program>
-                        {
-                            new Program { Id = programId }
-                        }
+                OrganizationId = organizationId
             };
+            course.SetPrograms(new List<Program>
+                {
+                    new Program {Id = programId}
+                });
 
             return new CourseUpdated
             {
@@ -157,20 +158,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 ProgramIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }
             };
 
-            var course = new Domain.Entities.Course
+            var course = new Domain.Courses.Course
             {
                 Code = "OldCode1",
                 Description = "OldDescription1",
                 Id = courseId,
                 Name = "OldName1",
-                OrganizationId = organizationId,
-                Programs = new List<Program>
+                OrganizationId = organizationId
+            };
+            course.SetPrograms( new List<Program>
                         {
                             new Program { Id = Guid.NewGuid() },
                             new Program { Id = Guid.NewGuid() },
                             new Program { Id = Guid.NewGuid() }
-                        }
-            };
+                        });
 
             return new CourseUpdated
             {

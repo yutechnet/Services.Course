@@ -43,7 +43,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     PublishNote = "Blah blah"
                 };
 
-            _mcokRepository.Setup(c => c.Get<Domain.Entities.Course>(courseVersionId)).Returns(new Domain.Entities.Course
+            _mcokRepository.Setup(c => c.Get<Domain.Courses.Course>(courseVersionId)).Returns(new Domain.Courses.Course
                 {
                     Id = courseVersionId,
                     IsPublished = false,

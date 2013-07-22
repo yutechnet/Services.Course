@@ -25,7 +25,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public IEnumerable<CourseSegment> Get(Guid courseId)
         {
-            var course = _repository.Get<Entities.Course>(courseId);
+            var course = _repository.Get<Courses.Course>(courseId);
             if (course == null || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
@@ -36,7 +36,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public CourseSegment Get(Guid courseId, Guid segmentId)
         {
-            var course = _repository.Get<Entities.Course>(courseId);
+            var course = _repository.Get<Courses.Course>(courseId);
             if (course == null || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
@@ -54,7 +54,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public IEnumerable<CourseSegment> GetSubSegments(Guid courseId, Guid segmentId)
         {
-            var course = _repository.Get<Entities.Course>(courseId);
+            var course = _repository.Get<Courses.Course>(courseId);
             if (course == null || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));

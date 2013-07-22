@@ -29,7 +29,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Can_locate_type_from_entity_assembly()
         {
-            _mockRepository.Setup(r => r.Get(It.IsAny<Type>(), It.IsAny<Guid>())).Returns(new Domain.Entities.Course());
+            _mockRepository.Setup(r => r.Get(It.IsAny<Type>(), It.IsAny<Guid>())).Returns(new Domain.Courses.Course());
 
             var entityType = "course";
             var versionableEntity = _factory.Get(entityType, Guid.NewGuid());

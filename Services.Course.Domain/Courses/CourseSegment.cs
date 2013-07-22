@@ -16,7 +16,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             Content = new List<Content>();
         }
 
-        public virtual Entities.Course Course { get; set; }
+        public virtual Course Course { get; set; }
 
         public virtual IList<CourseSegment> ChildSegments { get; set; }
 

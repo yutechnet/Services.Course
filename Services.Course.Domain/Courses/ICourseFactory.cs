@@ -7,8 +7,8 @@ namespace BpeProducts.Services.Course.Domain
 {
 	public interface ICourseFactory
 	{
-		Entities.Course Create(SaveCourseRequest request);
-		Entities.Course Reconstitute(Guid aggregateId);
-		Entities.Course Reconstitute(ICollection<EventMessage> stream, Entities.Course course = null);
+		Courses.Course Create(SaveCourseRequest request);
+		Courses.Course Reconstitute(Guid aggregateId);
+		Courses.Course Reconstitute(ICollection<EventMessage> stream, Courses.Course course = null);
 	}
 }

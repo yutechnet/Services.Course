@@ -35,7 +35,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         [Test]
         public void Add_New_Course_To_Repository()
         {
-            var course = new Domain.Entities.Course();
+            var course = new Domain.Courses.Course();
             _updateModelOnCourseCreationTests.Handle(new CourseCreated { Course = course });
 
             _mockRepository.Verify(c => c.Save(course), Times.Once());

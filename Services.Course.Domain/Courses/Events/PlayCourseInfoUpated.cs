@@ -2,9 +2,9 @@
 
 namespace BpeProducts.Services.Course.Domain
 {
-	public class PlayCourseInfoUpated:IPlayEvent<CourseInfoUpdated, Entities.Course>
+	public class PlayCourseInfoUpated:IPlayEvent<CourseInfoUpdated, Courses.Course>
 	{
-		public Entities.Course Apply(Events.CourseInfoUpdated msg, Entities.Course course)
+		public Courses.Course Apply(Events.CourseInfoUpdated msg, Courses.Course course)
 		{
 			course.Name = msg.Name;
 			course.Code = msg.Code;
@@ -17,7 +17,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public TE Apply<T, TE>(T msg, TE entity) where T : IDomainEvent where TE : class
 	    {
-            return Apply(msg as CourseInfoUpdated, entity as Entities.Course) as TE;
+            return Apply(msg as CourseInfoUpdated, entity as Courses.Course) as TE;
 	    }
 	}
 }

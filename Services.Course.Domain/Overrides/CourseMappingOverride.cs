@@ -10,12 +10,12 @@ using FluentNHibernate.Automapping.Alterations;
 
 namespace BpeProducts.Services.Course.Domain.Overrides
 {
-    public class CourseMappingOverride : IAutoMappingOverride<Entities.Course>
+    public class CourseMappingOverride : IAutoMappingOverride<Courses.Course>
     {
-        public void Override(AutoMapping<Entities.Course> mapping)
+        public void Override(AutoMapping<Courses.Course> mapping)
         {
-            mapping.References<Entities.Course>(c => c.OriginalEntity);
-            mapping.References<Entities.Course>(c => c.ParentEntity);
+            mapping.References<Courses.Course>(c => c.OriginalEntity);
+            mapping.References<Courses.Course>(c => c.ParentEntity);
 
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
 

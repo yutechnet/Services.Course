@@ -3,9 +3,9 @@ using BpeProducts.Services.Course.Domain.Events;
 
 namespace BpeProducts.Services.Course.Domain
 {
-	public class PlayCourseAssociatedWithProgram : IPlayEvent<CourseAssociatedWithProgram, Entities.Course>
+	public class PlayCourseAssociatedWithProgram : IPlayEvent<CourseAssociatedWithProgram, Courses.Course>
 	{
-		public Entities.Course Apply(Events.CourseAssociatedWithProgram msg, Entities.Course course)
+		public Courses.Course Apply(Events.CourseAssociatedWithProgram msg, Courses.Course course)
 		{
 			course.Programs.Add(new Program
 				{
@@ -21,7 +21,7 @@ namespace BpeProducts.Services.Course.Domain
 
 	    public TE Apply<T, TE>(T msg, TE entity) where T : IDomainEvent where TE : class
 	    {
-            return Apply(msg as CourseAssociatedWithProgram, entity as Entities.Course) as TE;
+            return Apply(msg as CourseAssociatedWithProgram, entity as Courses.Course) as TE;
 	    }
 	}
 }

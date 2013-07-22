@@ -2,9 +2,9 @@
 
 namespace BpeProducts.Services.Course.Domain
 {
-	public class PlayCourseCreated:IPlayEvent<CourseCreated, Entities.Course>
+	public class PlayCourseCreated:IPlayEvent<CourseCreated, Courses.Course>
 	{
-		public Entities.Course Apply(CourseCreated msg, Entities.Course course)
+		public Courses.Course Apply(CourseCreated msg, Courses.Course course)
 		{
 		    return msg.Course;
 		    course.TenantId = msg.Course.TenantId;
@@ -14,7 +14,7 @@ namespace BpeProducts.Services.Course.Domain
             where T : IDomainEvent
             where TE : class
 	    {
-            return Apply(msg as CourseCreated, entity as Entities.Course) as TE;
+            return Apply(msg as CourseCreated, entity as Courses.Course) as TE;
 	    }
 	}
 }

@@ -11,16 +11,22 @@ namespace BpeProducts.Services.Course.Domain.Entities
 {
     public class LearningOutcome : VersionableEntity, IHaveOutcomes 
     {
+        private IList<LearningOutcome> _outcomes = new List<LearningOutcome>();
+
         [Required]
         public virtual string Description { get; set; }
-		public virtual IList<LearningOutcome> Outcomes { get; set; }
-		//public virtual IList<IHaveOutcomes> AssociatedEntities { get; set; } 
 
-        public LearningOutcome()
-	    {
-		    Outcomes = new List<LearningOutcome>();
-			//AssociatedEntities = new List<IHaveOutcomes>();
-	    }
+		public virtual IList<LearningOutcome> Outcomes
+		{
+		    get { return _outcomes; }
+		    protected internal set { _outcomes = value; }
+		}
+
+        public virtual LearningOutcome AddLearningOutcome(LearningOutcome outcome)
+        {
+            Outcomes.Add(outcome);
+            return outcome;
+        }
 
         protected override VersionableEntity Clone()
         {

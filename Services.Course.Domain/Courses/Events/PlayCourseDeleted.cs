@@ -2,9 +2,9 @@
 
 namespace BpeProducts.Services.Course.Domain
 {
-	public  class PlayCourseDeleted:IPlayEvent<CourseDeleted, Entities.Course>
+	public  class PlayCourseDeleted:IPlayEvent<CourseDeleted, Courses.Course>
 	{
-		public Entities.Course Apply(CourseDeleted msg, Entities.Course course)
+		public Courses.Course Apply(CourseDeleted msg, Courses.Course course)
 		{
 			course.ActiveFlag = false;
 			return course;
@@ -12,7 +12,7 @@ namespace BpeProducts.Services.Course.Domain
 
 	    public TE Apply<T, TE>(T msg, TE entity) where T : IDomainEvent where TE : class
 	    {
-            return Apply(msg as CourseDeleted, entity as Entities.Course) as TE;
+            return Apply(msg as CourseDeleted, entity as Courses.Course) as TE;
 	    }
 	}
 }

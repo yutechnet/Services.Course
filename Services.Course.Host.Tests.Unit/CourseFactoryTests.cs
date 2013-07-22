@@ -71,44 +71,33 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             var factory = autoMock.Create<TestCourseFactory>();
 
-            var segments = new List<CourseSegment>
-                {
-                    new CourseSegment { Id = Guid.NewGuid() },
-                    new CourseSegment { Id = Guid.NewGuid() },
-                };
-
-            var newChildSegment = new CourseSegment {Id = Guid.NewGuid()};
-            segments.First().AddSubSegment(newChildSegment);
-            segments.Add(newChildSegment);
-
-            var template = new Domain.Entities.Course
+            var template = new Domain.Courses.Course
                 {
                     Id = Guid.NewGuid(),
                     Code = "SomeCode",
                     Name = "SomeName",
                     Description = "SomeDescription",
                     CourseType = ECourseType.Competency,
-                    IsTemplate = false,
                     OrganizationId = Guid.NewGuid(),
                     TenantId = 999999,
-                    Segments = segments,
-                    Programs = new List<Program>
+                };
+
+            template.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest());
+
+            var segmentId = Guid.NewGuid();
+            template.AddSegment(segmentId, Guid.Empty, new SaveCourseSegmentRequest());
+            template.AddSegment(Guid.NewGuid(), segmentId, new SaveCourseSegmentRequest());
+
+            template.SetPrograms(new List<Program>
                         {
                             new Program(),
                             new Program()
-                        },
-                    Outcomes = new List<LearningOutcome>
-                        {
-                            new LearningOutcome(),
-                            new LearningOutcome
-                                {
-                                    Outcomes = new List<LearningOutcome>
-                                        {
-                                            new LearningOutcome()
-                                        }
-                                }
-                        },
-                };
+                        });
+
+            template.AddLearningOutcome(
+                new LearningOutcome().AddLearningOutcome(
+                new LearningOutcome().AddLearningOutcome(
+                new LearningOutcome())));
 
             var request = new SaveCourseRequest
                 {
@@ -172,12 +161,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
         }
 
-        public new Domain.Entities.Course BuildFromTemplate(Domain.Entities.Course template, SaveCourseRequest request)
+        public new Domain.Courses.Course BuildFromTemplate(Domain.Courses.Course template, SaveCourseRequest request)
         {
             return base.BuildFromTemplate(template, request);
         }
 
-        public new Domain.Entities.Course BuildFromScratch(SaveCourseRequest request)
+        public new Domain.Courses.Course BuildFromScratch(SaveCourseRequest request)
         {
             return base.BuildFromScratch(request);
         }

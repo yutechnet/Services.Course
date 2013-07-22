@@ -11,7 +11,7 @@ using EventStore;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-	public class CourseFactory : VersionFactory<Entities.Course>, ICourseFactory
+	public class CourseFactory : VersionFactory<Course>, ICourseFactory
 	{
 	    private readonly ICourseRepository _courseRepository;
 
@@ -20,9 +20,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
 	        _courseRepository = courseRepository;
 	    }
 
-	    public Entities.Course Create(SaveCourseRequest request)
+	    public Course Create(SaveCourseRequest request)
 	    {
-	        Entities.Course course = null;
+	        Course course = null;
             if (request.TemplateCourseId.HasValue)
             {
                 var template = Reconstitute(request.TemplateCourseId.Value);
@@ -43,11 +43,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
 	        return course;
 	    }
 
-        protected Entities.Course BuildFromTemplate(Entities.Course template, SaveCourseRequest request)
+        protected Course BuildFromTemplate(Course template, SaveCourseRequest request)
         {
             //var course = Mapper.Map<Entities.Course>(request);
 
-            var course = new Entities.Course
+            var course = new Course
                 {
                     Id = Guid.NewGuid(),
                     Name = request.Name,
@@ -79,9 +79,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return course;
         }
 
-	    protected Entities.Course BuildFromScratch(SaveCourseRequest request)
+	    protected Course BuildFromScratch(SaveCourseRequest request)
         {
-            var course = new Entities.Course
+            var course = new Course
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,

@@ -33,12 +33,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         [Test]
         public void Soft_Deletes_Course_When_CourseDeleted()
         {
-            var course = new Domain.Entities.Course
+            var course = new Domain.Courses.Course
                 {
                     ActiveFlag = true
                 };
 
-            _mockRepository.Setup(c => c.Get<Domain.Entities.Course>(It.IsAny<Guid>())).Returns(course);
+            _mockRepository.Setup(c => c.Get<Domain.Courses.Course>(It.IsAny<Guid>())).Returns(course);
 
             var courseId = Guid.NewGuid();
             _updateModelOnCourseDeletion.Handle(new CourseDeleted
@@ -46,8 +46,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     AggregateId = courseId
                 });
 
-            _mockRepository.Verify(c => c.Get<Domain.Entities.Course>(courseId), Times.Once());
-            _mockRepository.Verify(c => c.Save(It.Is<Domain.Entities.Course>(x => x.ActiveFlag == false)));
+            _mockRepository.Verify(c => c.Get<Domain.Courses.Course>(courseId), Times.Once());
+            _mockRepository.Verify(c => c.Save(It.Is<Domain.Courses.Course>(x => x.ActiveFlag == false)));
         }
     }
 }

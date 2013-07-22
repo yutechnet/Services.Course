@@ -5,9 +5,9 @@ using BpeProducts.Services.Course.Domain.Events;
 
 namespace BpeProducts.Services.Course.Domain.Courses.Events
 {
-	public class PlayCourseSegmentAdded:IPlayEvent<CourseSegmentAdded, Entities.Course>
+	public class PlayCourseSegmentAdded:IPlayEvent<CourseSegmentAdded, Course>
 	{
-		public Entities.Course Apply(Domain.Events.CourseSegmentAdded msg, Entities.Course course)
+		public Course Apply(Domain.Events.CourseSegmentAdded msg, Course course)
 		{
 		    course.AddSegment(msg.SegmentId, msg.ParentSegmentId, msg.Request);
 			return course;
@@ -15,7 +15,7 @@ namespace BpeProducts.Services.Course.Domain.Courses.Events
 
         public TE Apply<T, TE>(T msg, TE entity) where T : IDomainEvent where TE : class
 	    {
-            return Apply(msg as CourseSegmentAdded, entity as Entities.Course) as TE;
+            return Apply(msg as CourseSegmentAdded, entity as Course) as TE;
 	    }
 	}
 }

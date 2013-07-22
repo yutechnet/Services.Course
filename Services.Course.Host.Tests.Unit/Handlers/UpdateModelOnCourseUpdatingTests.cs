@@ -63,7 +63,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             _mockCourseRepository.Verify(c => c.Get(courseUpdatedEvent.AggregateId), Times.Once());
             _mockCourseRepository.Verify(
-                c => c.Save(It.Is<Domain.Entities.Course>(x => x.Name == courseUpdatedEvent.Request.Name
+                c => c.Save(It.Is<Domain.Courses.Course>(x => x.Name == courseUpdatedEvent.Request.Name
                                                                &&
                                                                x.Description == courseUpdatedEvent.Request.Description
                                                                && x.Code == courseUpdatedEvent.Request.Code
@@ -85,21 +85,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     ProgramIds = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()}
                 };
 
-            var course = new Domain.Entities.Course
+            var course = new Domain.Courses.Course
                 {
                     Code = "OldCode1",
                     Description = "OldDescription1",
                     Id = courseId,
-                    Name = "OldName1",
-                    Programs = new List<Program>
-                        {
-                            new Program {Id = Guid.NewGuid()},
-                            new Program {Id = Guid.NewGuid()},
-                            new Program {Id = Guid.NewGuid()},
-                            new Program {Id = Guid.NewGuid()},
-                            new Program {Id = Guid.NewGuid()}
-                        }
+                    Name = "OldName1"
                 };
+
+            course.SetPrograms(new List<Program>
+                {
+                    new Program {Id = Guid.NewGuid()},
+                    new Program {Id = Guid.NewGuid()},
+                    new Program {Id = Guid.NewGuid()},
+                    new Program {Id = Guid.NewGuid()},
+                    new Program {Id = Guid.NewGuid()}
+                });
 
             return new CourseUpdated
                 {

@@ -6,6 +6,9 @@ namespace BpeProducts.Services.Course.Domain.Entities
 {
     public class Program : TenantEntity, IHaveOutcomes
     {
+        private IList<LearningOutcome> _outcomes = new List<LearningOutcome>();
+        private IList<Courses.Course> _courses = new List<Courses.Course>();
+
         [NotNullable]
         public virtual string Name { get; set; }
 
@@ -16,14 +19,22 @@ namespace BpeProducts.Services.Course.Domain.Entities
         [NotNullable]
         public virtual string ProgramType { get; set; }
 
-        public Program()
+        public virtual IList<Courses.Course> Courses
         {
-            Courses = new List<Course>();
-            Outcomes = new List<LearningOutcome>();
+            get { return _courses; }
+            set { _courses = value; }
         }
 
-        public virtual IList<Course> Courses { get; set; }
+        public virtual IList<LearningOutcome> Outcomes
+        {
+            get { return _outcomes; }
+            protected internal set { _outcomes = value; }
+        }
 
-        public virtual IList<LearningOutcome> Outcomes { get; set; }
+        public virtual LearningOutcome AddLearningOutcome(LearningOutcome outcome)
+        {
+            _outcomes.Add(outcome);
+            return outcome;
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-            var course = _repository.Get<Entities.Course>(e.AggregateId);
+            var course = _repository.Get<Courses.Course>(e.AggregateId);
             course.AddSegment(e.SegmentId, e.ParentSegmentId, e.Request);
 
             _repository.Save(course);

@@ -7,10 +7,10 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 {
     public interface ICourseRepository
     {
-        Entities.Course Get(Guid courseId);
-        void Save(Entities.Course course);
-        void Delete(Entities.Course course);
-        Entities.Course GetVersion(Guid originalCourseId, string versionNumber);
-        IList<Entities.Course> ODataQuery(string queryString);
+        Courses.Course Get(Guid courseId);
+        void Save(Courses.Course course);
+        void Delete(Courses.Course course);
+        Courses.Course GetVersion(Guid originalCourseId, string versionNumber);
+        IList<Courses.Course> ODataQuery(string queryString);
     }
 }

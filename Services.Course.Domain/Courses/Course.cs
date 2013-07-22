@@ -6,11 +6,9 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Events;
-using Newtonsoft.Json;
-using CourseSegment = BpeProducts.Services.Course.Domain.Courses.CourseSegment;
+using BpeProducts.Services.Course.Domain.Entities;
 
-namespace BpeProducts.Services.Course.Domain.Entities
+namespace BpeProducts.Services.Course.Domain.Courses
 {
     public class Course : VersionableEntity, IHaveOutcomes
     {
@@ -20,8 +18,6 @@ namespace BpeProducts.Services.Course.Domain.Entities
 
         #region Properties
 
-        private bool _isTemplate;
-        private Course _template;
         private string _name;
         private string _code;
         private string _description;
@@ -30,15 +26,8 @@ namespace BpeProducts.Services.Course.Domain.Entities
         private IList<Program> _programs = new List<Program>();
         private IList<LearningOutcome> _outcomes = new List<LearningOutcome>();
 
-        public virtual Course Template
-        {
-            get { return _template; }
-            set
-            {
-                CheckPublished();
-                _template = value;
-            }
-        }
+        public virtual Course Template { get; protected internal set; }
+        public virtual bool IsTemplate { get; protected internal set; }
 
         [Required]
         public virtual string Name
@@ -82,23 +71,11 @@ namespace BpeProducts.Services.Course.Domain.Entities
             }
         }
 
-        public virtual bool IsTemplate
-        {
-            get { return _isTemplate; }
-            set
-            {
-                CheckPublished();
-                _isTemplate = value;
-            }
-        }
-        
-
         public virtual IList<Program> Programs
         {
             get { return _programs; }
-            set
+            protected internal set
             {
-                CheckPublished();
                 _programs = value;
             }
         }
@@ -106,9 +83,8 @@ namespace BpeProducts.Services.Course.Domain.Entities
         public virtual IList<CourseSegment> Segments
         {
             get { return _segments; }
-            set
+            protected internal set
             {
-                CheckPublished();
                 _segments = value;
             }
         }
@@ -116,14 +92,21 @@ namespace BpeProducts.Services.Course.Domain.Entities
         public virtual IList<LearningOutcome> Outcomes
         {
             get { return _outcomes; }
-            set
+            protected internal set
             {
-                CheckPublished();
                 _outcomes = value;
             }
         }
-        
+
         #endregion
+
+        public virtual LearningOutcome AddLearningOutcome(LearningOutcome outcome)
+        {
+            CheckPublished();
+
+            _outcomes.Add(outcome);
+            return outcome;
+        }
 
         public virtual void BuildIndex(IList<CourseSegment> segments, ref Dictionary<Guid, CourseSegment> index)
         {
@@ -217,6 +200,5 @@ namespace BpeProducts.Services.Course.Domain.Entities
                 throw new ForbiddenException(string.Format("Course {0} is published and cannot be modified.", Id));
             }
         }
-
     }
 }

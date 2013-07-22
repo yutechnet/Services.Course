@@ -45,11 +45,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var courseVersionCreated = new VersionCreated
                 {
                     AggregateId = courseId,
-                    NewVersion = new Domain.Entities.Course
+                    NewVersion = new Domain.Courses.Course
                         {
                             Id = courseId,
-                            ParentEntity = new Domain.Entities.Course(),
-                            OriginalEntity = new Domain.Entities.Course(),
+                            ParentEntity = new Domain.Courses.Course(),
+                            OriginalEntity = new Domain.Courses.Course(),
                             VersionNumber = "2.0a",
                             IsPublished = false
                         }

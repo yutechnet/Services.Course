@@ -14,7 +14,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
         public void Override(AutoMapping<Entities.Program> mapping)
         {
             mapping
-                .HasManyToMany<Entities.Course>(x => x.Courses)
+                .HasManyToMany<Courses.Course>(x => x.Courses)
                 .ParentKeyColumn("ProgramId")
                 .ChildKeyColumn("CourseId")
                 .Table("CourseProgram")
