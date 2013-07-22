@@ -24,8 +24,8 @@ namespace BpeProducts.Services.Course.Domain.Entities
 
         public virtual LearningOutcome AddLearningOutcome(LearningOutcome outcome)
         {
-            Outcomes.Add(outcome);
-            return outcome;
+            _outcomes.Add(outcome);
+            return this;
         }
 
         protected override VersionableEntity Clone()
