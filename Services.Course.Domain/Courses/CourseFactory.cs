@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using AutoMapper;
 using Autofac.Features.Indexed;
@@ -42,18 +43,33 @@ namespace BpeProducts.Services.Course.Domain.Courses
 	        return course;
 	    }
 
-        private Entities.Course BuildFromTemplate(Entities.Course template, SaveCourseRequest request)
+        protected Entities.Course BuildFromTemplate(Entities.Course template, SaveCourseRequest request)
         {
-            var course = Mapper.Map<Entities.Course>(request);
+            //var course = Mapper.Map<Entities.Course>(request);
 
-            course.Id = Guid.NewGuid();
-            course.CourseType = template.CourseType;
+            var course = new Entities.Course
+                {
+                    Id = Guid.NewGuid(),
+                    Name = request.Name,
+                    Code = request.Code,
+                    Description = request.Description,
+                    OrganizationId = request.OrganizationId,
+                };
+
+            var newSegments = Mapper.Map<List<CourseSegment>>(template.Segments);
+            foreach (var courseSegment in newSegments)
+            {
+                courseSegment.Id = Guid.NewGuid();
+                courseSegment.Course = course;
+            }
+
             course.Programs = new List<Program>(template.Programs);
-            course.Segments = new List<CourseSegment>(template.Segments);
             course.Outcomes = new List<LearningOutcome>(template.Outcomes);
-            course.TenantId = request.TenantId;
+
+            course.CourseType = template.CourseType;
+            course.Segments = newSegments;
+            course.TenantId = template.TenantId;
             course.VersionNumber = new Version(1, 0, 0, 0).ToString();
-            course.OrganizationId = request.OrganizationId;
             course.Template = template;
             course.ActiveFlag = true;
             course.SetOriginalEntity(course);
@@ -63,18 +79,23 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return course;
         }
 
-        private Entities.Course BuildFromScratch(SaveCourseRequest request)
+	    protected Entities.Course BuildFromScratch(SaveCourseRequest request)
         {
-            var course = Mapper.Map<Entities.Course>(request);
-
-            course.Id = Guid.NewGuid();
-            course.ActiveFlag = true;
-            course.OrganizationId = request.OrganizationId;
-            course.VersionNumber = new Version(1, 0, 0, 0).ToString();
-            course.CourseType = request.CourseType;
+            var course = new Entities.Course
+            {
+                Id = Guid.NewGuid(),
+                Name = request.Name,
+                Code = request.Code,
+                Description = request.Description,
+                OrganizationId = request.OrganizationId,
+                TenantId = request.TenantId,
+                ActiveFlag = true,
+                VersionNumber = new Version(1, 0, 0, 0).ToString(),
+                CourseType = request.CourseType,
+                IsBuilt = true
+            };
             course.SetOriginalEntity(course);
 
-            course.IsBuilt = true;
             return course;
         }
 	}

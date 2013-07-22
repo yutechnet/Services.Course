@@ -79,7 +79,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 {
                     Code = "NewCode1",
                     Description = "NewDescription1",
-                    Id = courseId,
                     Name = "NewName1",
                     OrganizationId = organizationId,
                     ProgramIds = new List<Guid> { programId }
@@ -117,7 +116,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             {
                 Code = "NewCode1",
                 Description = "NewDescription",
-                Id = courseId,
                 Name = "NewName1",
                 OrganizationId = organizationId,
                 ProgramIds = new List<Guid> { programId }
@@ -154,7 +152,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             {
                 Code = "NewCode1",
                 Description = "NewDescription",
-                Id = courseId,
                 Name = "NewName1",
                 OrganizationId = organizationId,
                 ProgramIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }

@@ -89,7 +89,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             {
                 Code = courseInfo.Code,
                 Description = courseInfo.Description,
-                Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
                 TenantId = 999999, 
@@ -115,7 +114,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             {
                 Code = courseInfo.Code,
                 Description = courseInfo.Description,
-                Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
                 TenantId = 999999, 
@@ -142,7 +140,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             {
                 Code = courseInfo.Code,
                 Description = courseInfo.Description,
-                Id = courseInfo.Id,
                 Name = courseInfo.Name,
                 ProgramIds = new List<Guid>(),
                 TenantId = 999999,

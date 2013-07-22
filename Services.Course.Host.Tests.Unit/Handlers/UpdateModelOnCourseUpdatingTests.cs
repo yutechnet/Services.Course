@@ -81,7 +81,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 {
                     Code = "NewCode1",
                     Description = "NewDescription",
-                    Id = courseId,
                     Name = "NewName1",
                     ProgramIds = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()}
                 };

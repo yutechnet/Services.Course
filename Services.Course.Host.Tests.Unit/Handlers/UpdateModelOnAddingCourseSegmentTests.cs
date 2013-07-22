@@ -113,7 +113,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             _updateModelOnAddingCourseSegment.Handle(courseSegmentAddedEvent);
 
             _mockRepository.Verify(c => c.Get<Domain.Entities.Course>(courseId), Times.Once());
-            _mockRepository.Verify(c => c.Save(It.Is<Domain.Entities.Course>(d => d.Segments.Count == 1 
+            _mockRepository.Verify(c => c.Save(It.Is<Domain.Entities.Course>(d => d.Segments.Count == 2 
                 && d.Segments[0].ChildSegments.Count == 1
                 && d.Segments[0].ChildSegments[0].Id == courseSegmentId)),
                 Times.Once());

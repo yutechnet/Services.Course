@@ -16,8 +16,6 @@ namespace BpeProducts.Services.Course.Contract
             ProgramIds = new List<Guid>();
 		}
 
-        public Guid Id { get; set; }
-
         [DataMember]
         public Guid? TemplateCourseId { get; set; }
         

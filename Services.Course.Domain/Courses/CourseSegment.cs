@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
+    [Serializable]
     public class CourseSegment : TenantEntity
     {
         public CourseSegment()

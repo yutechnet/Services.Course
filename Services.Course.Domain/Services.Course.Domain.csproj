@@ -186,6 +186,7 @@
     <Compile Include="Courses\CourseSegment.cs" />
     <Compile Include="IVersionableEntityFactory.cs" />
     <Compile Include="IVersionHandler.cs" />
+    <Compile Include="ObjectCopier.cs" />
     <Compile Include="Overrides\CourseSegmentMappingOverride.cs" />
     <Compile Include="Repositories\IProgramRepository.cs" />
     <Compile Include="Repositories\ProgramRepository.cs" />
