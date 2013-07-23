@@ -33,6 +33,7 @@ namespace BpeProducts.Services.Course.Contract
         public bool IsPublished { get; set; }
         public string PublishNote { get; set; }
         public Guid OrganizationId { get; set; }
+		public List<Guid> PrerequisiteCourseIds { get; set; } 
         
     }
 }

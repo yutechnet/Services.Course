@@ -95,6 +95,9 @@ namespace BpeProducts.Services.Course.Domain.Entities
 
         public virtual IList<LearningOutcome> Outcomes { get; set; }
 
+		// TODO: This is ignored right now. Need to work on mapping table
+		public virtual List<Course> PrerequisiteCourses { get; set; }
+
         public Course()
         {
             Programs = new List<Program>();

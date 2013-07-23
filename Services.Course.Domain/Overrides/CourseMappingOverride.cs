@@ -17,6 +17,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
 
             mapping.IgnoreProperty(course => course.SegmentIndex);
             mapping.IgnoreProperty(course => course.Segments);
+			mapping.IgnoreProperty(course => course.PrerequisiteCourses);
             
             //mapping.Map(c => c.OriginalEntity).UniqueKey(uniqueVersion);
             //mapping.Map(c => c.VersionNumber).UniqueKey(uniqueVersion);

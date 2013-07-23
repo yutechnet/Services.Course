@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -48,12 +49,16 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                     }
                 }
 
+				//TODO: Create dedicated event to handle prerequisite changes
+
                 //bus.Publish<CourseCreatedEvent>(new CourseCreatedEvent {});
                 if (@event.Request.Name != @event.Old.Name ||
                     @event.Request.Code != @event.Old.Code ||
                     @event.Request.Description != @event.Old.Description ||
                     @event.Request.CourseType != @event.Old.CourseType ||
-                    @event.Request.IsTemplate != @event.Old.IsTemplate)
+                    @event.Request.IsTemplate != @event.Old.IsTemplate ||
+					!@event.Request.PrerequisiteCourseIds.All(l1 => @event.Old.PrerequisiteCourses.Any(l2 => l1 == l2.Id))
+					)
                 {
                     _domainEvents.Raise<CourseInfoUpdated>(new CourseInfoUpdated
                         {
@@ -62,10 +67,17 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                             Code = @event.Request.Code,
                             Description = @event.Request.Description,
                             CourseType = @event.Request.CourseType,
-                            IsTemplate = @event.Request.IsTemplate
+                            IsTemplate = @event.Request.IsTemplate,
+							PrerequisiteCourseIds = @event.Request.PrerequisiteCourseIds
                         });
                 }
             }
         }
+
+		// TODO: Move Guid comparison items into common
+	    public bool AreGuidListsTheSame(List<Guid> guidList1, List<Guid> guidList2)
+	    {
+			return guidList1.All(l1 => guidList2.Any(l2 => l1 == l2));
+	    }
     }
 }

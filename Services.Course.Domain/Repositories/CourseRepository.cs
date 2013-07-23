@@ -21,9 +21,9 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             _session = session;
         }
 
-        public Entities.Course Get(Guid programId)
+        public Entities.Course Get(Guid courseId)
         {
-            var course = _session.Get<Entities.Course>(programId);
+            var course = _session.Get<Entities.Course>(courseId);
             course.IsBuilt = true;
 
             return course;

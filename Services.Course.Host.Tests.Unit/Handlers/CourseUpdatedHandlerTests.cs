@@ -34,6 +34,33 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 }) ;
         }
 
+		// TODO: Move Guid comparison items into common
+		[Test]
+		public void Can_Compare_two_lists_of_guids_returns_false_when_lists_are_different()
+		{
+			var guid1 = Guid.NewGuid();
+			var guidList1 = new List<Guid> { guid1, Guid.NewGuid() };
+			var guidList2 = new List<Guid> { guid1, Guid.NewGuid() };
+
+			var result = _courseUpdatedHandler.AreGuidListsTheSame(guidList1, guidList2);
+
+			Assert.That(result, Is.False);
+		}
+
+		[Test]
+		public void Can_Compare_two_lists_of_guids_returns_true_when_lists_are_same()
+		{
+			var guid1 = Guid.NewGuid();
+			var guid2 = Guid.NewGuid();
+
+			var guidList1 = new List<Guid> { guid1, guid2 };
+			var guidList2 = new List<Guid> { guid1, guid2 };
+
+			var result = _courseUpdatedHandler.AreGuidListsTheSame(guidList1, guidList2);
+
+			Assert.That(result, Is.True);
+		}
+
         [Test]
         public void Raise_CourseAssociatedWithProgram_Event_When_New_Programs_Are_Added()
         {
@@ -69,11 +96,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             _mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Never());
         }
 
+		[Test]
+		public void Raise_CourseInfoUpdatedEvent_When_Only_Prerequisites_Are_Changed()
+		{
+			var courseUpdatedEvent = CreateCourseUpdatedWithOnlyPrerequisitesChanged();
+			_courseUpdatedHandler.Handle(courseUpdatedEvent);
+
+			_mockDomainEvents.Verify(d => d.Raise<CourseAssociatedWithProgram>(It.IsAny<CourseAssociatedWithProgram>()),
+									 Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CourseDisassociatedWithProgram>(It.IsAny<CourseDisassociatedWithProgram>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Once());
+		}
+
         private CourseUpdated CreateCourseUpdatedEventWithNoCourseInfoUpdate()
         {
             var courseId = Guid.NewGuid();
             var programId = Guid.NewGuid();
             var organizationId = Guid.NewGuid();
+	        var guid1 = Guid.NewGuid();
+	        var guid2 = Guid.NewGuid();
+			var prerequisiteCourseIds = new List<Guid> { guid1, guid2 };
 
             var saveCourseRequest = new SaveCourseRequest
                 {
@@ -82,7 +124,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     Id = courseId,
                     Name = "NewName1",
                     OrganizationId = organizationId,
-                    ProgramIds = new List<Guid> { programId }
+                    ProgramIds = new List<Guid> { programId },
+					PrerequisiteCourseIds = prerequisiteCourseIds
                 };
 
             var course = new Domain.Entities.Course
@@ -95,7 +138,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Programs = new List<Program>
                         {
                             new Program { Id = programId }
-                        }
+                        },
+				PrerequisiteCourses = new List<Domain.Entities.Course> {new Domain.Entities.Course {Id = guid2}, new Domain.Entities.Course {Id = guid1}}
             };
 
             return new CourseUpdated
@@ -120,7 +164,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Id = courseId,
                 Name = "NewName1",
                 OrganizationId = organizationId,
-                ProgramIds = new List<Guid> { programId }
+                ProgramIds = new List<Guid> { programId },
+				PrerequisiteCourseIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() }
             };
 
             var course = new Domain.Entities.Course
@@ -133,7 +178,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Programs = new List<Program>
                         {
                             new Program { Id = programId }
-                        }
+                        },
+				PrerequisiteCourses = new List<Domain.Entities.Course> {new Domain.Entities.Course {Id = Guid.NewGuid()}}
             };
 
             return new CourseUpdated
@@ -157,7 +203,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Id = courseId,
                 Name = "NewName1",
                 OrganizationId = organizationId,
-                ProgramIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() }
+				ProgramIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() },
+				PrerequisiteCourseIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() }
             };
 
             var course = new Domain.Entities.Course
@@ -172,7 +219,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                             new Program { Id = Guid.NewGuid() },
                             new Program { Id = Guid.NewGuid() },
                             new Program { Id = Guid.NewGuid() }
-                        }
+                        },
+				PrerequisiteCourses = new List<Domain.Entities.Course> {new Domain.Entities.Course {Id = Guid.NewGuid()}}
             };
 
             return new CourseUpdated
@@ -183,5 +231,46 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             };
 
         }
+
+		private CourseUpdated CreateCourseUpdatedWithOnlyPrerequisitesChanged()
+		{
+			var courseId = Guid.NewGuid();
+			var programId = Guid.NewGuid();
+			var organizationId = Guid.NewGuid();
+			var guid1 = Guid.NewGuid();
+
+			var saveCourseRequest = new SaveCourseRequest
+			{
+				Code = "NewCode1",
+				Description = "NewDescription1",
+				Id = courseId,
+				Name = "NewName1",
+				OrganizationId = organizationId,
+				ProgramIds = new List<Guid> { programId },
+				PrerequisiteCourseIds = new List<Guid> { guid1, Guid.NewGuid() }
+			};
+
+			var course = new Domain.Entities.Course
+			{
+				Code = "NewCode1",
+				Description = "NewDescription1",
+				Id = courseId,
+				Name = "NewName1",
+				OrganizationId = organizationId,
+				Programs = new List<Program>
+                        {
+                            new Program { Id = programId }
+                        },
+				PrerequisiteCourses  = new List<Domain.Entities.Course> {new Domain.Entities.Course {Id = guid1}}
+			};
+
+			return new CourseUpdated
+			{
+				AggregateId = courseId,
+				Request = saveCourseRequest,
+				Old = course
+			};
+
+		}
     }
 }
