@@ -38,6 +38,8 @@ namespace BpeProducts.Services.Course.Domain
         public void Update(Guid courseId, SaveCourseRequest request)
         {
             var course = _courseFactory.Reconstitute(courseId);
+
+			request.PrerequisiteCourseIds = new List<Guid>();
 			course.PrerequisiteCourses = new List<Entities.Course>();
 
             if (course == null || !course.ActiveFlag)
