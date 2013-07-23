@@ -46,6 +46,6 @@ namespace BpeProducts.Services.Course.Contract
         public List<Guid> ProgramIds { get; set; }
 
 		[DataMember]
-		public List<Guid> PrerequisiteCourseIds { get; set; }        
+		public List<Guid> PrerequisiteCourseIds { get; set; }
     }
 }
