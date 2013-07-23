@@ -122,3 +122,9 @@ Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'p
 
 # verify identity signing certificate is installed
 Deployment-LocateCertificate -CertThumbprint "$IdentityIssuerCertThumbprint" -CertStoreName "My" -CertStoreLocation "LocalMachine"
+
+# set eventlog source
+if($EventLogSource -ne $null)
+{
+	Deployment-SetEventLogSource -EventLogName "Application" -EventSource "$EventLogSource"
+}

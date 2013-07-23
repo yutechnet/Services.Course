@@ -1,4 +1,4 @@
-# Deployment Module v0.1.34
+# Deployment Module v0.1.40
 
 $script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -38,7 +38,7 @@ function Deployment-RemoveHandlerMapping
 		Write-Host "Removing handler mapping `"$handlerName`""
 	
 		Get-WebConfiguration -PSPath "IIS:\Sites\$websiteName" -Filter "/system.webServer/handlers/add[@name='$handlerName']" `
-    		| % { Clear-WebConfiguration -PSPath $_.PSPath -Filter $_.ItemXPath -Location $_.Location }
+		| % { Clear-WebConfiguration -PSPath $_.PSPath -Filter $_.ItemXPath -Location $_.Location }
 	}
 }
 
@@ -379,7 +379,7 @@ Store Locations:
 	CurrentUser
 	LocalMachine
 	
-Store Names: 	
+Store Names:
 	Personal = My
 	Trusted Root Certification Authorities = Root
 	Intermediate Certification Authorities = CertificationAuthority
@@ -477,14 +477,18 @@ function Deployment-GetCertificate
 	if ($certThumbprint)
 	{
 		Write-Host "Checking certificate store `"$certStoreName`" located at `"$certStoreLocation`" for certificate with thumbprint `"$certThumbprint`""
-    	$certs = Get-ChildItem cert:\$certStoreLocation\$certStoreName\* | Where-Object { $_.Thumbprint -eq $certThumbprint }
+		$certs = Get-ChildItem cert:\$certStoreLocation\$certStoreName\* | Where-Object { $_.Thumbprint -eq $certThumbprint }
 	}
 	
 	# find certificate by subject
 	if ($certSubject)
 	{
 		Write-Host "Checking certificate store `"$certStoreName`" located at `"$certStoreLocation`" for certificate with subject `"$certSubject`""
-    	$certs = Get-ChildItem cert:\$certStoreLocation\$certStoreName\* | Where-Object { $_.Subject -eq "CN=$certSubject" }
+		if (-not $certSubject.StartsWith("CN"))
+		{
+			$certSubject = "CN=$certSubject"
+		}
+		$certs = Get-ChildItem cert:\$certStoreLocation\$certStoreName\* | Where-Object { $_.Subject -eq "$certSubject" }
 	}
 	
 	if ($certs)
@@ -508,7 +512,7 @@ function Deployment-GetCertificate
 						$cert = $tmpCert
 					}
 				}
-			}			
+			}
 		}
 		else
 		{
@@ -1301,7 +1305,7 @@ function Deployment-InsertDatabaseSyncTrackingRecord
 	
 	try
 	{
-		$sqlConnection.Open()	
+		$sqlConnection.Open()
 		$sqlCommand = $sqlConnection.CreateCommand()
 		$sqlCommand.CommandText = "INSERT INTO [_Tracking] (Date, Type, Version, Log) VALUES (GETDATE(), @Type, @Version, @Log)"
 
@@ -1575,4 +1579,34 @@ function Deployment-UpdateDeploymentModuleWithVersion
 	$content | Set-Content -Path $deploymentModuleFile
 }
 
+#region Event Log Source
+
+function Deployment-SetEventLogSource
+{
+	param(
+		$eventLogName,
+		$eventSource
+	)
+	
+	Write-Host "Checking for Event Source $eventSource in Windows Event Log $eventLogName"
+	$existingEventLog = Get-EventLog -List | Where {$_.Log -eq $eventLogName}
+	if ($existingEventLog -eq $null) 
+	{
+		Write-Host "Creating Windows Event Log $eventLogName and Event Source $eventSource"
+		New-EventLog -LogName "$eventLogName" -Source "$eventSource" -ErrorAction SilentlyContinue
+		Write-EventLog -LogName "$eventLogName" -Source "$eventSource" -Message "Log and Source created" -EventId 0 -EntryType information
+	}
+	else
+	{
+		$existingSource = Get-EventLog -LogName "$eventLogName" | Select-Object Source -Unique | Where {$_.Source -eq "$eventSource"}
+		if ($existingSource -eq $null) 
+		{
+			Write-Host "Creating Event Source $eventSource in Windows Event Log $eventLogName"
+			New-EventLog -LogName "$eventLogName" -Source "$eventSource" -ErrorAction SilentlyContinue
+			Write-EventLog -LogName "$eventLogName" -Source "$eventSource" -Message "Source created" -EventId 0 -EntryType information
+		}
+	}
+}
+
+#endregion
 
