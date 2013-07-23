@@ -14,6 +14,7 @@ namespace BpeProducts.Services.Course.Contract
         public SaveCourseRequest()
         {
             ProgramIds = new List<Guid>();
+            PrerequisiteCourseIds = new List<Guid>();
 		}
 
         public Guid Id { get; set; }
