@@ -70,17 +70,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.11\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.45.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.47.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.45\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.47\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis, Version=1.0.11.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.11\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApi, Version=1.0.65.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.65\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
+    <Reference Include="BpeProducts.Common.WebApi">
+      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.67\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.17.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

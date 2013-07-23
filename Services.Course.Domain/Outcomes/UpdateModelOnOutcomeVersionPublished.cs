@@ -35,9 +35,9 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
             {
                 throw new NotFoundException(string.Format("Learning outcome {0} not found.", e.AggregateId));
             }
-            entity.IsPublished = true;
-            entity.PublishNote = e.PublishNote;
 
+            entity.Publish(e.PublishNote);
+            
             _repository.Update(entity);
         }
     }

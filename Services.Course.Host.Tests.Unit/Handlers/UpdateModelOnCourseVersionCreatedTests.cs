@@ -45,14 +45,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var courseVersionCreated = new VersionCreated
                 {
                     AggregateId = courseId,
-                    NewVersion = new Domain.Courses.Course
-                        {
-                            Id = courseId,
-                            ParentEntity = new Domain.Courses.Course(),
-                            OriginalEntity = new Domain.Courses.Course(),
-                            VersionNumber = "2.0a",
-                            IsPublished = false
-                        }
+                    NewVersion = new Domain.Courses.Course().CreateVersion("2.0a")
                 };
 
             var updateModelOnCourseVersionCreation = autoMock.Create<UpdateModelOnCourseVersionCreation>();

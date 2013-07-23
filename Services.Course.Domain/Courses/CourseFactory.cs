@@ -38,8 +38,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 course = BuildFromScratch(request);
             }
 
-	        course.IsBuilt = true;
-
 	        return course;
 	    }
 
@@ -69,12 +67,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             course.CourseType = template.CourseType;
             course.Segments = newSegments;
             course.TenantId = template.TenantId;
-            course.VersionNumber = new Version(1, 0, 0, 0).ToString();
             course.Template = template;
             course.ActiveFlag = true;
-            course.SetOriginalEntity(course);
             course.IsTemplate = request.IsTemplate;
-            course.IsBuilt = true;
 
             return course;
         }
@@ -90,11 +85,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 OrganizationId = request.OrganizationId,
                 TenantId = request.TenantId,
                 ActiveFlag = true,
-                VersionNumber = new Version(1, 0, 0, 0).ToString(),
                 CourseType = request.CourseType,
-                IsBuilt = true
             };
-            course.SetOriginalEntity(course);
 
             return course;
         }

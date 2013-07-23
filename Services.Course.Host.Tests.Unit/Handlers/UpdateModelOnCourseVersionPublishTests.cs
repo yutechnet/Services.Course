@@ -46,8 +46,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             _mcokRepository.Setup(c => c.Get<Domain.Courses.Course>(courseVersionId)).Returns(new Domain.Courses.Course
                 {
                     Id = courseVersionId,
-                    IsPublished = false,
-                    PublishNote = null
                 });
 
             _updateModelOnCourseVersionPublish.Handle(courseVersionPublished);

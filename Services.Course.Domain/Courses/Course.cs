@@ -12,10 +12,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
 {
     public class Course : VersionableEntity, IHaveOutcomes
     {
-        // move this to Entity in common project
-        [NotPersisted]
-        public virtual bool IsBuilt { get; internal protected set; }
-
         #region Properties
 
         private string _name;
@@ -74,28 +70,19 @@ namespace BpeProducts.Services.Course.Domain.Courses
         public virtual IList<Program> Programs
         {
             get { return _programs; }
-            protected internal set
-            {
-                _programs = value;
-            }
+            protected internal set { _programs = value; }
         }
 
         public virtual IList<CourseSegment> Segments
         {
             get { return _segments; }
-            protected internal set
-            {
-                _segments = value;
-            }
+            protected internal set { _segments = value; }
         }
 
         public virtual IList<LearningOutcome> Outcomes
         {
             get { return _outcomes; }
-            protected internal set
-            {
-                _outcomes = value;
-            }
+            protected internal set { _outcomes = value; }
         }
 
         #endregion
@@ -127,25 +114,30 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual CourseSegment AddSegment(Guid segmentId, Guid parentSegmentId, SaveCourseSegmentRequest request)
         {
+            CheckPublished();
+
             CourseSegment parentSegment = null;
             if (parentSegmentId != Guid.Empty)
             {
                 parentSegment = _segments.FirstOrDefault(s => s.Id == parentSegmentId);
 
-                if (parentSegment == null) 
-                    throw new BadRequestException(string.Format("Cannot add segment to Course {0} with parent Segment SegmentId {1}. Parent segment SegmentId does not exists", Id, parentSegmentId));
+                if (parentSegment == null)
+                    throw new BadRequestException(
+                        string.Format(
+                            "Cannot add segment to Course {0} with parent Segment SegmentId {1}. Parent segment SegmentId does not exists",
+                            Id, parentSegmentId));
             }
 
             var newSegment = new CourseSegment
-            {
-                Course = this,
-                Id = segmentId,
-                Name = request.Name,
-                Description = request.Description,
-                Type = request.Type,
-                Content = request.Content ?? new List<Content>(),
-                TenantId = TenantId
-            };
+                {
+                    Course = this,
+                    Id = segmentId,
+                    Name = request.Name,
+                    Description = request.Description,
+                    Type = request.Type,
+                    Content = request.Content ?? new List<Content>(),
+                    TenantId = TenantId
+                };
 
             if (parentSegment != null)
             {
@@ -191,14 +183,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     Template = this.Template,
                     ActiveFlag = true
                 };
-        }
-
-        private void CheckPublished()
-        {
-            if (IsBuilt && IsPublished)
-            {
-                throw new ForbiddenException(string.Format("Course {0} is published and cannot be modified.", Id));
-            }
         }
     }
 }

@@ -27,10 +27,9 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
                     Id = outcomeId,
                     ActiveFlag = true,
                     Description = request.Description,
-                    VersionNumber = new Version(1, 0, 0, 0).ToString(),
                     TenantId = request.TenantId
                 };
-            outcome.SetOriginalEntity(outcome);
+
             return outcome;
         }
     }

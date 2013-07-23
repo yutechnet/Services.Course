@@ -59,7 +59,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Assert.That(course.IsTemplate, Is.EqualTo(request.IsTemplate));
             Assert.That(course.OrganizationId, Is.EqualTo(request.OrganizationId));
             Assert.That(course.TenantId, Is.EqualTo(request.TenantId));
-            Assert.That(course.IsBuilt, Is.EqualTo(true));
             Assert.That(course.ActiveFlag, Is.EqualTo(true));
             Assert.That(course.VersionNumber, Is.EqualTo(new Version(1, 0, 0, 0).ToString()));
         }
@@ -117,7 +116,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Assert.That(course.IsTemplate, Is.EqualTo(request.IsTemplate));
             Assert.That(course.OrganizationId, Is.EqualTo(request.OrganizationId));
             Assert.That(course.TenantId, Is.EqualTo(template.TenantId));
-            Assert.That(course.IsBuilt, Is.EqualTo(true));
             Assert.That(course.ActiveFlag, Is.EqualTo(true));
             Assert.That(course.VersionNumber, Is.EqualTo(new Version(1, 0, 0, 0).ToString()));
 

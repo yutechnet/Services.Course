@@ -24,20 +24,17 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         public Courses.Course Get(Guid programId)
         {
             var course = _session.Get<Courses.Course>(programId);
-            course.IsBuilt = true;
 
             return course;
         }
 
         public void Save(Courses.Course course)
         {
-            course.IsBuilt = false;
             _session.SaveOrUpdate(course);
         }
 
         public void Delete(Courses.Course course)
         {
-            course.IsBuilt = false;
             course.ActiveFlag = false;
             _session.SaveOrUpdate(course);
         }
@@ -48,9 +45,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
                            where c.OriginalEntity.Id == originalEntityId && c.VersionNumber == versionNumber
                          select c).FirstOrDefault();
 
-            if (version != null) 
-                version.IsBuilt = true;
-
             return version;
         }
 
@@ -59,11 +53,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             var criteria = _session.ODataQuery<Courses.Course>(queryString);
             criteria.Add(Restrictions.Eq("ActiveFlag", true));
             var courses = criteria.List<Courses.Course>();
-
-            foreach (var course in courses)
-            {
-                course.IsBuilt = true;
-            }
 
             return courses;
         }

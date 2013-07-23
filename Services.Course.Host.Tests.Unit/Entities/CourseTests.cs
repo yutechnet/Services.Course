@@ -146,7 +146,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.DoesNotThrow(() => course.Name = "name" );
             Assert.DoesNotThrow(() => course.Description = "description");
             Assert.DoesNotThrow(() => course.CourseType = ECourseType.Competency);
-            Assert.DoesNotThrow(() => course.VersionNumber = "1.0");
             Assert.DoesNotThrow(() => course.Code = "code");
             Assert.DoesNotThrow(() => course.SetPrograms(new List<Program>()));
             Assert.DoesNotThrow(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
@@ -156,7 +155,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.Throws<ForbiddenException>(() => course.Name = "name");
             Assert.Throws<ForbiddenException>(() => course.Description = "description");
             Assert.Throws<ForbiddenException>(() => course.CourseType = ECourseType.Competency);
-            Assert.Throws<ForbiddenException>(() => course.VersionNumber = "1.0");
             Assert.Throws<ForbiddenException>(() => course.Code = "code");
             Assert.Throws<ForbiddenException>(() => course.SetPrograms(new List<Program>()));
             Assert.Throws<ForbiddenException>(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));

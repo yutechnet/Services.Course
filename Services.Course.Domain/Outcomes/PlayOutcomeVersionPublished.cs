@@ -10,10 +10,9 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
 {
     public class PlayOutcomeVersionPublished : IPlayEvent<OutcomeVersionPublished, Entities.LearningOutcome>
     {
-        public Entities.LearningOutcome Apply(OutcomeVersionPublished msg, LearningOutcome entity)
+        public LearningOutcome Apply(OutcomeVersionPublished msg, LearningOutcome entity)
         {
-            entity.IsPublished = true;
-            entity.PublishNote = msg.PublishNote;
+            entity.Publish(msg.PublishNote);
 
             return entity;
         }
