@@ -36,11 +36,11 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 	        course.IsTemplate = e.Request.IsTemplate;
 	        course.CourseType = e.Request.CourseType;
 
-		    //Mapper.Map(e.Request, course); // dangerous, should use immutable collections in entity
-
-            course.Programs.Clear();
             var programs = _programRepository.Get(e.Request.ProgramIds);
             course.SetPrograms(programs.ToList());
+
+	        var prerequisites = _courseRepository.Get(e.Request.PrerequisiteCourseIds);
+            course.SetPrerequisites(prerequisites);
 
 	        _courseRepository.Save(course);
 		}

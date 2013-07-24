@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.NHibernate;
 using NHibernate;
@@ -21,11 +22,27 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             _session = session;
         }
 
-        public Courses.Course Get(Guid programId)
+        public Courses.Course Get(Guid courseId)
         {
-            var course = _session.Get<Courses.Course>(programId);
+            var course = _session.Get<Courses.Course>(courseId);
 
             return course;
+        }
+
+        public IList<Courses.Course> Get(List<Guid> ids)
+        {
+            var courses = new List<Courses.Course>();
+            foreach (var id in ids)
+            {
+                var course = _session.Get<Courses.Course>(id);
+
+                if (course == null)
+                    throw new BadRequestException(string.Format("Course {0} does not exist", id));
+
+                courses.Add(course);
+            }
+
+            return courses;
         }
 
         public void Save(Courses.Course course)

@@ -118,6 +118,14 @@ namespace BpeProducts.Services.Course.Domain.Courses
             Programs = programs;
         }
 
+        public virtual void SetPrerequisites(IList<Course> prerequisites)
+        {
+            CheckPublished();
+
+            Prerequisites.Clear();
+            Prerequisites = prerequisites;
+        }
+
         public virtual CourseSegment AddSegment(Guid segmentId, Guid parentSegmentId, SaveCourseSegmentRequest request)
         {
             CheckPublished();

@@ -37,8 +37,6 @@ namespace BpeProducts.Services.Course.Domain
         {
             var course = _courseFactory.Reconstitute(courseId);
 
-			request.PrerequisiteCourseIds = new List<Guid>();
-
             if (course == null || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
