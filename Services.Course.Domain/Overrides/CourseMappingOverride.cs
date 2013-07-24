@@ -36,7 +36,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
 				.Access.CamelCaseField(Prefix.Underscore)
 				.ParentKeyColumn("CourseId")
 				.ChildKeyColumn("PrerequisiteCourseId")
-				.ForeignKeyConstraintNames("FK_Course_Prerequisite", "FK_Prerequisite_Course")
+				.ForeignKeyConstraintNames("FK_CoursePrerequisite_Course", "FK_CoursePrerequisite_Course2")
 				.Table("CoursePrerequisite");
 
             mapping
