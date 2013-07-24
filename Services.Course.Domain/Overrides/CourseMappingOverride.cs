@@ -31,10 +31,13 @@ namespace BpeProducts.Services.Course.Domain.Overrides
                 .Access.CamelCaseField(Prefix.Underscore)
                 .ForeignKeyConstraintName("FK_Course_CourseSegment");
 
-            mapping.IgnoreProperty(x => x.Prerequisites);
-                //.HasMany(x => x.Prerequisites)
-                //.Access.CamelCaseField(Prefix.Underscore)
-                //.ForeignKeyConstraintName("FK_Course_Prerequisite");
+			mapping
+				.HasManyToMany(x => x.Prerequisites)
+				.Access.CamelCaseField(Prefix.Underscore)
+				.ParentKeyColumn("CourseId")
+				.ChildKeyColumn("PrerequisiteCourseId")
+				.ForeignKeyConstraintNames("FK_Course_Prerequisite", "FK_Prerequisite_Course")
+				.Table("CoursePrerequisite");
 
             mapping
                 .HasManyToMany(x => x.Programs)
