@@ -47,4 +47,16 @@ namespace BpeProducts.Services.Course.Contract
 		[DataMember]
 		public List<Guid> PrerequisiteCourseIds { get; set; }
     }
+
+    [DataContract]
+    public class UpdateCoursePrerequisites
+    {
+        public UpdateCoursePrerequisites()
+        {
+            PrerequisiteIds = new List<Guid>();
+        }
+
+        [DataMember(IsRequired = true)]
+        public List<Guid> PrerequisiteIds { get; set; }
+    }
 }

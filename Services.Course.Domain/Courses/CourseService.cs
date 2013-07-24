@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
@@ -94,6 +95,45 @@ namespace BpeProducts.Services.Course.Domain
             {
                 AggregateId = courseId,
             });
+        }
+
+        public void UpdatePrerequisiteList(Guid courseId, List<Guid> prerequisiteIds)
+        {
+            var course = _courseFactory.Reconstitute(courseId);
+
+            if (course == null || !course.ActiveFlag)
+            {
+                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
+            }
+
+
+            // Determine prerequisites added
+            foreach (var incomingPrereqId in prerequisiteIds)
+            {
+                // If all of the current prerequisite courses do not equal this incoming prerequisiteId, it's new
+                if (course.Prerequisites.All(existingPrereqs => existingPrereqs.Id != incomingPrereqId))
+                {
+                    _domainEvents.Raise<CoursePrerequisiteAdded>(new CoursePrerequisiteAdded
+                    {
+                        AggregateId = courseId,
+                        PrerequisiteCourseId = incomingPrereqId
+                    });
+                }
+            }
+
+            // Determine prerequisites removed
+            foreach (var currentPrereqCourse in course.Prerequisites)
+            {
+                // If all of the incoming prerequisite Ids do not equal this existing prerequisiteId, it's been removed
+                if (prerequisiteIds.All(incomingPrereqIds => incomingPrereqIds != currentPrereqCourse.Id))
+                {
+                    _domainEvents.Raise<CoursePrerequisiteRemoved>(new CoursePrerequisiteRemoved
+                    {
+                        AggregateId = courseId,
+                        PrerequisiteCourseId = currentPrereqCourse.Id
+                    });
+                }
+            }
         }
     }
 }

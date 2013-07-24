@@ -45,5 +45,12 @@ namespace BpeProducts.Services.Course.Domain
         /// </summary>
         /// <param name="courseId">Course to soft-delete</param>
         void Delete(Guid courseId);
+
+        /// <summary>
+        /// Modify the list of prerequisites for an existing course
+        /// </summary>
+        /// <param name="courseId">Course to update</param>
+        /// <param name="prerequisiteIds">List of course IDs that serve as the prerequisite list</param>
+        void UpdatePrerequisiteList(Guid courseId, List<Guid> prerequisiteIds);
     }
 }

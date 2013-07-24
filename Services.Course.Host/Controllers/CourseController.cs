@@ -73,6 +73,15 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
+        [CheckModelForNull]
+        [ValidateModelState]
+        // PUT api/courses/5/prerequisites
+        public void PutMeHard(string somethingtomakesuretherouteworks, Guid id, List<Guid> prerequisiteIds)
+        {
+            _courseService.UpdatePrerequisiteList(id, prerequisiteIds);
+        }
+
+        [Transaction]
         // DELETE api/courses/5
         public void Delete(Guid id)
         {
