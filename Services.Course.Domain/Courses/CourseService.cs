@@ -5,8 +5,6 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
-using NHibernate;
-using NHibernate.Criterion;
 
 namespace BpeProducts.Services.Course.Domain
 {
@@ -38,6 +36,8 @@ namespace BpeProducts.Services.Course.Domain
         public void Update(Guid courseId, SaveCourseRequest request)
         {
             var course = _courseFactory.Reconstitute(courseId);
+
+			request.PrerequisiteCourseIds = new List<Guid>();
 
             if (course == null || !course.ActiveFlag)
             {

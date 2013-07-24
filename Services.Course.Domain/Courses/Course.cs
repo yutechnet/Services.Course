@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BpeProducts.Common.Exceptions;
-using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
@@ -21,6 +20,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         private IList<CourseSegment> _segments = new List<CourseSegment>();
         private IList<Program> _programs = new List<Program>();
         private IList<LearningOutcome> _outcomes = new List<LearningOutcome>();
+        private IList<Course> _prerequisites = new List<Course>();
 
         public virtual Course Template { get; protected internal set; }
         public virtual bool IsTemplate { get; protected internal set; }
@@ -83,6 +83,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             get { return _outcomes; }
             protected internal set { _outcomes = value; }
+        }
+
+        public virtual IList<Course> Prerequisites
+        {
+            get { return _prerequisites; }
+            protected internal set { _prerequisites = value; }
         }
 
         #endregion
@@ -176,6 +182,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     Programs = new List<Program>(this.Programs),
                     Segments = new List<CourseSegment>(this.Segments),
                     Outcomes = new List<LearningOutcome>(this.Outcomes),
+                    Prerequisites = new List<Course>(this.Prerequisites),
 
                     TenantId = this.TenantId,
                     OrganizationId = this.OrganizationId,

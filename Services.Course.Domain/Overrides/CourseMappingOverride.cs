@@ -27,9 +27,14 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
 
             mapping
-                .HasMany<CourseSegment>(x => x.Segments)
+                .HasMany(x => x.Segments)
                 .Access.CamelCaseField(Prefix.Underscore)
                 .ForeignKeyConstraintName("FK_Course_CourseSegment");
+
+            mapping
+                .HasMany(x => x.Prerequisites)
+                .Access.CamelCaseField(Prefix.Underscore)
+                .ForeignKeyConstraintName("FK_Course_Prerequisite");
 
             mapping
                 .HasManyToMany(x => x.Programs)
@@ -52,41 +57,5 @@ namespace BpeProducts.Services.Course.Domain.Overrides
                 .Column("TemplateCourseId")
                 .ForeignKey("FK_Course_Course3");
         }
-
-        //public void Override(AutoMapping<Courses.Course> mapping)
-        //{
-        //    mapping.Map(Reveal.Member<Courses.Course>("_name")).Column("Name");
-        //    mapping.Map(Reveal.Member<Courses.Course>("_code")).Column("Code");
-        //    mapping.Map(Reveal.Member<Courses.Course>("_description")).Column("Description");
-        //    mapping.Map(Reveal.Member<Courses.Course>("_courseType")).Column("CourseType");
-
-        //    mapping.References<Courses.Course>(c => c.OriginalEntity);
-        //    mapping.References<Courses.Course>(c => c.ParentEntity);
-
-        //    mapping.Id(x => x.Id).GeneratedBy.Assigned();
-
-        //    mapping
-        //        .HasMany<CourseSegment>(Reveal.Member<Courses.Course>("_segments"))
-        //        .KeyColumn("CourseSegmentId");
-
-        //    mapping
-        //        .HasManyToMany<Program>(Reveal.Member<Courses.Course>("_programs"))
-        //        .ParentKeyColumn("CourseId")
-        //        .ChildKeyColumn("ProgramId")
-        //        .ForeignKeyConstraintNames("FK_Course", "FK_Program")
-        //        .Table("CourseProgram");
-
-        //    mapping
-        //        .HasManyToMany<LearningOutcome>(Reveal.Member<Courses.Course>("_outcomes"))
-        //        .ParentKeyColumn("EntityId")
-        //        .ChildKeyColumn("LearningOutcomeId")
-        //        .ForeignKeyConstraintNames("none", "none")
-        //        .Table("EntityLearningOutcome");
-
-        //    mapping
-        //        .References(c => c.Template)
-        //        .Column("TemplateCourseId")
-        //        .ForeignKey("FK_Course_Course3");
-        //}
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BpeProducts.Services.Course.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Events
@@ -11,5 +12,6 @@ namespace BpeProducts.Services.Course.Domain.Events
         public ECourseType CourseType { get; set; }
         public bool IsTemplate { get; set; }
         public Guid AggregateId { get; set; }
+		public List<Guid> PrerequisiteCourseIds { get; set; }
     }
 }
