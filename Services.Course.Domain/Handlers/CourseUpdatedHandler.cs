@@ -49,15 +49,40 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                     }
                 }
 
-				//TODO: Create dedicated event to handle prerequisite changes
+				// Determine prerequisites added
+	            foreach (var incomingPrereqId in @event.Request.PrerequisiteCourseIds)
+	            {
+		            // If all of the current prerequisite courses do not equal this incoming prerequisiteId, it's new
+		            if (@event.Old.PrerequisiteCourses.All(existingPrereqs => existingPrereqs.Id != incomingPrereqId))
+		            {
+						_domainEvents.Raise<CoursePrerequisiteAdded>(new CoursePrerequisiteAdded
+						{
+							AggregateId = @event.AggregateId,
+							PrerequisiteCourseId = incomingPrereqId
+						});
+		            }
+	            }
 
-                //bus.Publish<CourseCreatedEvent>(new CourseCreatedEvent {});
+				// Determine prerequisites removed
+				foreach (var currentPrereqCourse in @event.Old.PrerequisiteCourses)
+				{
+					// If all of the incoming prerequisite Ids do not equal this existing prerequisiteId, it's been removed
+					if (@event.Request.PrerequisiteCourseIds.All(incomingPrereqIds => incomingPrereqIds != currentPrereqCourse.Id))
+					{
+						_domainEvents.Raise<CoursePrerequisiteRemoved>(new CoursePrerequisiteRemoved
+						{
+							AggregateId = @event.AggregateId,
+							PrerequisiteCourseId = currentPrereqCourse.Id
+						});
+					}
+				}
+
+	            //bus.Publish<CourseCreatedEvent>(new CourseCreatedEvent {});
                 if (@event.Request.Name != @event.Old.Name ||
                     @event.Request.Code != @event.Old.Code ||
                     @event.Request.Description != @event.Old.Description ||
                     @event.Request.CourseType != @event.Old.CourseType ||
-                    @event.Request.IsTemplate != @event.Old.IsTemplate ||
-					!@event.Request.PrerequisiteCourseIds.All(l1 => @event.Old.PrerequisiteCourses.Any(l2 => l1 == l2.Id))
+                    @event.Request.IsTemplate != @event.Old.IsTemplate
 					)
                 {
                     _domainEvents.Raise<CourseInfoUpdated>(new CourseInfoUpdated
@@ -67,17 +92,10 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                             Code = @event.Request.Code,
                             Description = @event.Request.Description,
                             CourseType = @event.Request.CourseType,
-                            IsTemplate = @event.Request.IsTemplate,
-							PrerequisiteCourseIds = @event.Request.PrerequisiteCourseIds
+                            IsTemplate = @event.Request.IsTemplate
                         });
                 }
             }
         }
-
-		// TODO: Move Guid comparison items into common
-	    public bool AreGuidListsTheSame(List<Guid> guidList1, List<Guid> guidList2)
-	    {
-			return guidList1.All(l1 => guidList2.Any(l2 => l1 == l2));
-	    }
     }
 }

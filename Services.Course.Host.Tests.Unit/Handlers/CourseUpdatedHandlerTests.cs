@@ -34,33 +34,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 }) ;
         }
 
-		// TODO: Move Guid comparison items into common
-		[Test]
-		public void Can_Compare_two_lists_of_guids_returns_false_when_lists_are_different()
-		{
-			var guid1 = Guid.NewGuid();
-			var guidList1 = new List<Guid> { guid1, Guid.NewGuid() };
-			var guidList2 = new List<Guid> { guid1, Guid.NewGuid() };
-
-			var result = _courseUpdatedHandler.AreGuidListsTheSame(guidList1, guidList2);
-
-			Assert.That(result, Is.False);
-		}
-
-		[Test]
-		public void Can_Compare_two_lists_of_guids_returns_true_when_lists_are_same()
-		{
-			var guid1 = Guid.NewGuid();
-			var guid2 = Guid.NewGuid();
-
-			var guidList1 = new List<Guid> { guid1, guid2 };
-			var guidList2 = new List<Guid> { guid1, guid2 };
-
-			var result = _courseUpdatedHandler.AreGuidListsTheSame(guidList1, guidList2);
-
-			Assert.That(result, Is.True);
-		}
-
         [Test]
         public void Raise_CourseAssociatedWithProgram_Event_When_New_Programs_Are_Added()
         {
@@ -73,15 +46,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         }
 
         [Test]
-        public void Does_Not_Raise_CourseAssociatedWithProgram_Event_When_No_New_Programs_Are_Added()
+        public void Does_Not_Raise_CourseAssociatedWithProgram_Or_CoursePrereq_Events_When_No_Programs_Or_Prereqs_Are_Modified()
         {
-            var courseUpdatedEvent = CreateCourseUpdatedEventWithNoNewPrograms();
+            var courseUpdatedEvent = CreateCourseUpdatedEventWithNoNewProgramsOrPrereqs();
             _courseUpdatedHandler.Handle(courseUpdatedEvent);
 
             _mockDomainEvents.Verify(d => d.Raise<CourseAssociatedWithProgram>(It.IsAny<CourseAssociatedWithProgram>()),
                                      Times.Never());
             _mockDomainEvents.Verify(d => d.Raise<CourseDisassociatedWithProgram>(It.IsAny<CourseDisassociatedWithProgram>()), Times.Never());
             _mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Once());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteAdded>(It.IsAny<CoursePrerequisiteAdded>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteRemoved>(It.IsAny<CoursePrerequisiteRemoved>()), Times.Never());
         }
 
         [Test]
@@ -94,18 +69,64 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                                      Times.Never());
             _mockDomainEvents.Verify(d => d.Raise<CourseDisassociatedWithProgram>(It.IsAny<CourseDisassociatedWithProgram>()), Times.Never());
             _mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteAdded>(It.IsAny<CoursePrerequisiteAdded>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteRemoved>(It.IsAny<CoursePrerequisiteRemoved>()), Times.Never());
         }
 
 		[Test]
-		public void Raise_CourseInfoUpdatedEvent_When_Only_Prerequisites_Are_Changed()
+		public void Does_Raise_CourseInfoUpdatedEvent_When_Only_Prerequisites_Are_Changed()
 		{
-			var courseUpdatedEvent = CreateCourseUpdatedWithOnlyPrerequisitesChanged();
+			var courseUpdatedEvent = CreateCourseUpdatedWithOnePrerequisiteAdded();
 			_courseUpdatedHandler.Handle(courseUpdatedEvent);
 
 			_mockDomainEvents.Verify(d => d.Raise<CourseAssociatedWithProgram>(It.IsAny<CourseAssociatedWithProgram>()),
 									 Times.Never());
 			_mockDomainEvents.Verify(d => d.Raise<CourseDisassociatedWithProgram>(It.IsAny<CourseDisassociatedWithProgram>()), Times.Never());
-			_mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Once());
+			_mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteAdded>(It.IsAny<CoursePrerequisiteAdded>()), Times.Once());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteRemoved>(It.IsAny<CoursePrerequisiteRemoved>()), Times.Never());
+		}
+
+		[Test]
+		public void Raise_CoursePrerequisiteAdded_When_Prerequisite_Is_Added()
+		{
+			var courseUpdatedEvent = CreateCourseUpdatedWithOnePrerequisiteAdded();
+			_courseUpdatedHandler.Handle(courseUpdatedEvent);
+
+			_mockDomainEvents.Verify(d => d.Raise<CourseAssociatedWithProgram>(It.IsAny<CourseAssociatedWithProgram>()),
+									 Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CourseDisassociatedWithProgram>(It.IsAny<CourseDisassociatedWithProgram>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteAdded>(It.IsAny<CoursePrerequisiteAdded>()), Times.Once());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteRemoved>(It.IsAny<CoursePrerequisiteRemoved>()), Times.Never());
+		}
+
+		[Test]
+		public void Raise_CoursePrerequisiteRemoved_When_Prerequisite_Is_Removed()
+		{
+			var courseUpdatedEvent = CreateCourseUpdatedWithOnePrerequisiteRemoved();
+			_courseUpdatedHandler.Handle(courseUpdatedEvent);
+
+			_mockDomainEvents.Verify(d => d.Raise<CourseAssociatedWithProgram>(It.IsAny<CourseAssociatedWithProgram>()),
+									 Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CourseDisassociatedWithProgram>(It.IsAny<CourseDisassociatedWithProgram>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteAdded>(It.IsAny<CoursePrerequisiteAdded>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteRemoved>(It.IsAny<CoursePrerequisiteRemoved>()), Times.Once());
+		}
+
+		[Test]
+		public void Raise_Mix_and_match_of_CoursePrerequisiteRemoved_and_CoursePrerequisiteAdded()
+		{
+			var courseUpdatedEvent = CreateCourseUpdatedWithThreePrerequisitesAddedAndTwoRemoved();
+			_courseUpdatedHandler.Handle(courseUpdatedEvent);
+
+			_mockDomainEvents.Verify(d => d.Raise<CourseAssociatedWithProgram>(It.IsAny<CourseAssociatedWithProgram>()),
+									 Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CourseDisassociatedWithProgram>(It.IsAny<CourseDisassociatedWithProgram>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Never());
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteAdded>(It.IsAny<CoursePrerequisiteAdded>()), Times.Exactly(3));
+			_mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteRemoved>(It.IsAny<CoursePrerequisiteRemoved>()), Times.Exactly(2));
 		}
 
         private CourseUpdated CreateCourseUpdatedEventWithNoCourseInfoUpdate()
@@ -151,7 +172,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
         }
 
-        private CourseUpdated CreateCourseUpdatedEventWithNoNewPrograms()
+        private CourseUpdated CreateCourseUpdatedEventWithNoNewProgramsOrPrereqs()
         {
             var courseId = Guid.NewGuid();
             var programId = Guid.NewGuid();
@@ -165,7 +186,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                 Name = "NewName1",
                 OrganizationId = organizationId,
                 ProgramIds = new List<Guid> { programId },
-				PrerequisiteCourseIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() }
+				PrerequisiteCourseIds = new List<Guid>()
             };
 
             var course = new Domain.Entities.Course
@@ -179,7 +200,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                         {
                             new Program { Id = programId }
                         },
-				PrerequisiteCourses = new List<Domain.Entities.Course> {new Domain.Entities.Course {Id = Guid.NewGuid()}}
+				PrerequisiteCourses = new List<Domain.Entities.Course>()
             };
 
             return new CourseUpdated
@@ -232,7 +253,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
         }
 
-		private CourseUpdated CreateCourseUpdatedWithOnlyPrerequisitesChanged()
+		private CourseUpdated CreateCourseUpdatedWithOnePrerequisiteAdded()
 		{
 			var courseId = Guid.NewGuid();
 			var programId = Guid.NewGuid();
@@ -262,6 +283,98 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                             new Program { Id = programId }
                         },
 				PrerequisiteCourses  = new List<Domain.Entities.Course> {new Domain.Entities.Course {Id = guid1}}
+			};
+
+			return new CourseUpdated
+			{
+				AggregateId = courseId,
+				Request = saveCourseRequest,
+				Old = course
+			};
+
+		}
+
+		private CourseUpdated CreateCourseUpdatedWithOnePrerequisiteRemoved()
+		{
+			var courseId = Guid.NewGuid();
+			var programId = Guid.NewGuid();
+			var organizationId = Guid.NewGuid();
+
+			var saveCourseRequest = new SaveCourseRequest
+			{
+				Code = "NewCode1",
+				Description = "NewDescription1",
+				Id = courseId,
+				Name = "NewName1",
+				OrganizationId = organizationId,
+				ProgramIds = new List<Guid> { programId },
+				PrerequisiteCourseIds = new List<Guid> {  }
+			};
+
+			var course = new Domain.Entities.Course
+			{
+				Code = "NewCode1",
+				Description = "NewDescription1",
+				Id = courseId,
+				Name = "NewName1",
+				OrganizationId = organizationId,
+				Programs = new List<Program>
+                        {
+                            new Program { Id = programId }
+                        },
+				PrerequisiteCourses = new List<Domain.Entities.Course> { new Domain.Entities.Course { Id = Guid.NewGuid() } }
+			};
+
+			return new CourseUpdated
+			{
+				AggregateId = courseId,
+				Request = saveCourseRequest,
+				Old = course
+			};
+
+		}
+
+		private CourseUpdated CreateCourseUpdatedWithThreePrerequisitesAddedAndTwoRemoved()
+		{
+			var courseId = Guid.NewGuid();
+			var programId = Guid.NewGuid();
+			var organizationId = Guid.NewGuid();
+			var guid1 = Guid.NewGuid();
+
+			var saveCourseRequest = new SaveCourseRequest
+			{
+				Code = "NewCode1",
+				Description = "NewDescription1",
+				Id = courseId,
+				Name = "NewName1",
+				OrganizationId = organizationId,
+				ProgramIds = new List<Guid> { programId },
+				PrerequisiteCourseIds = new List<Guid>
+					{
+						Guid.NewGuid(), 
+						guid1, 
+						Guid.NewGuid(), 
+						Guid.NewGuid()
+					}
+			};
+
+			var course = new Domain.Entities.Course
+			{
+				Code = "NewCode1",
+				Description = "NewDescription1",
+				Id = courseId,
+				Name = "NewName1",
+				OrganizationId = organizationId,
+				Programs = new List<Program>
+                        {
+                            new Program { Id = programId }
+                        },
+				PrerequisiteCourses = new List<Domain.Entities.Course>
+					{
+						new Domain.Entities.Course { Id = guid1 }, 
+						new Domain.Entities.Course { Id = Guid.NewGuid() }, 
+						new Domain.Entities.Course { Id = Guid.NewGuid() }
+					}
 			};
 
 			return new CourseUpdated
