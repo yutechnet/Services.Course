@@ -17,13 +17,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         private ICourseService _courseService;
         private Mock<ICourseFactory> _courseFactoryMock;
         private Mock<IDomainEvents> _domainEventsMock;
+	    private Mock<ICourseRepository> _repoMock;
 
         [SetUp]
         public void SetUp()
         {
             _courseFactoryMock = new Mock<ICourseFactory>();
             _domainEventsMock = new Mock<IDomainEvents>();
-            _courseService = new CourseService(_courseFactoryMock.Object, _domainEventsMock.Object, new Mock<ICourseRepository>().Object);
+	        _repoMock = new Mock<ICourseRepository>();
+
+			_courseService = new CourseService(_courseFactoryMock.Object, _domainEventsMock.Object, _repoMock.Object);
         }
 
         [Test]
@@ -31,7 +34,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
             var courseToReturn = new Domain.Courses.Course {Id = Guid.NewGuid(), ActiveFlag = true};
             courseToReturn.SetPrerequisites(new List<Domain.Courses.Course>());
-            _courseFactoryMock.Setup(c => c.Reconstitute(It.IsAny<Guid>())).Returns(courseToReturn);
+			_repoMock.Setup(r => r.Get(It.IsAny<Guid>())).Returns(courseToReturn);
 
             var newPrerequisiteList = new List<Guid> {Guid.NewGuid()};
             _courseService.UpdatePrerequisiteList(Guid.NewGuid(), newPrerequisiteList);
@@ -45,7 +48,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
             var courseToReturn = new Domain.Courses.Course { Id = Guid.NewGuid(), ActiveFlag = true };
             courseToReturn.SetPrerequisites(new List<Domain.Courses.Course> { new Domain.Courses.Course { Id = Guid.NewGuid() } });
-            _courseFactoryMock.Setup(c => c.Reconstitute(It.IsAny<Guid>())).Returns(courseToReturn);
+			_repoMock.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseToReturn);
 
             var newPrerequisiteList = new List<Guid>();
             _courseService.UpdatePrerequisiteList(Guid.NewGuid(), newPrerequisiteList);
@@ -61,7 +64,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             var guid2 = Guid.NewGuid();
             var courseToReturn = new Domain.Courses.Course { Id = Guid.NewGuid(), ActiveFlag = true };
             courseToReturn.SetPrerequisites(new List<Domain.Courses.Course> { new Domain.Courses.Course { Id = guid1 }, new Domain.Courses.Course {Id = guid2}});
-            _courseFactoryMock.Setup(c => c.Reconstitute(It.IsAny<Guid>())).Returns(courseToReturn);
+			_repoMock.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseToReturn);
 
             var newPrerequisiteList = new List<Guid> { guid2, Guid.NewGuid() };
             _courseService.UpdatePrerequisiteList(Guid.NewGuid(), newPrerequisiteList);

@@ -99,7 +99,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public void UpdatePrerequisiteList(Guid courseId, List<Guid> prerequisiteIds)
         {
-            var course = _courseFactory.Reconstitute(courseId);
+            var course = _courseRepository.Get(courseId);
 
             if (course == null || !course.ActiveFlag)
             {
