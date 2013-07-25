@@ -20,6 +20,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		[Transaction]
 		[CheckModelForNull]
 		[ValidateModelState]
+        [HttpPut]
 		// PUT api/courses/5/prerequisites
 		public void Put(Guid id, UpdateCoursePrerequisites prerequisites)
 		{

@@ -20,6 +20,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
     [NUnit.Framework.DescriptionAttribute("CoursePrerequisites")]
+    [NUnit.Framework.IgnoreAttribute()]
     [NUnit.Framework.CategoryAttribute("Api")]
     public partial class CoursePrerequisitesFeature
     {
@@ -36,6 +37,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CoursePrerequisites", "As a course creator\r\nI want to be able to declare the set of courses that need to" +
                     " be accomplished prior to a given course\r\nSo that students can be enrolled in th" +
                     "ese courses", ProgrammingLanguage.CSharp, new string[] {
+                        "Ignore",
                         "Api"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -70,7 +72,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         
         public virtual void FeatureBackground()
         {
-#line 7
+#line 8
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -142,19 +144,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "Traditional",
                         "False"});
-#line 8
+#line 9
  testRunner.Given("the following courses are published:", ((string)(null)), table1, "Given ");
 #line hidden
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Add a course prerequisite")]
+        [NUnit.Framework.IgnoreAttribute()]
         public virtual void AddACoursePrerequisite()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a course prerequisite", ((string[])(null)));
-#line 20
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a course prerequisite", new string[] {
+                        "Ignore"});
+#line 21
 this.ScenarioSetup(scenarioInfo);
-#line 7
+#line 8
 this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -163,7 +167,7 @@ this.FeatureBackground();
                         "Econ 100"});
             table2.AddRow(new string[] {
                         "Econ 200"});
-#line 21
+#line 22
  testRunner.When("I add the following prerequisites to \'Econ 400\'", ((string)(null)), table2, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -172,7 +176,7 @@ this.FeatureBackground();
                         "Econ 100"});
             table3.AddRow(new string[] {
                         "Econ 200"});
-#line 25
+#line 26
  testRunner.Then("the course \'Econ 400\' should have the following prerequisites", ((string)(null)), table3, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -180,12 +184,14 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Remove a course from the prerequisite list")]
+        [NUnit.Framework.IgnoreAttribute()]
         public virtual void RemoveACourseFromThePrerequisiteList()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove a course from the prerequisite list", ((string[])(null)));
-#line 30
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove a course from the prerequisite list", new string[] {
+                        "Ignore"});
+#line 31
 this.ScenarioSetup(scenarioInfo);
-#line 7
+#line 8
 this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -194,7 +200,7 @@ this.FeatureBackground();
                         "Econ 250"});
             table4.AddRow(new string[] {
                         "Econ 300"});
-#line 31
+#line 32
  testRunner.When("I add the following prerequisites to \'Econ 450\'", ((string)(null)), table4, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -203,7 +209,7 @@ this.FeatureBackground();
                         "Econ 350"});
             table5.AddRow(new string[] {
                         "Econ 400"});
-#line 35
+#line 36
  testRunner.And("I add the following prerequisites to \'Econ 450\'", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -212,7 +218,7 @@ this.FeatureBackground();
                         "Econ 350"});
             table6.AddRow(new string[] {
                         "Econ 400"});
-#line 39
+#line 40
  testRunner.Then("the course \'Econ 400\' should have the following prerequisites", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -220,12 +226,14 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Cannot add a prerequisite to a course that is not published")]
+        [NUnit.Framework.IgnoreAttribute()]
         public virtual void CannotAddAPrerequisiteToACourseThatIsNotPublished()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a prerequisite to a course that is not published", ((string[])(null)));
-#line 44
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a prerequisite to a course that is not published", new string[] {
+                        "Ignore"});
+#line 45
 this.ScenarioSetup(scenarioInfo);
-#line 7
+#line 8
 this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -242,16 +250,16 @@ this.FeatureBackground();
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "Traditional",
                         "False"});
-#line 45
+#line 46
  testRunner.Given("the following course is not published:", ((string)(null)), table7, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
             table8.AddRow(new string[] {
                         "Math 101"});
-#line 48
+#line 49
  testRunner.When("I add the following prerequisites to \'Math 200\'", ((string)(null)), table8, "When ");
-#line 51
+#line 52
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -259,21 +267,23 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Cannot add a prerequisite to a course using the wrong organization id")]
+        [NUnit.Framework.IgnoreAttribute()]
         public virtual void CannotAddAPrerequisiteToACourseUsingTheWrongOrganizationId()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a prerequisite to a course using the wrong organization id", ((string[])(null)));
-#line 53
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a prerequisite to a course using the wrong organization id", new string[] {
+                        "Ignore"});
+#line 54
 this.ScenarioSetup(scenarioInfo);
-#line 7
+#line 8
 this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
             table9.AddRow(new string[] {
                         "Econ 350"});
-#line 54
+#line 55
  testRunner.When("I add the following prerequisites to \'Econ 400\'", ((string)(null)), table9, "When ");
-#line 57
+#line 58
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

@@ -1,4 +1,5 @@
-﻿@Api
+﻿@Ignore
+@Api
 Feature: CoursePrerequisites
 	As a course creator
 	I want to be able to declare the set of courses that need to be accomplished prior to a given course
@@ -16,7 +17,7 @@ Background:
 	| Econ 450 | E100 | Financial Economics   | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
 	| Math 101 | M101 | Basic mathematics     | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
 	| Poly 220 | P220 | Comparative Politics  | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
-
+@Ignore
 Scenario: Add a course prerequisite
 	When I add the following prerequisites to 'Econ 400'
 	| Name     | 
@@ -26,7 +27,7 @@ Scenario: Add a course prerequisite
 	| Name     | 
 	| Econ 100 | 
 	| Econ 200 |
-
+@Ignore
 Scenario: Remove a course from the prerequisite list
 	When I add the following prerequisites to 'Econ 450'
 	| Name     | 
@@ -40,7 +41,7 @@ Scenario: Remove a course from the prerequisite list
 	| Name     | 
 	| Econ 350 | 
 	| Econ 400 |
-
+@Ignore
 Scenario: Cannot add a prerequisite to a course that is not published
 	Given the following course is not published:
 		| Name     | Code | Description | OrganizationId                       | CourseType  | IsTemplate |
@@ -49,7 +50,7 @@ Scenario: Cannot add a prerequisite to a course that is not published
 		| Name     |
 		| Math 101 |
 	Then I get 'BadRequest' response
-
+@Ignore
 Scenario: Cannot add a prerequisite to a course using the wrong organization id
 	When I add the following prerequisites to 'Econ 400'
 		| Name     |

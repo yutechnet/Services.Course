@@ -105,7 +105,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             response.EnsureSuccessStatusCode();
             var getResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
-            var coursePreReqs = ScenarioContext.Current.Get<Guid>("CoursePreReqs");            
+            var coursePreReqs = ScenarioContext.Current.Get<List<Guid>>("CoursePreReqs");            
             Assert.AreEqual(getResponse.PrerequisiteCourseIds, coursePreReqs);
         }
     }
