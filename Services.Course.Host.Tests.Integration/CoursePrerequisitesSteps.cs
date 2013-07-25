@@ -83,8 +83,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             response.EnsureSuccessStatusCode();
             var getResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
-            var coursePreReqs = ScenarioContext.Current.Get<List<Guid>>("CoursePreReqs");            
-            Assert.AreEqual(getResponse.PrerequisiteCourseIds, coursePreReqs);
+            var coursePreReqs = ScenarioContext.Current.Get<List<Guid>>("CoursePreReqs");
+            var realPreReqs = getResponse.PrerequisiteCourseIds;
+            foreach (var preReqId in coursePreReqs)
+            {
+                Assert.That(realPreReqs.Contains(preReqId));
+            }
         }
 
         private void PublishCourse(PublishRequest publishRequest, string publishNote, Uri location)
