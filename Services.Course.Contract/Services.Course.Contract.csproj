@@ -166,6 +166,7 @@
     <Compile Include="CourseInfoResponse.cs" />
     <Compile Include="PublishRequest.cs" />
     <Compile Include="CourseSegment.cs" />
+    <Compile Include="UpdateCoursePrerequisites.cs" />
     <Compile Include="VersionRequest.cs" />
     <Compile Include="OutcomeRequest.cs" />
     <Compile Include="OutcomeResponse.cs" />

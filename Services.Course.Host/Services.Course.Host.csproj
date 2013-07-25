@@ -201,6 +201,7 @@
   <ItemGroup>
     <Compile Include="App_Start\MapperConfig.cs" />
     <Compile Include="Controllers\CourseController.cs" />
+    <Compile Include="Controllers\CoursePrerequisiteController.cs" />
     <Compile Include="Controllers\OutcomeController.cs" />
     <Compile Include="Controllers\ProgramController.cs" />
     <Compile Include="Controllers\VersionController.cs" />

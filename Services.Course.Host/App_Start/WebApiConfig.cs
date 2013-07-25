@@ -1,6 +1,4 @@
-﻿using System.Net.Http.Formatting;
-using System.Web.Http;
-using System.Web.Routing;
+﻿using System.Web.Http;
 using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Host
@@ -39,6 +37,12 @@ namespace BpeProducts.Services.Course.Host
 			config.Routes.MapHttpRoute("CourseSegmentsApi3", "{controller}/{courseId}/segments/{segmentId}/segments",
 			                           new {action = "SubSegments"}
 				);
+
+			config.Routes.MapHttpRoute(
+				name: "CoursePrerequisteEdits",
+				routeTemplate: "course/{courseId}/prerequisites",
+				defaults: new { controller = "CoursePrerequisiteController" }
+			);
 
             config.Routes.MapHttpRoute(
 				name: "DefaultApi",
