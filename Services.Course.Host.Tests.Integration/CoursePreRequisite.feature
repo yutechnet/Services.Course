@@ -1,5 +1,4 @@
-﻿@Ignore
-@Api
+﻿@Api
 Feature: CoursePrerequisites
 	As a course creator
 	I want to be able to declare the set of courses that need to be accomplished prior to a given course
@@ -33,16 +32,16 @@ Scenario: Add a course prerequisite
 Scenario: Remove a course from the prerequisite list
 	When I add the following prerequisites to 'Econ 450'
 	| Name     | 
-	| Econ 250 | 
-	| Econ 300 |
+	| Econ 100 | 
+	| Econ 200 |
 	And I add the following prerequisites to 'Econ 450'
 	| Name     | 
-	| Econ 350 | 
-	| Econ 400 |
+	| Econ 300 | 
+	| Econ 350 |
 	Then the course 'Econ 400' should have the following prerequisites
 	| Name     | 
-	| Econ 350 | 
-	| Econ 400 |
+	| Econ 300 | 
+	| Econ 350 |
 
 Scenario: Cannot add a prerequisite to a course that is published
 #Business rules dictate "parent" course is NOT published when pre-reqs are added
@@ -57,9 +56,3 @@ Scenario: Cannot add an unpublished prerequisite to a course
 		| Name     |
 		| Math 150 |
 	Then I get 'Forbidden' response
-
-Scenario: Cannot add a prerequisite to a course using the wrong organization id
-	When I add the following prerequisites to 'Econ 400'
-		| Name     |
-		| Econ 350 |
-	Then I get 'BadRequest' response

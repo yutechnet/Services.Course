@@ -68,10 +68,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             var putUrl = string.Format("{0}/prerequisites", ScenarioContext.Current.Get<Uri>(courseName));
 
-            //Check for successful response (no return DTO)
             var response = ApiFeature.ApiTestHost.Client.PutAsync(putUrl, preReqRequest, new JsonMediaTypeFormatter()).Result;
-            response.EnsureSuccessStatusCode();
 
+            if (ScenarioContext.Current.ContainsKey("ResponseToValidate"))
+            {
+                ScenarioContext.Current.Remove("ResponseToValidate");
+            }
+            ScenarioContext.Current.Add("ResponseToValidate", response);
+
+            if (ScenarioContext.Current.ContainsKey("CoursePreReqs"))
+            {
+                ScenarioContext.Current.Remove("CoursePreReqs");
+            }
             ScenarioContext.Current.Add("CoursePreReqs", preRequisiteList);
         }
 
