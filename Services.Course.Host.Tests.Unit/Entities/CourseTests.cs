@@ -165,6 +165,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 			Assert.That(course.Prerequisites, Is.Empty);
 
 			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+			prerequisiste.Publish("");
 			course.AddPrerequisite(prerequisiste);
 
 			Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
@@ -182,11 +183,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 			Assert.That(course.Prerequisites, Is.Empty);
 
 			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+			prerequisiste.Publish("");
 			course.AddPrerequisite(prerequisiste);
 			course.AddPrerequisite(prerequisiste);
 
 			Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
 			Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
+		}
+
+		[Test]
+		public void Can_add_course_prerequisite_throws_exception_if_prerequisite_is_not_published()
+		{
+			AutoMock autoMock = AutoMock.GetLoose();
+			var courseFactory = autoMock.Create<CourseFactory>();
+
+			var course = courseFactory.Create(new SaveCourseRequest());
+
+			Assert.That(course.Prerequisites, Is.Empty);
+
+			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+			Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiste));
 		}
 
 		[Test]
@@ -200,11 +216,29 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 			Assert.That(course.Prerequisites, Is.Empty);
 
 			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
-			course.AddPrerequisite(prerequisiste);
+			prerequisiste.Id = Guid.NewGuid();
+			prerequisiste.Publish("");
 			course.AddPrerequisite(prerequisiste);
 
 			Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
 			Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
+
+			course.RemovePrerequisite(prerequisiste.Id);
+			Assert.That(course.Prerequisites.Count, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Can_remove_course_prerequisite_gracefully_ignores_requests_to_remove_prereq_that_isnt_there()
+		{
+			AutoMock autoMock = AutoMock.GetLoose();
+			var courseFactory = autoMock.Create<CourseFactory>();
+
+			var course = courseFactory.Create(new SaveCourseRequest());
+
+			Assert.That(course.Prerequisites, Is.Empty);
+
+			course.RemovePrerequisite(Guid.NewGuid());
+			Assert.That(course.Prerequisites.Count, Is.EqualTo(0));
 		}
 
         [Test]

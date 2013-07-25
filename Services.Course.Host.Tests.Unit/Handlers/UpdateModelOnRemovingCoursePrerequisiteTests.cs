@@ -35,9 +35,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 			var aggregateCourseGuid = Guid.NewGuid();
 			var prerequisiteCourseGuid = Guid.NewGuid();
 
+			var courseToAddAsPrerequisite = new Domain.Courses.Course {Id = prerequisiteCourseGuid};
+			courseToAddAsPrerequisite.Publish("");
+
+			var courseToAddAsPrerequisite2 = new Domain.Courses.Course {Id = Guid.NewGuid()};
+			courseToAddAsPrerequisite2.Publish("");
+
 			var aggregateCourse = new Domain.Courses.Course();
-			aggregateCourse.AddPrerequisite(new Domain.Courses.Course { Id = prerequisiteCourseGuid } );
-			aggregateCourse.AddPrerequisite(new Domain.Courses.Course { Id = Guid.NewGuid() });
+			aggregateCourse.AddPrerequisite(courseToAddAsPrerequisite);
+			aggregateCourse.AddPrerequisite(courseToAddAsPrerequisite2);
 			var prerequisiteCourse = new Domain.Courses.Course { Id = prerequisiteCourseGuid };
 
 			_repositoryMock.Setup(r => r.Get<Domain.Courses.Course>(aggregateCourseGuid)).Returns(aggregateCourse);
@@ -55,9 +61,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 			var aggregateCourseGuid = Guid.NewGuid();
 			var prerequisiteCourseGuid = Guid.NewGuid();
 
+			var courseToAddAsPrerequisite = new Domain.Courses.Course { Id = prerequisiteCourseGuid };
+			courseToAddAsPrerequisite.Publish("");
+
+			var courseToAddAsPrerequisite2 = new Domain.Courses.Course { Id = Guid.NewGuid() };
+			courseToAddAsPrerequisite2.Publish("");
+
 			var aggregateCourse = new Domain.Courses.Course();
-			aggregateCourse.AddPrerequisite(new Domain.Courses.Course { Id = prerequisiteCourseGuid });
-			aggregateCourse.AddPrerequisite(new Domain.Courses.Course { Id = Guid.NewGuid() });
+			aggregateCourse.AddPrerequisite(courseToAddAsPrerequisite);
+			aggregateCourse.AddPrerequisite(courseToAddAsPrerequisite2);
 			var prerequisiteCourse = new Domain.Courses.Course { Id = prerequisiteCourseGuid };
 
 			_repositoryMock.Setup(r => r.Get<Domain.Courses.Course>(aggregateCourseGuid)).Returns(aggregateCourse);

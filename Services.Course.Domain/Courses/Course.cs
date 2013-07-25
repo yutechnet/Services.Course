@@ -130,8 +130,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
 		{
 			CheckPublished();
 
-			var prequisiteAlreadyExistsCheck = _prerequisites.FirstOrDefault(p => p.Id == prerequisite.Id);
+			if (!prerequisite.IsPublished)
+			{
+				throw new ForbiddenException("Prerequisite item " + prerequisite.Id + " - " + prerequisite.Name + "is not yet published, and thus cannot be used as a prerequisite to this course.");
+			}
 
+			var prequisiteAlreadyExistsCheck = _prerequisites.FirstOrDefault(p => p.Id == prerequisite.Id);
 			if (prequisiteAlreadyExistsCheck == null)
 			{
 				_prerequisites.Add(prerequisite);
