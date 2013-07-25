@@ -40,35 +40,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
                 addedCourses.Add(courseInfo.Name, courseInfo.Id);
 
-                var publishRequest = new PublishRequest() { PublishNote = "this is now published" };
-                var publishUri = string.Format("{0}/publish", location);
-                var publishResponse = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(publishUri, publishRequest).Result;
-                publishResponse.EnsureSuccessStatusCode();
-
+                if (row["IsPublished"] == "Published")
+                {
+                    var publishRequest = new PublishRequest() { PublishNote = "this is now published" };
+                    PublishCourse(publishRequest, "this is now published", location);
+                }
+                
                 ScenarioContext.Current.Add(courseRequest.Name, request.Headers.Location);
-                ScenarioContext.Current.Add("addedCourseId_" + courseRequest.Name, courseInfo.Id);
-            }
-        }
-
-        [Given(@"the following course is not published:")]
-        public void GivenTheFollowingCourseIsNotPublished(Table table)
-        {
-            foreach (var row in table.Rows)
-            {
-                var courseRequest = new SaveCourseRequest
-                    {
-                        Name = row["Name"],
-                        Code = row["Code"],
-                        Description = row["Description"],
-                        TenantId = 999999,
-                        OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
-                        PrerequisiteCourseIds = new List<Guid>()
-                    };
-
-                var request = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(Url, courseRequest).Result;
-                request.EnsureSuccessStatusCode();
-                var courseInfo = request.Content.ReadAsAsync<CourseInfoResponse>().Result;
-
                 ScenarioContext.Current.Add("addedCourseId_" + courseRequest.Name, courseInfo.Id);
             }
         }
@@ -107,6 +85,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             var coursePreReqs = ScenarioContext.Current.Get<List<Guid>>("CoursePreReqs");            
             Assert.AreEqual(getResponse.PrerequisiteCourseIds, coursePreReqs);
+        }
+
+        private void PublishCourse(PublishRequest publishRequest, string publishNote, Uri location)
+        {
+            if (publishRequest == null) throw new ArgumentNullException("publishRequest");
+            publishRequest = new PublishRequest() { PublishNote = publishNote };
+            var publishUri = string.Format("{0}/publish", location);
+            var publishResponse = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(publishUri, publishRequest).Result;
+            publishResponse.EnsureSuccessStatusCode(); 
         }
     }
 }

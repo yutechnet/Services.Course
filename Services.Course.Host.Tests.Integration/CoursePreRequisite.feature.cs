@@ -80,70 +80,96 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Description",
                         "OrganizationId",
                         "CourseType",
-                        "IsTemplate"});
+                        "IsTemplate",
+                        "IsPublished"});
             table1.AddRow(new string[] {
                         "Econ 100",
                         "E100",
                         "Macroeconomics",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "Traditional",
-                        "False"});
+                        "False",
+                        "Published"});
             table1.AddRow(new string[] {
                         "Econ 200",
                         "E200",
                         "Microeconomics",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "Traditional",
-                        "False"});
+                        "False",
+                        "Published"});
             table1.AddRow(new string[] {
                         "Econ 250",
                         "E100",
                         "Intro to Econometrics",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "Traditional",
-                        "False"});
+                        "False",
+                        "Published"});
             table1.AddRow(new string[] {
                         "Econ 300",
                         "E100",
                         "Applied Econometrics",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "Traditional",
-                        "False"});
+                        "False",
+                        "Published"});
             table1.AddRow(new string[] {
                         "Econ 350",
                         "E350",
                         "Labor Economics",
                         "7DB51BC8-D0CD-44C5-9C67-C64021068B03",
                         "Traditional",
-                        "False"});
+                        "False",
+                        "Published"});
             table1.AddRow(new string[] {
                         "Econ 400",
                         "E400",
                         "Advanced Econometrics",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "Traditional",
-                        "False"});
+                        "False",
+                        "NotPublished"});
             table1.AddRow(new string[] {
                         "Econ 450",
                         "E100",
                         "Financial Economics",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "Traditional",
-                        "False"});
+                        "False",
+                        "NotPublished"});
             table1.AddRow(new string[] {
                         "Math 101",
                         "M101",
                         "Basic mathematics",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "Traditional",
-                        "False"});
+                        "False",
+                        "Published"});
+            table1.AddRow(new string[] {
+                        "Math 150",
+                        "M101",
+                        "Geometry",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Traditional",
+                        "False",
+                        "NotPublished"});
             table1.AddRow(new string[] {
                         "Poly 220",
                         "P220",
                         "Comparative Politics",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
                         "Traditional",
-                        "False"});
+                        "False",
+                        "Published"});
+            table1.AddRow(new string[] {
+                        "Math 200",
+                        "M200",
+                        "Calculus",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Traditional",
+                        "False",
+                        "NotPublished"});
 #line 9
  testRunner.Given("the following courses are published:", ((string)(null)), table1, "Given ");
 #line hidden
@@ -151,12 +177,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Add a course prerequisite")]
-        [NUnit.Framework.IgnoreAttribute()]
         public virtual void AddACoursePrerequisite()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a course prerequisite", new string[] {
-                        "Ignore"});
-#line 21
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a course prerequisite", ((string[])(null)));
+#line 23
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
@@ -167,7 +191,7 @@ this.FeatureBackground();
                         "Econ 100"});
             table2.AddRow(new string[] {
                         "Econ 200"});
-#line 22
+#line 24
  testRunner.When("I add the following prerequisites to \'Econ 400\'", ((string)(null)), table2, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -176,7 +200,7 @@ this.FeatureBackground();
                         "Econ 100"});
             table3.AddRow(new string[] {
                         "Econ 200"});
-#line 26
+#line 28
  testRunner.Then("the course \'Econ 400\' should have the following prerequisites", ((string)(null)), table3, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -184,12 +208,10 @@ this.FeatureBackground();
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Remove a course from the prerequisite list")]
-        [NUnit.Framework.IgnoreAttribute()]
         public virtual void RemoveACourseFromThePrerequisiteList()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove a course from the prerequisite list", new string[] {
-                        "Ignore"});
-#line 31
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove a course from the prerequisite list", ((string[])(null)));
+#line 33
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
@@ -200,7 +222,7 @@ this.FeatureBackground();
                         "Econ 250"});
             table4.AddRow(new string[] {
                         "Econ 300"});
-#line 32
+#line 34
  testRunner.When("I add the following prerequisites to \'Econ 450\'", ((string)(null)), table4, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -209,7 +231,7 @@ this.FeatureBackground();
                         "Econ 350"});
             table5.AddRow(new string[] {
                         "Econ 400"});
-#line 36
+#line 38
  testRunner.And("I add the following prerequisites to \'Econ 450\'", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -218,61 +240,62 @@ this.FeatureBackground();
                         "Econ 350"});
             table6.AddRow(new string[] {
                         "Econ 400"});
-#line 40
+#line 42
  testRunner.Then("the course \'Econ 400\' should have the following prerequisites", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Cannot add a prerequisite to a course that is not published")]
-        [NUnit.Framework.IgnoreAttribute()]
-        public virtual void CannotAddAPrerequisiteToACourseThatIsNotPublished()
+        [NUnit.Framework.DescriptionAttribute("Cannot add a prerequisite to a course that is published")]
+        public virtual void CannotAddAPrerequisiteToACourseThatIsPublished()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a prerequisite to a course that is not published", new string[] {
-                        "Ignore"});
-#line 45
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a prerequisite to a course that is published", ((string[])(null)));
+#line 47
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Code",
-                        "Description",
-                        "OrganizationId",
-                        "CourseType",
-                        "IsTemplate"});
+                        "Name"});
             table7.AddRow(new string[] {
-                        "Math 200",
-                        "M200",
-                        "Calculus",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "Traditional",
-                        "False"});
-#line 46
- testRunner.Given("the following course is not published:", ((string)(null)), table7, "Given ");
+                        "Math 101"});
+#line 49
+ testRunner.When("I add the following prerequisites to \'Math 200\'", ((string)(null)), table7, "When ");
+#line 52
+ testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Cannot add an unpublished prerequisite to a course")]
+        public virtual void CannotAddAnUnpublishedPrerequisiteToACourse()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add an unpublished prerequisite to a course", ((string[])(null)));
+#line 54
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
             table8.AddRow(new string[] {
-                        "Math 101"});
-#line 49
+                        "Math 150"});
+#line 56
  testRunner.When("I add the following prerequisites to \'Math 200\'", ((string)(null)), table8, "When ");
-#line 52
- testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 59
+ testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Cannot add a prerequisite to a course using the wrong organization id")]
-        [NUnit.Framework.IgnoreAttribute()]
         public virtual void CannotAddAPrerequisiteToACourseUsingTheWrongOrganizationId()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a prerequisite to a course using the wrong organization id", new string[] {
-                        "Ignore"});
-#line 54
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a prerequisite to a course using the wrong organization id", ((string[])(null)));
+#line 61
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
@@ -281,9 +304,9 @@ this.FeatureBackground();
                         "Name"});
             table9.AddRow(new string[] {
                         "Econ 350"});
-#line 55
+#line 62
  testRunner.When("I add the following prerequisites to \'Econ 400\'", ((string)(null)), table9, "When ");
-#line 58
+#line 65
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
