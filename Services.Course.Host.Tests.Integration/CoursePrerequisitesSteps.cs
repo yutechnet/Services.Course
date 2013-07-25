@@ -46,12 +46,32 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 publishResponse.EnsureSuccessStatusCode();
 
                 ScenarioContext.Current.Add(courseRequest.Name, request.Headers.Location);
-                ScenarioContext.Current.Add("addedCourseId_" + courseRequest.Name, request.Headers.Location);
+                ScenarioContext.Current.Add("addedCourseId_" + courseRequest.Name, courseInfo.Id);
             }
-
-            
         }
 
+        [Given(@"the following course is not published:")]
+        public void GivenTheFollowingCourseIsNotPublished(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var courseRequest = new SaveCourseRequest
+                    {
+                        Name = row["Name"],
+                        Code = row["Code"],
+                        Description = row["Description"],
+                        TenantId = 999999,
+                        OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                        PrerequisiteCourseIds = new List<Guid>()
+                    };
+
+                var request = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(Url, courseRequest).Result;
+                request.EnsureSuccessStatusCode();
+                var courseInfo = request.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
+                ScenarioContext.Current.Add("addedCourseId_" + courseRequest.Name, courseInfo.Id);
+            }
+        }
 
         [When(@"I add the following prerequisites to '(.*)'")]
         public void WhenIAddTheFollowingPrerequisitesTo(string courseName, Table table)
@@ -69,11 +89,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             };
 
             var putUrl = string.Format("{0}/prerequisites", ScenarioContext.Current.Get<Uri>(courseName));
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(putUrl, preReqRequest, new JsonMediaTypeFormatter()).Result;
 
             //Check for successful response (no return DTO)
-            var courseInfo = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
-            
+            var response = ApiFeature.ApiTestHost.Client.PutAsync(putUrl, preReqRequest, new JsonMediaTypeFormatter()).Result;
+            response.EnsureSuccessStatusCode();
+
+            ScenarioContext.Current.Add("CoursePreReqs", preRequisiteList);
         }
 
         [Then(@"the course '(.*)' should have the following prerequisites")]
@@ -82,11 +103,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var getUri = ScenarioContext.Current.Get<Uri>(courseName);
             var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri.ToString()).Result;
             response.EnsureSuccessStatusCode();
-            var courseInfo = ScenarioContext.Current.Get<CourseInfoResponse>(courseName);
-
-            var listOfPreReqs = courseInfo.PrerequisiteCourseIds;
             var getResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
-            Assert.AreEqual(getResponse.PrerequisiteCourseIds, listOfPreReqs);
+
+            var coursePreReqs = ScenarioContext.Current.Get<Guid>("CoursePreReqs");            
+            Assert.AreEqual(getResponse.PrerequisiteCourseIds, coursePreReqs);
         }
     }
 }
