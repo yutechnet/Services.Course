@@ -55,7 +55,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl.ToString()).Result;
             response.EnsureSuccessStatusCode();
 
-            var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
+            var outcomeResponse = response.Content.ReadAsAsync<OutcomeInfo>().Result;
 
             Assert.That(outcomeResponse.Description, Is.EqualTo(description));
         }
@@ -79,8 +79,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 				program = programs.First(p => p.Name.Equals(entityName));
 			}
 
-			var postUrl = string.Format("{0}/{1}/outcome",
-			                            FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
+			var postUrl = string.Format("{0}/{1}/ToBeDetermined", FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
 
 			var request = new OutcomeRequest
 				{
@@ -102,7 +101,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			program = programs.First(p => p.Name.Equals(programName));
 			
 
-			var postUrl = string.Format("{0}/{1}/outcome",
+			var postUrl = string.Format("{0}/{1}/ToBeDetermined/outcome",
 										FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
 			var outcomeUrls = new Dictionary<string, Uri>();
 			if (ScenarioContext.Current.ContainsKey("learningoutcomeResourceUrls"))
@@ -152,7 +151,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			var getUrl = ScenarioContext.Current.Get<Uri>("learningoutcomeResourceUrl");
 			var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl.ToString()).Result;
 			response.EnsureSuccessStatusCode();
-			var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
+			var outcomeResponse = response.Content.ReadAsAsync<OutcomeInfo>().Result;
 			Assert.That(outcomeResponse.Description, Is.EqualTo(outcome));
 		}
 
@@ -167,7 +166,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 				var getUrl = outcomeUrls[item["Description"]];
 				var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl.ToString()).Result;
 				response.EnsureSuccessStatusCode();
-				var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
+				var outcomeResponse = response.Content.ReadAsAsync<OutcomeInfo>().Result;
 				Assert.That(outcomeResponse.Description, Is.EqualTo(item["Description"]));
 			}
 
@@ -197,12 +196,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			program = programs.First(p => p.Name.Equals(programName));
 
 
-			var getUrl = string.Format("{0}/{1}/outcome",
+            var getUrl = string.Format("{0}/{1}/ToBeDetermined",
 										FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
 
 			var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl).Result;
 			response.EnsureSuccessStatusCode();
-			var outcomes = response.Content.ReadAsAsync<List<OutcomeResponse>>().Result;
+			var outcomes = response.Content.ReadAsAsync<List<OutcomeInfo>>().Result;
 			Assert.That(outcomes.Count,Is.EqualTo(table.Rows.Count));
 			foreach (var row in table.Rows)
 			{
@@ -292,14 +291,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             var programs = ScenarioContext.Current.Get<IList<ProgramResponse>>("programs");
             program = programs.First(p => p.Name.Equals(programName));
-            var postUri = string.Format("{0}/{1}/outcome",
-                                        FeatureContext.Current.Get<string>("ProgramLeadingPath"), program.Id);
+            var postUri = string.Format("{0}/{1}/ToBeDetermined", FeatureContext.Current.Get<string>("ProgramLeadingPath"), program.Id);
 
             var outcomeRequests = table.CreateSet<OutcomeRequest>();
             outcomeRequests.ToList().ForEach(o =>
                 {
-                    var response =
-                        ApiFeature.ApiTestHost.Client.PostAsync(postUri, o, new JsonMediaTypeFormatter()).Result;
+                    var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, o, new JsonMediaTypeFormatter()).Result;
                     response.EnsureSuccessStatusCode();
 
                     ScenarioContext.Current.Add(o.Description, response.Headers.Location);
@@ -309,12 +306,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Given(@"I assoicate the following learning outcomes to '(.*)' course:")]
         public void GivenIAssoicateTheFollowingLearningOutcomesToCourse(string courseName, Table table)
         {
-            var postUri = string.Format("{0}/outcome", ScenarioContext.Current.Get<Uri>(courseName));
+            var postUri = string.Format("{0}/ToBeDetermined", ScenarioContext.Current.Get<Uri>(courseName));
             var outcomeRequests = table.CreateSet<OutcomeRequest>();
             outcomeRequests.ToList().ForEach(o =>
             {
-                var response =
-                    ApiFeature.ApiTestHost.Client.PostAsync(postUri, o, new JsonMediaTypeFormatter()).Result;
+                var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, o, new JsonMediaTypeFormatter()).Result;
                 response.EnsureSuccessStatusCode();
 
                 ScenarioContext.Current.Add(o.Description, response.Headers.Location);
@@ -334,12 +330,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 var childOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(childOutcomeDescription);
 
                 var childOutcomeId = ExtractGuid(childOutcomeResourceUri.ToString(), 1);
-                var putUri = string.Format("{0}/{1}/outcome/{2}", 
-                    FeatureContext.Current.Get<string>("OutcomeLeadingPath"), parentOutcomeId, childOutcomeId);
+                var putUri = string.Format("{0}/{1}/supports/{2}", 
+                    FeatureContext.Current.Get<string>("OutcomeLeadingPath"), childOutcomeId, parentOutcomeId);
 
-                var response =
-                    ApiFeature.ApiTestHost.Client.PutAsync(putUri, new OutcomeRequest { TenantId = 999999 }, new JsonMediaTypeFormatter())
-                              .Result;
+                var response = ApiFeature.ApiTestHost.Client.PutAsync(putUri, new {}, new JsonMediaTypeFormatter()).Result;
                 response.EnsureSuccessStatusCode();
             }
         }
@@ -358,13 +352,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var parentOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(outcomeDescription);
             var parentOutcomeId = ExtractGuid(parentOutcomeResourceUri.ToString(), 1);
 
-            var getUri = string.Format("{0}/{1}/outcome",
-                    FeatureContext.Current.Get<string>("OutcomeLeadingPath"), parentOutcomeId);
+            var getUri = string.Format("{0}/{1}/supports", FeatureContext.Current.Get<string>("OutcomeLeadingPath"), parentOutcomeId);
 
             var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri).Result;
             response.EnsureSuccessStatusCode();
 
-            var childOutcomes = response.Content.ReadAsAsync<IList<OutcomeResponse>>().Result;
+            var childOutcomes = response.Content.ReadAsAsync<IList<OutcomeInfo>>().Result;
             table.CompareToSet(childOutcomes);
         }
 
@@ -376,12 +369,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var childOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(childOutcome);
             var childOutcomeId = ExtractGuid(childOutcomeResourceUri.ToString(), 1);
 
-            var deleteUri = string.Format("{0}/{1}/outcome/{2}",
-                                          FeatureContext.Current.Get<string>("OutcomeLeadingPath"), parentOutcomeId,
-                                          childOutcomeId);
+            var deleteUri = string.Format("{0}/{1}/supports/{2}", FeatureContext.Current.Get<string>("OutcomeLeadingPath"),childOutcomeId, parentOutcomeId);
 
-            var response =
-                ApiFeature.ApiTestHost.Client.DeleteAsync(deleteUri).Result;
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(deleteUri).Result;
             response.EnsureSuccessStatusCode();
         }
 
@@ -389,8 +379,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenTheCourseIncludesTheFollowingLearningOutcomes(string description, Table table)
         {
             var getUri = ScenarioContext.Current.Get<Uri>(description);
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri.ToString() + "/" + "outcome").Result;
-            var outcomes = response.Content.ReadAsAsync<List<OutcomeResponse>>().Result;
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri.ToString() + "/" + "ToBeDetermined").Result;
+            var outcomes = response.Content.ReadAsAsync<List<OutcomeInfo>>().Result;
             table.CompareToSet(outcomes);
         }
     }

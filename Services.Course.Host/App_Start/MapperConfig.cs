@@ -29,21 +29,21 @@ namespace BpeProducts.Services.Course.Host.App_Start
 		          .ForMember(dest => dest.ProgramIds, opt => opt.MapFrom(course => course.Programs.Select(p => p.Id).ToList()))
                   .ForMember(dest => dest.TemplateCourseId, opt=> opt.MapFrom(course => course.Template == null ? Guid.Empty : course.Template.Id))
 				  .ForMember(dest => dest.PrerequisiteCourseIds, opt => opt.MapFrom(course => course.Prerequisites.Select(p => p.Id).ToList()));
-		    Mapper.CreateMap<Domain.Courses.CourseSegment, CourseSegment>();
+		    Mapper.CreateMap<Domain.Courses.CourseSegment, CourseSegmentInfo>();
 
 			// From DTOs to Domain Entities
 			Mapper.CreateMap<SaveCourseRequest, Domain.Courses.Course>()
 			      .ForMember(x => x.Id, opt => opt.Ignore());
-			Mapper.CreateMap<Contract.SaveCourseSegmentRequest, CourseSegment>();
-		    Mapper.CreateMap<CourseSegment, Domain.Courses.CourseSegment>();
+			Mapper.CreateMap<Contract.SaveCourseSegmentRequest, CourseSegmentInfo>();
+		    Mapper.CreateMap<CourseSegmentInfo, Domain.Courses.CourseSegment>();
             Mapper.CreateMap<Domain.Courses.CourseSegment, Domain.Courses.CourseSegment>();
 
-		    Mapper.CreateMap<CourseSegmentAdded, CourseSegment>();
+		    Mapper.CreateMap<CourseSegmentAdded, CourseSegmentInfo>();
 		}
 
         private static void OutcomeMappings()
         {
-            Mapper.CreateMap<LearningOutcome, OutcomeResponse>();
+            Mapper.CreateMap<LearningOutcome, OutcomeInfo>();
             Mapper.CreateMap<OutcomeRequest, LearningOutcome>();
         }
 	}

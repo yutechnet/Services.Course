@@ -83,7 +83,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         // courses/<courseId>/segments
         [HttpGet]
-        public IEnumerable<CourseSegment> Segments(Guid courseId)
+        public IEnumerable<CourseSegmentInfo> Segments(Guid courseId)
         {
             // returns the root course segments, including their childrent segments
             return Get(courseId).Segments;
@@ -118,14 +118,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         // courses/<courseId>/segments/<segmentId>
         [HttpGet]
-        public CourseSegment Segments(Guid courseId, Guid segmentId)
+        public CourseSegmentInfo Segments(Guid courseId, Guid segmentId)
         {
             return _courseSegmentService.Get(courseId, segmentId);
         }
 
         // GET courses/<courseId>/segments/<segmentId>/segments -- returns children of the specified segment
         [HttpGet]
-        public IEnumerable<CourseSegment> SubSegments(Guid courseId, Guid segmentId)
+        public IEnumerable<CourseSegmentInfo> SubSegments(Guid courseId, Guid segmentId)
         {
             return _courseSegmentService.GetSubSegments(courseId, segmentId);
         }
@@ -159,7 +159,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         {
             throw new NotImplementedException();
         }
-
         #endregion
     }
 }

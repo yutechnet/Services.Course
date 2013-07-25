@@ -19,7 +19,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         private ECourseType _courseType;
         private IList<CourseSegment> _segments = new List<CourseSegment>();
         private IList<Program> _programs = new List<Program>();
-        private IList<LearningOutcome> _outcomes = new List<LearningOutcome>();
+        private IList<LearningOutcome> _supportingOutcomes = new List<LearningOutcome>();
         private IList<Course> _prerequisites = new List<Course>();
 
         public virtual Course Template { get; protected internal set; }
@@ -79,10 +79,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
             protected internal set { _segments = value; }
         }
 
-        public virtual IList<LearningOutcome> Outcomes
+        public virtual IList<LearningOutcome> SupportingOutcomes
         {
-            get { return _outcomes; }
-            protected internal set { _outcomes = value; }
+            get { return _supportingOutcomes; }
+            protected internal set { _supportingOutcomes = value; }
         }
 
         public virtual IList<Course> Prerequisites
@@ -93,11 +93,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         #endregion
 
-        public virtual LearningOutcome AddLearningOutcome(LearningOutcome outcome)
+        public virtual LearningOutcome SupportOutcome(LearningOutcome outcome)
         {
             CheckPublished();
 
-            _outcomes.Add(outcome);
+            _supportingOutcomes.Add(outcome);
             return outcome;
         }
 
@@ -208,7 +208,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
                     Programs = new List<Program>(this.Programs),
                     Segments = new List<CourseSegment>(this.Segments),
-                    Outcomes = new List<LearningOutcome>(this.Outcomes),
+                    SupportingOutcomes = new List<LearningOutcome>(this.SupportingOutcomes),
                     Prerequisites = new List<Course>(this.Prerequisites),
 
                     TenantId = this.TenantId,

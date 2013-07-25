@@ -10,17 +10,20 @@ namespace BpeProducts.Services.Course.Domain
 {
     public interface ILearningOutcomeService
     {
-        OutcomeResponse Get(Guid outcomeId);
-        OutcomeResponse Get(string entityType, Guid entityId, Guid outcommeId);
-        IEnumerable<OutcomeResponse> Get(string entityType, Guid entityId);
+        OutcomeInfo Get(Guid outcomeId);
+        OutcomeInfo Get(string entityType, Guid entityId, Guid outcommeId);
+        IEnumerable<OutcomeInfo> Get(string entityType, Guid entityId);
 
-        OutcomeResponse Create(OutcomeRequest request);
-        OutcomeResponse Create(string entityType, Guid entityId, OutcomeRequest request);
+        OutcomeInfo Create(OutcomeRequest request);
+        OutcomeInfo Create(string entityType, Guid entityId, OutcomeRequest request);
 
         void Update(Guid outcomeId, OutcomeRequest request);
         void Update(string entityType, Guid entityId, Guid outcomeId, OutcomeRequest request);
 
         void Delete(Guid outcomeId);
         void Delete(string entityType, Guid entityId, Guid outcomeId);
+        LearningOutcome AddSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId);
+        void RemoveSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId);
+        List<OutcomeInfo> GetSupportingOutcomes(Guid supportingOutcomeId);
     }
 }

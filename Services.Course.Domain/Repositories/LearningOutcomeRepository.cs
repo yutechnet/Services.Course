@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.Ioc.Validation;
+using BpeProducts.Services.Course.Domain.Entities;
 using NHibernate;
 using NHibernate.Linq;
 
@@ -19,6 +21,18 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         public Entities.LearningOutcome Get(Guid outcomeId)
         {
             return _session.Get<Entities.LearningOutcome>(outcomeId);
+        }
+
+        public LearningOutcome Load(Guid outcomeId)
+        {
+            var outcome = Get(outcomeId);
+
+            if (outcome == null)
+            {
+                throw new NotFoundException(string.Format("Learing outcome {0} not found.", outcomeId));
+            }
+
+            return outcome;
         }
 
         public void Save(Entities.LearningOutcome outcome)

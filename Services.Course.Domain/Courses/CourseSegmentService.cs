@@ -23,7 +23,7 @@ namespace BpeProducts.Services.Course.Domain
             _domainEvents = domainEvents;
         }
 
-        public IEnumerable<CourseSegment> Get(Guid courseId)
+        public IEnumerable<CourseSegmentInfo> Get(Guid courseId)
         {
             var course = _repository.Get<Courses.Course>(courseId);
             if (course == null || !course.ActiveFlag)
@@ -31,10 +31,10 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
 
-            return Mapper.Map<IList<CourseSegment>>(course.Segments);
+            return Mapper.Map<IList<CourseSegmentInfo>>(course.Segments);
         }
 
-        public CourseSegment Get(Guid courseId, Guid segmentId)
+        public CourseSegmentInfo Get(Guid courseId, Guid segmentId)
         {
             var course = _repository.Get<Courses.Course>(courseId);
             if (course == null || !course.ActiveFlag)
@@ -48,11 +48,11 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Segment {0} for Course {1} is not found.", segmentId, courseId));
             }
 
-            var returnValue = Mapper.Map<CourseSegment>(segment);
+            var returnValue = Mapper.Map<CourseSegmentInfo>(segment);
             return returnValue;
         }
 
-        public IEnumerable<CourseSegment> GetSubSegments(Guid courseId, Guid segmentId)
+        public IEnumerable<CourseSegmentInfo> GetSubSegments(Guid courseId, Guid segmentId)
         {
             var course = _repository.Get<Courses.Course>(courseId);
             if (course == null || !course.ActiveFlag)
@@ -66,10 +66,10 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Segment {0} for Course {1} is not found.", segmentId, courseId));
             }
 
-            return Mapper.Map<IList<CourseSegment>>(segment.ChildSegments);
+            return Mapper.Map<IList<CourseSegmentInfo>>(segment.ChildSegments);
         }
 
-        public CourseSegment Create(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
+        public CourseSegmentInfo Create(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             var course = _courseFactory.Reconstitute(courseId);
             // TODO Need to validate this. Does the Event Store return a null object or SegmentId with Guid.Empty?
@@ -88,7 +88,7 @@ namespace BpeProducts.Services.Course.Domain
                 Request = saveCourseSegmentRequest
             });
 
-            return new CourseSegment
+            return new CourseSegmentInfo
                 {
                     Description = saveCourseSegmentRequest.Description,
                     Content = saveCourseSegmentRequest.Content ?? new List<Content>(),
@@ -99,7 +99,7 @@ namespace BpeProducts.Services.Course.Domain
                 };
         }
 
-        public CourseSegment Create(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
+        public CourseSegmentInfo Create(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             var course = _courseFactory.Reconstitute(courseId);
             // TODO Need to validate this. Does the Event Store return a null object or SegmentId with Guid.Empty?
@@ -118,7 +118,7 @@ namespace BpeProducts.Services.Course.Domain
                 Request = saveCourseSegmentRequest
             });
 
-            return new CourseSegment
+            return new CourseSegmentInfo
                 {
                     Name = saveCourseSegmentRequest.Name,
                     Description = saveCourseSegmentRequest.Description,

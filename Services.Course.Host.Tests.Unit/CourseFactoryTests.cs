@@ -93,9 +93,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                             new Program()
                         });
 
-            template.AddLearningOutcome(
-                new LearningOutcome().AddLearningOutcome(
-                new LearningOutcome().AddLearningOutcome(
+            template.SupportOutcome(
+                new LearningOutcome().SupportOutcome(
+                new LearningOutcome().SupportOutcome(
                 new LearningOutcome())));
 
             var request = new SaveCourseRequest
@@ -142,14 +142,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             }
 
             // Validating the learning outcomes are clones
-            Assert.That(course.Outcomes.Count, Is.EqualTo(template.Outcomes.Count));
-            foreach (var outcome in course.Outcomes)
+            Assert.That(course.SupportingOutcomes.Count, Is.EqualTo(template.SupportingOutcomes.Count));
+            foreach (var outcome in course.SupportingOutcomes)
             {
-                Assert.That(template.Outcomes.Contains(outcome));
+                Assert.That(template.SupportingOutcomes.Contains(outcome));
             }
 
-            var outcomesWithChild = course.Outcomes.First(s => s.Outcomes.Count > 0);
-            Assert.That(outcomesWithChild.Outcomes.Count, Is.EqualTo(1));
+            var outcomesWithChild = course.SupportingOutcomes.First(s => s.SupportingOutcomes.Count > 0);
+            Assert.That(outcomesWithChild.SupportingOutcomes.Count, Is.EqualTo(1));
         }
     }
 

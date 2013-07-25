@@ -25,13 +25,13 @@ namespace BpeProducts.Services.Course.Domain.Entities
             set { _courses = value; }
         }
 
-        public virtual IList<LearningOutcome> Outcomes
+        public virtual IList<LearningOutcome> SupportingOutcomes
         {
             get { return _outcomes; }
             protected internal set { _outcomes = value; }
         }
 
-        public virtual LearningOutcome AddLearningOutcome(LearningOutcome outcome)
+        public virtual LearningOutcome SupportOutcome(LearningOutcome outcome)
         {
             _outcomes.Add(outcome);
             return outcome;

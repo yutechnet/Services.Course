@@ -54,15 +54,17 @@ namespace BpeProducts.Services.Course.Domain
 
         public CourseInfoResponse Get(Guid courseId)
         {
-            var course = _courseRepository.Get(courseId);
-            // var course = _courseRepository.Get(courseId);
-            if (course == null || !course.ActiveFlag)
+            var course = _courseRepository.Load(courseId);
+
+            var outcomes = course.SupportingOutcomes;
+            foreach (var learningOutcome in outcomes)
             {
-                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
+                Console.WriteLine(learningOutcome.SupportingOutcomes.Count);
             }
+
             var courseInfoResponse = Mapper.Map<CourseInfoResponse>(course);
             // TODO Is this necessary? Should be done in the AutoMapper
-            courseInfoResponse.Segments = Mapper.Map<List<CourseSegment>>(course.Segments);
+            courseInfoResponse.Segments = Mapper.Map<List<CourseSegmentInfo>>(course.Segments);
 
             return courseInfoResponse;
         }

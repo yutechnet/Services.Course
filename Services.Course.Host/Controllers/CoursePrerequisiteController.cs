@@ -26,7 +26,5 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		{
 			_courseService.UpdatePrerequisiteList(id, prerequisites.PrerequisiteIds);
 		}
-
-
     }
 }
