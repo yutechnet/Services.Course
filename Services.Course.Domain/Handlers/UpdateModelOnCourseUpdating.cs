@@ -39,9 +39,6 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             var programs = _programRepository.Get(e.Request.ProgramIds);
             course.SetPrograms(programs.ToList());
 
-	        var prerequisites = _courseRepository.Get(e.Request.PrerequisiteCourseIds);
-            course.SetPrerequisites(prerequisites);
-
 	        _courseRepository.Save(course);
 		}
 	}
