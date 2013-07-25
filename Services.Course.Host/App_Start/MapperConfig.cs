@@ -27,7 +27,8 @@ namespace BpeProducts.Services.Course.Host.App_Start
 			// From Domain entities to DTOs
 		    Mapper.CreateMap<Domain.Courses.Course, CourseInfoResponse>()
 		          .ForMember(dest => dest.ProgramIds, opt => opt.MapFrom(course => course.Programs.Select(p => p.Id).ToList()))
-                  .ForMember(dest => dest.TemplateCourseId, opt=> opt.MapFrom(course => course.Template == null ? Guid.Empty : course.Template.Id));
+                  .ForMember(dest => dest.TemplateCourseId, opt=> opt.MapFrom(course => course.Template == null ? Guid.Empty : course.Template.Id))
+				  .ForMember(dest => dest.PrerequisiteCourseIds, opt => opt.MapFrom(course => course.Prerequisites.Select(p => p.Id).ToList()));
 		    Mapper.CreateMap<Domain.Courses.CourseSegment, CourseSegment>();
 
 			// From DTOs to Domain Entities
