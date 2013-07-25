@@ -45,6 +45,18 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             return courses;
         }
 
+        public Courses.Course Load(Guid courseId)
+        {
+            var course = Get(courseId);
+
+            if (course == null || !course.ActiveFlag)
+            {
+                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
+            }
+
+            return course;
+        }
+
         public void Save(Courses.Course course)
         {
             _session.SaveOrUpdate(course);

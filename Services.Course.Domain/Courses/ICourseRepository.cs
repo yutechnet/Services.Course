@@ -13,5 +13,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         Courses.Course GetVersion(Guid originalCourseId, string versionNumber);
         IList<Courses.Course> ODataQuery(string queryString);
         IList<Courses.Course> Get(List<Guid> ids);
+        Courses.Course Load(Guid courseId);
     }
 }

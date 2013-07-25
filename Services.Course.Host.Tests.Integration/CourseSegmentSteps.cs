@@ -73,14 +73,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 		    {
 		        var segmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(row["Name"]);
 		        response = ApiFeature.ApiTestHost.Client.GetAsync(segmentResourceLocation).Result;
-		        var courseSegment = response.Content.ReadAsAsync<CourseSegment>().Result;
+		        var courseSegment = response.Content.ReadAsAsync<CourseSegmentInfo>().Result;
 
 		        if (!string.IsNullOrEmpty(row["ParentSegment"]))
 		        {
                     var parentSegmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(row["ParentSegment"]);
 		            var parentSegment =
 		                ApiFeature.ApiTestHost.Client.GetAsync(parentSegmentResourceLocation)
-		                          .Result.Content.ReadAsAsync<CourseSegment>()
+		                          .Result.Content.ReadAsAsync<CourseSegmentInfo>()
 		                          .Result;
 
                     Assert.That(parentSegment.Name, Is.EqualTo(row["ParentSegment"]));
@@ -114,7 +114,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var parentSegmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(parentSegmentName);
             var parentSegment =
                 ApiFeature.ApiTestHost.Client.GetAsync(parentSegmentResourceLocation)
-                          .Result.Content.ReadAsAsync<CourseSegment>()
+                          .Result.Content.ReadAsAsync<CourseSegmentInfo>()
                           .Result;
 
             Assert.That(parentSegment.ChildSegments.Count, Is.EqualTo(table.Rows.Count));
@@ -132,7 +132,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ApiFeature.ApiTestHost.Client.GetAsync(segmentResourceLocation).Result;
             response.EnsureSuccessStatusCode();
 
-            var segmentInfo = response.Content.ReadAsAsync<CourseSegment>().Result;
+            var segmentInfo = response.Content.ReadAsAsync<CourseSegmentInfo>().Result;
 
             var saveCourseSegmentRequest = new SaveCourseSegmentRequest
                 {
@@ -159,7 +159,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             response.EnsureSuccessStatusCode();
 
             var savedContent = ScenarioContext.Current.Get<SaveCourseSegmentRequest>("SaveSegmentRequest").Content;
-            var retrievedContent = response.Content.ReadAsAsync<CourseSegment>().Result.Content;
+            var retrievedContent = response.Content.ReadAsAsync<CourseSegmentInfo>().Result.Content;
 
             Assert.That(savedContent.Count, Is.EqualTo(retrievedContent.Count));
             foreach (var contentRequest in savedContent)

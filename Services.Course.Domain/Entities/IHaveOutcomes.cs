@@ -5,9 +5,9 @@ namespace BpeProducts.Services.Course.Domain.Entities
 {
 	public interface IHaveOutcomes
 	{
-		IList<LearningOutcome> Outcomes { get; }
+		IList<LearningOutcome> SupportingOutcomes { get; }
 		Guid Id { get; set; }
 
-	    LearningOutcome AddLearningOutcome(LearningOutcome outcome);
+	    LearningOutcome SupportOutcome(LearningOutcome outcome);
 	}
 }

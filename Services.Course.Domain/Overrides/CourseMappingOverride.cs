@@ -45,7 +45,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
                 .Table("CourseProgram");
 
             mapping
-                .HasManyToMany(x => x.Outcomes)
+                .HasManyToMany(x => x.SupportingOutcomes)
                 .Access.CamelCaseField(Prefix.Underscore)
                 .ParentKeyColumn("EntityId")
                 .ChildKeyColumn("LearningOutcomeId")

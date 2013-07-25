@@ -62,7 +62,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             }
 
             course.Programs = new List<Program>(template.Programs);
-            course.Outcomes = new List<LearningOutcome>(template.Outcomes);
+            course.SupportingOutcomes = new List<LearningOutcome>(template.SupportingOutcomes);
 
             course.CourseType = template.CourseType;
             course.Segments = newSegments;

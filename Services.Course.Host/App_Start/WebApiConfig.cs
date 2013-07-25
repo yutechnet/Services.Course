@@ -1,7 +1,9 @@
-﻿using System.Net.Http.Formatting;
+﻿using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Web.Http;
-using System.Web.Routing;
+using System.Web.Http.Routing;
 using Newtonsoft.Json;
+using ServiceStack.Common.Web;
 
 namespace BpeProducts.Services.Course.Host
 {
@@ -24,8 +26,25 @@ namespace BpeProducts.Services.Course.Host
 		        "{entityType}/version",
                 new { controller = "Version", action = "CreateVersion" });
 
-            config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/outcome/{outcomeId}",
+            config.Routes.MapHttpRoute("CourseSegmentOutcome", "course/{courseId}/segments/{segmentId}/outcome/{id}",
+                                       new { controller = "outcome", id = RouteParameter.Optional, action = "CourseSegmentOutcome" },
+                                       constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Post) });
+
+            // a program, course, segment supports? satisfies? fullfills? meets?... Go to doamin expert and get proper term in the ubiquitous language
+            config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/ToBeDetermined/{outcomeId}",
                                        new { controller = "outcome", outcomeId = RouteParameter.Optional });
+
+            config.Routes.MapHttpRoute("OutcomeSupportsOutcome1", "outcome/{supportingOutcomeId}/supports/{supportedOutcomeId}",
+                                       new { controller = "outcome", action = "AddSupportingOutcome" },
+                                       constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Put) });
+
+            config.Routes.MapHttpRoute("OutcomeSupportsOutcome2", "outcome/{supportingOutcomeId}/supports",
+                                       new { controller = "outcome", action = "GetSupportingOutcomes" },
+                                       constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Get) });
+
+            config.Routes.MapHttpRoute("OutcomeSupportsOutcome3", "outcome/{supportingOutcomeId}/supports/{supportedOutcomeId}",
+                                       new { controller = "outcome", action = "RemoveSupportingOutcome" },
+                                       constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Delete) });
 
             config.Routes.MapHttpRoute("CourseSegmentsApi2", "{controller}/{courseId}/{action}");
 

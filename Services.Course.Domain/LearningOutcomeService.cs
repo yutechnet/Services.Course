@@ -28,7 +28,7 @@ namespace BpeProducts.Services.Course.Domain
             _domainEvents = domainEvents;
         }
 
-        public OutcomeResponse Get(Guid outcomeId)
+        public OutcomeInfo Get(Guid outcomeId)
         {
             var learningOutcome = _learningOutcomeRepository.Get(outcomeId);
             if (learningOutcome == null || !learningOutcome.ActiveFlag)
@@ -36,10 +36,10 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Learning outcome {0} not found.", outcomeId));
             }
 
-            return Mapper.Map<OutcomeResponse>(learningOutcome);
+            return Mapper.Map<OutcomeInfo>(learningOutcome);
         }
 
-        public OutcomeResponse Get(string entityType, Guid entityId, Guid outcomeId)
+        public OutcomeInfo Get(string entityType, Guid entityId, Guid outcomeId)
         {
             var entity =
                 _repository.Query<IHaveOutcomes>().SingleOrDefault(e => e.Id == entityId);
@@ -49,7 +49,7 @@ namespace BpeProducts.Services.Course.Domain
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            var outcome = entity.Outcomes
+            var outcome = entity.SupportingOutcomes
                                             .SingleOrDefault(l => l.Id == outcomeId);
 
             if (outcome == null)
@@ -57,25 +57,31 @@ namespace BpeProducts.Services.Course.Domain
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            return Mapper.Map<OutcomeResponse>(outcome);
+            return Mapper.Map<OutcomeInfo>(outcome);
         }
 
-        public IEnumerable<OutcomeResponse> Get(string entityType, Guid entityId)
+        public IEnumerable<OutcomeInfo> Get(string entityType, Guid entityId)
         {
-            var entity =
-                _repository.Query<IHaveOutcomes>().SingleOrDefault(e => e.Id == entityId);
+            var entity = _repository.Query<IHaveOutcomes>().SingleOrDefault(e => e.Id == entityId);
 
             if (entity == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            var outcomes = entity.Outcomes ?? new List<LearningOutcome>();
+            var outcomes = entity.SupportingOutcomes ?? new List<LearningOutcome>();
 
-            return Mapper.Map<List<OutcomeResponse>>(outcomes);
+            return Mapper.Map<List<OutcomeInfo>>(outcomes);
         }
 
-        public OutcomeResponse Create(OutcomeRequest request)
+        public List<OutcomeInfo> GetSupportingOutcomes(Guid supportingOutcomeId)
+        {
+            var outcome = _learningOutcomeRepository.Load(supportingOutcomeId);
+
+            return Mapper.Map<List<OutcomeInfo>>(outcome.SupportingOutcomes);
+        }
+
+        public OutcomeInfo Create(OutcomeRequest request)
         {
             var learningOutcome = _outcomeFactory.Build(request);
             _domainEvents.Raise<OutcomeCreated>(new OutcomeCreated
@@ -86,15 +92,15 @@ namespace BpeProducts.Services.Course.Domain
                 Outcome = learningOutcome
             });
 
-            return Mapper.Map<OutcomeResponse>(learningOutcome);
+            return Mapper.Map<OutcomeInfo>(learningOutcome);
         }
 
-        public OutcomeResponse Create(string entityType, Guid entityId, OutcomeRequest request)
+        public OutcomeInfo Create(string entityType, Guid entityId, OutcomeRequest request)
         {
             var entity = _repository.Query<IHaveOutcomes>().SingleOrDefault(x => x.Id == entityId);
             if (entity == null) throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            var learningOutcome = entity.Outcomes.SingleOrDefault(o => o.Description.ToLower() == request.Description.ToLower());
+            var learningOutcome = entity.SupportingOutcomes.SingleOrDefault(o => o.Description.ToLower() == request.Description.ToLower());
             if (learningOutcome == null)
             {
                 learningOutcome = _outcomeFactory.Build(request);
@@ -111,13 +117,13 @@ namespace BpeProducts.Services.Course.Domain
                 ////learningOutcome.SegmentId = Guid.NewGuid();
                 //_repository.Save(learningOutcome);
 
-                entity.Outcomes.Add(learningOutcome);
+                entity.SupportOutcome(learningOutcome);
 
                 _repository.Save(entity);
 
             }
 
-            return Mapper.Map<OutcomeResponse>(learningOutcome);
+            return Mapper.Map<OutcomeInfo>(learningOutcome);
         }
 
         public void Update(Guid outcomeId, OutcomeRequest request)
@@ -148,7 +154,7 @@ namespace BpeProducts.Services.Course.Domain
             if (entity == null)
                 throw new NotFoundException(string.Format("Entity \"{0}\" with id {1} not found", entityId, entityId));
 
-            var learningOutcome = entity.Outcomes.SingleOrDefault(o => o.Id == outcomeId);
+            var learningOutcome = entity.SupportingOutcomes.SingleOrDefault(o => o.Id == outcomeId);
             if (learningOutcome == null)
             {
                 learningOutcome =
@@ -157,7 +163,7 @@ namespace BpeProducts.Services.Course.Domain
                 {
                     throw new NotFoundException(string.Format("Outcome with id {0} not found.", outcomeId));
                 }
-                entity.Outcomes.Add(learningOutcome);
+                entity.SupportingOutcomes.Add(learningOutcome);
 
                 _repository.Update(entity);
             }
@@ -190,13 +196,34 @@ namespace BpeProducts.Services.Course.Domain
             {
                 throw new NotFoundException(string.Format("{0} {1} not found.", entityType, entityId));
             }
-            var outcome = entity.Outcomes.SingleOrDefault(o => o.Id == outcomeId);
+            var outcome = entity.SupportingOutcomes.SingleOrDefault(o => o.Id == outcomeId);
             if (outcome == null)
             {
                 throw new NotFoundException(string.Format("Learing outcome {0} not found.", outcomeId));
             }
-            entity.Outcomes.Remove(outcome);
+            entity.SupportingOutcomes.Remove(outcome);
             _repository.Update(entity);
+        }
+
+        public LearningOutcome AddSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId)
+        {
+            var supportedOutcome = _learningOutcomeRepository.Load(supportedOutcomeId);
+            var supportingOutcome = _learningOutcomeRepository.Load(supportingOutcomeId);
+
+            supportedOutcome.SupportOutcome(supportingOutcome);
+
+            _learningOutcomeRepository.Save(supportedOutcome);
+
+            return supportingOutcome;
+        }
+
+        public void RemoveSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId)
+        {
+            var supportedOutcome = _learningOutcomeRepository.Load(supportedOutcomeId);
+            var supportingOutcome = _learningOutcomeRepository.Load(supportingOutcomeId);
+
+            supportedOutcome.UnsupportOutcome(supportingOutcome);
+            _learningOutcomeRepository.Save(supportedOutcome);
         }
     }
 }

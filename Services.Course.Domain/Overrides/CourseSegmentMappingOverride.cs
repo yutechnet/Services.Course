@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BpeProducts.Services.Course.Domain.Entities;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
 using BpeProducts.Services.Course.Domain.Courses;
+using FluentNHibernate.Mapping;
 
 namespace BpeProducts.Services.Course.Domain.Overrides
 {
@@ -15,8 +17,13 @@ namespace BpeProducts.Services.Course.Domain.Overrides
         {
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
 
-            mapping.References(x => x.ParentSegment).Column("ParentSegmentId");
-            mapping.HasMany(x => x.ChildSegments).KeyColumn("ParentSegmentId");
+            mapping.References(x => x.ParentSegment)
+                .Access.CamelCaseField(Prefix.Underscore)
+                .Column("ParentSegmentId");
+
+            mapping.HasMany(x => x.ChildSegments)
+                .Access.CamelCaseField(Prefix.Underscore)
+                .KeyColumn("ParentSegmentId");
            
             mapping.IgnoreProperty(segment => segment.Name);
             mapping.IgnoreProperty(segment => segment.Description);
@@ -25,6 +32,15 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping.IgnoreProperty(segment => segment.Content);
 
             mapping.Map(segment => segment.SerializedData).CustomSqlType("nvarchar(max)");
+
+            mapping
+                .HasManyToMany(x => x.SupportingOutcomes)
+                .Access.CamelCaseField(Prefix.Underscore)
+                .ParentKeyColumn("EntityId")
+                .ChildKeyColumn("LearningOutcomeId")
+                .ForeignKeyConstraintNames("none", "none")
+                .Table("EntityLearningOutcome");
+
         }
     }
 }

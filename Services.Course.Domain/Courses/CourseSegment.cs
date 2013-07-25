@@ -3,38 +3,55 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain.Entities;
 using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-    [Serializable]
-    public class CourseSegment : TenantEntity
+    public class CourseSegment : TenantEntity, IHaveOutcomes
     {
-        public CourseSegment()
-        {
-            ChildSegments = new List<CourseSegment>();
-            Content = new List<Content>();
-        }
-
-        public virtual Course Course { get; set; }
-
-        public virtual IList<CourseSegment> ChildSegments { get; set; }
-
-        public virtual CourseSegment ParentSegment { get; set; }
+        private IList<LearningOutcome> _supportingOutcomes = new List<LearningOutcome>();
+        private IList<Content> _content = new List<Content>();
+        private IList<CourseSegment> _childSegments = new List<CourseSegment>();
+        private CourseSegment _parentSegment;
 
         [Required]
         public virtual string Name { get; set; }
 
-        public virtual string Description { get; set; }
-
         [Required]
         public virtual string Type { get; set; }
 
+        public virtual string Description { get; set; }
+
         public virtual int DisplayOrder { get; set; }
 
-        public virtual IList<Content> Content { get; set; }
+        public virtual Course Course { get; set; }
 
-        public virtual string SerializedData
+        public virtual CourseSegment ParentSegment
+        {
+            get { return _parentSegment; }
+            set { _parentSegment = value; }
+        }
+
+        public virtual IList<Content> Content
+        {
+            get { return _content; }
+            protected internal set { _content = value; }
+        }
+
+        public virtual IList<LearningOutcome> SupportingOutcomes
+        {
+            get { return _supportingOutcomes; }
+            protected internal set { _supportingOutcomes = value; }
+        }
+
+        public virtual IList<CourseSegment> ChildSegments
+        {
+            get { return _childSegments; }
+            protected internal set { _childSegments = value; }
+        }
+
+        protected internal virtual string SerializedData
         {
             get
             {
@@ -83,6 +100,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             segment.ParentSegment = this;
             ChildSegments.Add(segment);
+        }
+
+        public virtual LearningOutcome SupportOutcome(LearningOutcome outcome)
+        {
+            SupportingOutcomes.Add(outcome);
+
+            return outcome;
         }
     }
 }

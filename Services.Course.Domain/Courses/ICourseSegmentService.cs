@@ -11,7 +11,7 @@ namespace BpeProducts.Services.Course.Domain
         /// </summary>
         /// <param name="courseId">Parent course</param>
         /// <returns>Nested list of course segments</returns>
-        IEnumerable<CourseSegment> Get(Guid courseId);
+        IEnumerable<CourseSegmentInfo> Get(Guid courseId);
 
         /// <summary>
         /// Get the specific course segment from a course
@@ -19,7 +19,7 @@ namespace BpeProducts.Services.Course.Domain
         /// <param name="courseId">Parent course</param>
         /// <param name="segmentId">Segment id</param>
         /// <returns>Course segment info</returns>
-        CourseSegment Get(Guid courseId, Guid segmentId);
+        CourseSegmentInfo Get(Guid courseId, Guid segmentId);
 
         /// <summary>
         /// Get the nested list of segments that are under the specific segment
@@ -27,7 +27,7 @@ namespace BpeProducts.Services.Course.Domain
         /// <param name="courseId">Parent course</param>
         /// <param name="segmentId">Segment id</param>
         /// <returns>Nested list of course segments</returns>
-        IEnumerable<CourseSegment> GetSubSegments(Guid courseId, Guid segmentId);
+        IEnumerable<CourseSegmentInfo> GetSubSegments(Guid courseId, Guid segmentId);
 
         /// <summary>
         /// Create a root-level course segment
@@ -35,7 +35,7 @@ namespace BpeProducts.Services.Course.Domain
         /// <param name="courseId">Parent course</param>
         /// <param name="saveCourseSegmentRequest">Request object</param>
         /// <returns>Course segment created</returns>
-        CourseSegment Create(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest);
+        CourseSegmentInfo Create(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest);
 
         /// <summary>
         /// Create a sub-segment (non-root-level segment)
@@ -44,7 +44,7 @@ namespace BpeProducts.Services.Course.Domain
         /// <param name="segmentId">Parent segment</param>
         /// <param name="saveCourseSegmentRequest">Request object</param>
         /// <returns>Course segment created</returns>
-        CourseSegment Create(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest);
+        CourseSegmentInfo Create(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest);
 
         /// <summary>
         /// Update a segment (root or non-root)

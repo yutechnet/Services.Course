@@ -31,7 +31,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl.ToString()).Result;
             response.EnsureSuccessStatusCode();
 
-            var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
+            var outcomeResponse = response.Content.ReadAsAsync<OutcomeInfo>().Result;
             ScenarioContext.Current.Add("outcomeResponse", outcomeResponse);
         }
         
@@ -122,7 +122,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"the learning outcome should have the following info")]
         public void ThenTheLearningOutcomeShouldHaveTheFollowingInfo(Table table)
         {
-            var outcomeInfo = ScenarioContext.Current.Get<OutcomeResponse>("outcomeResponse");
+            var outcomeInfo = ScenarioContext.Current.Get<OutcomeInfo>("outcomeResponse");
             table.CompareToInstance(outcomeInfo);
         }
         
@@ -133,7 +133,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri.ToString()).Result;
             response.EnsureSuccessStatusCode();
 
-            var outcomeResponse = response.Content.ReadAsAsync<OutcomeResponse>().Result;
+            var outcomeResponse = response.Content.ReadAsAsync<OutcomeInfo>().Result;
             table.CompareToInstance(outcomeResponse);
         }
 

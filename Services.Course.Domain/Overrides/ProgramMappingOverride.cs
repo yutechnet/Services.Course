@@ -21,7 +21,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
                 .Inverse();
 			
 			mapping
-				.HasManyToMany<LearningOutcome>(x => x.Outcomes)
+				.HasManyToMany<LearningOutcome>(x => x.SupportingOutcomes)
 				.ParentKeyColumn("EntityId")
 				.ChildKeyColumn("LearningOutcomeId")
 				.ForeignKeyConstraintNames("none", "none")
