@@ -172,6 +172,10 @@
     <Compile Include="Courses\CourseService.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
     <Compile Include="Courses\CourseSegment.cs" />
+    <Compile Include="Events\CoursePrerequisiteAdded.cs" />
+    <Compile Include="Events\CoursePrerequisiteRemoved.cs" />
+    <Compile Include="Handlers\UpdateModelOnAddingCoursePrerequisite.cs" />
+    <Compile Include="Handlers\UpdateModelOnRemovingCoursePrerequisite.cs" />
     <Compile Include="IVersionableEntityFactory.cs" />
     <Compile Include="IVersionHandler.cs" />
     <Compile Include="Overrides\CourseSegmentMappingOverride.cs" />

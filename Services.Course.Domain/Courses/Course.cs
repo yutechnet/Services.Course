@@ -126,6 +126,29 @@ namespace BpeProducts.Services.Course.Domain.Courses
             Prerequisites = prerequisites;
         }
 
+		public virtual void AddPrerequisite(Course prerequisite)
+		{
+			CheckPublished();
+
+			var prequisiteAlreadyExistsCheck = _prerequisites.FirstOrDefault(p => p.Id == prerequisite.Id);
+
+			if (prequisiteAlreadyExistsCheck == null)
+			{
+				_prerequisites.Add(prerequisite);
+			}
+		}
+
+		public virtual void RemovePrerequisite(Guid prerequisiteCourseId)
+		{
+			CheckPublished();
+
+			var prequisiteToRemove = _prerequisites.FirstOrDefault(p => p.Id == prerequisiteCourseId);
+			if (prequisiteToRemove != null)
+			{
+				_prerequisites.Remove(prequisiteToRemove);
+			}
+		}
+
         public virtual CourseSegment AddSegment(Guid segmentId, Guid parentSegmentId, SaveCourseSegmentRequest request)
         {
             CheckPublished();

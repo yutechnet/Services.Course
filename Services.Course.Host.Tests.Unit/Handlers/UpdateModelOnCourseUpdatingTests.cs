@@ -13,7 +13,7 @@ using NUnit.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 {
-    [TestFixture]
+	[TestFixture]
     public class UpdateModelOnCourseUpdatingTests
     {
         private Mock<ICourseRepository> _mockCourseRepository;

@@ -13,14 +13,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     [TestFixture]
     public class UpdateModelOnCourseCreationTests
     {
-        private UpdateModelOnCourseCreation _updateModelOnCourseCreationTests;
+        private UpdateModelOnCourseCreation _updateModelOnCourseCreation;
         private Mock<IRepository> _mockRepository;
             
         [SetUp]
         public void SetUp()
         {
             _mockRepository = new Mock<IRepository>();
-            _updateModelOnCourseCreationTests = new UpdateModelOnCourseCreation(_mockRepository.Object);
+            _updateModelOnCourseCreation = new UpdateModelOnCourseCreation(_mockRepository.Object);
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         {
             var exception =
                 Assert.Throws<InvalidOperationException>(
-                    () => _updateModelOnCourseCreationTests.Handle(new FakeDomainEvent()));
+                    () => _updateModelOnCourseCreation.Handle(new FakeDomainEvent()));
             Assert.That(exception.Message, Is.EqualTo("Invalid domain event."));
         }
 
@@ -36,7 +36,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         public void Add_New_Course_To_Repository()
         {
             var course = new Domain.Courses.Course();
-            _updateModelOnCourseCreationTests.Handle(new CourseCreated { Course = course });
+            _updateModelOnCourseCreation.Handle(new CourseCreated { Course = course });
 
             _mockRepository.Verify(c => c.Save(course), Times.Once());
         }

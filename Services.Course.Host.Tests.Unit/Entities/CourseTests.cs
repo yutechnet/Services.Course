@@ -154,6 +154,59 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
         }
 
+		[Test]
+		public void Can_add_course_prerequisite()
+		{
+			AutoMock autoMock = AutoMock.GetLoose();
+			var courseFactory = autoMock.Create<CourseFactory>();
+
+			var course = courseFactory.Create(new SaveCourseRequest());
+
+			Assert.That(course.Prerequisites, Is.Empty);
+
+			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+			course.AddPrerequisite(prerequisiste);
+
+			Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
+			Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
+		}
+
+		[Test]
+		public void Can_add_course_prerequisite_does_not_add_duplicate_prerequisites()
+		{
+			AutoMock autoMock = AutoMock.GetLoose();
+			var courseFactory = autoMock.Create<CourseFactory>();
+
+			var course = courseFactory.Create(new SaveCourseRequest());
+
+			Assert.That(course.Prerequisites, Is.Empty);
+
+			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+			course.AddPrerequisite(prerequisiste);
+			course.AddPrerequisite(prerequisiste);
+
+			Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
+			Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
+		}
+
+		[Test]
+		public void Can_remove_course_prerequisite()
+		{
+			AutoMock autoMock = AutoMock.GetLoose();
+			var courseFactory = autoMock.Create<CourseFactory>();
+
+			var course = courseFactory.Create(new SaveCourseRequest());
+
+			Assert.That(course.Prerequisites, Is.Empty);
+
+			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+			course.AddPrerequisite(prerequisiste);
+			course.AddPrerequisite(prerequisiste);
+
+			Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
+			Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
+		}
+
         [Test]
         public void Cannot_modify_published_course()
         {
