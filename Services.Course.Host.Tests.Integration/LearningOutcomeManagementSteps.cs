@@ -79,7 +79,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 				program = programs.First(p => p.Name.Equals(entityName));
 			}
 
-			var postUrl = string.Format("{0}/{1}/ToBeDetermined", FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
+			var postUrl = string.Format("{0}/{1}/supports", FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
 
 			var request = new OutcomeRequest
 				{
@@ -101,7 +101,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			program = programs.First(p => p.Name.Equals(programName));
 			
 
-			var postUrl = string.Format("{0}/{1}/ToBeDetermined/outcome",
+			var postUrl = string.Format("{0}/{1}/supports/outcome",
 										FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
 			var outcomeUrls = new Dictionary<string, Uri>();
 			if (ScenarioContext.Current.ContainsKey("learningoutcomeResourceUrls"))
@@ -196,7 +196,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			program = programs.First(p => p.Name.Equals(programName));
 
 
-            var getUrl = string.Format("{0}/{1}/ToBeDetermined",
+            var getUrl = string.Format("{0}/{1}/supports",
 										FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
 
 			var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl).Result;
@@ -291,7 +291,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             var programs = ScenarioContext.Current.Get<IList<ProgramResponse>>("programs");
             program = programs.First(p => p.Name.Equals(programName));
-            var postUri = string.Format("{0}/{1}/ToBeDetermined", FeatureContext.Current.Get<string>("ProgramLeadingPath"), program.Id);
+            var postUri = string.Format("{0}/{1}/supports", FeatureContext.Current.Get<string>("ProgramLeadingPath"), program.Id);
 
             var outcomeRequests = table.CreateSet<OutcomeRequest>();
             outcomeRequests.ToList().ForEach(o =>
@@ -306,7 +306,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Given(@"I assoicate the following learning outcomes to '(.*)' course:")]
         public void GivenIAssoicateTheFollowingLearningOutcomesToCourse(string courseName, Table table)
         {
-            var postUri = string.Format("{0}/ToBeDetermined", ScenarioContext.Current.Get<Uri>(courseName));
+            var postUri = string.Format("{0}/supports", ScenarioContext.Current.Get<Uri>(courseName));
             var outcomeRequests = table.CreateSet<OutcomeRequest>();
             outcomeRequests.ToList().ForEach(o =>
             {
@@ -379,7 +379,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenTheCourseIncludesTheFollowingLearningOutcomes(string description, Table table)
         {
             var getUri = ScenarioContext.Current.Get<Uri>(description);
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri.ToString() + "/" + "ToBeDetermined").Result;
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri.ToString() + "/" + "supports").Result;
             var outcomes = response.Content.ReadAsAsync<List<OutcomeInfo>>().Result;
             table.CompareToSet(outcomes);
         }

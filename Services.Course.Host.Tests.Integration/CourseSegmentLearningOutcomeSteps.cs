@@ -37,7 +37,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             foreach (var row in table.Rows)
             {
-                var postUri = string.Format("{0}/ToBeDetermined", courseResourceUri.ToString());
+                var postUri = string.Format("{0}/supports", courseResourceUri.ToString());
                 var outcomeRequest = new OutcomeRequest
                     {
                         Description = row["Description"],
