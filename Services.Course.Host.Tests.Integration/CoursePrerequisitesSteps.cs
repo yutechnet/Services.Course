@@ -13,7 +13,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [Binding]
     public class CoursePrerequisitesSteps
     {
-        private const string Url = "/course";
+        private const string Url = "course";
 
         [Given(@"the following courses are published:")]
         public void GivenTheFollowingCoursesArePublished(Table table)
