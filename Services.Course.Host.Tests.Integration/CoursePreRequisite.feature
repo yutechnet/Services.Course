@@ -38,14 +38,14 @@ Scenario: Remove a course from the prerequisite list
 	| Name     | 
 	| Econ 300 | 
 	| Econ 350 |
-	Then the course 'Econ 400' should have the following prerequisites
+	Then the course 'Econ 450' should have the following prerequisites
 	| Name     | 
 	| Econ 300 | 
 	| Econ 350 |
 
 Scenario: Cannot add a prerequisite to a course that is published
 #Business rules dictate "parent" course is NOT published when pre-reqs are added
-	When I add the following prerequisites to 'Math 200'
+	When I add the following prerequisites to 'Econ 300'
 		| Name     |
 		| Math 101 |
 	Then I get 'Forbidden' response

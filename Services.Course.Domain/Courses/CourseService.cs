@@ -101,6 +101,10 @@ namespace BpeProducts.Services.Course.Domain
         {
             var course = _courseRepository.Get(courseId);
 
+			// Can't work directly off of course below since NHB will update the prereq list with any additions
+	        var beforeStateOfPrerequisites = new List<Guid>();
+			course.Prerequisites.Each(p => beforeStateOfPrerequisites.Add(p.Id));
+
             if (course == null || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
@@ -122,15 +126,15 @@ namespace BpeProducts.Services.Course.Domain
             }
 
             // Determine prerequisites removed
-            foreach (var currentPrereqCourse in course.Prerequisites)
+			foreach (var currentPrereqCourse in beforeStateOfPrerequisites)
             {
                 // If all of the incoming prerequisite Ids do not equal this existing prerequisiteId, it's been removed
-                if (prerequisiteIds.All(incomingPrereqIds => incomingPrereqIds != currentPrereqCourse.Id))
+                if (prerequisiteIds.All(incomingPrereqIds => incomingPrereqIds != currentPrereqCourse))
                 {
                     _domainEvents.Raise<CoursePrerequisiteRemoved>(new CoursePrerequisiteRemoved
                     {
                         AggregateId = courseId,
-                        PrerequisiteCourseId = currentPrereqCourse.Id
+                        PrerequisiteCourseId = currentPrereqCourse
                     });
                 }
             }
