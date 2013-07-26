@@ -33,7 +33,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         public void Can_Add_prerequisites()
         {
             var courseToReturn = new Domain.Courses.Course {Id = Guid.NewGuid(), ActiveFlag = true};
-            courseToReturn.SetPrerequisites(new List<Domain.Courses.Course>());
 			_repoMock.Setup(r => r.Get(It.IsAny<Guid>())).Returns(courseToReturn);
 
             var newPrerequisiteList = new List<Guid> {Guid.NewGuid()};
@@ -46,8 +45,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Can_Remove_prerequisites()
         {
+			var prerequisiteCourse = new Domain.Courses.Course { Id = Guid.NewGuid() };
+			prerequisiteCourse.Publish("");
+
             var courseToReturn = new Domain.Courses.Course { Id = Guid.NewGuid(), ActiveFlag = true };
-            courseToReturn.SetPrerequisites(new List<Domain.Courses.Course> { new Domain.Courses.Course { Id = Guid.NewGuid() } });
+			courseToReturn.AddPrerequisite(prerequisiteCourse);
 			_repoMock.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseToReturn);
 
             var newPrerequisiteList = new List<Guid>();
@@ -62,8 +64,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
             var guid1 = Guid.NewGuid();
             var guid2 = Guid.NewGuid();
+	        var prerequisiteCourse = new Domain.Courses.Course {Id = guid1};
+	        var prerequisiteCourse2 = new Domain.Courses.Course {Id = guid2};
+			prerequisiteCourse.Publish("");
+			prerequisiteCourse2.Publish("");
+
             var courseToReturn = new Domain.Courses.Course { Id = Guid.NewGuid(), ActiveFlag = true };
-            courseToReturn.SetPrerequisites(new List<Domain.Courses.Course> { new Domain.Courses.Course { Id = guid1 }, new Domain.Courses.Course {Id = guid2}});
+			courseToReturn.AddPrerequisite(prerequisiteCourse);
+			courseToReturn.AddPrerequisite(prerequisiteCourse2);
 			_repoMock.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseToReturn);
 
             var newPrerequisiteList = new List<Guid> { guid2, Guid.NewGuid() };

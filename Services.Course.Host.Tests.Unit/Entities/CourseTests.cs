@@ -137,23 +137,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             }
         }
 
-        [Test]
-        public void Can_add_course_prerequisites()
-        {
-            AutoMock autoMock = AutoMock.GetLoose();
-            var courseFactory = autoMock.Create<CourseFactory>();
-
-            var course = courseFactory.Create(new SaveCourseRequest());
-
-            Assert.That(course.Prerequisites, Is.Empty);
-
-            var prerequisiste = courseFactory.Create(new SaveCourseRequest());
-            course.SetPrerequisites(new List<Domain.Courses.Course> { prerequisiste });
-
-            Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
-            Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
-        }
-
 		[Test]
 		public void Can_add_course_prerequisite()
 		{
@@ -247,13 +230,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             AutoMock autoMock = AutoMock.GetLoose();
             var courseFactory = autoMock.Create<CourseFactory>();
             var course = courseFactory.Create(new SaveCourseRequest());
+			var prerequisiteCourse = courseFactory.Create(new SaveCourseRequest());
+			prerequisiteCourse.Publish("");
 
             Assert.DoesNotThrow(() => course.Name = "name" );
             Assert.DoesNotThrow(() => course.Description = "description");
             Assert.DoesNotThrow(() => course.CourseType = ECourseType.Competency);
             Assert.DoesNotThrow(() => course.Code = "code");
             Assert.DoesNotThrow(() => course.SetPrograms(new List<Program>()));
-            Assert.DoesNotThrow(() => course.SetPrerequisites(new List<Domain.Courses.Course>()));
+			Assert.DoesNotThrow(() => course.AddPrerequisite(prerequisiteCourse));
+			Assert.DoesNotThrow(() => course.RemovePrerequisite(Guid.NewGuid()));
             Assert.DoesNotThrow(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
             
             course.Publish("note");
@@ -263,7 +249,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.Throws<ForbiddenException>(() => course.CourseType = ECourseType.Competency);
             Assert.Throws<ForbiddenException>(() => course.Code = "code");
             Assert.Throws<ForbiddenException>(() => course.SetPrograms(new List<Program>()));
-            Assert.Throws<ForbiddenException>(() => course.SetPrerequisites(new List<Domain.Courses.Course>()));
+			Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiteCourse));
+			Assert.Throws<ForbiddenException>(() => course.RemovePrerequisite(Guid.NewGuid()));
             Assert.Throws<ForbiddenException>(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
         }
     }

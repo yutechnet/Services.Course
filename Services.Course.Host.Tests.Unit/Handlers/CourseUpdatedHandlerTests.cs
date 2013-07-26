@@ -74,23 +74,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             _mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Never());
         }
 
-        [Test]
-        public void Does_not_raise_CoursePrerequisiteRemoved_or_CoursePrerequisiteAdded_since_this_is_dealt_with_elsewhere()
-        {
-            var courseUpdatedEvent = CreateCourseUpdatedWithThreePrerequisitesAddedAndTwoRemoved();
-            _courseUpdatedHandler.Handle(courseUpdatedEvent);
-
-            _mockDomainEvents.Verify(d => d.Raise<CourseAssociatedWithProgram>(It.IsAny<CourseAssociatedWithProgram>()),
-                                     Times.Never());
-            _mockDomainEvents.Verify(
-                d => d.Raise<CourseDisassociatedWithProgram>(It.IsAny<CourseDisassociatedWithProgram>()), Times.Never());
-            _mockDomainEvents.Verify(d => d.Raise<CourseInfoUpdated>(It.IsAny<CourseInfoUpdated>()), Times.Never());
-            _mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteAdded>(It.IsAny<CoursePrerequisiteAdded>()),
-                                     Times.Exactly(0));
-            _mockDomainEvents.Verify(d => d.Raise<CoursePrerequisiteRemoved>(It.IsAny<CoursePrerequisiteRemoved>()),
-                                     Times.Exactly(0));
-        }
-
         private CourseUpdated CreateCourseUpdatedEventWithNoCourseInfoUpdate()
         {
             var courseId = Guid.NewGuid();
@@ -199,11 +182,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     new Program {Id = Guid.NewGuid()}
                 });
 
-            course.SetPrerequisites(new List<Domain.Courses.Course>
-                {
-                    new Domain.Courses.Course {Id = Guid.NewGuid()}
-                });
-
             return new CourseUpdated
                 {
                     AggregateId = Guid.NewGuid(),
@@ -248,13 +226,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             course.SetPrograms(new List<Program>
                 {
                     new Program {Id = programId}
-                });
-
-            course.SetPrerequisites(new List<Domain.Courses.Course>
-                {
-                    new Domain.Courses.Course {Id = guid1},
-                    new Domain.Courses.Course {Id = Guid.NewGuid()},
-                    new Domain.Courses.Course {Id = Guid.NewGuid()}
                 });
 
             return new CourseUpdated
