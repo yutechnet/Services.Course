@@ -73,8 +73,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
             var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
 
-            // a program, course, segment supports? satisfies? fullfills? meets?... Go to doamin expert and get proper term in the ubiquitous language
-            // /<entityType>/<entityId>/ToBeDetermined/<outcomeId>
+            // /<entityType>/<entityId>/supports/<outcomeId>
             string uri = Url.Link("OutcomeApi", new
                 {
                     controller = "outcome",

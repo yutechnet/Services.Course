@@ -36,10 +36,6 @@ namespace BpeProducts.Services.Course.Host
                                        new { controller = "outcome", id = RouteParameter.Optional, action = "CourseSegmentOutcome" },
                                        constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Post) });
 
-            // a program, course, segment supports? satisfies? fullfills? meets?... Go to doamin expert and get proper term in the ubiquitous language
-            config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/ToBeDetermined/{outcomeId}",
-                                       new { controller = "outcome", outcomeId = RouteParameter.Optional });
-
             config.Routes.MapHttpRoute("OutcomeSupportsOutcome1", "outcome/{supportingOutcomeId}/supports/{supportedOutcomeId}",
                                        new { controller = "outcome", action = "AddSupportingOutcome" },
                                        constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Put) });
@@ -51,6 +47,10 @@ namespace BpeProducts.Services.Course.Host
             config.Routes.MapHttpRoute("OutcomeSupportsOutcome3", "outcome/{supportingOutcomeId}/supports/{supportedOutcomeId}",
                                        new { controller = "outcome", action = "RemoveSupportingOutcome" },
                                        constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Delete) });
+
+            // a program, course, segment supports? satisfies? fullfills? meets?... Go to doamin expert and get proper term in the ubiquitous language
+            config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/supports/{outcomeId}",
+                                       new { controller = "outcome", outcomeId = RouteParameter.Optional });
 
             config.Routes.MapHttpRoute("CourseSegmentsApi2", "{controller}/{courseId}/{action}");
 
