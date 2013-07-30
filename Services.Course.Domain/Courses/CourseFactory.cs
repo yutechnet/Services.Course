@@ -3,7 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using AutoMapper;
 using Autofac.Features.Indexed;
+using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.WebApi.Authorization;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -20,7 +22,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
 	        _courseRepository = courseRepository;
 	    }
 
-	    public Course Create(SaveCourseRequest request)
+		[ClaimsAuthorize(Capability.CourseCreate)]
+		public Course Create(SaveCourseRequest request)
 	    {
 	        Course course = null;
             if (request.TemplateCourseId.HasValue)
