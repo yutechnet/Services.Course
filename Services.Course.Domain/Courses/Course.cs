@@ -226,5 +226,98 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     ActiveFlag = true
                 };
         }
+
+        public virtual CourseSegment GetSegment(Guid segmentId)
+        {
+            var segment = _segments.FirstOrDefault(s => s.Id == segmentId);
+
+            if(segment == null)
+                throw new NotFoundException(string.Format("Course {0} does not have segment with Id {1}", this.Id, segmentId));
+
+            return segment;
+        }
+
+        public virtual CourseLearningActivity AddLearningActivity(Guid segmentId, SaveCourseLearningActivityRequest request)
+        {
+            CheckPublished();
+
+            CourseSegment segment = null;
+            segment = Segments.FirstOrDefault(s => s.Id == segmentId);
+
+            if (segment == null)
+                throw new BadRequestException(
+                    string.Format(
+                        "Cannot add learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
+                        this.Id, segmentId));
+
+            var courseLearningActivity = new CourseLearningActivity()
+            {
+                Id = Guid.NewGuid(),
+                Name = request.Name,
+                Type = request.Type,
+                IsExtraCredit = request.IsExtraCredit,
+                IsGradeable = request.IsGradeable,
+                MaxPoint = request.MaxPoint,
+                Weight = request.Weight,
+                ObjectId = request.ObjectId,
+                TenantId = TenantId
+            };
+
+            if (courseLearningActivity != null)
+            {
+                segment.CourseLearningActivities.Add(courseLearningActivity);
+            }
+
+            return courseLearningActivity;
+        }
+
+        public virtual CourseLearningActivity UpdateLearningActivity(Guid segmentId, Guid learningActivityId, SaveCourseLearningActivityRequest request)
+        {
+
+            CheckPublished();
+
+            CourseSegment segment = null;
+            segment = Segments.FirstOrDefault(s => s.Id == segmentId);
+
+            if (segment == null)
+                throw new BadRequestException(
+                    string.Format(
+                        "Cannot update learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
+                        this.Id, segmentId));
+
+            CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
+
+            if (learningActivity == null)
+                throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.", learningActivityId, this.Id));
+
+            learningActivity.Name = request.Name;
+            learningActivity.Type = request.Type;
+            learningActivity.IsExtraCredit = request.IsExtraCredit;
+            learningActivity.IsGradeable = request.IsGradeable;
+            learningActivity.MaxPoint = request.MaxPoint;
+            learningActivity.Weight = request.Weight;
+            learningActivity.ObjectId = request.ObjectId;
+
+            return learningActivity;
+        }
+
+        public virtual CourseLearningActivity GetLearningActivity(Guid segmentId, Guid learningActivityId)
+        {
+            CourseSegment segment = null;
+            segment = Segments.FirstOrDefault(s => s.Id == segmentId);
+
+            if (segment == null)
+                throw new BadRequestException(
+                    string.Format(
+                        "Cannot update learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
+                        this.Id, segmentId));
+
+            CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
+
+            if (learningActivity == null)
+                throw new NotFoundException(string.Format("Segment {0} does not have learning activity with Id {1}", this.Id, learningActivityId));
+
+            return learningActivity;
+        }
     }
 }

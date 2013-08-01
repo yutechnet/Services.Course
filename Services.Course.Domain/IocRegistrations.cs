@@ -53,6 +53,7 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<OutcomeFactory>().As<IOutcomeFactory>();
             containerBuilder.RegisterType<CourseService>().As<ICourseService>();
             containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
+            containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>();
             containerBuilder.RegisterType<LearningOutcomeService>().As<ILearningOutcomeService>();
             containerBuilder.RegisterType<ProgramService>().As<IProgramService>();
             containerBuilder.RegisterType<VersionHandler>().As<IVersionHandler>();
@@ -66,6 +67,8 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<PlayCourseInfoUpated>().Keyed<IPlayEvent>(typeof(CourseInfoUpdated).Name);
 			containerBuilder.RegisterType<PlayCourseSegmentAdded>().Keyed<IPlayEvent>(typeof(CourseSegmentAdded).Name);
             containerBuilder.RegisterType<PlayCourseSegmentUpdated>().Keyed<IPlayEvent>(typeof(CourseSegmentUpdated).Name);
+            containerBuilder.RegisterType<PlayCourseLearningActivityAdded>().Keyed<IPlayEvent>(typeof(CourseLearningActivityAdded).Name);
+            containerBuilder.RegisterType<PlayCourseLearningActivityUpdated>().Keyed<IPlayEvent>(typeof(CourseLearningActivityUpdated).Name);
             containerBuilder.RegisterType<PlayVersionCreated>().Keyed<IPlayEvent>(typeof(VersionCreated).Name);
             containerBuilder.RegisterType<PlayVersionPublished>().Keyed<IPlayEvent>(typeof(VersionPublished).Name);
 
@@ -95,7 +98,12 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentUpdated>>();
             containerBuilder.RegisterType<UpdateModelOnUpdatingCourseSegment>().As<IHandle<CourseSegmentUpdated>>();
 
-			containerBuilder.RegisterType<UpdateModelOnCourseUpdating>().As<IHandle<CourseUpdated>>();
+            containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseLearningActivityAdded>>();
+            containerBuilder.RegisterType<UpdateModelOnAddingCourseLearningActivity>().As<IHandle<CourseLearningActivityAdded>>();
+            containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseLearningActivityUpdated>>();
+            containerBuilder.RegisterType<UpdateModelOnUpdatingCourseLearningActivity>().As<IHandle<CourseLearningActivityUpdated>>();
+            
+            containerBuilder.RegisterType<UpdateModelOnCourseUpdating>().As<IHandle<CourseUpdated>>();
 			containerBuilder.RegisterType<CourseUpdatedHandler>().As<IHandle<CourseUpdated>>();
 
 			containerBuilder.RegisterType<UpdateModelOnAddingCoursePrerequisite>().As<IHandle<CoursePrerequisiteAdded>>();

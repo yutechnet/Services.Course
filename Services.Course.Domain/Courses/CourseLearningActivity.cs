@@ -15,15 +15,15 @@ namespace BpeProducts.Services.Course.Domain.Courses
         [Required]
         public virtual string Type { get; set; }
 
-        public virtual Boolean IsGradeable { get; set; }
+        public virtual Boolean? IsGradeable { get; set; }
 
-        public virtual Boolean IsExtraCredit { get; set; }
+        public virtual Boolean? IsExtraCredit { get; set; }
 
-        public virtual int MaxPoint { get; set; }
+        public virtual int? MaxPoint { get; set; }
 
-        public virtual int Weight { get; set; }
+        public virtual int? Weight { get; set; }
 
-        public virtual Guid ObjectId { get; set; }
+        public virtual Guid? ObjectId { get; set; }
     }
 
 }

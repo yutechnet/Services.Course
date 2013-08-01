@@ -12,35 +12,27 @@ namespace BpeProducts.Services.Course.Domain
 {
     public class CourseSegmentService : ICourseSegmentService
     {
-        private readonly IRepository _repository;
         private readonly ICourseFactory _courseFactory;
         private readonly IDomainEvents _domainEvents;
+        private readonly ICourseRepository _courseRepository;
 
-        public CourseSegmentService(IRepository repository, ICourseFactory courseFactory, IDomainEvents domainEvents)
+        public CourseSegmentService(ICourseRepository courseRepository, ICourseFactory courseFactory, IDomainEvents domainEvents)
         {
-            _repository = repository;
+            _courseRepository = courseRepository;
             _courseFactory = courseFactory;
             _domainEvents = domainEvents;
         }
 
         public IEnumerable<CourseSegmentInfo> Get(Guid courseId)
         {
-            var course = _repository.Get<Courses.Course>(courseId);
-            if (course == null || !course.ActiveFlag)
-            {
-                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
-            }
-
+            var course = _courseRepository.Load(courseId);
+            
             return Mapper.Map<IList<CourseSegmentInfo>>(course.Segments);
         }
 
         public CourseSegmentInfo Get(Guid courseId, Guid segmentId)
         {
-            var course = _repository.Get<Courses.Course>(courseId);
-            if (course == null || !course.ActiveFlag)
-            {
-                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
-            }
+            var course = _courseRepository.Load(courseId);
 
             var segment = course.Segments.FirstOrDefault(s => s.Id == segmentId);
             if (segment == null)
@@ -54,11 +46,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public IEnumerable<CourseSegmentInfo> GetSubSegments(Guid courseId, Guid segmentId)
         {
-            var course = _repository.Get<Courses.Course>(courseId);
-            if (course == null || !course.ActiveFlag)
-            {
-                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
-            }
+            var course = _courseRepository.Load(courseId);
 
             var segment = course.Segments.FirstOrDefault(s => s.Id == segmentId);
             if (segment == null)

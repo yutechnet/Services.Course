@@ -169,22 +169,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Courses\CourseLearningActivityFactory.cs" />
     <Compile Include="Courses\CourseLearningActivity.cs" />
-    <Compile Include="Courses\CourseLearningActivityDto.cs" />
     <Compile Include="Courses\CourseSegmentService.cs" />
     <Compile Include="Courses\CourseService.cs" />
+    <Compile Include="Courses\Events\PlayCourseLearningActivityAdded.cs" />
+    <Compile Include="Courses\Events\PlayCourseLearningActivityUpdated.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
     <Compile Include="Courses\CourseSegment.cs" />
+    <Compile Include="Events\CourseLearningActivityAdded.cs" />
+    <Compile Include="Events\CourseLearningActivityUpdated.cs" />
     <Compile Include="Events\CoursePrerequisiteAdded.cs" />
     <Compile Include="Events\CoursePrerequisiteRemoved.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCoursePrerequisite.cs" />
+    <Compile Include="Handlers\UpdateModelOnAddingCourseLearningActivity.cs" />
     <Compile Include="Handlers\UpdateModelOnRemovingCoursePrerequisite.cs" />
+    <Compile Include="Handlers\UpdateModelOnUpdatingCourseLearningActivity.cs" />
+    <Compile Include="ICourseLearningActivityService.cs" />
     <Compile Include="IVersionableEntityFactory.cs" />
     <Compile Include="IVersionHandler.cs" />
+    <Compile Include="CourseLearningActivityService.cs" />
     <Compile Include="Mappings\CourseSegmentMappingOverride.cs" />
-    <Compile Include="Overrides\CourseSegmentMappingOverride.cs" />
-    <Compile Include="Repositories\CourseLearningActivityRepository.cs" />
     <Compile Include="Repositories\IProgramRepository.cs" />
     <Compile Include="Repositories\ProgramRepository.cs" />
     <Compile Include="Courses\ICourseService.cs" />
