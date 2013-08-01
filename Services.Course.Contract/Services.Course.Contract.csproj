@@ -164,7 +164,9 @@
   <ItemGroup>
     <Compile Include="Content.cs" />
     <Compile Include="CourseInfoResponse.cs" />
+    <Compile Include="CourseLearningActivityResponse.cs" />
     <Compile Include="PublishRequest.cs" />
+    <Compile Include="SaveCourseLearningActivityRequest.cs" />
     <Compile Include="UpdateCoursePrerequisites.cs" />
     <Compile Include="CourseSegmentInfo.cs" />
     <Compile Include="VersionRequest.cs" />

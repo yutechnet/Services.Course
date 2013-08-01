@@ -15,6 +15,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
         private IList<CourseSegment> _childSegments = new List<CourseSegment>();
         private CourseSegment _parentSegment;
 
+        private IList<CourseLearningActivity> _courseLearningActivities = new List<CourseLearningActivity>();
+
         [Required]
         public virtual string Name { get; set; }
 
@@ -38,6 +40,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
             get { return _content; }
             protected internal set { _content = value; }
         }
+
+        public virtual IList<CourseLearningActivity> CourseLearningActivities
+        {
+            get { return _courseLearningActivities; }
+            protected internal set { _courseLearningActivities = value; }
+        }
+
 
         public virtual IList<LearningOutcome> SupportedOutcomes
         {
