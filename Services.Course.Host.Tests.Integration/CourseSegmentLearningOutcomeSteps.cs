@@ -98,7 +98,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             response.EnsureSuccessStatusCode();
 
             var courseSegmentInfo = response.Content.ReadAsAsync<CourseSegmentInfo>().Result;
-            table.CompareToSet(courseSegmentInfo.SupportingOutcomes);
+            table.CompareToSet(courseSegmentInfo.SupportedOutcomes);
         }
 
         [When(@"I associate the following segment learning outcomes to '(.*)' course learning outcome")]
@@ -133,7 +133,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             {
                 var supportedOutcomeDescription = row["Description"];
 
-                var supporedOutcome = courseInfoResponse.SupportingOutcomes.FirstOrDefault(o => o.Description == supportedOutcomeDescription);
+                var supporedOutcome = courseInfoResponse.SupportedOutcomes.FirstOrDefault(o => o.Description == supportedOutcomeDescription);
                 Assert.NotNull(supporedOutcome);
 
                 if (string.IsNullOrEmpty(row["SupportingOutcomes"]))
@@ -143,7 +143,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
                 foreach (var outcomeDescription in supportingOutcomeDescriptions)
                 {
-                    var supportingOutcome = supporedOutcome.SupportingOutcomes.FirstOrDefault(o => o.Description == outcomeDescription.Trim());
+                    var supportingOutcome = supporedOutcome.SupportedOutcomes.FirstOrDefault(o => o.Description == outcomeDescription.Trim());
                     Assert.NotNull(supportingOutcome);
                 }
             }

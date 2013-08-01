@@ -10,7 +10,7 @@ namespace BpeProducts.Services.Course.Contract
         {
             ChildSegments = new List<CourseSegmentInfo>();
             Content = new List<Content>();
-            SupportingOutcomes = new List<OutcomeInfo>();
+            SupportedOutcomes = new List<OutcomeInfo>();
         }
 
         public Guid Id { get; set; }
@@ -22,6 +22,6 @@ namespace BpeProducts.Services.Course.Contract
 
         public IList<Content> Content { get; set; }
         public IList<CourseSegmentInfo> ChildSegments { get; set; }
-        public IList<OutcomeInfo> SupportingOutcomes { get; set; }
+        public IList<OutcomeInfo> SupportedOutcomes { get; set; }
     }
 }

@@ -18,14 +18,16 @@ namespace BpeProducts.Services.Course.Domain
         private readonly IRepository _repository;
         private readonly IOutcomeFactory _outcomeFactory;
         private readonly IDomainEvents _domainEvents;
+        private readonly IGraphValidator _graphValidator;
 
         public LearningOutcomeService(ILearningOutcomeRepository learningOutcomeRepository, IRepository repository, 
-            IOutcomeFactory outcomeFactory, IDomainEvents domainEvents)
+            IOutcomeFactory outcomeFactory, IDomainEvents domainEvents, IGraphValidator graphValidator)
         {
             _learningOutcomeRepository = learningOutcomeRepository;
             _repository = repository;
             _outcomeFactory = outcomeFactory;
             _domainEvents = domainEvents;
+            _graphValidator = graphValidator;
         }
 
         public OutcomeInfo Get(Guid outcomeId)
@@ -42,14 +44,14 @@ namespace BpeProducts.Services.Course.Domain
         public OutcomeInfo Get(string entityType, Guid entityId, Guid outcomeId)
         {
             var entity =
-                _repository.Query<IHaveOutcomes>().SingleOrDefault(e => e.Id == entityId);
+                _repository.Query<ISupportingEntity>().SingleOrDefault(e => e.Id == entityId);
 
             if (entity == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            var outcome = entity.SupportingOutcomes
+            var outcome = entity.SupportedOutcomes
                                             .SingleOrDefault(l => l.Id == outcomeId);
 
             if (outcome == null)
@@ -62,14 +64,14 @@ namespace BpeProducts.Services.Course.Domain
 
         public IEnumerable<OutcomeInfo> Get(string entityType, Guid entityId)
         {
-            var entity = _repository.Query<IHaveOutcomes>().SingleOrDefault(e => e.Id == entityId);
+            var entity = _repository.Query<ISupportingEntity>().SingleOrDefault(e => e.Id == entityId);
 
             if (entity == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            var outcomes = entity.SupportingOutcomes ?? new List<LearningOutcome>();
+            var outcomes = entity.SupportedOutcomes ?? new List<LearningOutcome>();
 
             return Mapper.Map<List<OutcomeInfo>>(outcomes);
         }
@@ -78,7 +80,13 @@ namespace BpeProducts.Services.Course.Domain
         {
             var outcome = _learningOutcomeRepository.Load(supportingOutcomeId);
 
-            return Mapper.Map<List<OutcomeInfo>>(outcome.SupportingOutcomes);
+            return Mapper.Map<List<OutcomeInfo>>(outcome.SupportedOutcomes);
+        }
+
+        public List<OutcomeInfo> Get(List<string> entityIds)
+        {
+           // _repository.Query<LearningOutcome>().Where(o => o.)
+            return null;
         }
 
         public OutcomeInfo Create(OutcomeRequest request)
@@ -97,10 +105,10 @@ namespace BpeProducts.Services.Course.Domain
 
         public OutcomeInfo Create(string entityType, Guid entityId, OutcomeRequest request)
         {
-            var entity = _repository.Query<IHaveOutcomes>().SingleOrDefault(x => x.Id == entityId);
+            var entity = _repository.Query<ISupportingEntity>().SingleOrDefault(x => x.Id == entityId);
             if (entity == null) throw new HttpResponseException(HttpStatusCode.NotFound);
 
-            var learningOutcome = entity.SupportingOutcomes.SingleOrDefault(o => o.Description.ToLower() == request.Description.ToLower());
+            var learningOutcome = entity.SupportedOutcomes.SingleOrDefault(o => o.Description.ToLower() == request.Description.ToLower());
             if (learningOutcome == null)
             {
                 learningOutcome = _outcomeFactory.Build(request);
@@ -149,12 +157,12 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Update(string entityType, Guid entityId, Guid outcomeId, OutcomeRequest request)
         {
-            var entity = _repository.Query<IHaveOutcomes>().SingleOrDefault(x => x.Id == entityId);
+            var entity = _repository.Query<ISupportingEntity>().SingleOrDefault(x => x.Id == entityId);
 
             if (entity == null)
                 throw new NotFoundException(string.Format("Entity \"{0}\" with id {1} not found", entityId, entityId));
 
-            var learningOutcome = entity.SupportingOutcomes.SingleOrDefault(o => o.Id == outcomeId);
+            var learningOutcome = entity.SupportedOutcomes.SingleOrDefault(o => o.Id == outcomeId);
             if (learningOutcome == null)
             {
                 learningOutcome =
@@ -163,7 +171,7 @@ namespace BpeProducts.Services.Course.Domain
                 {
                     throw new NotFoundException(string.Format("Outcome with id {0} not found.", outcomeId));
                 }
-                entity.SupportingOutcomes.Add(learningOutcome);
+                entity.SupportedOutcomes.Add(learningOutcome);
 
                 _repository.Update(entity);
             }
@@ -191,17 +199,18 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Delete(string entityType, Guid entityId, Guid outcomeId)
         {
-            var entity = _repository.Query<IHaveOutcomes>().SingleOrDefault<IHaveOutcomes>(x => x.Id == entityId);
+            var entity = _repository.Query<ISupportingEntity>().SingleOrDefault<ISupportingEntity>(x => x.Id == entityId);
             if (entity == null)
             {
                 throw new NotFoundException(string.Format("{0} {1} not found.", entityType, entityId));
             }
-            var outcome = entity.SupportingOutcomes.SingleOrDefault(o => o.Id == outcomeId);
+            var outcome = entity.SupportedOutcomes.SingleOrDefault(o => o.Id == outcomeId);
             if (outcome == null)
             {
                 throw new NotFoundException(string.Format("Learing outcome {0} not found.", outcomeId));
             }
-            entity.SupportingOutcomes.Remove(outcome);
+
+            entity.UnsupportOutcome(outcome);
             _repository.Update(entity);
         }
 
@@ -210,7 +219,7 @@ namespace BpeProducts.Services.Course.Domain
             var supportedOutcome = _learningOutcomeRepository.Load(supportedOutcomeId);
             var supportingOutcome = _learningOutcomeRepository.Load(supportingOutcomeId);
 
-            supportedOutcome.SupportOutcome(supportingOutcome);
+            supportedOutcome.SupportOutcome(_graphValidator, supportingOutcome);
 
             _learningOutcomeRepository.Save(supportedOutcome);
 

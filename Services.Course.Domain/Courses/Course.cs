@@ -9,7 +9,7 @@ using BpeProducts.Services.Course.Domain.Entities;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-    public class Course : VersionableEntity, IHaveOutcomes
+    public class Course : VersionableEntity, ISupportingEntity
     {
         #region Properties
 
@@ -19,7 +19,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         private ECourseType _courseType;
         private IList<CourseSegment> _segments = new List<CourseSegment>();
         private IList<Program> _programs = new List<Program>();
-        private IList<LearningOutcome> _supportingOutcomes = new List<LearningOutcome>();
+        private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();
         private IList<Course> _prerequisites = new List<Course>();
 
         public virtual Course Template { get; protected internal set; }
@@ -79,10 +79,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
             protected internal set { _segments = value; }
         }
 
-        public virtual IList<LearningOutcome> SupportingOutcomes
+        public virtual IList<LearningOutcome> SupportedOutcomes
         {
-            get { return _supportingOutcomes; }
-            protected internal set { _supportingOutcomes = value; }
+            get { return _supportedOutcomes; }
+            protected internal set { _supportedOutcomes = value; }
         }
 
         public virtual IList<Course> Prerequisites
@@ -93,12 +93,20 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         #endregion
 
-        public virtual LearningOutcome SupportOutcome(LearningOutcome outcome)
+        public virtual void SupportOutcome(LearningOutcome outcome)
         {
             CheckPublished();
 
-            _supportingOutcomes.Add(outcome);
-            return outcome;
+            _supportedOutcomes.Add(outcome);
+            outcome.SupportingEntities.Add(this);
+        }
+
+        public virtual void UnsupportOutcome(LearningOutcome outcome)
+        {
+            CheckPublished();
+
+            _supportedOutcomes.Remove(outcome);
+            outcome.SupportingEntities.Remove(this);
         }
 
         public virtual void BuildIndex(IList<CourseSegment> segments, ref Dictionary<Guid, CourseSegment> index)
@@ -208,7 +216,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
                     Programs = new List<Program>(this.Programs),
                     Segments = new List<CourseSegment>(this.Segments),
-                    SupportingOutcomes = new List<LearningOutcome>(this.SupportingOutcomes),
+                    SupportedOutcomes = new List<LearningOutcome>(this.SupportedOutcomes),
                     Prerequisites = new List<Course>(this.Prerequisites),
 
                     TenantId = this.TenantId,

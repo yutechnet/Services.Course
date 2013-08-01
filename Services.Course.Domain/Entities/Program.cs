@@ -4,9 +4,9 @@ using BpeProducts.Common.NHibernate;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
-    public class Program : TenantEntity, IHaveOutcomes
+    public class Program : TenantEntity, ISupportingEntity
     {
-        private IList<LearningOutcome> _outcomes = new List<LearningOutcome>();
+        private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();
         private IList<Courses.Course> _courses = new List<Courses.Course>();
 
         [NotNullable]
@@ -25,16 +25,22 @@ namespace BpeProducts.Services.Course.Domain.Entities
             set { _courses = value; }
         }
 
-        public virtual IList<LearningOutcome> SupportingOutcomes
+        public virtual IList<LearningOutcome> SupportedOutcomes
         {
-            get { return _outcomes; }
-            protected internal set { _outcomes = value; }
+            get { return _supportedOutcomes; }
+            protected internal set { _supportedOutcomes = value; }
         }
 
-        public virtual LearningOutcome SupportOutcome(LearningOutcome outcome)
+        public virtual void SupportOutcome(LearningOutcome outcome)
         {
-            _outcomes.Add(outcome);
-            return outcome;
+            _supportedOutcomes.Add(outcome);
+            outcome.SupportingEntities.Add(this);
+        }
+
+        public virtual void UnsupportOutcome(LearningOutcome outcome)
+        {
+            _supportedOutcomes.Remove(outcome);
+            outcome.SupportingEntities.Remove(this);
         }
     }
 }

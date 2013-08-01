@@ -10,6 +10,7 @@ using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Log;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Courses.Events;
+using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Outcomes;
@@ -56,7 +57,7 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<ProgramService>().As<IProgramService>();
             containerBuilder.RegisterType<VersionHandler>().As<IVersionHandler>();
             containerBuilder.RegisterType<VersionableEntityFactory>().As<IVersionableEntityFactory>();
-
+            containerBuilder.RegisterType<GraphValidator>().As<IGraphValidator>();
 
 			containerBuilder.RegisterType<PlayCourseCreated>().Keyed<IPlayEvent>(typeof(CourseCreated).Name);
 			containerBuilder.RegisterType<PlayCourseAssociatedWithProgram>().Keyed<IPlayEvent>(typeof(CourseAssociatedWithProgram).Name);
@@ -124,8 +125,6 @@ namespace BpeProducts.Services.Course.Domain
 
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeVersionPublished>>();
             containerBuilder.RegisterType<UpdateModelOnOutcomeVersionPublished>().As<IHandle<OutcomeVersionPublished>>();
-
-
         }
     }
 }

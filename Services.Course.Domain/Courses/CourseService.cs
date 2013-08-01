@@ -56,10 +56,10 @@ namespace BpeProducts.Services.Course.Domain
         {
             var course = _courseRepository.Load(courseId);
 
-            var outcomes = course.SupportingOutcomes;
+            var outcomes = course.SupportedOutcomes;
             foreach (var learningOutcome in outcomes)
             {
-                Console.WriteLine(learningOutcome.SupportingOutcomes.Count);
+                Console.WriteLine(learningOutcome.SupportedOutcomes.Count);
             }
 
             var courseInfoResponse = Mapper.Map<CourseInfoResponse>(course);

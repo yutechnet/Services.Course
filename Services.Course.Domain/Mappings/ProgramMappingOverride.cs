@@ -14,18 +14,19 @@ namespace BpeProducts.Services.Course.Domain.Overrides
         public void Override(AutoMapping<Entities.Program> mapping)
         {
             mapping
-                .HasManyToMany<Courses.Course>(x => x.Courses)
+                .HasManyToMany(x => x.Courses)
                 .ParentKeyColumn("ProgramId")
                 .ChildKeyColumn("CourseId")
                 .Table("CourseProgram")
                 .Inverse();
 			
 			mapping
-				.HasManyToMany<LearningOutcome>(x => x.SupportingOutcomes)
+				.HasManyToMany(x => x.SupportedOutcomes)
 				.ParentKeyColumn("EntityId")
 				.ChildKeyColumn("LearningOutcomeId")
 				.ForeignKeyConstraintNames("none", "none")
-				.Table("EntityLearningOutcome");
+                .Table("EntityLearningOutcome")
+                .Inverse();
         }
     }
 }

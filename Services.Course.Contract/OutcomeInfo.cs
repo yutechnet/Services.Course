@@ -10,6 +10,6 @@ namespace BpeProducts.Services.Course.Contract
         public bool IsPublished { get; set; }
         public string PublishNote { get; set; }
 
-        public List<OutcomeInfo> SupportingOutcomes { get; set; }
+        public List<OutcomeInfo> SupportedOutcomes { get; set; }
     }
 }

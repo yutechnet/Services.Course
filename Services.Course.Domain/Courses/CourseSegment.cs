@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-    public class CourseSegment : TenantEntity, IHaveOutcomes
+    public class CourseSegment : TenantEntity, ISupportingEntity
     {
-        private IList<LearningOutcome> _supportingOutcomes = new List<LearningOutcome>();
+        private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();
         private IList<Content> _content = new List<Content>();
         private IList<CourseSegment> _childSegments = new List<CourseSegment>();
         private CourseSegment _parentSegment;
@@ -39,10 +39,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
             protected internal set { _content = value; }
         }
 
-        public virtual IList<LearningOutcome> SupportingOutcomes
+        public virtual IList<LearningOutcome> SupportedOutcomes
         {
-            get { return _supportingOutcomes; }
-            protected internal set { _supportingOutcomes = value; }
+            get { return _supportedOutcomes; }
+            protected internal set { _supportedOutcomes = value; }
         }
 
         public virtual IList<CourseSegment> ChildSegments
@@ -102,11 +102,16 @@ namespace BpeProducts.Services.Course.Domain.Courses
             ChildSegments.Add(segment);
         }
 
-        public virtual LearningOutcome SupportOutcome(LearningOutcome outcome)
+        public virtual void SupportOutcome(LearningOutcome outcome)
         {
-            SupportingOutcomes.Add(outcome);
+            _supportedOutcomes.Add(outcome);
+            outcome.SupportingEntities.Add(this);
+        }
 
-            return outcome;
+        public virtual void UnsupportOutcome(LearningOutcome outcome)
+        {
+            _supportedOutcomes.Remove(outcome);
+            outcome.SupportingEntities.Remove(this);
         }
     }
 }

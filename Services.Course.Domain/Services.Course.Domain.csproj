@@ -65,8 +65,9 @@
     <Reference Include="BpeProducts.Common.Log">
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.11\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate">
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.48\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.51.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.51\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis">
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.11\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
@@ -178,7 +179,7 @@
     <Compile Include="Handlers\UpdateModelOnRemovingCoursePrerequisite.cs" />
     <Compile Include="IVersionableEntityFactory.cs" />
     <Compile Include="IVersionHandler.cs" />
-    <Compile Include="Overrides\CourseSegmentMappingOverride.cs" />
+    <Compile Include="Mappings\CourseSegmentMappingOverride.cs" />
     <Compile Include="Repositories\IProgramRepository.cs" />
     <Compile Include="Repositories\ProgramRepository.cs" />
     <Compile Include="Courses\ICourseService.cs" />
@@ -193,7 +194,7 @@
     <Compile Include="Outcomes\OutcomeCreated.cs" />
     <Compile Include="Outcomes\OutcomeDeleted.cs" />
     <Compile Include="Outcomes\IOutcomeFactory.cs" />
-    <Compile Include="Entities\IHaveOutcomes.cs" />
+    <Compile Include="Entities\ISupportingEntity.cs" />
     <Compile Include="Events\VersionCreated.cs" />
     <Compile Include="Events\VersionPublished.cs" />
     <Compile Include="Handlers\UpdateModelOnUpdatingCourseSegment.cs" />
@@ -238,9 +239,9 @@
     <Compile Include="Courses\ICourseFactory.cs" />
     <Compile Include="IocRegistrations.cs" />
     <Compile Include="IPlayEvent.cs" />
-    <Compile Include="Overrides\CourseMappingOverride.cs" />
-    <Compile Include="Overrides\LearningOutcomeMappingOverride.cs" />
-    <Compile Include="Overrides\ProgramMappingOverride.cs" />
+    <Compile Include="Mappings\CourseMappingOverride.cs" />
+    <Compile Include="Mappings\LearningOutcomeMappingOverride.cs" />
+    <Compile Include="Mappings\ProgramMappingOverride.cs" />
     <Compile Include="Courses\Events\PlayCourseAssociatedWithProgram.cs" />
     <Compile Include="Courses\Events\PlayCourseCreated.cs" />
     <Compile Include="Courses\Events\PlayCourseDeleted.cs" />
@@ -269,6 +270,11 @@
       <Project>{3D017F9D-110A-4000-9059-AFC75DDEEA8E}</Project>
       <Name>Services.Course.Contract</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Mappings\BpeProducts.Services.Course.Domain.Entities.LearningOutcome.hbm.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

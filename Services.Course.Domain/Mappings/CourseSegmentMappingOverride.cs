@@ -34,13 +34,13 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping.Map(segment => segment.SerializedData).CustomSqlType("nvarchar(max)");
 
             mapping
-                .HasManyToMany(x => x.SupportingOutcomes)
+                .HasManyToMany(x => x.SupportedOutcomes)
                 .Access.CamelCaseField(Prefix.Underscore)
                 .ParentKeyColumn("EntityId")
                 .ChildKeyColumn("LearningOutcomeId")
                 .ForeignKeyConstraintNames("none", "none")
-                .Table("EntityLearningOutcome");
-
+                .Table("EntityLearningOutcome")
+                .Inverse();
         }
     }
 }

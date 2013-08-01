@@ -1,0 +1,77 @@
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class xmlns="urn:nhibernate-mapping-2.2" name="BpeProducts.Services.Course.Domain.Entities.LearningOutcome, BpeProducts.Services.Course.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" table="`LearningOutcome`">
+    <id name="Id" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="LearningOutcomeId" />
+      <generator class="assigned" />
+    </id>
+    <bag access="field.camelcase-underscore" cascade="all" name="SupportedOutcomes" table="LearningLearningOutcome">
+      <key foreign-key="FK_LearningOutcome">
+        <column name="SupportedId" />
+      </key>
+      <many-to-many class="BpeProducts.Services.Course.Domain.Entities.LearningOutcome, BpeProducts.Services.Course.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" foreign-key="none">
+        <column name="SupportingId" />
+      </many-to-many>
+    </bag>
+    <bag access="field.camelcase-underscore" name="SupportingEntities" table="EntityLearningOutcome" cascade="all">
+      <key column="LearningOutcomeId"/>
+      <many-to-any id-type="System.Guid"
+          meta-type="System.String">
+        <meta-value value="Program"
+          class="BpeProducts.Services.Course.Domain.Entities.Program, BpeProducts.Services.Course.Domain"/>
+        <meta-value value="Course"
+          class="BpeProducts.Services.Course.Domain.Courses.Course, BpeProducts.Services.Course.Domain"/>
+        <meta-value value="CourseSegment"
+          class="BpeProducts.Services.Course.Domain.Courses.CourseSegment, BpeProducts.Services.Course.Domain"/>
+        <meta-value value="LearningOutcome"
+          class="BpeProducts.Services.Course.Domain.Entities.LearningOutcome, BpeProducts.Services.Course.Domain"/>
+        <column name="EntityType"
+          not-null="true"/>
+        <column name="EntityId"
+          not-null="true"/>
+      </many-to-any>
+    </bag>
+    <property name="Description" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="Description" sql-type="nvarchar(max)" />
+    </property>
+    <property name="VersionNumber" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="VersionNumber" />
+    </property>
+    <property name="PublishNote" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="PublishNote" />
+    </property>
+    <property name="IsPublished" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="IsPublished" />
+    </property>
+    <property name="OrganizationId" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="OrganizationId" not-null="true" />
+    </property>
+    <property name="TenantId" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="TenantId" />
+    </property>
+    <property generated="always" name="SequenceId" type="System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="LearningOutcomeSequenceId" not-null="true" sql-type="bigint IDENTITY" />
+    </property>
+    <property name="ActiveFlag" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="ActiveFlag" not-null="true" default="1" />
+    </property>
+    <property name="DateAdded" type="System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="DateAdded" />
+    </property>
+    <property name="DateUpdated" type="System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="DateUpdated" />
+    </property>
+    <property name="AddedBy" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="AddedBy" />
+    </property>
+    <property name="UpdatedBy" type="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="UpdatedBy" />
+    </property>
+    <many-to-one class="BpeProducts.Services.Course.Domain.Entities.LearningOutcome, BpeProducts.Services.Course.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" foreign-key="FK_OriginalEntity_LearningOutcome" name="OriginalEntity">
+      <column name="OriginalLearningOutcomeId" not-null="true" />
+    </many-to-one>
+    <many-to-one class="BpeProducts.Services.Course.Domain.Entities.LearningOutcome, BpeProducts.Services.Course.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" foreign-key="FK_ParentEntity_LearningOutcome" name="ParentEntity">
+      <column name="ParentLearningOutcomeId" />
+    </many-to-one>
+    <filter name="TenantFilter" condition="tenantid in (:tid)" />
+  </class>
+</hibernate-mapping>

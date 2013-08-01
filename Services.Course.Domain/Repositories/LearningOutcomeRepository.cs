@@ -18,9 +18,9 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             _session = session;
         }
 
-        public Entities.LearningOutcome Get(Guid outcomeId)
+        public LearningOutcome Get(Guid outcomeId)
         {
-            return _session.Get<Entities.LearningOutcome>(outcomeId);
+            return _session.Get<LearningOutcome>(outcomeId);
         }
 
         public LearningOutcome Load(Guid outcomeId)
@@ -35,20 +35,20 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             return outcome;
         }
 
-        public void Save(Entities.LearningOutcome outcome)
+        public void Save(LearningOutcome outcome)
         {
             _session.SaveOrUpdate(outcome);
         }
 
-        public void Delete(Entities.LearningOutcome outcome)
+        public void Delete(LearningOutcome outcome)
         {
             outcome.ActiveFlag = false;
             _session.SaveOrUpdate(outcome);
         }
 
-        public Entities.LearningOutcome GetVersion(Guid originalEntityId, string versionNumber)
+        public LearningOutcome GetVersion(Guid originalEntityId, string versionNumber)
         {
-            var version = (from c in _session.Query<Entities.LearningOutcome>()
+            var version = (from c in _session.Query<LearningOutcome>()
                            where c.OriginalEntity.Id == originalEntityId && c.VersionNumber == versionNumber
                            select c).FirstOrDefault();
 

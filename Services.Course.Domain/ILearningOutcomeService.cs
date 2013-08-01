@@ -25,5 +25,6 @@ namespace BpeProducts.Services.Course.Domain
         LearningOutcome AddSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId);
         void RemoveSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId);
         List<OutcomeInfo> GetSupportingOutcomes(Guid supportingOutcomeId);
+        List<OutcomeInfo> Get(List<string> entityIds);
     }
 }

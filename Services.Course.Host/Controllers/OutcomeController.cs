@@ -38,7 +38,13 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return _learningOutcomeService.Get(entityType, entityId).ToList();
         }
 
-        [Transaction]
+        public List<OutcomeInfo> Get(string entityIds)
+        {
+            var ids = entityIds.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            return _learningOutcomeService.Get(ids);
+        }
+
         [HttpGet]
         public List<OutcomeInfo> GetSupportingOutcomes(Guid supportingOutcomeId)
         {
