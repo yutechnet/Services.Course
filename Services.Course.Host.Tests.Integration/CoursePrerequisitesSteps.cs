@@ -18,7 +18,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Given(@"the following courses are published:")]
         public void GivenTheFollowingCoursesArePublished(Table table)
         {
-            // Data structure to maintain courses added and their GUIDs for prerequisite adding in another step
             var addedCourses = new Dictionary<string, Guid> { { "courseName", Guid.NewGuid() } };
 
             foreach (var row in table.Rows)
@@ -43,7 +42,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 if (row["IsPublished"] == "Published")
                 {
                     var publishRequest = new PublishRequest() { PublishNote = "this is now published" };
-                    PublishCourse(publishRequest, "this is now published", location);
+                    PublishCourse(publishRequest, location);
                 }
                 
                 ScenarioContext.Current.Add(courseRequest.Name, request.Headers.Location);
@@ -99,10 +98,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             }
         }
 
-        private void PublishCourse(PublishRequest publishRequest, string publishNote, Uri location)
+        private void PublishCourse(PublishRequest publishRequest, Uri location)
         {
             if (publishRequest == null) throw new ArgumentNullException("publishRequest");
-            publishRequest = new PublishRequest() { PublishNote = publishNote };
             var publishUri = string.Format("{0}/publish", location);
             var publishResponse = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(publishUri, publishRequest).Result;
             publishResponse.EnsureSuccessStatusCode(); 
