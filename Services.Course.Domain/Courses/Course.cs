@@ -239,6 +239,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         }
 
 
+        #region CourseLearningActivity
 
         public virtual CourseLearningActivity AddLearningActivity(Guid segmentId, SaveCourseLearningActivityRequest request, Guid learningActivityId)
         {
@@ -323,7 +324,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity;
         }
 
-        public virtual CourseLearningActivity DeleteLearningActivity(Guid segmentId, Guid learningActivityId, SaveCourseLearningActivityRequest request)
+        public virtual CourseLearningActivity DeleteLearningActivity(Guid segmentId, Guid learningActivityId)
         {
 
             CheckPublished();
@@ -346,6 +347,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             return learningActivity;
         }
-
+        #endregion
     }
 }

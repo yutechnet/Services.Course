@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BpeProducts.Services.Course.Domain.Events;
 
-using BpeProducts.Services.Course.Domain.Events;
-
-namespace BpeProducts.Services.Course.Domain
+namespace BpeProducts.Services.Course.Domain.Courses.Events
 {
     public class PlayCourseLearningActivityUpdated:IPlayEvent<CourseLearningActivityUpdated, Courses.Course>
     {
 
-        public Courses.Course Apply(Events.CourseLearningActivityUpdated msg, Courses.Course course)
+        public Course Apply(Domain.Events.CourseLearningActivityUpdated msg, Courses.Course course)
 		{
             course.UpdateLearningActivity(msg.SegmentId, msg.LearningActivityId, msg.Request);
 			return course;

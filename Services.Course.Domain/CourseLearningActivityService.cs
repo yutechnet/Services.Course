@@ -42,7 +42,12 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId)
         {
-            throw new NotImplementedException();
+            _domainEvents.Raise<CourseLearningActivityDeleted>(new CourseLearningActivityDeleted
+            {
+                AggregateId = courseId,
+                SegmentId = segmentId,
+                LearningActivityId = learningActivityId
+            });
         }
 
         public CourseLearningActivityResponse Create(Guid courseId, Guid segmentId, SaveCourseLearningActivityRequest request)
@@ -72,4 +77,5 @@ namespace BpeProducts.Services.Course.Domain
             return response;
         }
     }
+
 }

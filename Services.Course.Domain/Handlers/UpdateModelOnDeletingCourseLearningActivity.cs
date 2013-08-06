@@ -7,25 +7,26 @@ using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
 {
-    public class UpdateModelOnUpdatingCourseLearningActivity : IHandle<CourseLearningActivityUpdated>
+    public class UpdateModelOnDeletingCourseLearningActivity : IHandle<CourseLearningActivityDeleted>
     {
         private readonly IRepository _repository;
 
-        public UpdateModelOnUpdatingCourseLearningActivity(IRepository repository)
+        public UpdateModelOnDeletingCourseLearningActivity(IRepository repository)
         {
             _repository = repository;
         }
 
         public void Handle(IDomainEvent domainEvent)
         {
-            var e = domainEvent as CourseLearningActivityUpdated;
+            var e = domainEvent as CourseLearningActivityDeleted;
             if (e == null)
             {
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
             var courseInDb = _repository.Get<Courses.Course>(e.AggregateId);
-            courseInDb.UpdateLearningActivity(e.SegmentId, e.LearningActivityId, e.Request);
+            
+            courseInDb.DeleteLearningActivity(e.SegmentId, e.LearningActivityId);
 
             _repository.Save(courseInDb);
         }
