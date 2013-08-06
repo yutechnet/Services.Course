@@ -1,6 +1,6 @@
 ﻿@Api
 Feature: CourseLearningActivity
-	As a course builder
+	As a course creator
 	I would like to specify grading attributes to learning activities
 	So that I can turn them into gradebook items
 

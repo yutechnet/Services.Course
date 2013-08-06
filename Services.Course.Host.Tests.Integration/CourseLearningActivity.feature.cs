@@ -33,7 +33,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CourseLearningActivity", "As a course builder\r\nI would like to specify grading attributes to learning activ" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CourseLearningActivity", "As a course creator\r\nI would like to specify grading attributes to learning activ" +
                     "ities\r\nSo that I can turn them into gradebook items", ProgrammingLanguage.CSharp, new string[] {
                         "Api"});
             testRunner.OnFeatureStart(featureInfo);

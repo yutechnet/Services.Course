@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
@@ -85,7 +86,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 var responseBody = response.Content.ReadAsStringAsync().Result;
                 throw new Exception(responseBody);
             }
-            ScenarioContext.Current.Add("ResponseToValidate", response);
+
+            var getResponse = ApiFeature.ApiTestHost.Client.GetAsync(RequestUri + LearningActivityUrl + activity.Id).Result;
+            ScenarioContext.Current.Add("ResponseToValidate", getResponse);
         }
 
         [When(@"I add a learning activity to a course that has already been published")]
@@ -94,16 +97,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var learningActivity = table.CreateInstance<SaveCourseLearningActivityRequest>();
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, learningActivity).Result;            
             ScenarioContext.Current.Add("ResponseToValidate", response);
-        }
-
-
-        [Then(@"the learning activity below no longer exists:")]
-        public void ThenTheLearningActivityBelowNoLongerExists(Table table)
-        {
-            var activityResponse = ScenarioContext.Current.Get<CourseLearningActivityResponse>(table.Rows[0]["Name"]);
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(RequestUri + LearningActivityUrl + activityResponse.Id).Result;
-            var getResponse = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
-            Assert.That(getResponse.Name, Is.Null);
         }
 
         [Then(@"my learning activity contains the following:")]
