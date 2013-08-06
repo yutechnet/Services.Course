@@ -33,7 +33,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     IsExtraCredit = bool.Parse(row["IsExtraCredit"]),
                     Weight = int.Parse(row["Weight"]),
                     MaxPoint = int.Parse(row["MaxPoint"]),
-                    //ObjectId = Guid.Parse(row["ObjectId"])
+                    ObjectId = Guid.Parse(row["ObjectId"]),
                 };
 
                 var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, learningActivity).Result;
@@ -62,7 +62,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         IsExtraCredit = bool.Parse(row["IsExtraCredit"]),
                         Weight = int.Parse(row["Weight"]),
                         MaxPoint = int.Parse(row["MaxPoint"]),
-                        //ObjectId = Guid.Parse(row["ObjectId"])
+                        ObjectId = Guid.Parse(row["ObjectId"]),
                     };
 
                 var activity = ScenarioContext.Current.Get<CourseLearningActivityResponse>(table.Rows[0]["Name"]);
@@ -110,6 +110,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var activityResponse = ScenarioContext.Current.Get<CourseLearningActivityResponse>(table.Rows[0]["Name"]);
             var response = ApiFeature.ApiTestHost.Client.GetAsync(RequestUri + LearningActivityUrl + activityResponse.Id).Result;
             var getResponse = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
+            var newObjId = getResponse.ObjectId.ToString().ToUpper();
 
             foreach (var row in table.Rows)
             {
@@ -119,7 +120,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Assert.That(getResponse.IsExtraCredit, Is.EqualTo(bool.Parse(row["IsExtraCredit"])));
                 Assert.That(getResponse.Weight, Is.EqualTo(int.Parse(row["Weight"])));
                 Assert.That(getResponse.MaxPoint, Is.EqualTo(int.Parse(row["MaxPoint"])));
-                //Assert.That(getResponse.ObjectId, Is.EqualTo(row["ObjectId"]));
+                Assert.That(newObjId, Is.EqualTo(row["ObjectId"]));
             }
         }
     }

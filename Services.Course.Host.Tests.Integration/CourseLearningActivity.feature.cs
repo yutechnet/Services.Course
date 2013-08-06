@@ -132,7 +132,7 @@ this.FeatureBackground();
                         "False",
                         "100",
                         "20",
-                        "Null"});
+                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 16
  testRunner.When("I add the following learning activity:", ((string)(null)), table3, "When ");
 #line hidden
@@ -153,7 +153,7 @@ this.FeatureBackground();
                         "False",
                         "100",
                         "20",
-                        "Null"});
+                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 19
  testRunner.Then("my learning activity contains the following:", ((string)(null)), table4, "Then ");
 #line hidden
@@ -187,7 +187,7 @@ this.FeatureBackground();
                         "False",
                         "100",
                         "20",
-                        "Null"});
+                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 24
  testRunner.When("I add the following learning activity:", ((string)(null)), table5, "When ");
 #line hidden
@@ -208,7 +208,7 @@ this.FeatureBackground();
                         "false",
                         "80",
                         "10",
-                        "Null"});
+                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 27
  testRunner.And("I update the learning activity with the following:", ((string)(null)), table6, "And ");
 #line hidden
@@ -229,7 +229,7 @@ this.FeatureBackground();
                         "false",
                         "80",
                         "10",
-                        "Null"});
+                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 30
  testRunner.Then("my learning activity contains the following:", ((string)(null)), table7, "Then ");
 #line hidden
@@ -263,7 +263,7 @@ this.FeatureBackground();
                         "False",
                         "100",
                         "20",
-                        "Null"});
+                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 35
  testRunner.When("I add the following learning activity:", ((string)(null)), table8, "When ");
 #line 38
@@ -286,7 +286,7 @@ this.FeatureBackground();
                         "False",
                         "100",
                         "20",
-                        "Null"});
+                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 39
  testRunner.Then("the learning activity below no longer exists:", ((string)(null)), table9, "Then ");
 #line hidden
@@ -338,7 +338,7 @@ this.FeatureBackground();
                         "Null"});
 #line 47
  testRunner.When("I add a learning activity to a course that has already been published", ((string)(null)), table11, "When ");
-#line 58
+#line 56
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
