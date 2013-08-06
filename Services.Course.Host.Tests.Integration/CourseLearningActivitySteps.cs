@@ -85,6 +85,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 var responseBody = response.Content.ReadAsStringAsync().Result;
                 throw new Exception(responseBody);
             }
+            ScenarioContext.Current.Add("ResponseToValidate", response);
         }
 
         [When(@"I add a learning activity to a course that has already been published")]
@@ -101,7 +102,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             var activityResponse = ScenarioContext.Current.Get<CourseLearningActivityResponse>(table.Rows[0]["Name"]);
             var response = ApiFeature.ApiTestHost.Client.GetAsync(RequestUri + LearningActivityUrl + activityResponse.Id).Result;
-            Assert.That(response.Content, Is.Null);
+            var getResponse = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
+            Assert.That(getResponse.Name, Is.Null);
         }
 
         [Then(@"my learning activity contains the following:")]

@@ -1,8 +1,8 @@
 ﻿@Api
 Feature: CourseLearningActivity
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	As a course builder
+	I would like to specify grading attributes to learning activities
+	So that I can turn them into gradebook items
 
 Background: 
 Given the following courses and their published status:
@@ -36,9 +36,7 @@ Scenario: Delete a learning activity
 	| TenantId | Name         | Type       | IsGradeable | IsExtraCredit | Weight | MaxPoint | ObjectId                             |
 	| 999999   | Assignment 1 | Assignment | True        | False         | 100    | 20       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	And I remove "Assignment 1" learning activity
-	Then the learning activity below no longer exists:
-	| TenantId | Name         | Type       | IsGradeable | IsExtraCredit | Weight | MaxPoint | ObjectId                             |
-	| 999999   | Assignment 1 | Assignment | True        | False         | 100    | 20       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	Then I get 'NotFound' response
 
 Scenario: Cannot add a learning activity to a course that is already published
 	Given I publish 'Econ 100' course with the following info
