@@ -292,7 +292,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
 
             if (learningActivity == null || !learningActivity.ActiveFlag)
-                throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.", learningActivityId, this.Id));
+                throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.", learningActivityId, segmentId));
 
             learningActivity.Name = request.Name;
             learningActivity.Type = request.Type;
@@ -319,7 +319,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
 
             if (learningActivity == null || !learningActivity.ActiveFlag)
-                throw new NotFoundException(string.Format("Segment {0} does not have learning activity with Id {1}", this.Id, learningActivityId));
+                throw new NotFoundException(string.Format("Segment {0} does not have learning activity with Id {1}", segmentId, learningActivityId));
 
             return learningActivity;
         }
@@ -341,7 +341,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
 
             if (learningActivity == null || !learningActivity.ActiveFlag)
-                throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.", learningActivityId, this.Id));
+                throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.", learningActivityId, segmentId));
 
             learningActivity.ActiveFlag=false;
 

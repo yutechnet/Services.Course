@@ -29,11 +29,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             for (int i = 0; i < segmentCount; i++)
             {
                 var request = new SaveCourseSegmentRequest
-                {
-                    Name = "Week" + i,
-                    Description = "Week " + i,
-                    Type = "Weekly"
-                };
+                    {
+                        Name = "Week" + i,
+                        Description = "Week " + i,
+                        Type = "Weekly"
+                    };
 
                 course.AddSegment(segmentId, Guid.Empty, request);
 
@@ -49,7 +49,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 Assert.That(segment.Type, Is.EqualTo(request.Type));
                 Assert.That(segment.ChildSegments, Is.Empty);
             }
-            
+
             Assert.That(course.Segments.Count == segmentCount);
         }
 
@@ -57,17 +57,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         public void Can_add_multiple_sub_segments()
         {
             var course = new Domain.Courses.Course
-            {
-                OrganizationId = Guid.NewGuid(),
-                TenantId = 999999
-            };
+                {
+                    OrganizationId = Guid.NewGuid(),
+                    TenantId = 999999
+                };
 
             var request = new SaveCourseSegmentRequest
-            {
-                Name = "Week 1",
-                Description = "Week 1",
-                Type = "Weekly"
-            };
+                {
+                    Name = "Week 1",
+                    Description = "Week 1",
+                    Type = "Weekly"
+                };
             var segmentId = Guid.NewGuid();
             course.AddSegment(segmentId, Guid.Empty, request);
 
@@ -77,11 +77,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             {
                 segmentId = Guid.NewGuid();
                 request = new SaveCourseSegmentRequest
-                {
-                    Name = "Assigment" + i,
-                    Description = "Assigment " + i,
-                    Type = "Assignment"
-                };
+                    {
+                        Name = "Assigment" + i,
+                        Description = "Assigment " + i,
+                        Type = "Assignment"
+                    };
 
                 course.AddSegment(segmentId, parentSegmentId, request);
 
@@ -99,7 +99,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             }
 
             Assert.That(course.Segments.First().ChildSegments.Count, Is.EqualTo(segmentCount));
-            
+
         }
 
         [Test]
@@ -107,11 +107,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             var segmentCount = 5;
 
-             var course = new Domain.Courses.Course
-            {
-                OrganizationId = Guid.NewGuid(),
-                TenantId = 999999
-            };
+            var course = new Domain.Courses.Course
+                {
+                    OrganizationId = Guid.NewGuid(),
+                    TenantId = 999999
+                };
 
             Domain.Courses.CourseSegment lastSegment = null;
             for (int i = 0; i < segmentCount; i++)
@@ -123,7 +123,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                         Type = "Assignment"
                     };
 
-                var newSegment = course.AddSegment(Guid.NewGuid(), lastSegment == null ? Guid.Empty : lastSegment.Id, request);
+                var newSegment = course.AddSegment(Guid.NewGuid(), lastSegment == null ? Guid.Empty : lastSegment.Id,
+                                                   request);
 
                 Assert.That(course.Segments.Contains(newSegment));
                 Assert.That(newSegment.ParentSegment, Is.EqualTo(lastSegment));
@@ -132,97 +133,97 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 {
                     Assert.That(lastSegment.ChildSegments.Contains(newSegment));
                 }
-                
+
                 lastSegment = newSegment;
             }
         }
 
-		[Test]
-		public void Can_add_course_prerequisite()
-		{
-			AutoMock autoMock = AutoMock.GetLoose();
-			var courseFactory = autoMock.Create<CourseFactory>();
+        [Test]
+        public void Can_add_course_prerequisite()
+        {
+            AutoMock autoMock = AutoMock.GetLoose();
+            var courseFactory = autoMock.Create<CourseFactory>();
 
-			var course = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Create(new SaveCourseRequest());
 
-			Assert.That(course.Prerequisites, Is.Empty);
+            Assert.That(course.Prerequisites, Is.Empty);
 
-			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
-			prerequisiste.Publish("");
-			course.AddPrerequisite(prerequisiste);
+            var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+            prerequisiste.Publish("");
+            course.AddPrerequisite(prerequisiste);
 
-			Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
-			Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
-		}
+            Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
+            Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
+        }
 
-		[Test]
-		public void Can_add_course_prerequisite_does_not_add_duplicate_prerequisites()
-		{
-			AutoMock autoMock = AutoMock.GetLoose();
-			var courseFactory = autoMock.Create<CourseFactory>();
+        [Test]
+        public void Can_add_course_prerequisite_does_not_add_duplicate_prerequisites()
+        {
+            AutoMock autoMock = AutoMock.GetLoose();
+            var courseFactory = autoMock.Create<CourseFactory>();
 
-			var course = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Create(new SaveCourseRequest());
 
-			Assert.That(course.Prerequisites, Is.Empty);
+            Assert.That(course.Prerequisites, Is.Empty);
 
-			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
-			prerequisiste.Publish("");
-			course.AddPrerequisite(prerequisiste);
-			course.AddPrerequisite(prerequisiste);
+            var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+            prerequisiste.Publish("");
+            course.AddPrerequisite(prerequisiste);
+            course.AddPrerequisite(prerequisiste);
 
-			Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
-			Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
-		}
+            Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
+            Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
+        }
 
-		[Test]
-		public void Can_add_course_prerequisite_throws_exception_if_prerequisite_is_not_published()
-		{
-			AutoMock autoMock = AutoMock.GetLoose();
-			var courseFactory = autoMock.Create<CourseFactory>();
+        [Test]
+        public void Can_add_course_prerequisite_throws_exception_if_prerequisite_is_not_published()
+        {
+            AutoMock autoMock = AutoMock.GetLoose();
+            var courseFactory = autoMock.Create<CourseFactory>();
 
-			var course = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Create(new SaveCourseRequest());
 
-			Assert.That(course.Prerequisites, Is.Empty);
+            Assert.That(course.Prerequisites, Is.Empty);
 
-			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
-			Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiste));
-		}
+            var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+            Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiste));
+        }
 
-		[Test]
-		public void Can_remove_course_prerequisite()
-		{
-			AutoMock autoMock = AutoMock.GetLoose();
-			var courseFactory = autoMock.Create<CourseFactory>();
+        [Test]
+        public void Can_remove_course_prerequisite()
+        {
+            AutoMock autoMock = AutoMock.GetLoose();
+            var courseFactory = autoMock.Create<CourseFactory>();
 
-			var course = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Create(new SaveCourseRequest());
 
-			Assert.That(course.Prerequisites, Is.Empty);
+            Assert.That(course.Prerequisites, Is.Empty);
 
-			var prerequisiste = courseFactory.Create(new SaveCourseRequest());
-			prerequisiste.Id = Guid.NewGuid();
-			prerequisiste.Publish("");
-			course.AddPrerequisite(prerequisiste);
+            var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+            prerequisiste.Id = Guid.NewGuid();
+            prerequisiste.Publish("");
+            course.AddPrerequisite(prerequisiste);
 
-			Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
-			Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
+            Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
+            Assert.That(course.Prerequisites.First(), Is.EqualTo(prerequisiste));
 
-			course.RemovePrerequisite(prerequisiste.Id);
-			Assert.That(course.Prerequisites.Count, Is.EqualTo(0));
-		}
+            course.RemovePrerequisite(prerequisiste.Id);
+            Assert.That(course.Prerequisites.Count, Is.EqualTo(0));
+        }
 
-		[Test]
-		public void Can_remove_course_prerequisite_gracefully_ignores_requests_to_remove_prereq_that_isnt_there()
-		{
-			AutoMock autoMock = AutoMock.GetLoose();
-			var courseFactory = autoMock.Create<CourseFactory>();
+        [Test]
+        public void Can_remove_course_prerequisite_gracefully_ignores_requests_to_remove_prereq_that_isnt_there()
+        {
+            AutoMock autoMock = AutoMock.GetLoose();
+            var courseFactory = autoMock.Create<CourseFactory>();
 
-			var course = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Create(new SaveCourseRequest());
 
-			Assert.That(course.Prerequisites, Is.Empty);
+            Assert.That(course.Prerequisites, Is.Empty);
 
-			course.RemovePrerequisite(Guid.NewGuid());
-			Assert.That(course.Prerequisites.Count, Is.EqualTo(0));
-		}
+            course.RemovePrerequisite(Guid.NewGuid());
+            Assert.That(course.Prerequisites.Count, Is.EqualTo(0));
+        }
 
         [Test]
         public void Cannot_modify_published_course()
@@ -230,18 +231,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             AutoMock autoMock = AutoMock.GetLoose();
             var courseFactory = autoMock.Create<CourseFactory>();
             var course = courseFactory.Create(new SaveCourseRequest());
-			var prerequisiteCourse = courseFactory.Create(new SaveCourseRequest());
-			prerequisiteCourse.Publish("");
+            var prerequisiteCourse = courseFactory.Create(new SaveCourseRequest());
+            prerequisiteCourse.Publish("");
 
-            Assert.DoesNotThrow(() => course.Name = "name" );
+            Assert.DoesNotThrow(() => course.Name = "name");
             Assert.DoesNotThrow(() => course.Description = "description");
             Assert.DoesNotThrow(() => course.CourseType = ECourseType.Competency);
             Assert.DoesNotThrow(() => course.Code = "code");
             Assert.DoesNotThrow(() => course.SetPrograms(new List<Program>()));
-			Assert.DoesNotThrow(() => course.AddPrerequisite(prerequisiteCourse));
-			Assert.DoesNotThrow(() => course.RemovePrerequisite(Guid.NewGuid()));
+            Assert.DoesNotThrow(() => course.AddPrerequisite(prerequisiteCourse));
+            Assert.DoesNotThrow(() => course.RemovePrerequisite(Guid.NewGuid()));
             Assert.DoesNotThrow(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
-            
+
             course.Publish("note");
 
             Assert.Throws<ForbiddenException>(() => course.Name = "name");
@@ -249,9 +250,55 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.Throws<ForbiddenException>(() => course.CourseType = ECourseType.Competency);
             Assert.Throws<ForbiddenException>(() => course.Code = "code");
             Assert.Throws<ForbiddenException>(() => course.SetPrograms(new List<Program>()));
-			Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiteCourse));
-			Assert.Throws<ForbiddenException>(() => course.RemovePrerequisite(Guid.NewGuid()));
-            Assert.Throws<ForbiddenException>(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
+            Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiteCourse));
+            Assert.Throws<ForbiddenException>(() => course.RemovePrerequisite(Guid.NewGuid()));
+            Assert.Throws<ForbiddenException>(
+                () => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
         }
+
+        [Test]
+        public void Can_add_learning_activity_to_segment()
+        {
+            var course = new Domain.Courses.Course
+                {
+                    OrganizationId = Guid.NewGuid(),
+                    TenantId = 999999
+                };
+
+            var segmentId = Guid.NewGuid();
+            var request = new SaveCourseSegmentRequest
+                {
+                    Name = "Week 1",
+                    Description = "Week 1 Description",
+                    Type = "Weekly"
+                };
+
+            course.AddSegment(segmentId, Guid.Empty, request);
+            var segment = course.Segments.First(s => s.Name == request.Name);
+
+            var learningActivityId = Guid.NewGuid();
+            var learningActivityRequest = new SaveCourseLearningActivityRequest
+                {
+                    Name = "Discussion 1",
+                    Type = "Discussion",
+                    IsGradeable = true,
+                    IsExtraCredit = false,
+                    MaxPoint = 100
+                    
+                };
+            course.AddLearningActivity(segmentId, learningActivityRequest, learningActivityId);
+
+            var learningActivity =
+                segment.CourseLearningActivities.First(s => s.Name == learningActivityRequest.Name);
+
+            Assert.That(learningActivity.Id, Is.EqualTo(learningActivityId));
+            Assert.That(learningActivity.Name, Is.EqualTo(learningActivityRequest.Name));
+            Assert.That(learningActivity.Type, Is.EqualTo(learningActivityRequest.Type));
+            Assert.That(learningActivity.IsGradeable, Is.EqualTo(learningActivityRequest.IsGradeable));
+            Assert.That(learningActivity.IsExtraCredit, Is.EqualTo(learningActivityRequest.IsExtraCredit));
+            Assert.That(learningActivity.MaxPoint, Is.EqualTo(learningActivityRequest.MaxPoint));
+            Assert.That(learningActivity.TenantId, Is.EqualTo(course.TenantId));
+        }
+
     }
 }
