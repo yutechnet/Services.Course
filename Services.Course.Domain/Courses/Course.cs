@@ -291,7 +291,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
 
-            if (learningActivity == null )
+            if (learningActivity == null || !learningActivity.ActiveFlag)
                 throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.", learningActivityId, this.Id));
 
             learningActivity.Name = request.Name;
@@ -313,12 +313,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
             if (segment == null)
                 throw new BadRequestException(
                     string.Format(
-                        "Cannot update learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
+                        "Cannot get learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
                         this.Id, segmentId));
 
             CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
 
-            if (learningActivity == null)
+            if (learningActivity == null || !learningActivity.ActiveFlag)
                 throw new NotFoundException(string.Format("Segment {0} does not have learning activity with Id {1}", this.Id, learningActivityId));
 
             return learningActivity;
@@ -335,12 +335,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
             if (segment == null)
                 throw new BadRequestException(
                     string.Format(
-                        "Cannot update learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
+                        "Cannot delete learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
                         this.Id, segmentId));
 
             CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
 
-            if (learningActivity == null )
+            if (learningActivity == null || !learningActivity.ActiveFlag)
                 throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.", learningActivityId, this.Id));
 
             learningActivity.ActiveFlag=false;
