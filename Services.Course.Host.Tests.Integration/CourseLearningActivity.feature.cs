@@ -153,6 +153,139 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Update a learning activity")]
+        public virtual void UpdateALearningActivity()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a learning activity", ((string[])(null)));
+#line 23
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "TenantId",
+                        "Name",
+                        "Type",
+                        "IsGradeable",
+                        "IsExtraCredit",
+                        "Weight",
+                        "MaxPoint",
+                        "ObjectId"});
+            table5.AddRow(new string[] {
+                        "999999",
+                        "Assignment 1",
+                        "Assignment",
+                        "True",
+                        "False",
+                        "100",
+                        "20",
+                        "Null"});
+#line 24
+ testRunner.When("I add the following learning activity:", ((string)(null)), table5, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "TenantId",
+                        "Name",
+                        "Type",
+                        "IsGradeable",
+                        "IsExtraCredit",
+                        "Weight",
+                        "MaxPoint",
+                        "ObjectId"});
+            table6.AddRow(new string[] {
+                        "999999",
+                        "Assignment 1",
+                        "Discussion",
+                        "false",
+                        "false",
+                        "80",
+                        "10",
+                        "Null"});
+#line 27
+ testRunner.And("I update the learning activity with the following:", ((string)(null)), table6, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "TenantId",
+                        "Name",
+                        "Type",
+                        "IsGradeable",
+                        "IsExtraCredit",
+                        "Weight",
+                        "MaxPoint",
+                        "ObjectId"});
+            table7.AddRow(new string[] {
+                        "999999",
+                        "Assignment 1",
+                        "Discussion",
+                        "false",
+                        "false",
+                        "80",
+                        "10",
+                        "Null"});
+#line 30
+ testRunner.Then("my learning activity contains the following:", ((string)(null)), table7, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Delete a learning activity")]
+        public virtual void DeleteALearningActivity()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a learning activity", ((string[])(null)));
+#line 34
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "TenantId",
+                        "Name",
+                        "Type",
+                        "IsGradeable",
+                        "IsExtraCredit",
+                        "Weight",
+                        "MaxPoint",
+                        "ObjectId"});
+            table8.AddRow(new string[] {
+                        "999999",
+                        "Assignment 1",
+                        "Assignment",
+                        "True",
+                        "False",
+                        "100",
+                        "20",
+                        "Null"});
+#line 35
+ testRunner.When("I add the following learning activity:", ((string)(null)), table8, "When ");
+#line 38
+ testRunner.And("I remove \"Assignment 1\" learning activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "TenantId",
+                        "Name",
+                        "Type",
+                        "IsGradeable",
+                        "IsExtraCredit",
+                        "Weight",
+                        "MaxPoint",
+                        "ObjectId"});
+            table9.AddRow(new string[] {
+                        "999999",
+                        "Assignment 1",
+                        "Assignment",
+                        "True",
+                        "False",
+                        "100",
+                        "20",
+                        "Null"});
+#line 39
+ testRunner.Then("the learning activity below no longer exists:", ((string)(null)), table9, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
