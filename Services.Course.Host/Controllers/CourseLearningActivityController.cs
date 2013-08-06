@@ -28,9 +28,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         // GET course/{courseId}/segment/{segmentId}/learningactivity/{id}
-		public CourseLearningActivityResponse Get(Guid courseId, Guid segmentId, Guid learningActivityId)
+		public CourseLearningActivityResponse Get(Guid courseId, Guid segmentId, Guid id)
 		{
-            return _courseLearningActivityService.Get(courseId, segmentId, learningActivityId);
+            return _courseLearningActivityService.Get(courseId, segmentId, id);
 		}
 
 		[Transaction]
@@ -54,18 +54,18 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		[CheckModelForNull]
 		[ValidateModelState]
 		// PUT course/{courseId}/segment/{segmentId}/learningactivity/{id}
-        public HttpResponseMessage Put(Guid courseId, Guid segmentId, Guid learningActivityId, SaveCourseLearningActivityRequest request)
+        public HttpResponseMessage Put(Guid courseId, Guid segmentId, Guid id, SaveCourseLearningActivityRequest request)
 		{
-            _courseLearningActivityService.Update(courseId, segmentId, learningActivityId, request);
+            _courseLearningActivityService.Update(courseId, segmentId, id, request);
             var response = Request.CreateResponse(HttpStatusCode.OK);
             return response;
 		}
 
 		[Transaction]
 		// DELETE course/{courseId}/segment/{segmentId}/learningactivity/id
-        public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId)
+        public void Delete(Guid courseId, Guid segmentId, Guid id)
 		{
-            _courseLearningActivityService.Delete(courseId, segmentId, learningActivityId);
+            _courseLearningActivityService.Delete(courseId, segmentId, id);
 		}
 	}
 }

@@ -1,6 +1,9 @@
 ﻿using System;
 using AutoMapper;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain
@@ -8,10 +11,12 @@ namespace BpeProducts.Services.Course.Domain
     public class CourseLearningActivityService : ICourseLearningActivityService
     {
         private readonly ICourseRepository _courseRepository;
+        private readonly IDomainEvents _domainEvents;
 
-        public CourseLearningActivityService(ICourseRepository courseRepository)
+        public CourseLearningActivityService(ICourseRepository courseRepository, IDomainEvents domainEvents)
         {
             _courseRepository = courseRepository;
+            _domainEvents = domainEvents;
         }
 
         public CourseLearningActivityResponse Get(Guid courseId, Guid segmentId, Guid learningActivityId)
@@ -25,9 +30,14 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Update(Guid courseId, Guid segmentId, Guid learningActivityId, SaveCourseLearningActivityRequest request)
         {
-            var course = _courseRepository.Get(courseId);
 
-            var learningActivity = course.UpdateLearningActivity(segmentId, learningActivityId, request);
+            _domainEvents.Raise<CourseLearningActivityUpdated>(new CourseLearningActivityUpdated
+                {
+                    AggregateId = courseId, 
+                    SegmentId = segmentId,
+                    LearningActivityId = learningActivityId,
+                    Request = request
+                });
         }
 
         public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId)
@@ -37,11 +47,29 @@ namespace BpeProducts.Services.Course.Domain
 
         public CourseLearningActivityResponse Create(Guid courseId, Guid segmentId, SaveCourseLearningActivityRequest request)
         {
-            var course = _courseRepository.Get(courseId);
+            var learningActivityId = Guid.NewGuid();
 
-            var learningActivity = course.AddLearningActivity(segmentId, request);
+            _domainEvents.Raise<CourseLearningActivityAdded>(new CourseLearningActivityAdded
+                {
+                    AggregateId = courseId,
+                    LearningActivityId = learningActivityId,
+                    Request = request,
+                    SegmentId = segmentId
+                });
 
-            return Mapper.Map<CourseLearningActivityResponse>(learningActivity);
+            var response = new CourseLearningActivityResponse
+                {
+                    CourseSegmentId = segmentId,
+                    Id = learningActivityId,
+                    Name = request.Name,
+                    Type = request.Type,
+                    IsGradeable = request.IsGradeable,
+                    IsExtraCredit = request.IsExtraCredit,
+                    Weight = request.Weight,
+                    MaxPoint = request.MaxPoint,
+                    ObjectId = request.ObjectId
+                };
+            return response;
         }
     }
 }

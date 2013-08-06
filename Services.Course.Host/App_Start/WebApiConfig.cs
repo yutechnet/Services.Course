@@ -32,7 +32,7 @@ namespace BpeProducts.Services.Course.Host
 		        "{entityType}/version",
                 new { controller = "Version", action = "CreateVersion" });
 
-            config.Routes.MapHttpRoute("CourseLearningActivity", "course/{courseId}/segments/{segmentId}/learningactivity/{learningActivityId}",
+            config.Routes.MapHttpRoute("CourseLearningActivity", "course/{courseId}/segments/{segmentId}/learningactivity/{id}",
                                       new { controller = "courselearningactivity", id = RouteParameter.Optional});
 
             config.Routes.MapHttpRoute("CourseSegmentOutcome", "course/{courseId}/segments/{segmentId}/outcome/{id}",

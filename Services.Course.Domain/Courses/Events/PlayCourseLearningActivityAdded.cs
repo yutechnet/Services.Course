@@ -9,7 +9,7 @@ namespace BpeProducts.Services.Course.Domain.Courses.Events
 	{
 		public Course Apply(Domain.Events.CourseLearningActivityAdded msg, Course course)
 		{
-		    course.AddLearningActivity(msg.SegmentId, msg.Request);
+		    course.AddLearningActivity(msg.SegmentId, msg.Request, msg.LearningActivityId);
 			return course;
 		}
 

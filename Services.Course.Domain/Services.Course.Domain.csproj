@@ -188,6 +188,7 @@
     <Compile Include="IVersionableEntityFactory.cs" />
     <Compile Include="IVersionHandler.cs" />
     <Compile Include="CourseLearningActivityService.cs" />
+    <Compile Include="Mappings\CourseLearningActivityMappingOverride.cs" />
     <Compile Include="Mappings\CourseSegmentMappingOverride.cs" />
     <Compile Include="Repositories\IProgramRepository.cs" />
     <Compile Include="Repositories\ProgramRepository.cs" />

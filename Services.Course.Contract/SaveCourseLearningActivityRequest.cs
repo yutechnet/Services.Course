@@ -19,15 +19,16 @@ namespace BpeProducts.Services.Course.Contract
         [DataMember(IsRequired = true)]
         public string Type { get; set; }
 
-        public Boolean? IsGradeable { get; set; }
-
-        public Boolean? IsExtraCredit { get; set; }
-
-        public int? MaxPoint { get; set; }
-
-        public int? Weight { get; set; }
-
-        public Guid? ObjectId { get; set; }
+        [DataMember]   
+        public Boolean IsGradeable { get; set; }
+        [DataMember]   
+        public Boolean IsExtraCredit { get; set; }
+        [DataMember]   
+        public int MaxPoint { get; set; }
+        [DataMember]   
+        public int Weight { get; set; }
+        [DataMember]   
+        public Guid ObjectId { get; set; }
 
     }
 }

@@ -27,7 +27,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             }
 
             var course = _repository.Get<Courses.Course>(e.AggregateId);
-            course.AddLearningActivity(e.SegmentId, e.Request);
+            course.AddLearningActivity(e.SegmentId, e.Request, e.LearningActivityId);
 
             _repository.Save(course);
         }

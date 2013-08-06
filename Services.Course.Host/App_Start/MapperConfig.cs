@@ -41,7 +41,8 @@ namespace BpeProducts.Services.Course.Host.App_Start
 
 		    Mapper.CreateMap<CourseSegmentAdded, CourseSegmentInfo>();
 
-		    Mapper.CreateMap<SaveCourseLearningActivityRequest, Domain.Courses.CourseLearningActivity>();
+		    Mapper.CreateMap<SaveCourseLearningActivityRequest, Domain.Courses.CourseLearningActivity>()
+                .ForMember(x =>x.Id, opt=>opt.Ignore());
 		    //
 		}
 
