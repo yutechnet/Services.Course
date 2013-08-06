@@ -75,14 +75,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Name",
                         "Code",
                         "Description",
-                        "OrganizationId"});
+                        "OrganizationId",
+                        "CourseType",
+                        "IsTemplate",
+                        "IsPublished"});
             table1.AddRow(new string[] {
-                        "Math 101",
-                        "M101",
-                        "Basic mathematics",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Econ 100",
+                        "E100",
+                        "Macroeconomics",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Traditional",
+                        "False",
+                        "NotPublished"});
 #line 8
-testRunner.Given("the following courses exist:", ((string)(null)), table1, "Given ");
+testRunner.Given("the following courses and their published status:", ((string)(null)), table1, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -95,7 +101,7 @@ testRunner.Given("the following courses exist:", ((string)(null)), table1, "Give
                         "TimeSpan",
                         ""});
 #line 11
-testRunner.Given("I add following course segments to \'Math 101\':", ((string)(null)), table2, "Given ");
+testRunner.Given("I add following course segments to \'Econ 100\':", ((string)(null)), table2, "Given ");
 #line hidden
         }
         
@@ -283,6 +289,57 @@ this.FeatureBackground();
                         "Null"});
 #line 39
  testRunner.Then("the learning activity below no longer exists:", ((string)(null)), table9, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Cannot add a learning activity to a course that is already published")]
+        public virtual void CannotAddALearningActivityToACourseThatIsAlreadyPublished()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a learning activity to a course that is already published", ((string[])(null)));
+#line 43
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table10.AddRow(new string[] {
+                        "PublishNote",
+                        "Blah blah"});
+#line 44
+ testRunner.Given("I publish \'Econ 100\' course with the following info", ((string)(null)), table10, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table11.AddRow(new string[] {
+                        "TenantId",
+                        "999999"});
+            table11.AddRow(new string[] {
+                        "Name",
+                        "Assignment 1"});
+            table11.AddRow(new string[] {
+                        "Type",
+                        "Assignment"});
+            table11.AddRow(new string[] {
+                        "IsGradeable",
+                        "IsExtraCredit"});
+            table11.AddRow(new string[] {
+                        "Weight",
+                        "100"});
+            table11.AddRow(new string[] {
+                        "MaxPoint",
+                        "20"});
+            table11.AddRow(new string[] {
+                        "ObjectId",
+                        "Null"});
+#line 47
+ testRunner.When("I add a learning activity to a course that has already been published", ((string)(null)), table11, "When ");
+#line 58
+ testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -15,8 +15,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     {
         private const string Url = "course";
 
-        [Given(@"the following courses are published:")]
-        public void GivenTheFollowingCoursesArePublished(Table table)
+        [Given(@"the following courses and their published status:")]
+        public void GivenTheFollowingCoursesAndTheirPublishedStatus(Table table)
         {
             var addedCourses = new Dictionary<string, Guid> { { "courseName", Guid.NewGuid() } };
 

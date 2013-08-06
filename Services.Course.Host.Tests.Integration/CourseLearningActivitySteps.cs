@@ -16,6 +16,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     {
         private const string LearningActivityUrl = "/learningactivity/";
         public Uri RequestUri = ScenarioContext.Current.Get<Uri>("Week1");
+        
         public Guid NullGuid = Guid.Parse("00000000-0000-0000-0000-000000000000");
 
         [When(@"I add the following learning activity:")]
@@ -35,9 +36,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     //ObjectId = Guid.Parse(row["ObjectId"])
                 };
 
-                var request = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, learningActivity).Result;
-                request.EnsureSuccessStatusCode();
-                var saveLearningActivity = request.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
+                var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, learningActivity).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    var responseBody = response.Content.ReadAsStringAsync().Result;
+                    throw new Exception(responseBody);
+                }
+                var saveLearningActivity = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
                 ScenarioContext.Current.Add(saveLearningActivity.Name, saveLearningActivity);
             }
 
@@ -61,8 +66,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     };
 
                 var activity = ScenarioContext.Current.Get<CourseLearningActivityResponse>(table.Rows[0]["Name"]);
-                var request = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(RequestUri.ToString() + LearningActivityUrl + activity.Id, learningActivity).Result;
-                request.EnsureSuccessStatusCode();
+                var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(RequestUri.ToString() + LearningActivityUrl + activity.Id, learningActivity).Result;
+                if (!response.IsSuccessStatusCode)
+                {
+                    var responseBody = response.Content.ReadAsStringAsync().Result;
+                    throw new Exception(responseBody);
+                }
             }
         }
 
@@ -70,16 +79,28 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void WhenIRemoveLearningActivity(string activityName)
         {
             var activity = ScenarioContext.Current.Get<CourseLearningActivityResponse>(activityName);
-            var request = ApiFeature.ApiTestHost.Client.DeleteAsync(RequestUri.ToString() + LearningActivityUrl + activity.Id).Result;
-            request.EnsureSuccessStatusCode();
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(RequestUri.ToString() + LearningActivityUrl + activity.Id).Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseBody = response.Content.ReadAsStringAsync().Result;
+                throw new Exception(responseBody);
+            }
         }
+
+        [When(@"I add a learning activity to a course that has already been published")]
+        public void WhenIAddALearningActivityToACourseThatHasAlreadyBeenPublished(Table table)
+        {
+            var learningActivity = table.CreateInstance<SaveCourseLearningActivityRequest>();
+            var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, learningActivity).Result;            
+            ScenarioContext.Current.Add("ResponseToValidate", response);
+        }
+
 
         [Then(@"the learning activity below no longer exists:")]
         public void ThenTheLearningActivityBelowNoLongerExists(Table table)
         {
             var activityResponse = ScenarioContext.Current.Get<CourseLearningActivityResponse>(table.Rows[0]["Name"]);
             var response = ApiFeature.ApiTestHost.Client.GetAsync(RequestUri + LearningActivityUrl + activityResponse.Id).Result;
-
             Assert.That(response.Content, Is.Null);
         }
 

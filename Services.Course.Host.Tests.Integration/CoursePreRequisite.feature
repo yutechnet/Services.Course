@@ -5,7 +5,7 @@ Feature: CoursePrerequisites
 	So that students can be enrolled in these courses
 
 Background: 
-	Given the following courses are published:
+	Given the following courses and their published status:
 	| Name     | Code | Description           | OrganizationId                       | CourseType  | IsTemplate | IsPublished  |
 	| Econ 100 | E100 | Macroeconomics        | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      | Published    |
 	| Econ 200 | E200 | Microeconomics        | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      | Published    |
