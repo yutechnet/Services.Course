@@ -17,27 +17,52 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     {
         private const string LearningActivityUrl = "/learningactivity/";
         public Uri RequestUri = ScenarioContext.Current.Get<Uri>("Week1");
-        
-        public Guid NullGuid = Guid.Parse("00000000-0000-0000-0000-000000000000");
+
+        [Given(@"the following learning activity:")]
+        public void GivenTheFollowingLearningActivity(Table table)
+        {
+            var activity = table.CreateInstance<SaveCourseLearningActivityRequest>();
+            var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, activity).Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseBody = response.Content.ReadAsStringAsync().Result;
+                throw new Exception(responseBody);
+            }
+
+            var activityResponse = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
+            ScenarioContext.Current.Add("LearningActivity", activityResponse);
+            ScenarioContext.Current.Add(activityResponse.Name, activityResponse);
+        }
+
+        [When(@"I update '(.*)' learning activity with the following info")]
+        public void WhenIUpdateLearningActivityWithTheFollowingInfo(string activityName, Table table)
+        {
+            var original = ScenarioContext.Current.Get<CourseLearningActivityResponse>(activityName);
+            var id = original.Id;
+            var activity = table.CreateInstance<SaveCourseLearningActivityRequest>();
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(RequestUri.ToString() + LearningActivityUrl + id, activity).Result;
+            if (ScenarioContext.Current.ContainsKey(activityName))
+                ScenarioContext.Current.Remove(activityName);
+                ScenarioContext.Current.Add(activityName, response.RequestMessage.RequestUri);
+        }
+
+        [Then(@"the learning activity '(.*)' should have the following info")]
+        public void ThenTheLearningActivityShouldHaveTheFollowingInfo(string activityName, Table table)
+        {
+            var getUri = ScenarioContext.Current.Get<Uri>(activityName);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri).Result;
+            var getResponse = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
+            table.CompareToInstance(getResponse);
+        }
+
 
         [When(@"I add the following learning activity:")]
         public void WhenIAddTheFollowingLearningActivity(Table table)
         {
-            foreach (var row in table.Rows)
+            var learningActivities = table.CreateSet<SaveCourseLearningActivityRequest>();
+            foreach (var activity in learningActivities)
             {
-                var learningActivity = new SaveCourseLearningActivityRequest()
-                {
-                    TenantId = int.Parse(row["TenantId"]),
-                    Name = row["Name"],
-                    Type = row["Type"],
-                    IsGradeable = bool.Parse(row["IsGradeable"]),
-                    IsExtraCredit = bool.Parse(row["IsExtraCredit"]),
-                    Weight = int.Parse(row["Weight"]),
-                    MaxPoint = int.Parse(row["MaxPoint"]),
-                    ObjectId = Guid.Parse(row["ObjectId"]),
-                };
-
-                var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, learningActivity).Result;
+                var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, activity).Result;
                 if (!response.IsSuccessStatusCode)
                 {
                     var responseBody = response.Content.ReadAsStringAsync().Result;
@@ -46,28 +71,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 var saveLearningActivity = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
                 ScenarioContext.Current.Add(saveLearningActivity.Name, saveLearningActivity);
             }
-
         }
 
         [When(@"I update the learning activity with the following:")]
         public void WhenIUpdateTheLearningActivityWithTheFollowing(Table table)
         {
-            foreach (var row in table.Rows)
+            var learningActivities = table.CreateSet<SaveCourseLearningActivityRequest>();
+            foreach (var activity in learningActivities)
             {
-                var learningActivity = new SaveCourseLearningActivityRequest()
-                    {
-                        TenantId = int.Parse(row["TenantId"]),
-                        Name = row["Name"],
-                        Type = row["Type"],
-                        IsGradeable = bool.Parse(row["IsGradeable"]),
-                        IsExtraCredit = bool.Parse(row["IsExtraCredit"]),
-                        Weight = int.Parse(row["Weight"]),
-                        MaxPoint = int.Parse(row["MaxPoint"]),
-                        ObjectId = Guid.Parse(row["ObjectId"]),
-                    };
-
-                var activity = ScenarioContext.Current.Get<CourseLearningActivityResponse>(table.Rows[0]["Name"]);
-                var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(RequestUri.ToString() + LearningActivityUrl + activity.Id, learningActivity).Result;
+                var activityResponse = ScenarioContext.Current.Get<CourseLearningActivityResponse>(table.Rows[0]["Name"]);
+                var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(RequestUri.ToString() + LearningActivityUrl + activityResponse.Id, activity).Result;
                 if (!response.IsSuccessStatusCode)
                 {
                     var responseBody = response.Content.ReadAsStringAsync().Result;
@@ -102,20 +115,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"my learning activity contains the following:")]
         public void ThenMyLearningActivityContainsTheFollowing(Table table)
         {
-            var activityResponse = ScenarioContext.Current.Get<CourseLearningActivityResponse>(table.Rows[0]["Name"]);
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(RequestUri + LearningActivityUrl + activityResponse.Id).Result;
-            var getResponse = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
-            var newObjId = getResponse.ObjectId.ToString().ToUpper();
-
             foreach (var row in table.Rows)
             {
-                Assert.That(getResponse.Name, Is.EqualTo(row["Name"]));
-                Assert.That(getResponse.Type, Is.EqualTo(row["Type"]));
-                Assert.That(getResponse.IsGradeable, Is.EqualTo(bool.Parse(row["IsGradeable"])));
-                Assert.That(getResponse.IsExtraCredit, Is.EqualTo(bool.Parse(row["IsExtraCredit"])));
-                Assert.That(getResponse.Weight, Is.EqualTo(int.Parse(row["Weight"])));
-                Assert.That(getResponse.MaxPoint, Is.EqualTo(int.Parse(row["MaxPoint"])));
-                Assert.That(newObjId, Is.EqualTo(row["ObjectId"]));
+                var activities = ScenarioContext.Current.Get<CourseLearningActivityResponse>(row["Name"]);
+                var getResponse = ApiFeature.ApiTestHost.Client.GetAsync(RequestUri + LearningActivityUrl + activities.Id).Result;
+                var response = getResponse.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
+                Assert.That(response.Name, Is.EqualTo(activities.Name));
+                Assert.That(response.Type, Is.EqualTo(activities.Type));
+                Assert.That(response.IsGradeable, Is.EqualTo(activities.IsGradeable));
+                Assert.That(response.IsExtraCredit, Is.EqualTo(activities.IsExtraCredit));
+                Assert.That(response.MaxPoint, Is.EqualTo(activities.MaxPoint));
+                Assert.That(response.ObjectId, Is.EqualTo(activities.ObjectId));
             }
         }
     }
