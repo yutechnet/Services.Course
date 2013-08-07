@@ -15,7 +15,7 @@ namespace BpeProducts.Services.Course.Contract
         public Guid OrganizationId { get; set; }
         [Required, DataMember]
         public string ProgramType { get; set; }
-		[Required, DataMember]
-		public string TenantId { get; set; }
+        [Required, DataMember(IsRequired = true)]
+		public int TenantId { get; set; }
 	}
 }

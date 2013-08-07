@@ -19,97 +19,98 @@ Scenario: Delete an existing leanring outcome
 	Then the learning outcome shoud no longer exist
 
 Background: 
-Given the following programs exist:
-	| Name | Description | OrganizationId                       | TenantId |
-	| BA   | BA Program  | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | 999999   |
-And the following course exists:
-	| Field       | Value                         |
-	| Name        | English 101                   |
-	| Code        | ENG101                        |
-	| Description | Ranji's awesome English class |
-	| TenantId    | 999999                        |
-	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-
-Scenario: Add a new learning outcome to a program and get it
-	When I associate to the 'program' 'BA' a new learning outcome with the description 'SomeDescription'
-	Then the learning outcome should be with the description 'SomeDescription'
-	And the 'program' 'BA' is associated with learning outcome 'SomeDescription'
+Given I have the following programs
+	| Name | Description | ProgramType | OrganizationId                       |
+	| BA   | BA Program  | BA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+And I have the following courses
+	| Name        | Code   | Description                   | OrganizationId                       |
+	| English 101 | ENG101 | Ranji's awesome English class | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 
 Scenario: Associate a new learning outcome to a program
-When I associate the following learning outcomes to 'BA' program:
-| Description             |
-| first learning outcome  |
-| second learning outcome |
-Then 'BA' program is associated with the following learning outcomes:
-| Description             |
-| first learning outcome  |
-| second learning outcome |
+	When I associate the newly created learning outcomes to 'BA' program
+	| Description             |
+	| first learning outcome  |
+	| second learning outcome |
+	Then 'BA' program is associated with the following learning outcomes:
+	| Description             |
+	| first learning outcome  |
+	| second learning outcome |
+
+Scenario: Associate a existing learning outcome to a program
+	Given I have the following learning outcomes
+	| Description             |
+	| first learning outcome  |
+	| second learning outcome |
+	When I associate the existing learning outcomes to 'BA' program
+	| Description             |
+	| first learning outcome  |
+	| second learning outcome |
+	Then 'BA' program is associated with the following learning outcomes:
+	| Description             |
+	| first learning outcome  |
+	| second learning outcome |
 
 Scenario: Duplicate association is idempotent
-When I associate the following learning outcomes to 'BA' program:
-| Description             |
-| first learning outcome  |
-When I associate the following learning outcomes to 'BA' program:
-| Description             |
-| first learning outcome  |
-Then 'BA' program is associated with the following learning outcomes:
-| Description             |
-| first learning outcome  | 
+	When I associate the newly created learning outcomes to 'BA' program
+	| Description             |
+	| first learning outcome  |
+	When I associate the newly created learning outcomes to 'BA' program
+	| Description             |
+	| first learning outcome  |
+	Then 'BA' program is associated with the following learning outcomes:
+	| Description             |
+	| first learning outcome  | 
 
 Scenario: Disassociated a learning outcome from a program
-When I associate the following learning outcomes to 'BA' program:
-| Description             |
-| first learning outcome  |
-| second learning outcome |
-When I disassociate the following learning outcomes from 'BA' program:
-| Description             |
-| first learning outcome  |
-Then 'BA' program is associated with the only following learning outcomes:
-| Description             |
-| second learning outcome |
+	When I associate the newly created learning outcomes to 'BA' program
+	| Description             |
+	| first learning outcome  |
+	| second learning outcome |
+	When I disassociate the following learning outcomes from 'BA' program:
+	| Description             |
+	| first learning outcome  |
+	Then 'BA' program is associated with the only following learning outcomes:
+	| Description             |
+	| second learning outcome |
 
 Scenario: Disassociating non-existing learning outcome
-When I associate the following learning outcomes to 'BA' program:
-| Description             |
-| first learning outcome  |
-| second learning outcome |
-Then disassociating the following from 'BA' program should result:
-| Description             | Disassociation Response |
-| first learning outcome  | NoContent               |
-| second learning outcome | NoContent               |
-| third learning outcome  | NotFound                |
+	When I associate the newly created learning outcomes to 'BA' program
+	| Description             |
+	| first learning outcome  |
+	| second learning outcome |
+	Then disassociating the following from 'BA' program should result:
+	| Description             | Disassociation Response |
+	| first learning outcome  | NoContent               |
+	| second learning outcome | NoContent               |
+	| third learning outcome  | NotFound                |
 
 Scenario: Associate an outcome to another outcome
-	Given I associate the following learning outcomes to 'BA' program:
-	| Description                     | TenantId |
-	| first program learning outcome  | 999999   |
-	| second program learning outcome | 999999   |
-	And I assoicate the following learning outcomes to 'ENG101' course:
-	| Description                    | TenantId |
-	| first course learning outcome  | 999999   |
-	| second course learning outcome | 999999   |
-	When I assoicate the following outcomes to 'second program learning outcome'
-	| CourseCode | Description                    |
-	| ENG101     | first course learning outcome  |
-	| ENG101     | second course learning outcome |
+	Given I have the following learning outcomes
+	| Description                     |
+	| first program learning outcome  |
+	| second program learning outcome |
+	| first course learning outcome   |
+	| second course learning outcome  |
+	When I assoicate the following outcomes to outcome 'second program learning outcome'
+	| Description                    |
+	| first course learning outcome  |
+	| second course learning outcome |
 	Then 'second program learning outcome' has the following learning outcomes:
 	| Description                    |
 	| first course learning outcome  |
 	| second course learning outcome |
 
 Scenario: Disassociate an outcome from another outcome
-	Given I associate the following learning outcomes to 'BA' program:
-	| Description                     | TenantId |
-	| first program learning outcome  | 999999   |
-	| second program learning outcome | 999999   |
-	And I assoicate the following learning outcomes to 'ENG101' course:
-	| Description                    | TenantId |
-	| first course learning outcome  | 999999   |
-	| second course learning outcome | 999999   |
-	When I assoicate the following outcomes to 'second program learning outcome'
-	| CourseCode | Description                    |
-	| ENG101     | first course learning outcome  |
-	| ENG101     | second course learning outcome |
+	Given I have the following learning outcomes
+	| Description                     |
+	| first program learning outcome  |
+	| second program learning outcome |
+	| first course learning outcome   |
+	| second course learning outcome  |
+	When I assoicate the following outcomes to outcome 'second program learning outcome'
+	| Description                    |
+	| first course learning outcome  |
+	| second course learning outcome |
 	And I disassociate 'first course learning outcome' from 'second program learning outcome'
 	Then 'second program learning outcome' has the following learning outcomes:
 	| Description                    |

@@ -219,6 +219,12 @@
       <DependentUpon>CourseVersioning.feature</DependentUpon>
     </Compile>
     <Compile Include="CourseVersioningSteps.cs" />
+    <Compile Include="GetEntityLearningOutcomeSteps.cs" />
+    <Compile Include="GetEntityLearningOutcomes.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GetEntityLearningOutcomes.feature</DependentUpon>
+    </Compile>
     <Compile Include="LearningOutcomeManagement.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -236,14 +242,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProgramAssociation.feature</DependentUpon>
     </Compile>
-    <Compile Include="ProgramAssociationSteps.cs" />
     <Compile Include="ProgramCreation.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ProgramCreation.feature</DependentUpon>
     </Compile>
     <Compile Include="ProgramCreationSteps.cs" />
+    <Compile Include="Resources\CourseResource.cs" />
+    <Compile Include="Resources\LearningOutcomeResource.cs" />
+    <Compile Include="Resources\CourseSegmentResource.cs" />
+    <Compile Include="Resources\ProgramResource.cs" />
+    <Compile Include="Operations\GetOperations.cs" />
+    <Compile Include="StepSetups\Givens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Operations\PostOperations.cs" />
+    <Compile Include="Operations\PutOperations.cs" />
+    <Compile Include="StepSetups\Thens.cs" />
+    <Compile Include="StepSetups\Whens.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -280,6 +295,10 @@
     <None Include="CourseVersioning.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseVersioning.feature.cs</LastGenOutput>
+    </None>
+    <None Include="GetEntityLearningOutcomes.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>GetEntityLearningOutcomes.feature.cs</LastGenOutput>
     </None>
     <None Include="LearningOutcomeManagement.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -6,7 +6,7 @@
     </id>
     <bag access="field.camelcase-underscore" cascade="all" name="SupportedOutcomes" table="LearningLearningOutcome">
       <key foreign-key="FK_LearningOutcome">
-        <column name="SupportedId" />
+        <column name="LearningOutcomeId" />
       </key>
       <many-to-many class="BpeProducts.Services.Course.Domain.Entities.LearningOutcome, BpeProducts.Services.Course.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" foreign-key="none">
         <column name="SupportingId" />

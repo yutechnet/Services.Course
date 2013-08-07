@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Common.WebApi.Authorization;
 using BpeProducts.Services.Course.Contract;
@@ -38,11 +39,19 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return _learningOutcomeService.Get(entityType, entityId).ToList();
         }
 
-        public List<OutcomeInfo> Get(string entityIds)
+        public Dictionary<Guid, List<OutcomeInfo>> GetEntityOutcomes(string entityIds)
         {
             var ids = entityIds.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            return _learningOutcomeService.Get(ids);
+            try
+            {
+                var guids = ids.Select(Guid.Parse).ToList();
+                return _learningOutcomeService.GetBySupportingEntities(guids);
+            }
+            catch (FormatException ex)
+            {
+                throw new BadRequestException("Entity ID is not in a correct format", ex);
+            }
         }
 
         [HttpGet]

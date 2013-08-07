@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -14,22 +15,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [Binding]
     public class CourseSegmentSteps
     {
-
         [Given(@"I add following course segments to '(.*)':")]
         [When(@"I add following course segments to '(.*)':")]
         public void WhenIAddFollowingCourseSegmentsTo(string courseName, Table table)
         {
-			var segments = table.Rows.Select(row =>new{
-                ParentSegment=row["ParentSegment"], 
-                Segment=new SaveCourseSegmentRequest
-				{
-					Name = row["Name"], 
-                    Description = row["Description"], 
-                    Type = row["Type"],
-                    TenantId = 999999
-				}}).ToList();
+            var segments = table.Rows.Select(row => new
+                {
+                    ParentSegment = row["ParentSegment"],
+                    Segment = new SaveCourseSegmentRequest
+                        {
+                            Name = row["Name"],
+                            Description = row["Description"],
+                            Type = row["Type"],
+                            TenantId = 999999
+                        }
+                }).ToList();
 
-            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
+            var resourceUri = Givens.Courses[courseName].ResourseUri;
             var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
             response.EnsureSuccessStatusCode();
 
@@ -40,7 +42,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     response = null;
                     if (string.IsNullOrEmpty(s.ParentSegment))
                     {
-                        var postUrl = string.Format("{0}/{1}/segments", FeatureContext.Current.Get<String>("CourseLeadingPath"),
+                        var postUrl = string.Format("{0}/{1}/segments",
+                                                    FeatureContext.Current.Get<String>("CourseLeadingPath"),
                                                     courseInfoResponse.Id);
                         response =
                             ApiFeature.ApiTestHost.Client.PostAsync(postUrl, s.Segment,
@@ -49,7 +52,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     else
                     {
                         var postUrl = ScenarioContext.Current.Get<System.Uri>(s.ParentSegment);
-                         response =
+                        response =
                             ApiFeature.ApiTestHost.Client.PostAsync(postUrl.ToString() + "/segments", s.Segment,
                                                                     new JsonMediaTypeFormatter()).Result;
                     }
@@ -57,14 +60,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
                     ScenarioContext.Current.Add(s.Segment.Name, response.Headers.Location);
                 });
-           
-		}
-
-      
-		[Then(@"the course '(.*)' should have these course segments:")]
+        }
+        
+        [Then(@"the course '(.*)' should have these course segments:")]
 		public void ThenTheCourseShouldHaveTheseCourseSegments(string courseName, Table table)
 		{
-            var resourceUri = ScenarioContext.Current.Get<Uri>(courseName);
+            var resourceUri = Givens.Courses[courseName].ResourseUri;
             var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
             response.EnsureSuccessStatusCode();
 

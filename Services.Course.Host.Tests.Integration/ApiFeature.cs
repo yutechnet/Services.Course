@@ -10,15 +10,28 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [Binding]
     public static class ApiFeature
     {
-		
+        public static int TenantId = 999999;
+        public static string LeadingPath;
+
         public static WebApiTestHost ApiTestHost
         {
             get { return (WebApiTestHost)FeatureContext.Current["ApiTestHost"]; }
         }
 
+        static ApiFeature()
+        {
+            var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
+            LeadingPath = "";
+            if (!targetUri.Host.Equals("localhost"))
+            {
+                LeadingPath = targetUri.PathAndQuery;
+            }
+        }
+
         [BeforeFeature("Api")]
         public static void BeforeFeature()
         {
+            FeatureContext.Current.Add("TenantId", TenantId);
             var apiTestHost = new WebApiTestHost(WebApiApplication.ConfigureWebApi);
 
             AddSamlToken(apiTestHost);

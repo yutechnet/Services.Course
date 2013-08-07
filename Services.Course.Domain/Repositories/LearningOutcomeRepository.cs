@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.Ioc.Validation;
@@ -21,6 +22,17 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         public LearningOutcome Get(Guid outcomeId)
         {
             return _session.Get<LearningOutcome>(outcomeId);
+        }
+
+        public Dictionary<Guid, List<LearningOutcome>> GetBySupportingEntities(IList<Guid> entityIds)
+        {
+            var groupedOutcomes = (from se in _session.Query<ISupportingEntity>()
+                            from o in se.SupportedOutcomes
+                            where entityIds.Contains(se.Id)
+                            group o by se.Id into g
+                            select new {EntityId = g.Key, LearningOutcomes = g}).ToList();
+
+            return groupedOutcomes.ToDictionary(outcomeGroup => outcomeGroup.EntityId, outcomeGroup => new List<LearningOutcome>(outcomeGroup.LearningOutcomes));
         }
 
         public LearningOutcome Load(Guid outcomeId)

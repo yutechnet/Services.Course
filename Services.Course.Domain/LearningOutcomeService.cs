@@ -83,10 +83,11 @@ namespace BpeProducts.Services.Course.Domain
             return Mapper.Map<List<OutcomeInfo>>(outcome.SupportedOutcomes);
         }
 
-        public List<OutcomeInfo> Get(List<string> entityIds)
+        public Dictionary<Guid, List<OutcomeInfo>> GetBySupportingEntities(List<Guid> entityIds)
         {
-           // _repository.Query<LearningOutcome>().Where(o => o.)
-            return null;
+            var outcomes = _learningOutcomeRepository.GetBySupportingEntities(entityIds);
+
+            return Mapper.Map<Dictionary<Guid, List<OutcomeInfo>>>(outcomes);
         }
 
         public OutcomeInfo Create(OutcomeRequest request)
@@ -165,15 +166,15 @@ namespace BpeProducts.Services.Course.Domain
             var learningOutcome = entity.SupportedOutcomes.SingleOrDefault(o => o.Id == outcomeId);
             if (learningOutcome == null)
             {
-                learningOutcome =
-                    _learningOutcomeRepository.Get(outcomeId);
+                learningOutcome = _learningOutcomeRepository.Get(outcomeId);
                 if (learningOutcome == null || learningOutcome.ActiveFlag == false)
                 {
                     throw new NotFoundException(string.Format("Outcome with id {0} not found.", outcomeId));
                 }
-                entity.SupportedOutcomes.Add(learningOutcome);
 
-                _repository.Update(entity);
+                entity.SupportOutcome(learningOutcome);
+
+                _repository.Save(entity);
             }
         }
 

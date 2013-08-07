@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using BpeProducts.Services.Course.Domain.Entities;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
 {
     public interface ILearningOutcomeRepository
     {
-        Entities.LearningOutcome Get(Guid outcomeId);
-        Entities.LearningOutcome Load(Guid outcomeId);
-        void Save(Entities.LearningOutcome outcome);
-        void Delete(Entities.LearningOutcome outcome);
-        Entities.LearningOutcome GetVersion(Guid originalEntityId, string versionNumber);
+        LearningOutcome Get(Guid outcomeId);
+        Dictionary<Guid, List<LearningOutcome>> GetBySupportingEntities(IList<Guid> entityIds);
+        LearningOutcome Load(Guid outcomeId);
+        void Save(LearningOutcome outcome);
+        void Delete(LearningOutcome outcome);
+        LearningOutcome GetVersion(Guid originalEntityId, string versionNumber);
     }
 }

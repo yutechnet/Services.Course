@@ -82,7 +82,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Basic mathematics",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 8
- testRunner.Given("the following courses exist:", ((string)(null)), table1, "Given ");
+ testRunner.Given("I have the following courses", ((string)(null)), table1, "Given ");
 #line hidden
         }
         

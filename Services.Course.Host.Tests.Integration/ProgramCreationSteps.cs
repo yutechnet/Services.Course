@@ -49,7 +49,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 {
                     Name = table.Rows[0]["Name"] + _tempId,
                     Description = table.Rows[0]["Description"],
-                    TenantId = table.Rows[0]["Tenant"],
+                    TenantId = int.Parse(table.Rows[0]["Tenant"]),
                     OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                     ProgramType = table.Rows[0]["ProgramType"]
                 };
@@ -79,7 +79,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 {
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                     Description = table.Rows[0]["Description"],
-                    TenantId = table.Rows[0]["Tenant"],
+                    TenantId = int.Parse(table.Rows[0]["Tenant"]),
                     OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                     ProgramType = table.Rows[0]["ProgramType"]
                 };
@@ -102,7 +102,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 {
                     Name = string.IsNullOrEmpty(name) ? name : name + ScenarioContext.Current.Get<long>("ticks"),
                     Description = description,
-                    TenantId = tenant,
+                    TenantId = int.Parse(tenant),
                     OrganizationId = Guid.NewGuid(),
                     ProgramType = "BA"
                 };
@@ -124,7 +124,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 {
                     Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
                     Description = table.Rows[0]["Description"],
-                    TenantId = table.Rows[0]["Tenant"],
+                    TenantId = int.Parse(table.Rows[0]["Tenant"]),
                     OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                     ProgramType = table.Rows[0]["ProgramType"]
                 };

@@ -5,7 +5,7 @@ Feature: CourseSegment
 	I want to add segments to the course
 
 Background: 
-	Given the following courses exist:
+	Given I have the following courses
 	| Name     | Code | Description       | OrganizationId |
 	| Math 101 | M101 | Basic mathematics | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 

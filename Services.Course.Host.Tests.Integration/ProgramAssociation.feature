@@ -5,11 +5,11 @@ Feature: ProgramAssociation
 	I want to associate course to programs
 
 Background: 
-	Given the following programs exist:
+	Given I have the following programs
 	| Name                | Description | ProgramType | OrganizationId                       |
 	| Bachelor of Art     | BA Program  | BA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	| Bachelor of Science | BS program  | BS          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	And the following courses exist:
+	And I have the following courses
 	| Name           | Code   | Description    | OrganizationId |
 	| English 101    | ENG101 | English 101    | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	| Psychology 101 | PSY101 | Psychology 101 | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
@@ -26,7 +26,7 @@ Scenario Template: Associate a course with a program
 	| Psychology 101 | Bachelor of Art     |
 
 Scenario: Associate a course with multiple programs
-	When I associate 'English 101' course with the following programs:
+	When I associate 'English 101' course with the following programs
 	| Program Name        |
 	| Bachelor of Art     |
 	| Bachelor of Science |
@@ -36,9 +36,9 @@ Scenario: Associate a course with multiple programs
 	| Bachelor of Science |
 
 Scenario: Remove the course from the program
-	Given I associate 'English 101' course with the following programs:
+	When I associate 'English 101' course with the following programs
 	| Program Name        |
 	| Bachelor of Art     |
 	| Bachelor of Science |
-	When I remove 'English 101' course from 'Bachelor of Art'
+	And I remove 'English 101' course from 'Bachelor of Art'
 	Then the course 'English 101' includes 'Bachelor of Science' program association
