@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using System.Collections.Generic;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
@@ -26,6 +27,15 @@ namespace BpeProducts.Services.Course.Domain
             var learningActivity = course.GetLearningActivity(segmentId, learningActivityId);
 
             return Mapper.Map<CourseLearningActivityResponse>(learningActivity);
+        }
+
+        public IEnumerable<CourseLearningActivityResponse> Get(Guid courseId, Guid segmentId)
+        {
+            var course = _courseRepository.Get(courseId);
+
+            var learningActivity = course.GetLearningActivity(segmentId);
+
+            return Mapper.Map<IList<CourseLearningActivityResponse>>(learningActivity);
         }
 
         public void Update(Guid courseId, Guid segmentId, Guid learningActivityId, SaveCourseLearningActivityRequest request)

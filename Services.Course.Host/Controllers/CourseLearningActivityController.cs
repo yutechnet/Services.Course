@@ -33,6 +33,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return _courseLearningActivityService.Get(courseId, segmentId, id);
 		}
 
+        // GET course/{courseId}/segment/{segmentId}/learningactivity/
+        public IEnumerable<CourseLearningActivityResponse> Get(Guid courseId, Guid segmentId)
+        {
+            return _courseLearningActivityService.Get(courseId, segmentId);
+        }
+
 		[Transaction]
 		[CheckModelForNull]
 		[ValidateModelState]

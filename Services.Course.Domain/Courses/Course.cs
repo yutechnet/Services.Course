@@ -324,6 +324,19 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity;
         }
 
+        public virtual IEnumerable<CourseLearningActivity> GetLearningActivity(Guid segmentId)
+        {
+            CourseSegment segment = null;
+            segment = Segments.FirstOrDefault(s => s.Id == segmentId);
+
+            if (segment == null)
+                throw new BadRequestException(
+                    string.Format(
+                        "Cannot get learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
+                        this.Id, segmentId));
+            return AutoMapper.Mapper.Map<IList<CourseLearningActivity>>(segment.CourseLearningActivities);
+        }
+
         public virtual CourseLearningActivity DeleteLearningActivity(Guid segmentId, Guid learningActivityId)
         {
 
