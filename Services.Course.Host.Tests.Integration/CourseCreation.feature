@@ -78,7 +78,6 @@ Scenario: Return course by partial name
 		| StartsWith | ''E''             | 0     |
 		| StartsWith | C*%23             | 0     |
 		| StartsWith | A%26              | 0     |
-	Then the course count is atleast '6' when search term is ''
 
 Scenario: Add organization id to a course
 	Given I have a course with following info:

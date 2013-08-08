@@ -375,8 +375,6 @@ this.ScenarioSetup(scenarioInfo);
                         "0"});
 #line 66
  testRunner.Then("the course name counts are as follows:", ((string)(null)), table7, "Then ");
-#line 81
- testRunner.Then("the course count is atleast \'6\' when search term is \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -386,7 +384,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AddOrganizationIdToACourse()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add organization id to a course", ((string[])(null)));
-#line 83
+#line 82
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -405,11 +403,11 @@ this.ScenarioSetup(scenarioInfo);
                         "C3885307-BDAD-480F-8E7C-51DFE5D80387",
                         "Traditional",
                         "false"});
-#line 84
+#line 83
  testRunner.Given("I have a course with following info:", ((string)(null)), table8, "Given ");
-#line 87
+#line 86
  testRunner.When("I submit a creation request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 88
+#line 87
  testRunner.Then("the organization id is returned as part of the request", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
