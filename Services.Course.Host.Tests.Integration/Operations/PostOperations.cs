@@ -125,5 +125,29 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
             return resource;
         }
+
+        public static CourseLearningActivityResource CreateCourseLearningActivity(CourseSegmentResource segment, SaveCourseLearningActivityRequest request)
+        {
+            var uri = string.Format("{0}/learningactivity", segment.ResourseUri);
+            var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
+
+            var resource = new CourseLearningActivityResource
+            {
+                Response = response
+            };
+
+            if (response.IsSuccessStatusCode)
+            {
+                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
+                var dto = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
+
+                resource.Id = Guid.Parse(id);
+                resource.ResourseUri = response.Headers.Location;
+                resource.SaveRequest = request;
+                resource.Dto = dto;
+            }
+
+            return resource;
+        }
     }
 }

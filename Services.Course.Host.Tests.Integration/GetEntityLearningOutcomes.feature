@@ -15,11 +15,11 @@ Background:
 	| Course1 | 1    | Course1     | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	| Course2 | 2    | Course2     | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
     And I have the following course segments for 'Course1'
-	| Name        | Description                    | Type       | ParentSegmentName |
-	| Week1       | First week is slack time       | TimeSpan   |                   |
-	| Discussion  | Discussion for the first week  | Discussion | Week1             |
-	| Discussion2 | Discussion2 for the first week | Discussion | Week1             |
-	| Topic       | Topic for a discussion         | Topic      | Discussion        |
+	| Name        | Description                    | Type       | ParentSegment |
+	| Week1       | First week is slack time       | TimeSpan   |               |
+	| Discussion  | Discussion for the first week  | Discussion | Week1         |
+	| Discussion2 | Discussion2 for the first week | Discussion | Week1         |
+	| Topic       | Topic for a discussion         | Topic      | Discussion    |
 	And I have the following learning outcomes
 	| Description |
 	| LO1         |

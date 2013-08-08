@@ -7,6 +7,7 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 {
@@ -45,12 +46,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
+        public static IDictionary<string, CourseLearningActivityResource> CourseLearningActivities
+        {
+            get
+            {
+                return ScenarioContext.Current.Get<IDictionary<string, CourseLearningActivityResource>>("CourseLearningActivities");
+            }
+        }
+
         public Givens()
         {
             ScenarioContext.Current.Add("Courses", new Dictionary<string, CourseResource>());
             ScenarioContext.Current.Add("Programs", new Dictionary<string, ProgramResource>());
             ScenarioContext.Current.Add("Segments", new Dictionary<string, CourseSegmentResource>());
             ScenarioContext.Current.Add("LearningOutcomes", new Dictionary<string, LearningOutcomeResource>());
+            ScenarioContext.Current.Add("CourseLearningActivities", new Dictionary<string, CourseLearningActivityResource>());
         }
 
         [Given(@"I have the following programs")]
@@ -117,7 +127,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
                 var course = Courses[courseName];
                 
-                var parentSegmentName = row["ParentSegmentName"];
+                var parentSegmentName = row["ParentSegment"];
                 CourseSegmentResource segment = null;
                 if (string.IsNullOrWhiteSpace(parentSegmentName))
                 {
@@ -149,6 +159,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
                 var resourceId = row["Description"];
                 LearningOutcomes.Add(resourceId, outcome);
+            }
+        }
+
+        [Given(@"I add the following course learning activities to '(.*)' course segment")]
+        public void GivenIAddTheFollowingCourseLearningActivitiesToCourseSegment(string segmentName, Table table)
+        {
+            var learningActivities = table.CreateSet<SaveCourseLearningActivityRequest>();
+            var segment = Segments[segmentName];
+
+            foreach (var activity in learningActivities)
+            {
+                activity.TenantId = ApiFeature.TenantId;
+
+                var resourse = PostOperations.CreateCourseLearningActivity(segment, activity);
+                CourseLearningActivities.Add(resourse.Dto.Name, resourse);
             }
         }
     }

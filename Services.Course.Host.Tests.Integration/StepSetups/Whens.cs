@@ -186,27 +186,45 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ResponseMessages.Add(response);
         }
 
-        //TODO: Refactor
+        [When(@"I add the following learning activity to '(.*)' course segment")]
+        public void WhenIAddTheFollowingLearningActivityToCourseSegment(string segmentName, Table table)
+        {
+            var segment = Givens.Segments[segmentName];
+
+            var request = table.CreateInstance<SaveCourseLearningActivityRequest>();
+            var resource = PostOperations.CreateCourseLearningActivity(segment, request);
+
+            Givens.CourseLearningActivities.Add(request.Name, resource);
+            ResponseMessages.Add(resource.Response);
+        }
+
+        [When(@"I retrieve the course learning activity '(.*)'")]
+        public void WhenIRetrieveTheCourseLearningActivity(string activityName)
+        {
+            var resource = Givens.CourseLearningActivities[activityName];
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resource.ResourseUri).Result;
+
+            ResponseMessages.Add(response);
+        }
+
         [When(@"I remove ""(.*)"" learning activity")]
         public void WhenIRemoveLearningActivity(string activityName)
         {
-            const string learningActivityUrl = "/learningactivity/";
-            var requestUri = ScenarioContext.Current.Get<Uri>("Week1");
+            var resource = Givens.CourseLearningActivities[activityName];
 
-            var activity = ScenarioContext.Current.Get<CourseLearningActivityResponse>(activityName);
-            var response =
-                ApiFeature.ApiTestHost.Client.DeleteAsync(requestUri.ToString() + learningActivityUrl + activity.Id)
-                          .Result;
-            if (!response.IsSuccessStatusCode)
-            {
-                var responseBody = response.Content.ReadAsStringAsync().Result;
-                throw new Exception(responseBody);
-            }
+            var response = DeleteOperations.CourseLearningActivity(resource);
+            ResponseMessages.Add(response);
+        }
 
-            var getResponse =
-                ApiFeature.ApiTestHost.Client.GetAsync(requestUri + learningActivityUrl + activity.Id).Result;
-            ScenarioContext.Current.Add("ResponseToValidate", getResponse);
-            ResponseMessages.Add(getResponse);
+        [When(@"I update '(.*)' learning activity with the following info")]
+        public void WhenIUpdateLearningActivityWithTheFollowingInfo(string activityName, Table table)
+        {
+            var resourse = Givens.CourseLearningActivities[activityName];
+            
+            var learningActivity = table.CreateInstance<SaveCourseLearningActivityRequest>();
+
+            var response = PutOperations.UpdateCourseLearningActivity(resourse, learningActivity);
+            ResponseMessages.Add(response);
         }
 
         //TODO: Refactor
@@ -248,8 +266,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 };
             var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("CourseLeadingPath"));
 
-            var response =
-                ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
 
             ScenarioContext.Current["ResponseToValidate"] = response;
             ResponseMessages.Add(response);

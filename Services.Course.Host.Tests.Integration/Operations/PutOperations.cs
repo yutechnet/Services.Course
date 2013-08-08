@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -91,6 +92,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var uri = string.Format("{0}/prerequisites", course.ResourseUri);
 
             var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, request, new JsonMediaTypeFormatter()).Result;
+
+            return response;
+        }
+
+        public static HttpResponseMessage UpdateCourseLearningActivity(CourseLearningActivityResource courseLearningActivity, SaveCourseLearningActivityRequest request)
+        {
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(courseLearningActivity.ResourseUri.ToString(), request).Result;
 
             return response;
         }

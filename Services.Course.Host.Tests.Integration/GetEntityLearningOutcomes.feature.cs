@@ -116,7 +116,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Name",
                         "Description",
                         "Type",
-                        "ParentSegmentName"});
+                        "ParentSegment"});
             table3.AddRow(new string[] {
                         "Week1",
                         "First week is slack time",

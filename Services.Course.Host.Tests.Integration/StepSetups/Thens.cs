@@ -98,7 +98,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             Assert.That(response.StatusCode.Equals(expectedStatusCode));
         }
 
-        [Then(@"the program '(.*)' include the following course information:")]
+        [Then(@"my course learning activity '(.*)' contains the following")]
+        public void ThenMyCourseLearningActivityContainsTheFollowing(string learningActivityName, Table table)
+        {
+            var resource = Givens.CourseLearningActivities[learningActivityName];
+
+            var courseLearningActivity = GetOperations.GetCourseLearningActivity(resource.ResourseUri);
+
+            table.CompareToInstance(courseLearningActivity);
+        }
+
+ 	[Then(@"the program '(.*)' include the following course information:")]
         public void ThenTheProgramIncludeTheFollowingCourseInformation(string programName, Table table)
         {
             var programResource = Givens.Programs[programName];
@@ -108,6 +118,5 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             CollectionAssert.AreEquivalent(program.Courses.Select(c => c.Id).ToList(), courseIds);
         }
-
     }
 }

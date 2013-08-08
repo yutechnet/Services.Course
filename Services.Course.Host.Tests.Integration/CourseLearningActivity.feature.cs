@@ -94,12 +94,12 @@ testRunner.Given("I have the following courses", ((string)(null)), table1, "Give
                         "Type",
                         "ParentSegment"});
             table2.AddRow(new string[] {
-                        "Week1",
+                        "Week 1",
                         "First week is slack time",
                         "TimeSpan",
                         ""});
 #line 11
-testRunner.Given("I add following course segments to \'Econ 100\':", ((string)(null)), table2, "Given ");
+testRunner.And("I have the following course segments for \'Econ 100\'", ((string)(null)), table2, "And ");
 #line hidden
         }
         
@@ -114,58 +114,58 @@ this.ScenarioSetup(scenarioInfo);
 this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table3.AddRow(new string[] {
                         "Name",
+                        "Discussion 1"});
+            table3.AddRow(new string[] {
                         "Type",
+                        "Discussion"});
+            table3.AddRow(new string[] {
                         "IsGradeable",
+                        "True"});
+            table3.AddRow(new string[] {
                         "IsExtraCredit",
+                        "False"});
+            table3.AddRow(new string[] {
                         "Weight",
+                        "100"});
+            table3.AddRow(new string[] {
                         "MaxPoint",
-                        "ObjectId"});
+                        "20"});
             table3.AddRow(new string[] {
-                        "Assignment 1",
-                        "Assignment",
-                        "True",
-                        "False",
-                        "50",
-                        "20",
-                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-            table3.AddRow(new string[] {
-                        "Assignment 2",
-                        "Assignment",
-                        "True",
-                        "False",
-                        "50",
-                        "20",
+                        "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 16
- testRunner.When("I add the following learning activity:", ((string)(null)), table3, "When ");
+ testRunner.When("I add the following learning activity to \'Week 1\' course segment", ((string)(null)), table3, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table4.AddRow(new string[] {
                         "Name",
+                        "Discussion 1"});
+            table4.AddRow(new string[] {
                         "Type",
+                        "Discussion"});
+            table4.AddRow(new string[] {
                         "IsGradeable",
+                        "True"});
+            table4.AddRow(new string[] {
                         "IsExtraCredit",
+                        "False"});
+            table4.AddRow(new string[] {
                         "Weight",
+                        "100"});
+            table4.AddRow(new string[] {
                         "MaxPoint",
-                        "ObjectId"});
+                        "20"});
             table4.AddRow(new string[] {
-                        "Assignment 1",
-                        "Assignment",
-                        "True",
-                        "False",
-                        "50",
-                        "20",
+                        "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-            table4.AddRow(new string[] {
-                        "Assignment 2",
-                        "Assignment",
-                        "True",
-                        "False",
-                        "50",
-                        "20",
-                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 20
- testRunner.Then("my learning activity contains the following:", ((string)(null)), table4, "Then ");
+#line 25
+ testRunner.Then("my course learning activity \'Discussion 1\' contains the following", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -175,37 +175,29 @@ this.FeatureBackground();
         public virtual void UpdateALearningActivityNEW()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a learning activity NEW", ((string[])(null)));
-#line 25
+#line 35
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field",
-                        "Value"});
-            table5.AddRow(new string[] {
                         "Name",
-                        "Discussion 1"});
-            table5.AddRow(new string[] {
                         "Type",
-                        "Discussion"});
-            table5.AddRow(new string[] {
                         "IsGradeable",
-                        "true"});
-            table5.AddRow(new string[] {
                         "IsExtraCredit",
-                        "true"});
-            table5.AddRow(new string[] {
                         "Weight",
-                        "100"});
-            table5.AddRow(new string[] {
                         "MaxPoint",
-                        "20"});
+                        "ObjectId"});
             table5.AddRow(new string[] {
-                        "ObjectId",
+                        "Discussion 1",
+                        "Discussion",
+                        "True",
+                        "true",
+                        "100",
+                        "20",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 26
- testRunner.Given("the following learning activity:", ((string)(null)), table5, "Given ");
+#line 36
+ testRunner.Given("I add the following course learning activities to \'Week 1\' course segment", ((string)(null)), table5, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -231,7 +223,7 @@ this.FeatureBackground();
             table6.AddRow(new string[] {
                         "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 35
+#line 39
  testRunner.When("I update \'Discussion 1\' learning activity with the following info", ((string)(null)), table6, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -258,8 +250,8 @@ this.FeatureBackground();
             table7.AddRow(new string[] {
                         "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 44
- testRunner.Then("the learning activity \'Discussion 1\' should have the following info", ((string)(null)), table7, "Then ");
+#line 48
+ testRunner.Then("my course learning activity \'Discussion 1\' contains the following", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -269,40 +261,34 @@ this.FeatureBackground();
         public virtual void DeleteALearningActivity()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a learning activity", ((string[])(null)));
-#line 54
+#line 58
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field",
-                        "Value"});
-            table8.AddRow(new string[] {
                         "Name",
-                        "Discussion 1"});
-            table8.AddRow(new string[] {
                         "Type",
-                        "Discussion"});
-            table8.AddRow(new string[] {
                         "IsGradeable",
-                        "true"});
-            table8.AddRow(new string[] {
                         "IsExtraCredit",
-                        "true"});
-            table8.AddRow(new string[] {
                         "Weight",
-                        "100"});
-            table8.AddRow(new string[] {
                         "MaxPoint",
-                        "20"});
+                        "ObjectId"});
             table8.AddRow(new string[] {
-                        "ObjectId",
+                        "Discussion 1",
+                        "Discussion",
+                        "True",
+                        "true",
+                        "100",
+                        "20",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 55
- testRunner.Given("the following learning activity:", ((string)(null)), table8, "Given ");
-#line 64
+#line 59
+ testRunner.Given("I add the following course learning activities to \'Week 1\' course segment", ((string)(null)), table8, "Given ");
+#line 62
  testRunner.When("I remove \"Discussion 1\" learning activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 65
+#line 63
+ testRunner.And("I retrieve the course learning activity \'Discussion 1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 64
  testRunner.Then("I get \'NotFound\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -313,7 +299,7 @@ this.FeatureBackground();
         public virtual void CannotAddALearningActivityToACourseThatIsAlreadyPublished()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a learning activity to a course that is already published", ((string[])(null)));
-#line 67
+#line 66
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -324,7 +310,7 @@ this.FeatureBackground();
             table9.AddRow(new string[] {
                         "Econ 100",
                         "Blah blah"});
-#line 68
+#line 67
  testRunner.When("I publish the following courses", ((string)(null)), table9, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -332,28 +318,28 @@ this.FeatureBackground();
                         "Value"});
             table10.AddRow(new string[] {
                         "Name",
-                        "Discussion 1"});
+                        "Assignment 2"});
             table10.AddRow(new string[] {
                         "Type",
-                        "Discussion"});
+                        "Assignment"});
             table10.AddRow(new string[] {
                         "IsGradeable",
-                        "true"});
+                        "True"});
             table10.AddRow(new string[] {
                         "IsExtraCredit",
-                        "true"});
+                        "False"});
             table10.AddRow(new string[] {
                         "Weight",
-                        "100"});
+                        "50"});
             table10.AddRow(new string[] {
                         "MaxPoint",
                         "20"});
             table10.AddRow(new string[] {
                         "ObjectId",
-                        "Null"});
-#line 71
- testRunner.And("I add a learning activity to a course that has already been published", ((string)(null)), table10, "And ");
-#line 80
+                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+#line 70
+ testRunner.And("I add the following learning activity to \'Week 1\' course segment", ((string)(null)), table10, "And ");
+#line 79
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
