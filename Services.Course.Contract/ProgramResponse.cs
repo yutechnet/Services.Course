@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BpeProducts.Services.Course.Contract
 {
@@ -9,5 +10,7 @@ namespace BpeProducts.Services.Course.Contract
 		public string Description { get; set; }
 		public Guid Id { get; set; }
         public string ProgramType { get; set; }
+
+        public List<Guid> CourseIds { get; set; } 
 	}
 }

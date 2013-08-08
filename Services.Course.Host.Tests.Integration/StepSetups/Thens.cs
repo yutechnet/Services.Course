@@ -97,5 +97,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             Assert.That(response.StatusCode.Equals(expectedStatusCode));
         }
+
+        [Then(@"the program '(.*)' include the following course information:")]
+        public void ThenTheProgramIncludeTheFollowingCourseInformation(string programName, Table table)
+        {
+            var programResource = Givens.Programs[programName];
+            var program = GetOperations.GetProgram(programResource.resourceUri);
+
+            var courseIds = (from r in table.Rows select Givens.Courses[r["Course Name"]].Id).ToList();
+
+            CollectionAssert.AreEquivalent(program.CourseIds, courseIds);
+        }
+
     }
 }

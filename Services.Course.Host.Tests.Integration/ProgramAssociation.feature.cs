@@ -186,6 +186,42 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get program with all courses that belong to it")]
+        public virtual void GetProgramWithAllCoursesThatBelongToIt()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get program with all courses that belong to it", ((string[])(null)));
+#line 46
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Program Name"});
+            table6.AddRow(new string[] {
+                        "Bachelor of Art"});
+#line 47
+ testRunner.When("I associate \'English 101\' course with the following programs", ((string)(null)), table6, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Program Name"});
+            table7.AddRow(new string[] {
+                        "Bachelor of Art"});
+#line 50
+ testRunner.And("I associate \'Psychology 101\' course with the following programs", ((string)(null)), table7, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Course Name"});
+            table8.AddRow(new string[] {
+                        "English 101"});
+            table8.AddRow(new string[] {
+                        "Psychology 101"});
+#line 53
+ testRunner.Then("the program \'Bachelor of Art\' include the following course information:", ((string)(null)), table8, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

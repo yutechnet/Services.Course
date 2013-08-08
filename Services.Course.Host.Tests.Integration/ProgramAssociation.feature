@@ -42,3 +42,15 @@ Scenario: Remove the course from the program
 	| Bachelor of Science |
 	And I remove 'English 101' course from 'Bachelor of Art'
 	Then the course 'English 101' includes 'Bachelor of Science' program association
+
+Scenario: Get program with all courses that belong to it
+	When I associate 'English 101' course with the following programs
+	| Program Name        |
+	| Bachelor of Art     |
+	And I associate 'Psychology 101' course with the following programs
+	| Program Name        |
+	| Bachelor of Art     |
+	Then the program 'Bachelor of Art' include the following course information:
+	| Course Name    |
+	| English 101    |
+	| Psychology 101 |
