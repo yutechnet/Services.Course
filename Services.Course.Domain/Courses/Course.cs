@@ -227,8 +227,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 };
         }
 
-        
-        public virtual CourseSegment GetSegment(Guid segmentId)
+
+        #region CourseLearningActivity
+        private CourseSegment GetSegmentOrThrow(Guid segmentId)
         {
             var segment = _segments.FirstOrDefault(s => s.Id == segmentId);
 
@@ -238,21 +239,24 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return segment;
         }
 
+        private CourseLearningActivity GetCourseLearningActivityOrThrow(Guid segmentId, Guid learningActivityId)
+        {
+            CourseSegment segment = GetSegmentOrThrow(segmentId);
 
-        #region CourseLearningActivity
+            CourseLearningActivity learningActivity =
+                segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
 
+            if (learningActivity == null || !learningActivity.ActiveFlag)
+                throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.",
+                                                          learningActivityId, segmentId));
+            return learningActivity;
+        }        
+        
         public virtual CourseLearningActivity AddLearningActivity(Guid segmentId, SaveCourseLearningActivityRequest request, Guid learningActivityId)
         {
             CheckPublished();
 
-            CourseSegment segment = null;
-            segment = Segments.FirstOrDefault(s => s.Id == segmentId);
-
-            if (segment == null)
-                throw new BadRequestException(
-                    string.Format(
-                        "Cannot add learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
-                        this.Id, segmentId));
+            CourseSegment segment = GetSegmentOrThrow(segmentId);
 
             var courseLearningActivity = new CourseLearningActivity()
             {
@@ -280,19 +284,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             CheckPublished();
 
-            CourseSegment segment = null;
-            segment = Segments.FirstOrDefault(s => s.Id == segmentId);
-
-            if (segment == null)
-                throw new BadRequestException(
-                    string.Format(
-                        "Cannot update learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
-                        this.Id, segmentId));
-
-            CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
-
-            if (learningActivity == null || !learningActivity.ActiveFlag)
-                throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.", learningActivityId, segmentId));
+            var learningActivity = GetCourseLearningActivityOrThrow(segmentId, learningActivityId);
 
             learningActivity.Name = request.Name;
             learningActivity.Type = request.Type;
@@ -307,33 +299,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual CourseLearningActivity GetLearningActivity(Guid segmentId, Guid learningActivityId)
         {
-            CourseSegment segment = null;
-            segment = Segments.FirstOrDefault(s => s.Id == segmentId);
-
-            if (segment == null)
-                throw new BadRequestException(
-                    string.Format(
-                        "Cannot get learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
-                        this.Id, segmentId));
-
-            CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
-
-            if (learningActivity == null || !learningActivity.ActiveFlag)
-                throw new NotFoundException(string.Format("Segment {0} does not have learning activity with Id {1}", segmentId, learningActivityId));
-
-            return learningActivity;
+            return GetCourseLearningActivityOrThrow(segmentId, learningActivityId);
         }
 
         public virtual IEnumerable<CourseLearningActivity> GetLearningActivity(Guid segmentId)
         {
-            CourseSegment segment = null;
-            segment = Segments.FirstOrDefault(s => s.Id == segmentId);
+            CourseSegment segment = GetSegmentOrThrow(segmentId);
 
-            if (segment == null)
-                throw new BadRequestException(
-                    string.Format(
-                        "Cannot get learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
-                        this.Id, segmentId));
             return AutoMapper.Mapper.Map<IList<CourseLearningActivity>>(segment.CourseLearningActivities.Where(c=>c.ActiveFlag.Equals(true)));
         }
 
@@ -342,19 +314,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             CheckPublished();
 
-            CourseSegment segment = null;
-            segment = Segments.FirstOrDefault(s => s.Id == segmentId);
-
-            if (segment == null)
-                throw new BadRequestException(
-                    string.Format(
-                        "Cannot delete learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
-                        this.Id, segmentId));
-
-            CourseLearningActivity learningActivity = segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
-
-            if (learningActivity == null || !learningActivity.ActiveFlag)
-                throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.", learningActivityId, segmentId));
+            CourseLearningActivity learningActivity = GetCourseLearningActivityOrThrow(segmentId, learningActivityId);
 
             learningActivity.ActiveFlag=false;
 
