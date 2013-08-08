@@ -99,21 +99,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             }
         }
 
-        [When(@"I remove ""(.*)"" learning activity")]
-        public void WhenIRemoveLearningActivity(string activityName)
-        {
-            var activity = ScenarioContext.Current.Get<CourseLearningActivityResponse>(activityName);
-            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(RequestUri.ToString() + LearningActivityUrl + activity.Id).Result;
-            if (!response.IsSuccessStatusCode)
-            {
-                var responseBody = response.Content.ReadAsStringAsync().Result;
-                throw new Exception(responseBody);
-            }
-
-            var getResponse = ApiFeature.ApiTestHost.Client.GetAsync(RequestUri + LearningActivityUrl + activity.Id).Result;
-            ScenarioContext.Current.Add("ResponseToValidate", getResponse);
-        }
-
         [When(@"I add a learning activity to a course that has already been published")]
         public void WhenIAddALearningActivityToACourseThatHasAlreadyBeenPublished(Table table)
         {
