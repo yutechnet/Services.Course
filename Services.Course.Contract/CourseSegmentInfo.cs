@@ -23,5 +23,6 @@ namespace BpeProducts.Services.Course.Contract
         public IList<Content> Content { get; set; }
         public IList<CourseSegmentInfo> ChildSegments { get; set; }
         public IList<OutcomeInfo> SupportedOutcomes { get; set; }
+        public IList<CourseLearningActivityResponse> CourseLearningActivities { get; set; }
     }
 }

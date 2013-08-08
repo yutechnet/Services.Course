@@ -176,7 +176,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     Name = request.Name,
                     Description = request.Description,
                     Type = request.Type,
-                    Content = request.Content ?? new List<Content>(),
+                    //Content = request.Content ?? new List<Content>(),
                     TenantId = TenantId
                 };
 
