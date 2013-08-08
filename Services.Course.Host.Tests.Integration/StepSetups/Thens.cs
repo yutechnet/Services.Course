@@ -106,7 +106,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             var courseIds = (from r in table.Rows select Givens.Courses[r["Course Name"]].Id).ToList();
 
-            CollectionAssert.AreEquivalent(program.CourseIds, courseIds);
+            CollectionAssert.AreEquivalent(program.Courses.Select(c => c.Id).ToList(), courseIds);
         }
 
     }
