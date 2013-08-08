@@ -334,7 +334,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     string.Format(
                         "Cannot get learning activity to Course {0} with Segment SegmentId {1}. Segment SegmentId does not exists",
                         this.Id, segmentId));
-            return AutoMapper.Mapper.Map<IList<CourseLearningActivity>>(segment.CourseLearningActivities);
+            return AutoMapper.Mapper.Map<IList<CourseLearningActivity>>(segment.CourseLearningActivities.Where(c=>c.ActiveFlag.Equals(true)));
         }
 
         public virtual CourseLearningActivity DeleteLearningActivity(Guid segmentId, Guid learningActivityId)

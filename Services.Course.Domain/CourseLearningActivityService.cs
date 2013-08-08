@@ -74,7 +74,6 @@ namespace BpeProducts.Services.Course.Domain
 
             var response = new CourseLearningActivityResponse
                 {
-                    CourseSegmentId = segmentId,
                     Id = learningActivityId,
                     Name = request.Name,
                     Type = request.Type,

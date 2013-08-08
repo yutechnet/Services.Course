@@ -18,6 +18,5 @@ namespace BpeProducts.Services.Course.Contract
         public int MaxPoint { get; set; }
         public int Weight { get; set; }
         public Guid ObjectId { get; set; }
-        public Guid CourseSegmentId { get; set; }
     }
 }
