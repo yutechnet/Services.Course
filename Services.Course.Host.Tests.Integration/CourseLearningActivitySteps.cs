@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
 using TechTalk.SpecFlow;
 using NUnit.Framework;
 using TechTalk.SpecFlow.Assist;
@@ -22,6 +23,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void GivenTheFollowingLearningActivity(Table table)
         {
             var activity = table.CreateInstance<SaveCourseLearningActivityRequest>();
+            activity.TenantId = ApiFeature.TenantId;
+
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, activity).Result;
             if (!response.IsSuccessStatusCode)
             {
@@ -60,8 +63,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void WhenIAddTheFollowingLearningActivity(Table table)
         {
             var learningActivities = table.CreateSet<SaveCourseLearningActivityRequest>();
+
             foreach (var activity in learningActivities)
             {
+                activity.TenantId = ApiFeature.TenantId;
                 var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, activity).Result;
                 if (!response.IsSuccessStatusCode)
                 {
@@ -89,27 +94,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             }
         }
 
-        [When(@"I remove ""(.*)"" learning activity")]
-        public void WhenIRemoveLearningActivity(string activityName)
-        {
-            var activity = ScenarioContext.Current.Get<CourseLearningActivityResponse>(activityName);
-            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(RequestUri.ToString() + LearningActivityUrl + activity.Id).Result;
-            if (!response.IsSuccessStatusCode)
-            {
-                var responseBody = response.Content.ReadAsStringAsync().Result;
-                throw new Exception(responseBody);
-            }
-
-            var getResponse = ApiFeature.ApiTestHost.Client.GetAsync(RequestUri + LearningActivityUrl + activity.Id).Result;
-            ScenarioContext.Current.Add("ResponseToValidate", getResponse);
-        }
-
         [When(@"I add a learning activity to a course that has already been published")]
         public void WhenIAddALearningActivityToACourseThatHasAlreadyBeenPublished(Table table)
         {
             var learningActivity = table.CreateInstance<SaveCourseLearningActivityRequest>();
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, learningActivity).Result;            
             ScenarioContext.Current.Add("ResponseToValidate", response);
+            Whens.ResponseMessages.Add(response);
         }
 
         [Then(@"my learning activity contains the following:")]

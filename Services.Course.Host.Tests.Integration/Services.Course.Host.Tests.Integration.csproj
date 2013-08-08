@@ -194,7 +194,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoursePreRequisite.feature</DependentUpon>
     </Compile>
-    <Compile Include="CoursePrerequisitesSteps.cs" />
     <Compile Include="CourseSegment.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

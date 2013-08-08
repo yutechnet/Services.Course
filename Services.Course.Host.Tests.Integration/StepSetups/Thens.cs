@@ -76,5 +76,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             CollectionAssert.AreEquivalent(course.ProgramIds, programIds);
         }
+
+        [Then(@"the course '(.*)' should have the following prerequisites")]
+        public void ThenTheCourseShouldHaveTheFollowingPrerequisites(string courseName, Table table)
+        {
+            var courseResource = Givens.Courses[courseName];
+            var course = GetOperations.GetCourse(courseResource.ResourseUri);
+
+            var prereqIds = (from r in table.Rows select Givens.Courses[r["Name"]].Id).ToList();
+
+            CollectionAssert.AreEquivalent(prereqIds, course.PrerequisiteCourseIds);
+        }
+
+        [Then(@"I get '(.*)' response")]
+        public void ThenIGetResponse(string status)
+        {
+            var response = Whens.ResponseMessages.Last();
+
+            var expectedStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), status);
+
+            Assert.That(response.StatusCode.Equals(expectedStatusCode));
+        }
     }
 }

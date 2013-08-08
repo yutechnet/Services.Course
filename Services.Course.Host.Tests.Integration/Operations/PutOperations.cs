@@ -9,17 +9,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 {
     public static class PutOperations
     {
-        public static HttpResponseMessage ProgramSupportsLearningOutcome(ProgramResource resource, LearningOutcomeResource outcome)
+        public static HttpResponseMessage ProgramSupportsLearningOutcome(ProgramResource program, LearningOutcomeResource outcome)
         {
-            var uri = string.Format("{0}/program/{1}/supports/{2}", ApiFeature.LeadingPath, resource.Id, outcome.Id);
+            var uri = string.Format("{0}/program/{1}/supports/{2}", ApiFeature.LeadingPath, program.Id, outcome.Id);
             var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, new {}, new JsonMediaTypeFormatter()).Result;
 
             return response;
         }
 
-        public static HttpResponseMessage CourseSupportsLearningOutcome(CourseResource resource, LearningOutcomeResource outcome)
+        public static HttpResponseMessage CourseSupportsLearningOutcome(CourseResource course, LearningOutcomeResource outcome)
         {
-            var uri = string.Format("{0}/course/{1}/supports/{2}", ApiFeature.LeadingPath, resource.Id, outcome.Id);
+            var uri = string.Format("{0}/course/{1}/supports/{2}", ApiFeature.LeadingPath, course.Id, outcome.Id);
             var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, new { }, new JsonMediaTypeFormatter()).Result;
 
             return response;
@@ -73,6 +73,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             saveCourseRequest.ProgramIds.RemoveAll(idsToRemove.Contains);
             
             var response = ApiFeature.ApiTestHost.Client.PutAsync(course.ResourseUri.ToString(), saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+
+            return response;
+        }
+
+        public static HttpResponseMessage PublishCourse(CourseResource course, PublishRequest request)
+        {
+            var uri = string.Format("{0}/publish", course.ResourseUri);
+
+            var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, request, new JsonMediaTypeFormatter()).Result;
+
+            return response;
+        }
+
+        public static HttpResponseMessage SetCoursePrerequisites(CourseResource course, UpdateCoursePrerequisites request)
+        {
+            var uri = string.Format("{0}/prerequisites", course.ResourseUri);
+
+            var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, request, new JsonMediaTypeFormatter()).Result;
 
             return response;
         }

@@ -61,57 +61,57 @@ Scenario: Duplicate association is idempotent
 	| Description             |
 	| first learning outcome  | 
 
-Scenario: Disassociated a learning outcome from a program
-	When I associate the newly created learning outcomes to 'BA' program
-	| Description             |
-	| first learning outcome  |
-	| second learning outcome |
-	When I disassociate the following learning outcomes from 'BA' program:
-	| Description             |
-	| first learning outcome  |
-	Then 'BA' program is associated with the only following learning outcomes:
-	| Description             |
-	| second learning outcome |
+#Scenario: Disassociated a learning outcome from a program
+#	When I associate the newly created learning outcomes to 'BA' program
+#	| Description             |
+#	| first learning outcome  |
+#	| second learning outcome |
+#	When I disassociate the following learning outcomes from 'BA' program:
+#	| Description             |
+#	| first learning outcome  |
+#	Then 'BA' program is associated with the only following learning outcomes:
+#	| Description             |
+#	| second learning outcome |
 
-Scenario: Disassociating non-existing learning outcome
-	When I associate the newly created learning outcomes to 'BA' program
-	| Description             |
-	| first learning outcome  |
-	| second learning outcome |
-	Then disassociating the following from 'BA' program should result:
-	| Description             | Disassociation Response |
-	| first learning outcome  | NoContent               |
-	| second learning outcome | NoContent               |
-	| third learning outcome  | NotFound                |
+#Scenario: Disassociating non-existing learning outcome
+#	When I associate the newly created learning outcomes to 'BA' program
+#	| Description             |
+#	| first learning outcome  |
+#	| second learning outcome |
+#	Then disassociating the following from 'BA' program should result:
+#	| Description             | Disassociation Response |
+#	| first learning outcome  | NoContent               |
+#	| second learning outcome | NoContent               |
+#	| third learning outcome  | NotFound                |
 
-Scenario: Associate an outcome to another outcome
-	Given I have the following learning outcomes
-	| Description                     |
-	| first program learning outcome  |
-	| second program learning outcome |
-	| first course learning outcome   |
-	| second course learning outcome  |
-	When I assoicate the following outcomes to outcome 'second program learning outcome'
-	| Description                    |
-	| first course learning outcome  |
-	| second course learning outcome |
-	Then 'second program learning outcome' has the following learning outcomes:
-	| Description                    |
-	| first course learning outcome  |
-	| second course learning outcome |
-
-Scenario: Disassociate an outcome from another outcome
-	Given I have the following learning outcomes
-	| Description                     |
-	| first program learning outcome  |
-	| second program learning outcome |
-	| first course learning outcome   |
-	| second course learning outcome  |
-	When I assoicate the following outcomes to outcome 'second program learning outcome'
-	| Description                    |
-	| first course learning outcome  |
-	| second course learning outcome |
-	And I disassociate 'first course learning outcome' from 'second program learning outcome'
-	Then 'second program learning outcome' has the following learning outcomes:
-	| Description                    |
-	| second course learning outcome |
+#Scenario: Associate an outcome to another outcome
+#	Given I have the following learning outcomes
+#	| Description                     |
+#	| first program learning outcome  |
+#	| second program learning outcome |
+#	| first course learning outcome   |
+#	| second course learning outcome  |
+#	When I assoicate the following outcomes to outcome 'second program learning outcome'
+#	| Description                    |
+#	| first course learning outcome  |
+#	| second course learning outcome |
+#	Then 'second program learning outcome' has the following learning outcomes:
+#	| Description                    |
+#	| first course learning outcome  |
+#	| second course learning outcome |
+#
+#Scenario: Disassociate an outcome from another outcome
+#	Given I have the following learning outcomes
+#	| Description                     |
+#	| first program learning outcome  |
+#	| second program learning outcome |
+#	| first course learning outcome   |
+#	| second course learning outcome  |
+#	When I assoicate the following outcomes to outcome 'second program learning outcome'
+#	| Description                    |
+#	| first course learning outcome  |
+#	| second course learning outcome |
+#	And I disassociate 'first course learning outcome' from 'second program learning outcome'
+#	Then 'second program learning outcome' has the following learning outcomes:
+#	| Description                    |
+#	| second course learning outcome |

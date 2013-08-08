@@ -38,22 +38,22 @@ Scenario: Publish a learning outcome version
 	| IsPublished   | true                   |
 	| PublishNote   | Blah blah              |
 
-Scenario: Published version cannot be modified
-	Given I publish 'first learning outcome' learning outcome with the following info
-	| Field         | Value     |
-	| PublishNote   | Blah blah |
-	When I update 'first learning outcome' learning outcome with the following info
-	| Field       | Value                  |
-	| Description | third learning outcome |
-	| TenantId    | 999999                 |
-	Then I get 'Forbidden' response
+#Scenario: Published version cannot be modified
+#	Given I publish 'first learning outcome' learning outcome with the following info
+#	| Field         | Value     |
+#	| PublishNote   | Blah blah |
+#	When I update 'first learning outcome' learning outcome with the following info
+#	| Field       | Value                  |
+#	| Description | third learning outcome |
+#	| TenantId    | 999999                 |
+#	Then I get 'Forbidden' response
 
-Scenario: Published version cannot be deleted
-	Given I publish 'first learning outcome' learning outcome with the following info
-	| Field       | Value     |
-	| PublishNote | Blah blah |
-	When I delete 'first learning outcome' learning outcome
-	Then I get 'Forbidden' response
+#Scenario: Published version cannot be deleted
+#	Given I publish 'first learning outcome' learning outcome with the following info
+#	| Field       | Value     |
+#	| PublishNote | Blah blah |
+#	When I delete 'first learning outcome' learning outcome
+#	Then I get 'Forbidden' response
 
 Scenario: Create a learning outcome version from a previously-published version
 	Given I publish 'first learning outcome' learning outcome with the following info
@@ -68,23 +68,23 @@ Scenario: Create a learning outcome version from a previously-published version
 	| VersionNumber | 2.0a                   |
 	| IsPublished   | false                  |
 
-Scenario: Cannot publish the same version twice
-	Given I publish 'first learning outcome' learning outcome with the following info
-	| Field         | Value     |
-	| PublishNote   | Blah blah |
-	When I create a new version of 'first learning outcome' outcome with the following info
-	| Field         | Value   |
-	| VersionNumber | 1.0.0.0 |
-	Then I get 'BadRequest' response
+#Scenario: Cannot publish the same version twice
+#	Given I publish 'first learning outcome' learning outcome with the following info
+#	| Field         | Value     |
+#	| PublishNote   | Blah blah |
+#	When I create a new version of 'first learning outcome' outcome with the following info
+#	| Field         | Value   |
+#	| VersionNumber | 1.0.0.0 |
+#	Then I get 'BadRequest' response
 
-Scenario: Cannot create a version off non-existing version
-	When I create a new version of 'RandomOutcome' outcome with the following info
-	| Field         | Value   |
-	| VersionNumber | 1.0.0.0 |
-	Then I get 'NotFound' response
+#Scenario: Cannot create a version off non-existing version
+#	When I create a new version of 'RandomOutcome' outcome with the following info
+#	| Field         | Value   |
+#	| VersionNumber | 1.0.0.0 |
+#	Then I get 'NotFound' response
 
-Scenario: Cannot publish without a version
-	When I create a learning outcome without a version
-	Then I get 'BadRequest' response
+#Scenario: Cannot publish without a version
+#	When I create a learning outcome without a version
+#	Then I get 'BadRequest' response
 
 
