@@ -23,8 +23,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void GivenTheFollowingLearningActivity(Table table)
         {
             var activity = table.CreateInstance<SaveCourseLearningActivityRequest>();
-            activity.TenantId = ApiFeature.TenantId;
-
+	    activity.TenantId = ApiFeature.TenantId;
+	    //TODO: handle enum
+            activity.Type=CourseLearningActivityType.Assignment;
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, activity).Result;
             if (!response.IsSuccessStatusCode)
             {
@@ -43,6 +44,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var original = ScenarioContext.Current.Get<CourseLearningActivityResponse>(activityName);
             var id = original.Id;
             var activity = table.CreateInstance<SaveCourseLearningActivityRequest>();
+            activity.Type=CourseLearningActivityType.Assignment;
             var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(RequestUri.ToString() + LearningActivityUrl + id, activity).Result;
             if (ScenarioContext.Current.ContainsKey(activityName))
                 ScenarioContext.Current.Remove(activityName);
@@ -66,8 +68,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             foreach (var activity in learningActivities)
             {
+             
                 activity.TenantId = ApiFeature.TenantId;
-                var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, activity).Result;
+		activity.Type=CourseLearningActivityType.Assignment;
+		var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, activity).Result;
                 if (!response.IsSuccessStatusCode)
                 {
                     var responseBody = response.Content.ReadAsStringAsync().Result;
@@ -84,6 +88,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var learningActivities = table.CreateSet<SaveCourseLearningActivityRequest>();
             foreach (var activity in learningActivities)
             {
+                activity.Type = CourseLearningActivityType.Assignment;
                 var activityResponse = ScenarioContext.Current.Get<CourseLearningActivityResponse>(table.Rows[0]["Name"]);
                 var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(RequestUri.ToString() + LearningActivityUrl + activityResponse.Id, activity).Result;
                 if (!response.IsSuccessStatusCode)
@@ -94,10 +99,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             }
         }
 
+        [When(@"I remove ""(.*)"" learning activity")]
+        public void WhenIRemoveLearningActivity(string activityName)
+        {
+            var activity = ScenarioContext.Current.Get<CourseLearningActivityResponse>(activityName);
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(RequestUri.ToString() + LearningActivityUrl + activity.Id).Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseBody = response.Content.ReadAsStringAsync().Result;
+                throw new Exception(responseBody);
+            }
+
+            var getResponse = ApiFeature.ApiTestHost.Client.GetAsync(RequestUri + LearningActivityUrl + activity.Id).Result;
+            ScenarioContext.Current.Add("ResponseToValidate", getResponse);
+        }
+
         [When(@"I add a learning activity to a course that has already been published")]
         public void WhenIAddALearningActivityToACourseThatHasAlreadyBeenPublished(Table table)
         {
             var learningActivity = table.CreateInstance<SaveCourseLearningActivityRequest>();
+            learningActivity.Type=CourseLearningActivityType.Assignment;
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(RequestUri.ToString() + LearningActivityUrl, learningActivity).Result;            
             ScenarioContext.Current.Add("ResponseToValidate", response);
             Whens.ResponseMessages.Add(response);

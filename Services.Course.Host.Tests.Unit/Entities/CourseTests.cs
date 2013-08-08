@@ -280,7 +280,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var learningActivityRequest = new SaveCourseLearningActivityRequest
                 {
                     Name = "Discussion 1",
-                    Type = "Discussion",
+                    //Type = "Discussion",
+                    Type = CourseLearningActivityType.Discussion,
                     IsGradeable = true,
                     IsExtraCredit = false,
                     MaxPoint = 100

@@ -17,7 +17,7 @@ namespace BpeProducts.Services.Course.Contract
 
         [Required]
         [DataMember(IsRequired = true)]
-        public string Type { get; set; }
+        public CourseLearningActivityType Type { get; set; }
 
         [DataMember]   
         public Boolean IsGradeable { get; set; }

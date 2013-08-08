@@ -13,7 +13,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         public virtual string Name { get; set; }
 
         [Required]
-        public virtual string Type { get; set; }
+        public virtual CourseLearningActivityType Type { get; set; }
 
         public virtual Boolean IsGradeable { get; set; }
 
