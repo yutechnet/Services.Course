@@ -108,7 +108,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             table.CompareToInstance(courseLearningActivity);
         }
 
- 	[Then(@"the program '(.*)' include the following course information:")]
+ 	    [Then(@"the program '(.*)' include the following course information:")]
         public void ThenTheProgramIncludeTheFollowingCourseInformation(string programName, Table table)
         {
             var programResource = Givens.Programs[programName];
@@ -117,6 +117,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var courseIds = (from r in table.Rows select Givens.Courses[r["Course Name"]].Id).ToList();
 
             CollectionAssert.AreEquivalent(program.Courses.Select(c => c.Id).ToList(), courseIds);
+        }
+
+        [Then(@"the segment '(.*)' should have the following learning activities:")]
+        public void ThenTheSegmentShouldHaveTheFollowingLearningActivities(string segmentName, Table table)
+        {
+            var resource = Givens.Segments[segmentName];
+            var segment = GetOperations.GetSegment(resource.ResourseUri);
+
+            var expectedLearningActivities = (from r in table.Rows select Givens.CourseLearningActivities[r["Name"]].Id).ToList();
+            var actualLearningActivities = (from a in segment.CourseLearningActivities select a.Id).ToList();
+
+            CollectionAssert.AreEquivalent(expectedLearningActivities, actualLearningActivities);
         }
     }
 }

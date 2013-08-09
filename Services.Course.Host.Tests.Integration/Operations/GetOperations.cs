@@ -45,5 +45,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var result = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
             return result;
         }
+
+        public static CourseSegmentInfo GetSegment(Uri resourseUri)
+        {
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourseUri).Result;
+            response.EnsureSuccessStatusCode();
+
+            var result = response.Content.ReadAsAsync<CourseSegmentInfo>().Result;
+            return result;
+        }
     }
 }
