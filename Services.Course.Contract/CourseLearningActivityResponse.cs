@@ -6,17 +6,16 @@ using System.Threading.Tasks;
 
 namespace BpeProducts.Services.Course.Contract
 {
-
     public enum CourseLearningActivityType
     {
-        Discussion,
-        Assignment,
-        Quiz,
-        Assessment
+        Discussion = 1,
+        Assignment = 2,
+        Quiz = 3,
+        Assessment = 4
     }
+
     public class CourseLearningActivityResponse
     {
-
         public Guid Id { get; set; }
         public int TenantId { get; set; }
         public string Name { get; set; }

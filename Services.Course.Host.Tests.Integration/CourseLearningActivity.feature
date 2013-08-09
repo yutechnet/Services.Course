@@ -58,7 +58,7 @@ Scenario: Update a learning activity NEW
 Scenario: Delete a learning activity
 	Given I add the following course learning activities to 'Week 1' course segment
 	| Name         | Type       | IsGradeable | IsExtraCredit | Weight | MaxPoint | ObjectId                             |
-	| Discussion 1 | Discussion | True        | true         | 100     | 20       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Discussion 1 | Discussion | True        | true          | 100    | 20       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	When I remove "Discussion 1" learning activity
 	And I retrieve the course learning activity 'Discussion 1'
 	Then I get 'NotFound' response
