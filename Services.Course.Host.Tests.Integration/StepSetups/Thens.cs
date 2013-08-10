@@ -26,22 +26,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var courseResource = Givens.Courses[courseName];
 
-            var expectedCode = (HttpStatusCode) Enum.Parse(typeof (HttpStatusCode), status);
+            var expectedCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), status);
             Assert.That(courseResource.Response.StatusCode, Is.EqualTo(expectedCode));
-        }
-
-        [Then(@"I get the following responses")]
-        public void ThenIGetTheFollowingResponses(Table table)
-        {
-            var j = 0;
-            for (var i = table.Rows.Count; i > 0; i--)
-            {
-                var expected = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), table.Rows[j]["StatusCode"]);
-                var actual = Whens.ResponseMessages.ElementAt(Whens.ResponseMessages.Count - i).StatusCode;
-
-                Assert.That(actual, Is.EqualTo(expected));
-                j++;
-            }
         }
 
         [Then(@"the course '(.*)' includes the following programs:")]
@@ -55,7 +41,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             CollectionAssert.AreEquivalent(course.ProgramIds, expectedProgramIds);
         }
 
-        [Then(@"'(.*)' program is associated with the following learning outcomes")]
+        [Then(@"'(.*)' program is associated with the following learning outcomes:")]
         public void ThenProgramIsAssociatedWithTheFollowingLearningOutcomes(string programName, Table table)
         {
             var resource = Givens.Programs[programName];
@@ -107,7 +93,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var response = Whens.ResponseMessages.Last();
 
-            var expectedStatusCode = (HttpStatusCode) Enum.Parse(typeof (HttpStatusCode), status);
+            var expectedStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), status);
 
             Assert.That(response.StatusCode.Equals(expectedStatusCode));
         }
@@ -122,7 +108,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             table.CompareToInstance(courseLearningActivity);
         }
 
-        [Then(@"the program '(.*)' include the following course information:")]
+ 	[Then(@"the program '(.*)' include the following course information:")]
         public void ThenTheProgramIncludeTheFollowingCourseInformation(string programName, Table table)
         {
             var programResource = Givens.Programs[programName];
@@ -131,6 +117,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var courseIds = (from r in table.Rows select Givens.Courses[r["Course Name"]].Id).ToList();
 
             CollectionAssert.AreEquivalent(program.Courses.Select(c => c.Id).ToList(), courseIds);
+        }
+
+	[Then(@"the segment '(.*)' should have the following learning activities:")]
+        public void ThenTheSegmentShouldHaveTheFollowingLearningActivities(string segmentName, Table table)
+        {
+            var resource = Givens.Segments[segmentName];
+            var segment = GetOperations.GetSegment(resource.ResourseUri);
+
+            var expectedLearningActivities = (from r in table.Rows select Givens.CourseLearningActivities[r["Name"]].Id).ToList();
+            var actualLearningActivities = (from a in segment.CourseLearningActivities select a.Id).ToList();
+
+            CollectionAssert.AreEquivalent(expectedLearningActivities, actualLearningActivities);
         }
 
         [Then(@"the learning outcome '(.*)' should contain")]
