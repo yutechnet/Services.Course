@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -43,6 +44,25 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             response.EnsureSuccessStatusCode();
 
             var result = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
+            return result;
+        }
+
+        public static OutcomeInfo GetLearningOutcome(Uri resourceUri)
+        {
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri).Result;
+            response.EnsureSuccessStatusCode();
+
+            var result = response.Content.ReadAsAsync<OutcomeInfo>().Result;
+            return result;
+        }
+
+        public static List<OutcomeInfo> GetSupportedOutcomes(Uri resourceUri)
+        {
+            var uri = string.Format("{0}/supports", resourceUri);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(uri).Result;
+            response.EnsureSuccessStatusCode();
+
+            var result = response.Content.ReadAsAsync<List<OutcomeInfo>>().Result;
             return result;
         }
     }

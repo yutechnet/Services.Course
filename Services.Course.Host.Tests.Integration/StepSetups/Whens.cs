@@ -40,22 +40,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             Givens.Courses.Add(resourse.Dto.Name, resourse);
         }
 
-        [When(@"I associate the newly created learning outcomes to '(.*)' program")]
-        public void WhenIAssociateTheNewlyCreatedLearningOutcomesToProgram(string programName, Table table)
-        {
-            var requests = (from r in table.Rows
-                            select new OutcomeRequest {Description = r["Description"], TenantId = ApiFeature.TenantId})
-                .ToList();
-
-            var program = Givens.Programs[programName];
-
-            foreach (var request in requests)
-            {
-                var resource = PostOperations.CreateEntityLearningOutcome("program", program.Id, request);
-                resource.Response.EnsureSuccessStatusCode();
-            }
-        }
-
         [When(@"I associate the existing learning outcomes to '(.*)' program")]
         public void WhenIAssociateTheExistingLearningOutcomesToProgram(string programName, Table table)
         {
@@ -96,7 +80,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var outcome = Givens.LearningOutcomes[row["Description"]];
 
                 var response = PutOperations.CourseSupportsLearningOutcome(course, outcome);
-                response.EnsureSuccessStatusCode();
+                ResponseMessages.Add(response);
             }
         }
 
@@ -109,7 +93,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             course.Dto = GetOperations.GetCourse(course.ResourseUri);
 
             var response = PutOperations.AssociateCourseWithPrograms(course, new List<ProgramResource> {program});
-            response.EnsureSuccessStatusCode();
+            ResponseMessages.Add(response);
         }
 
         [When(@"I associate '(.*)' course with the following programs")]
@@ -121,7 +105,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             course.Dto = GetOperations.GetCourse(course.ResourseUri);
 
             var response = PutOperations.AssociateCourseWithPrograms(course, programs);
-            response.EnsureSuccessStatusCode();
+            ResponseMessages.Add(response);
         }
 
         [When(@"I remove '(.*)' course from '(.*)'")]
@@ -133,7 +117,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             course.Dto = GetOperations.GetCourse(course.ResourseUri);
 
             var response = PutOperations.DisassociateCourseWithPrograms(course, new List<ProgramResource> {program});
-            response.EnsureSuccessStatusCode();
+            ResponseMessages.Add(response);
         }
 
         [When(@"I assoicate the following outcomes to outcome '(.*)'")]
@@ -148,8 +132,41 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var supportingOutcome in supportingOutcomes)
             {
+                //TODO: This is an issue... supportingOutcome and supoortedOutcome should be flipped
                 var response = PutOperations.OutcomeSupportsLearningOutcome(supportingOutcome.Value, supportedOutcome);
-                response.EnsureSuccessStatusCode();
+                ResponseMessages.Add(response);
+            }
+        }
+
+        [When(@"I disassociate the following learning outcomes from '(.*)' learning outcome")]
+        public void WhenIDisassociateTheFollowingLearningOutcomesFromLearningOutcome(string learningOutcomeName, Table table)
+        {
+            var supportedOutcome = Givens.LearningOutcomes[learningOutcomeName];
+
+            var descriptions = (from o in table.Rows select o["Description"]).ToList();
+            var supportingOutcomes = (from o in Givens.LearningOutcomes
+                                      where descriptions.Contains(o.Value.SaveRequest.Description)
+                                      select o).ToList();
+
+            foreach (var supportingOutcome in supportingOutcomes)
+            {
+                var response = PutOperations.OutcomeDoesNotSupportLearningOutcome(supportingOutcome.Value, supportedOutcome);
+                ResponseMessages.Add(response);
+            }
+        }
+
+        [When(@"I disassociate the following learning outcomes from '(.*)' program")]
+        public void WhenIDisassociateTheFollowingLearningOutcomesFromProgram(string programName, Table table)
+        {
+            var programResource = Givens.Programs[programName];
+
+            var learningOutcomeNames = (from o in table.Rows select o["Description"]).ToList();
+
+            foreach (var learningOutcomeName in learningOutcomeNames)
+            {
+                var learningOutcome = Givens.LearningOutcomes[learningOutcomeName];
+                var response = PutOperations.ProgramDoesNotSupportLearningOutcome(programResource, learningOutcome);
+                ResponseMessages.Add(response);
             }
         }
 
@@ -202,7 +219,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIRetrieveTheCourseLearningActivity(string activityName)
         {
             var resource = Givens.CourseLearningActivities[activityName];
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(resource.ResourseUri).Result;
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resource.ResourceUri).Result;
 
             ResponseMessages.Add(response);
         }
@@ -224,6 +241,38 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var learningActivity = table.CreateInstance<SaveCourseLearningActivityRequest>();
 
             var response = PutOperations.UpdateCourseLearningActivity(resourse, learningActivity);
+            ResponseMessages.Add(response);
+        }
+
+        [When(@"I change the '(.*)' learning outcome description to '(.*)'")]
+        public void WhenIChangeTheLearningOutcomeDescriptionTo(string leaningOutcomeName, string newDescription)
+        {
+            var resource = Givens.LearningOutcomes[leaningOutcomeName];
+
+            var request = new OutcomeRequest
+                {
+                    Description = newDescription
+                };
+
+            var response = PutOperations.UpdateLearningOutcome(resource, request);
+            ResponseMessages.Add(response);
+        }
+
+        [When(@"I get the learning outcome '(.*)'")]
+        public void WhenIGetTheLearningOutcome(string leaningOutcomeName)
+        {
+            var resource = Givens.LearningOutcomes[leaningOutcomeName];
+
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resource.ResourceUri.ToString()).Result;
+            ResponseMessages.Add(response);
+        }
+
+        [When(@"I delete the '(.*)' learning outcome")]
+        public void WhenIDeleteTheLearningOutcome(string leaningOutcomeName)
+        {
+            var resource = Givens.LearningOutcomes[leaningOutcomeName];
+
+            var response = DeleteOperations.LearningOutcome(resource);
             ResponseMessages.Add(response);
         }
 
@@ -334,14 +383,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             response.EnsureSuccessStatusCode();
         }
 
-        [When(@"I delete this learning outcome")]
-        public void WhenIDeleteThisLearningOutcome()
-        {
-            var deleteUrl = ScenarioContext.Current.Get<Uri>("learningoutcomeResourceUrl");
-            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(deleteUrl).Result;
-            response.EnsureSuccessStatusCode();
-        }
-
         [Then(@"the learning outcome should be with the description '(.*)'")]
         public void ThenTheLearningOutcomeShouldBeWithTheDescription(string description)
         {
@@ -360,43 +401,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var getUrl = ScenarioContext.Current.Get<Uri>("learningoutcomeResourceUrl");
             var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl.ToString()).Result;
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
-        }
-
-        [When(@"I disassociate the following learning outcomes from '(.*)' program:")]
-        public void WhenIDisassociateTheFollowingLearningOutcomesFromProgram(string programName, Table table)
-        {
-            var outcomeUrls = ScenarioContext.Current.Get<Dictionary<string, Uri>>("learningoutcomeResourceUrls");
-            foreach (var item in table.Rows)
-            {
-                var deleteUrl = outcomeUrls[item["Description"]];
-                var response = ApiFeature.ApiTestHost.Client.DeleteAsync(deleteUrl.ToString()).Result;
-                ScenarioContext.Current.Add("Delete" + item["Description"], response);
-                response.EnsureSuccessStatusCode();
-            }
-        }
-
-        [Then(@"'(.*)' program is associated with the only following learning outcomes:")]
-        public void ThenProgramIsAssociatedWithTheOnlyFollowingLearningOutcomes(string programName, Table table)
-        {
-            //get the program and its outcome and assert on count and desc
-            // PUT /program/programid/outcome
-            ProgramResponse program = null;
-
-            var programs = ScenarioContext.Current.Get<IList<ProgramResponse>>("programs");
-            program = programs.First(p => p.Name.Equals(programName));
-
-
-            var getUrl = string.Format("{0}/{1}/supports",
-                                       FeatureContext.Current.Get<String>("ProgramLeadingPath"), program.Id);
-
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl).Result;
-            response.EnsureSuccessStatusCode();
-            var outcomes = response.Content.ReadAsAsync<List<OutcomeInfo>>().Result;
-            Assert.That(outcomes.Count, Is.EqualTo(table.Rows.Count));
-            foreach (var row in table.Rows)
-            {
-                Assert.That(outcomes.Any(o => o.Description == row["Description"]));
-            }
         }
 
         [Then(@"disassociating the following from '(.*)' program should result:")]
@@ -424,55 +428,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 Assert.That(response.StatusCode.Equals(expectedStatusCode));
 
             }
-        }
-
-        private string ExtractGuid(string str, int i)
-        {
-            var p = @"([a-z0-9]{8}[-][a-z0-9]{4}[-][a-z0-9]{4}[-][a-z0-9]{4}[-][a-z0-9]{12})";
-            var mc = Regex.Matches(str, p);
-
-            return mc[i].ToString();
-        }
-
-        [Then(@"'(.*)' has the following learning outcomes:")]
-        public void ThenHasTheFollowingLearningOutcomes(string outcomeDescription, Table table)
-        {
-            var parentOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(outcomeDescription);
-            var parentOutcomeId = ExtractGuid(parentOutcomeResourceUri.ToString(), 1);
-
-            var getUri = string.Format("{0}/{1}/supports", FeatureContext.Current.Get<string>("OutcomeLeadingPath"),
-                                       parentOutcomeId);
-
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri).Result;
-            response.EnsureSuccessStatusCode();
-
-            var childOutcomes = response.Content.ReadAsAsync<IList<OutcomeInfo>>().Result;
-            table.CompareToSet(childOutcomes);
-        }
-
-        [When(@"I disassociate '(.*)' from '(.*)'")]
-        public void WhenIDisassociateFrom(string childOutcome, string parentOutcome)
-        {
-            var parentOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(parentOutcome);
-            var parentOutcomeId = ExtractGuid(parentOutcomeResourceUri.ToString(), 1);
-            var childOutcomeResourceUri = ScenarioContext.Current.Get<Uri>(childOutcome);
-            var childOutcomeId = ExtractGuid(childOutcomeResourceUri.ToString(), 1);
-
-            var deleteUri = string.Format("{0}/{1}/supports/{2}",
-                                          FeatureContext.Current.Get<string>("OutcomeLeadingPath"), childOutcomeId,
-                                          parentOutcomeId);
-
-            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(deleteUri).Result;
-            response.EnsureSuccessStatusCode();
-        }
-
-        [Then(@"the course '(.*)' includes the following learning outcomes:")]
-        public void ThenTheCourseIncludesTheFollowingLearningOutcomes(string courseName, Table table)
-        {
-            var course = Givens.Courses[courseName];
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(course.ResourseUri + "/" + "supports").Result;
-            var outcomes = response.Content.ReadAsAsync<List<OutcomeInfo>>().Result;
-            table.CompareToSet(outcomes);
         }
     }
 }

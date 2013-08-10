@@ -18,6 +18,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return response;
         }
 
+        public static HttpResponseMessage ProgramDoesNotSupportLearningOutcome(ProgramResource program, LearningOutcomeResource outcome)
+        {
+            var uri = string.Format("{0}/program/{1}/supports/{2}", ApiFeature.LeadingPath, program.Id, outcome.Id);
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(uri).Result;
+
+            return response;
+        }
+
         public static HttpResponseMessage CourseSupportsLearningOutcome(CourseResource course, LearningOutcomeResource outcome)
         {
             var uri = string.Format("{0}/course/{1}/supports/{2}", ApiFeature.LeadingPath, course.Id, outcome.Id);
@@ -26,10 +34,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return response;
         }
 
+        public static HttpResponseMessage CourseDoesNotSupportLearningOutcome(CourseResource course, LearningOutcomeResource outcome)
+        {
+            var uri = string.Format("{0}/course/{1}/supports/{2}", ApiFeature.LeadingPath, course.Id, outcome.Id);
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(uri).Result;
+
+            return response;
+        }
+
         public static HttpResponseMessage OutcomeSupportsLearningOutcome(LearningOutcomeResource supportingOutcome, LearningOutcomeResource supportedOutcome)
         {
             var uri = string.Format("{0}/outcome/{1}/supports/{2}", ApiFeature.LeadingPath, supportingOutcome.Id, supportedOutcome.Id);
             var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, new { }, new JsonMediaTypeFormatter()).Result;
+
+            return response;
+        }
+
+        public static HttpResponseMessage OutcomeDoesNotSupportLearningOutcome(LearningOutcomeResource supportingOutcome, LearningOutcomeResource supportedOutcome)
+        {
+            var uri = string.Format("{0}/outcome/{1}/supports/{2}", ApiFeature.LeadingPath, supportingOutcome.Id, supportedOutcome.Id);
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(uri).Result;
 
             return response;
         }
@@ -98,7 +122,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static HttpResponseMessage UpdateCourseLearningActivity(CourseLearningActivityResource courseLearningActivity, SaveCourseLearningActivityRequest request)
         {
-            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(courseLearningActivity.ResourseUri.ToString(), request).Result;
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(courseLearningActivity.ResourceUri.ToString(), request).Result;
+
+            return response;
+        }
+
+        public static HttpResponseMessage UpdateLearningOutcome(LearningOutcomeResource learningOutcome, OutcomeRequest request)
+        {
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(learningOutcome.ResourceUri.ToString(), request).Result;
 
             return response;
         }

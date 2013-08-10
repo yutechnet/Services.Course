@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
@@ -174,6 +175,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
                 var resourse = PostOperations.CreateCourseLearningActivity(segment, activity);
                 CourseLearningActivities.Add(resourse.Dto.Name, resourse);
+            }
+        }
+
+        [Given(@"I associate the newly created learning outcomes to '(.*)' program")]
+        public void WhenIAssociateTheNewlyCreatedLearningOutcomesToProgram(string programName, Table table)
+        {
+            var requests = (from r in table.Rows
+                            select new OutcomeRequest { Description = r["Description"], TenantId = ApiFeature.TenantId })
+                .ToList();
+
+            var program = Givens.Programs[programName];
+
+            foreach (var request in requests)
+            {
+                var resource = PostOperations.CreateEntityLearningOutcome("program", program.Id, request);
+                LearningOutcomes.Add(request.Description, resource);
             }
         }
     }

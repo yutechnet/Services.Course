@@ -12,7 +12,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
     {
         public static HttpResponseMessage CourseLearningActivity(CourseLearningActivityResource learningActivity)
         {
-            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(learningActivity.ResourseUri).Result;
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(learningActivity.ResourceUri).Result;
+            return response;
+        }
+
+        public static HttpResponseMessage LearningOutcome(LearningOutcomeResource learningOutcome)
+        {
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(learningOutcome.ResourceUri).Result;
             return response;
         }
     }

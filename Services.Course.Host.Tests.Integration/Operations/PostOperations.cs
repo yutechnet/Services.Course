@@ -45,7 +45,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 var dto = response.Content.ReadAsAsync<ProgramResponse>().Result;
 
                 resource.Id = dto.Id;
-                resource.resourceUri = response.Headers.Location;
+                resource.ResourceUri = response.Headers.Location;
                 resource.SaveRequest = request;
                 resource.Dto = dto;
             }
@@ -97,7 +97,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
 
                 resource.Id = Guid.Parse(id);
-                resource.ResourseUri = response.Headers.Location;
+                resource.ResourceUri = response.Headers.Location;
                 resource.SaveRequest = request;
             }
 
@@ -119,7 +119,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
 
                 resource.Id = Guid.Parse(id);
-                resource.ResourseUri = response.Headers.Location;
+                resource.ResourceUri = response.Headers.Location;
                 resource.SaveRequest = request;
             }
 
@@ -142,7 +142,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 var dto = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
 
                 resource.Id = Guid.Parse(id);
-                resource.ResourseUri = response.Headers.Location;
+                resource.ResourceUri = response.Headers.Location;
                 resource.SaveRequest = request;
                 resource.Dto = dto;
             }
