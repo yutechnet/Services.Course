@@ -217,7 +217,6 @@
       <DependentUpon>CourseVersioning.feature</DependentUpon>
     </Compile>
     <Compile Include="CourseVersioningSteps.cs" />
-    <Compile Include="GetEntityLearningOutcomeSteps.cs" />
     <Compile Include="GetEntityLearningOutcomes.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -228,7 +227,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LearningOutcomeManagement.feature</DependentUpon>
     </Compile>
-    <Compile Include="LearningOutcomeManagementSteps.cs" />
     <Compile Include="LearningOutcomeVersioning.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
