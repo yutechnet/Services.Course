@@ -42,6 +42,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return response;
         }
 
+        public static HttpResponseMessage SegmentSupportsLearningOutcome(CourseSegmentResource segment, LearningOutcomeResource outcome)
+        {
+            var uri = string.Format("{0}/segment/{1}/supports/{2}", ApiFeature.LeadingPath, segment.Id, outcome.Id);
+            var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, new { }, new JsonMediaTypeFormatter()).Result;
+
+            return response;
+        }
+
+        public static HttpResponseMessage SegmentDoesNotSupportLearningOutcome(CourseSegmentResource segment, LearningOutcomeResource outcome)
+        {
+            var uri = string.Format("{0}/segment/{1}/supports/{2}", ApiFeature.LeadingPath, segment.Id, outcome.Id);
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(uri).Result;
+
+            return response;
+        }
+
         public static HttpResponseMessage OutcomeSupportsLearningOutcome(LearningOutcomeResource supportingOutcome, LearningOutcomeResource supportedOutcome)
         {
             var uri = string.Format("{0}/outcome/{1}/supports/{2}", ApiFeature.LeadingPath, supportingOutcome.Id, supportedOutcome.Id);

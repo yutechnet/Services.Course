@@ -4,7 +4,7 @@ using BpeProducts.Services.Course.Contract;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Resources
 {
-    public class ProgramResource
+    public class ProgramResource : IResource
     {
         public HttpResponseMessage Response { get; set; }
         public Guid Id { get; set; }

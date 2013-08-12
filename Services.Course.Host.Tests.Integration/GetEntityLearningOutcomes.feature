@@ -14,6 +14,7 @@ Background:
 	| Name    | Code | Description | OrganizationId                       |
 	| Course1 | 1    | Course1     | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	| Course2 | 2    | Course2     | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Course3 | 3    | Course3     | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
     And I have the following course segments for 'Course1'
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
@@ -37,7 +38,46 @@ Scenario: Can get entity learning outcomes for programs
 	| LO2  |
 	| LO3  |
 	Then I get the entity learning outcomes as follows:
-	| EntityType | EntityName | LearningOutcomeName |
-	| Program    | Program1   | LO1                 |
-	| Program    | Program2   | LO1, LO2            |
-	| Program    | Program3   |                     |
+	| EntityType | EntityName | LearningOutcomes |
+	| Program    | Program1   | LO1              |
+	| Program    | Program2   | LO2, LO3         |
+	| Program    | Program3   |                  |
+
+Scenario: Can get entity learning outcomes for courses
+	When I associate the existing learning outcomes to 'Course1' course
+	| Description |
+	| LO1  |
+	And I associate the existing learning outcomes to 'Course3' course
+	| Description |
+	| LO2  |
+	| LO3  |
+	Then I get the entity learning outcomes as follows:
+	| EntityType | EntityName | LearningOutcomes |
+	| Course     | Course1    | LO1              |
+	| Course     | Course2    |                  |
+	| Course     | Course3    | LO2, LO3         |
+	| Program    | Program1   |                  |
+	| Program    | Program2   |                  |
+	| Program    | Program3   |                  |
+
+Scenario: Can get entity learning outcomes for segments
+	When I associate the existing learning outcomes to 'Week1' segment
+	| Description |
+	| LO1         |
+	When I associate the existing learning outcomes to 'Topic' segment
+	| Description |
+	| LO1         |
+	| LO2         |
+	| LO3         |
+	Then I get the entity learning outcomes as follows:
+	| EntityType | EntityName  | LearningOutcomes |
+	| Segment    | Week1       | LO1              |
+	| Segment    | Topic       | LO1, LO2, LO3    |
+	| Segment    | Discussion  |                  |
+	| Segment    | Discussion2 |                  |
+	| Course     | Course1     |                  |
+	| Course     | Course2     |                  |
+	| Course     | Course3     |                  |
+	| Program    | Program1    |                  |
+	| Program    | Program2    |                  |
+	| Program    | Program3    |                  |

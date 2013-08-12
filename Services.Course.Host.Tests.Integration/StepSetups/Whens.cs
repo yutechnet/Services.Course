@@ -84,6 +84,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
+        [When(@"I associate the existing learning outcomes to '(.*)' segment")]
+        public void WhenIAssociateTheExistingLearningOutcomesToSegment(string segmentName, Table table)
+        {
+            var segment = Givens.Segments[segmentName];
+
+            foreach (var row in table.Rows)
+            {
+                var outcome = Givens.LearningOutcomes[row["Description"]];
+
+                var response = PutOperations.SegmentSupportsLearningOutcome(segment, outcome);
+                ResponseMessages.Add(response);
+            }
+        }
+
         [When(@"I associate '(.*)' course with '(.*)' program")]
         public void WhenIAssociateCourseWithProgram(string courseName, string programName)
         {
