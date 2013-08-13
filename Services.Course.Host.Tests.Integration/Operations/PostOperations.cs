@@ -32,7 +32,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static CourseResource CreateCourseVersion(VersionRequest request)
         {
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "course/version", request, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course/version", request, new JsonMediaTypeFormatter()).Result;
 
             var resource = new CourseResource
             {
