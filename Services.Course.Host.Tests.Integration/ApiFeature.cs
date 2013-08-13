@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.IO;
-using System.Net.Http.Headers;
 using BpeProducts.Common.WebApiTest;
 using TechTalk.SpecFlow;
 
@@ -10,71 +8,61 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [Binding]
     public static class ApiFeature
     {
+        public const TestUserName DefaultTestUser = TestUserName.TestUser3;
+
         public static int TenantId = 999999;
-        public static string LeadingPath;
+        public static readonly string LeadingPath;
 
         public static WebApiTestHost ApiTestHost
         {
             get { return (WebApiTestHost)FeatureContext.Current["ApiTestHost"]; }
         }
 
+        public static WebApiTestHost RemoteApiTestHost
+        {
+            get { return (WebApiTestHost)FeatureContext.Current["RemoteApiTestHost"]; }
+        }
+
         static ApiFeature()
         {
             var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
-            LeadingPath = "";
-            if (!targetUri.Host.Equals("localhost"))
-            {
-                LeadingPath = targetUri.PathAndQuery;
-            }
+            LeadingPath = targetUri.Host.Equals("localhost") ? "" : targetUri.PathAndQuery;
         }
 
         [BeforeFeature("Api")]
         public static void BeforeFeature()
         {
-            FeatureContext.Current.Add("TenantId", TenantId);
-            var apiTestHost = new WebApiTestHost(WebApiApplication.ConfigureWebApi);
+            var featureContext = FeatureContext.Current;
+           
+            var apiTestHost = new WebApiTestHost(WebApiApplication.ConfigureWebApi, new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]));
+            var remoteApiTestHost = new WebApiTestHost(WebApiApplication.ConfigureWebApi, new Uri(ConfigurationManager.AppSettings["RemoteTestHostBaseAddress"]));
+            featureContext.Add("ApiTestHost", apiTestHost);
+            featureContext.Add("RemoteApiTestHost", remoteApiTestHost);
+            featureContext.Add("TenantId", TenantId);
 
-            AddSamlToken(apiTestHost);
+            var courseLeadingPath = string.Format("{0}/{1}", LeadingPath, "course");
+            var programLeadingPath = string.Format("{0}/{1}", LeadingPath, "program");
+            var outcomeLeadingPath = string.Format("{0}/{1}", LeadingPath, "outcome");
+            const string accountLeadingPath = "/account";
 
-            //var base64SamlBytes = System.Text.Encoding.ASCII.GetBytes(samlToken);
-            //var base64SamlToken = System.Convert.ToBase64String(base64SamlBytes);
-
-            FeatureContext.Current.Add("ApiTestHost", apiTestHost);
-
-			var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
-			if (!targetUri.Host.Equals("localhost"))
-			{
-				FeatureContext.Current.Add("CourseLeadingPath", targetUri.PathAndQuery + "/course");
-				FeatureContext.Current.Add("ProgramLeadingPath", targetUri.PathAndQuery + "/program");
-                FeatureContext.Current.Add("OutcomeLeadingPath", targetUri.PathAndQuery + "/outcome");
-			}
-			else
-			{
-				FeatureContext.Current.Add("CourseLeadingPath", "/course");
-				FeatureContext.Current.Add("ProgramLeadingPath", "/program");
-                FeatureContext.Current.Add("OutcomeLeadingPath", "/outcome");
-            }
-		
-		}
+            featureContext.Add("CourseLeadingPath", courseLeadingPath);
+            featureContext.Add("ProgramLeadingPath", programLeadingPath);
+            featureContext.Add("OutcomeLeadingPath", outcomeLeadingPath);
+            featureContext.Add("AccountLeadingPath", accountLeadingPath);
+        }
 
         [AfterFeature("Api")]
         public static void AfterFeature()
         {
             ApiTestHost.Dispose();
         }
-
-        static void AddSamlToken(WebApiTestHost apiTestHost)
+        
+        [BeforeScenario("Api")]
+        public static void BeforeScenario()
         {
-            var samlToken = File.ReadAllText("SAML.xml");
-
-            Console.Out.WriteLine("SAML: " + samlToken);
-
-            samlToken = samlToken.Replace(Environment.NewLine, String.Empty);
-            samlToken = samlToken.Replace("\r", String.Empty);
-            samlToken = samlToken.Replace("\n", String.Empty);
-            samlToken = samlToken.Replace("  ", String.Empty);
-
-            apiTestHost.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("SAML", samlToken);
+            //Some scenarios change the user, so make sure we set it to a know user for each scenario
+            ApiTestHost.SetTestUser(DefaultTestUser);
+            RemoteApiTestHost.SetTestUser(TestUserName.SuperSaml);
         }
     }
 }

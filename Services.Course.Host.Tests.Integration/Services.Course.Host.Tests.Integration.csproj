@@ -82,9 +82,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.68\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.17.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.28.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.17\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.28\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
@@ -177,6 +177,7 @@
       <DependentUpon>CourseAuthorization.feature</DependentUpon>
     </Compile>
     <Compile Include="CourseAuthorizationSteps.cs" />
+    <Compile Include="CourseCreateCapabilitySteps.cs" />
     <Compile Include="CourseCreation.feature.cs">
       <DependentUpon>CourseCreation.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -217,6 +218,11 @@
       <DependentUpon>CourseVersioning.feature</DependentUpon>
     </Compile>
     <Compile Include="CourseVersioningSteps.cs" />
+    <Compile Include="CourseCreateCapability.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CourseCreateCapability.feature</DependentUpon>
+    </Compile>
     <Compile Include="GetEntityLearningOutcomes.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -295,6 +301,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseVersioning.feature.cs</LastGenOutput>
     </None>
+    <None Include="CourseCreateCapability.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CourseCreateCapability.feature.cs</LastGenOutput>
+    </None>
     <None Include="GetEntityLearningOutcomes.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>GetEntityLearningOutcomes.feature.cs</LastGenOutput>
@@ -330,11 +340,6 @@
       <Project>{642480CE-B45B-4B64-8A16-74CAF853B7A7}</Project>
       <Name>Services.Course.Host</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="SAML.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />
