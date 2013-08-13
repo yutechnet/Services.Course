@@ -7,6 +7,6 @@ namespace BpeProducts.Services.Course.Domain.Events
     {
         public Guid AggregateId { get; set; }
         public Courses.Course Old { get; set; }
-		public SaveCourseRequest Request{ get; set; }
+        public UpdateCourseRequest Request { get; set; }
     }
 }

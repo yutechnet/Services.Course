@@ -10,28 +10,28 @@ Background:
 	| English 1010 | ENG101 | Ranji's awesome English Class | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
 
 Scenario: Create a default version
-	When I retrieve 'English 1010' course
-	Then the course should have the following info
+	Then the course 'English 1010' should have the following info
 	| Field         | Value                         |
 	| Name          | English 1010                  |
 	| Code          | ENG101                        |
 	| Description   | Ranji's awesome English Class |
 	| VersionNumber | 1.0.0.0                       |
 
-#Scenario: Edit a course version
-#	When I update 'English 1010' course with the following info
-#	| Field          | Value                                |
-#	| Name           | English 10101                        |
-#	| Code           | ENG101                               |
-#	| Description    | Ranji's terrible English Class       |
-#	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-#	Then the course 'English 1010' should have the following info
-#	| Field          | Value                                |
-#	| Name           | English 10101                        |
-#	| Code           | ENG101                               |
-#	| Description    | Ranji's terrible English Class       |
-#	| VersionNumber  | 1.0.0.0                              |
-#	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+Scenario: Edit a course version
+	When I update 'English 1010' course with the following info
+	| Field       | Value                          |
+	| Name        | English 10101                  |
+	| Code        | ENG10101                       |
+	| Description | Ranji's terrible English Class |
+	| IsTemplate  | true                           |
+	Then the course 'English 1010' should have the following info
+	| Field          | Value                                |
+	| Name           | English 10101                        |
+	| Code           | ENG10101                             |
+	| Description    | Ranji's terrible English Class       |
+	| VersionNumber  | 1.0.0.0                              |
+	| OrganizationId | C3885307-BDAD-480F-8E7C-51DFE5D80387 |
+	| IsTemplate     | true                                 |
 
 Scenario: Publish a course version
 	When I publish the following courses
@@ -46,17 +46,17 @@ Scenario: Publish a course version
 	| IsPublished   | true                          |
 	| PublishNote   | Blah blah                     |
 
-#Scenario: Published version cannot be modified
-#	When I publish the following courses
-#	| Name         | Note      |
-#	| English 1010 | Blah blah |
-#	And I update 'English 1010' course with the following info
-#	| Field          | Value                                |
-#	| Name           | English 10101                        |
-#	| Code           | ENG101                               |
-#	| Description    | Johns's terrible English Class       |
-#	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-#	Then I get 'Forbidden' response
+Scenario: Published version cannot be modified
+	When I publish the following courses
+	| Name         | Note      |
+	| English 1010 | Blah blah |
+	And I update 'English 1010' course with the following info
+	| Field          | Value                                |
+	| Name           | English 10101                        |
+	| Code           | ENG101                               |
+	| Description    | Johns's terrible English Class       |
+	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	Then I get 'Forbidden' response
 
 Scenario: Published version cannot be deleted
 	When I publish the following courses
@@ -69,10 +69,10 @@ Scenario: Create a course version from a previously-published version
 	When I publish the following courses
 	| Name         | Note      |
 	| English 1010 | Blah blah |
-	And I create a new version of 'English 1010' course with the following info
+	And I create a new version of 'English 1010' course named 'English 1010 v2' with the following info
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
-	Then the course 'English 1010' should have the following info
+	Then the course 'English 1010 v2' should have the following info
 	| Field         | Value                         |
 	| Name          | English 1010                  |
 	| Code          | ENG101                        |
@@ -84,16 +84,10 @@ Scenario: Cannot publish the same version twice
 	When I publish the following courses
 	| Name         | Note      |
 	| English 1010 | Blah blah |
-	And I create a new version of 'English 1010' course with the following info
+	And I create a new version of 'English 1010' course named 'English 1010 v2' with the following info
 	| Field         | Value   |
 	| VersionNumber | 1.0.0.0 |
 	Then I get 'BadRequest' response
-
-Scenario: Cannot create a version off non-existing version
-	When I create a new version of 'RandomCourse' course with the following info
-	| Field         | Value   |
-	| VersionNumber | 1.0.0.0 |
-	Then I get 'NotFound' response
 
 Scenario: Cannot publish without a version
 	When I create a course without a version

@@ -66,7 +66,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [CheckModelForNull]
         [ValidateModelState]
         // PUT api/courses/5
-        public void Put(Guid id, SaveCourseRequest request)
+        public void Put(Guid id, UpdateCourseRequest request)
         {
             _courseService.Update(id, request);
         }

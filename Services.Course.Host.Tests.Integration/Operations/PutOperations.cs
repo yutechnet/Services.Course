@@ -13,7 +13,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage ProgramSupportsLearningOutcome(ProgramResource program, LearningOutcomeResource outcome)
         {
             var uri = string.Format("{0}/program/{1}/supports/{2}", ApiFeature.LeadingPath, program.Id, outcome.Id);
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, new {}, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(uri, new { }).Result;
 
             return response;
         }
@@ -29,7 +29,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage CourseSupportsLearningOutcome(CourseResource course, LearningOutcomeResource outcome)
         {
             var uri = string.Format("{0}/course/{1}/supports/{2}", ApiFeature.LeadingPath, course.Id, outcome.Id);
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, new { }, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(uri, new { }).Result;
 
             return response;
         }
@@ -45,7 +45,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage SegmentSupportsLearningOutcome(CourseSegmentResource segment, LearningOutcomeResource outcome)
         {
             var uri = string.Format("{0}/segment/{1}/supports/{2}", ApiFeature.LeadingPath, segment.Id, outcome.Id);
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, new { }, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(uri, new { }).Result;
 
             return response;
         }
@@ -61,7 +61,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage OutcomeSupportsLearningOutcome(LearningOutcomeResource supportingOutcome, LearningOutcomeResource supportedOutcome)
         {
             var uri = string.Format("{0}/outcome/{1}/supports/{2}", ApiFeature.LeadingPath, supportingOutcome.Id, supportedOutcome.Id);
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, new { }, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(uri, new { }).Result;
 
             return response;
         }
@@ -91,7 +91,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var programIds = (from p in programs select p.Id).ToList();
             saveCourseRequest.ProgramIds.AddRange(programIds);
 
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(course.ResourseUri.ToString(), saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(course.ResourseUri.ToString(), saveCourseRequest).Result;
 
             return response;
         }
@@ -112,8 +112,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
             var idsToRemove = (from p in programs select p.Id).ToList();
             saveCourseRequest.ProgramIds.RemoveAll(idsToRemove.Contains);
-            
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(course.ResourseUri.ToString(), saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(course.ResourseUri.ToString(), saveCourseRequest).Result;
 
             return response;
         }
@@ -122,7 +122,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         {
             var uri = string.Format("{0}/publish", course.ResourseUri);
 
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, request, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(uri, request).Result;
 
             return response;
         }
@@ -131,7 +131,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         {
             var uri = string.Format("{0}/prerequisites", course.ResourseUri);
 
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(uri, request, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(uri, request).Result;
 
             return response;
         }
@@ -146,6 +146,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage UpdateLearningOutcome(LearningOutcomeResource learningOutcome, OutcomeRequest request)
         {
             var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(learningOutcome.ResourceUri.ToString(), request).Result;
+
+            return response;
+        }
+
+        public static HttpResponseMessage UpdateCourse(CourseResource course, UpdateCourseRequest updateCourseRequest)
+        {
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(course.ResourseUri.ToString(), updateCourseRequest).Result;
 
             return response;
         }

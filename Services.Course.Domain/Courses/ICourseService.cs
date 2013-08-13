@@ -24,7 +24,7 @@ namespace BpeProducts.Services.Course.Domain
         /// </summary>
         /// <param name="courseId">Course to update</param>
         /// <param name="request">Request object</param>
-        void Update(Guid courseId, SaveCourseRequest request);
+        void Update(Guid courseId, UpdateCourseRequest request);
 
         /// <summary>
         /// Get the course

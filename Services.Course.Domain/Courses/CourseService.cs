@@ -34,7 +34,7 @@ namespace BpeProducts.Services.Course.Domain
             return Mapper.Map<CourseInfoResponse>(course);
         }
 
-        public void Update(Guid courseId, SaveCourseRequest request)
+        public void Update(Guid courseId, UpdateCourseRequest request)
         {
             var course = _courseFactory.Reconstitute(courseId);
 

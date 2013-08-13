@@ -30,6 +30,25 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return resource;
         }
 
+        public static CourseResource CreateCourseVersion(VersionRequest request)
+        {
+            var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "course/version", request, new JsonMediaTypeFormatter()).Result;
+
+            var resource = new CourseResource
+            {
+                Response = response
+            };
+
+            if (response.IsSuccessStatusCode)
+            {
+                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
+                resource.Id = Guid.Parse(id);
+                resource.ResourseUri = response.Headers.Location;
+            }
+
+            return resource;
+        }
+
         public static ProgramResource CreateProgram(SaveProgramRequest request)
         {
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/program", request, new JsonMediaTypeFormatter()).Result;

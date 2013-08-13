@@ -82,12 +82,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var guid1 = Guid.NewGuid();
             var guid2 = Guid.NewGuid();
 
-            var saveCourseRequest = new SaveCourseRequest
+            var saveCourseRequest = new UpdateCourseRequest
                 {
                     Code = "NewCode1",
                     Description = "NewDescription1",
                     Name = "NewName1",
-                    OrganizationId = organizationId,
                     ProgramIds = new List<Guid> {programId}
                 };
 
@@ -120,12 +119,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var programId = Guid.NewGuid();
             var organizationId = Guid.NewGuid();
 
-            var saveCourseRequest = new SaveCourseRequest
+            var saveCourseRequest = new UpdateCourseRequest
                 {
                     Code = "NewCode1",
                     Description = "NewDescription",
                     Name = "NewName1",
-                    OrganizationId = organizationId,
                     ProgramIds = new List<Guid> {programId}
                 };
 
@@ -157,12 +155,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var courseId = Guid.NewGuid();
             var organizationId = Guid.NewGuid();
 
-            var saveCourseRequest = new SaveCourseRequest
+            var saveCourseRequest = new UpdateCourseRequest
                 {
                     Code = "NewCode1",
                     Description = "NewDescription",
                     Name = "NewName1",
-                    OrganizationId = organizationId,
                     ProgramIds = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()}
                 };
 
@@ -198,12 +195,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var organizationId = Guid.NewGuid();
             var guid1 = Guid.NewGuid();
 
-            var saveCourseRequest = new SaveCourseRequest
+            var saveCourseRequest = new UpdateCourseRequest
                 {
                     Code = "NewCode1",
                     Description = "NewDescription1",
                     Name = "NewName1",
-                    OrganizationId = organizationId,
                     ProgramIds = new List<Guid> {programId},
                     PrerequisiteCourseIds = new List<Guid>
                         {

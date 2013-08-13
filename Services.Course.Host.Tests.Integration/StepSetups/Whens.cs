@@ -290,32 +290,38 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ResponseMessages.Add(response);
         }
 
-        //TODO: Refactor
-        [When(@"I create a new version of '(.*)' course with the following info")]
-        public void WhenICreateANewVersionOfWithTheFollowingInfo(string courseName, Table table)
+        [When(@"I retrieve '(.*)' course")]
+        public void WhenIRetrieveCourse(string courseName)
         {
-            var versionRequest = table.CreateInstance<VersionRequest>();
-
-            if (courseName.Equals("RandomCourse"))
-            {
-                versionRequest.ParentVersionId = Guid.NewGuid();
-            }
-            else
-            {
-                var resourceUri = Givens.Courses[courseName].ResourseUri;
-                versionRequest.ParentVersionId = Guid.Parse(resourceUri.Segments[resourceUri.Segments.Length - 1]);
-            }
-
-            var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("CourseLeadingPath"));
-
-            var response =
-                ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
+            var getUri = Givens.Courses[courseName].ResourseUri;
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri).Result;
 
             ResponseMessages.Add(response);
+        }
 
-            ScenarioContext.Current[courseName] = response.Headers.Location;
-            ScenarioContext.Current["ResponseToValidate"] = response;
+        [When(@"I update '(.*)' course with the following info")]
+        public void WhenIUpdateCourseWithTheFollowingInfo(string courseName, Table table)
+        {
+            var course = Givens.Courses[courseName];
+            var updateCourseRequest = table.CreateInstance<UpdateCourseRequest>();
+
+            var response = PutOperations.UpdateCourse(course, updateCourseRequest);
+
             ResponseMessages.Add(response);
+        }
+
+        [When(@"I create a new version of '(.*)' course named '(.*)' with the following info")]
+        public void WhenICreateANewVersionOfCourseNamedWithTheFollowingInfo(string courseName, string newVersionName, Table table)
+        {
+            var request = table.CreateInstance<VersionRequest>();
+
+            var course = Givens.Courses[courseName];         
+            request.ParentVersionId = course.Id;
+
+            var resource = PostOperations.CreateCourseVersion(request);
+
+            Givens.Courses.Add(newVersionName, resource);
+            ResponseMessages.Add(resource.Response);
         }
 
         //TODO: Refactor
@@ -333,33 +339,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             ScenarioContext.Current["ResponseToValidate"] = response;
             ResponseMessages.Add(response);
-        }
-
-        //TODO: Refactor
-        [When(@"I retrieve '(.*)' course")]
-        public void WhenIRetrieveCourse(string courseName)
-        {
-            var getUri = Givens.Courses[courseName].ResourseUri;
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri).Result;
-            response.EnsureSuccessStatusCode();
-
-            ScenarioContext.Current.Add("CourseInfoToValidate",
-                                        response.Content.ReadAsAsync<CourseInfoResponse>().Result);
-            ResponseMessages.Add(response);
-        }
-
-        //TODO: Refactor
-        [When(@"I update '(.*)' course with the following info")]
-        public void WhenIUpdateCourseWithTheFollowingInfo(string courseName, Table table)
-        {
-            var putUri = Givens.Courses[courseName].ResourseUri;
-            var saveCourseRequest = table.CreateInstance<SaveCourseRequest>();
-            saveCourseRequest.TenantId = ApiFeature.TenantId;
-
-            var response = ApiFeature.ApiTestHost.Client.PutAsync(putUri.ToString(), saveCourseRequest,
-                                                                  new JsonMediaTypeFormatter()).Result;
-
-            ScenarioContext.Current.Add("ResponseToValidate", response);
         }
 
         //TODO: Refactor

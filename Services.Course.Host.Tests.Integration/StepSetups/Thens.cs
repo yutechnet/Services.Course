@@ -15,11 +15,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
     [Binding]
     public class Thens
     {
-        [Then(@"the course '(.*)' should have the following info:")]
+        [Then(@"the course '(.*)' should have the following info")]
         public void ThenTheCourseShouldHaveTheFollowingInfo(string courseName, Table table)
         {
             var courseResource = Givens.Courses[courseName];
-            table.CompareToInstance(courseResource.Dto);
+
+            var actual = GetOperations.GetCourse(courseResource.ResourseUri);
+
+            table.CompareToInstance(actual);
         }
 
         [Then(@"I should get a '(.*)' status for course '(.*)'")]
@@ -31,7 +34,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             Assert.That(courseResource.Response.StatusCode, Is.EqualTo(expectedCode));
         }
 
-        [Then(@"the course '(.*)' includes the following programs:")]
+        [Then(@"the course '(.*)' includes the following programs")]
         public void ThenTheCourseIncludesTheFollowingPrograms(string courseName, Table table)
         {
             var resource = Givens.Courses[courseName];

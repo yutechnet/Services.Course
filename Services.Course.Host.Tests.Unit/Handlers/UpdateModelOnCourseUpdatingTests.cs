@@ -77,7 +77,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         {
             var courseId = Guid.NewGuid();
 
-            var saveCourseRequest = new SaveCourseRequest
+            var saveCourseRequest = new UpdateCourseRequest
                 {
                     Code = "NewCode1",
                     Description = "NewDescription",
