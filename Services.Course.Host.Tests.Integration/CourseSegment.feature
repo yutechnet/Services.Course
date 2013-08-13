@@ -71,3 +71,32 @@ Scenario: Add multiple content to a segment
 	| 806f8cc4-ed16-4a1b-b8f2-1df373b7631a | Assignment |
 	Then the course segment 'Discussion' should have this content
 
+Scenario: Add another parent segment to a course
+	When I add following course segments to 'Math 101':
+	| Name       | Description                   | Type       | ParentSegment |
+	| Week1      | First week is slack time      | TimeSpan   |               |
+	| Discussion | Discussion for the first week | Discussion | Week1         |
+	| Week2      | second week                   | Topic      |               |  
+	Then the course 'Math 101' should have these course segments:
+	| Name       | Description                   | Type       | ParentSegment |
+	| Week1      | First week is slack time      | TimeSpan   |               |
+	| Discussion | Discussion for the first week | Discussion | Week1         |
+	| Week2      | second week                   | Topic      |               |  
+
+Scenario: Check segment tree is loaded 
+	When I add following course segments to 'Math 101':
+	| Name          | Description                       | Type       | ParentSegment |
+	| Week1         | First week is slack time          | TimeSpan   |               |
+	| Week2         | second week                       | Topic      |               |
+	| Discussion1   | Discussion for the first week     | Discussion | Week1         |
+	| Discussion2   | Discussion for the first week     | Discussion | Week1         |
+	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   |
+	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   |
+	Then the course 'Math 101' should have this course segment tree:
+	| Name          | Description                       | Type       | ParentSegment | ChildCount |
+	| Week1         | First week is slack time          | TimeSpan   |               | 2          |
+	| Week2         | second week                       | Topic      |               | 0          |
+	| Discussion1   | Discussion for the first week     | Discussion | Week1         | 2          |
+	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 0          |
+	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 0          |
+	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 0          |

@@ -4,6 +4,7 @@ using System.Linq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.NHibernate;
+using BpeProducts.Services.Course.Domain.Courses;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
@@ -25,9 +26,17 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         public Courses.Course Get(Guid courseId)
         {
             var course = _session.Get<Courses.Course>(courseId);
-
+			//get segments in a tree structure
+	        var segments = _session.Query<CourseSegment>().Where(s => s.Course.Id == courseId && s.ParentSegment == null);
+	        course.Segments = segments.ToList();
             return course;
         }
+
+		public Courses.CourseSegment Get(Guid courseId,Guid segmentId)
+		{
+			var segment = _session.Query<CourseSegment>().Single(s => s.Course.Id == courseId && s.Id == segmentId);
+			return segment;
+		}
 
         public IList<Courses.Course> Get(List<Guid> ids)
         {

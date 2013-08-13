@@ -25,16 +25,14 @@ namespace BpeProducts.Services.Course.Domain
 
         public IEnumerable<CourseSegmentInfo> Get(Guid courseId)
         {
-            var course = _courseRepository.Load(courseId);
+            var course = _courseRepository.Get(courseId);
             
             return Mapper.Map<IList<CourseSegmentInfo>>(course.Segments);
         }
 
         public CourseSegmentInfo Get(Guid courseId, Guid segmentId)
         {
-            var course = _courseRepository.Load(courseId);
-
-            var segment = course.Segments.FirstOrDefault(s => s.Id == segmentId);
+            var segment = _courseRepository.Get(courseId, segmentId); 
             if (segment == null)
             {
                 throw new NotFoundException(string.Format("Segment {0} for Course {1} is not found.", segmentId, courseId));
@@ -46,7 +44,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public IEnumerable<CourseSegmentInfo> GetSubSegments(Guid courseId, Guid segmentId)
         {
-            var course = _courseRepository.Load(courseId);
+            var course = _courseRepository.Get(courseId);
 
             var segment = course.Segments.FirstOrDefault(s => s.Id == segmentId);
             if (segment == null)

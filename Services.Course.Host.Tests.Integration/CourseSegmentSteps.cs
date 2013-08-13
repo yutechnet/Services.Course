@@ -65,11 +65,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"the course '(.*)' should have these course segments:")]
 		public void ThenTheCourseShouldHaveTheseCourseSegments(string courseName, Table table)
 		{
+			int rootLevelSegmentCount=0;
             var resourceUri = Givens.Courses[courseName].ResourseUri;
             var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
             response.EnsureSuccessStatusCode();
 
             var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+			
             foreach (var row in table.Rows)
 		    {
 		        var segmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(row["Name"]);
@@ -86,9 +88,47 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
                     Assert.That(parentSegment.Name, Is.EqualTo(row["ParentSegment"]));
                 }
+		        else
+		        {
+			        rootLevelSegmentCount++;
+		        }
 
                 Assert.That(courseSegment.Description, Is.EqualTo(row["Description"]));
 		    }
+	        
+	        Assert.That(courseInfoResponse.Segments.Count,Is.EqualTo(rootLevelSegmentCount));  
+		}
+
+		[Then(@"the course '(.*)' should have this course segment tree:")]
+		public void ThenTheCourseShouldHaveThisCourseSegmentsTree(string courseName, Table table)
+		{
+			var resourceUri = Givens.Courses[courseName].ResourseUri;
+			var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
+			response.EnsureSuccessStatusCode();
+
+			var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+			var index = new Dictionary<string, CourseSegmentInfo>();
+			
+			IndexNodes(courseInfoResponse.Segments,ref index);
+
+			foreach (var row in table.Rows)
+			{
+				var courseSegment = index[row["Name"]];
+				Assert.That(courseSegment.Description, Is.EqualTo(row["Description"]));
+				Assert.That(courseSegment.ChildSegments.Count, Is.EqualTo(Convert.ToInt32(row["ChildCount"])));
+			}
+		}
+
+		public void IndexNodes(IList<CourseSegmentInfo> segmentInfos, ref Dictionary<string, CourseSegmentInfo> index)
+		{
+			foreach (var courseSegmentInfo in segmentInfos)
+			{
+				index[courseSegmentInfo.Name] = courseSegmentInfo;
+				if (courseSegmentInfo.ChildSegments.Count > 0)
+				{
+					IndexNodes(courseSegmentInfo.ChildSegments,ref index);
+				}
+			}
 		}
 
         [When(@"I update the course segments as following:")]
@@ -169,5 +209,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Assert.That(contentRequest.Type, Is.EqualTo(content.Type));
             }
         }
+
+		
     }
 }
