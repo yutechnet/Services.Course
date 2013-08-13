@@ -3,12 +3,13 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 {
     public static class PostOperations
     {
-        public static CourseResource CreateCourse(SaveCourseRequest request)
+        public static CourseResource CreateCourse(string name, SaveCourseRequest request)
         {
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course", request, new JsonMediaTypeFormatter()).Result;
 
@@ -27,10 +28,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.Dto = dto;
             }
             
+            Givens.Courses.Add(name, resource);
             return resource;
         }
 
-        public static CourseResource CreateCourseVersion(VersionRequest request)
+        public static CourseResource CreateCourseVersion(string name, VersionRequest request)
         {
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course/version", request, new JsonMediaTypeFormatter()).Result;
 
@@ -46,10 +48,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.ResourseUri = response.Headers.Location;
             }
 
+            Givens.Courses.Add(name, resource);
             return resource;
         }
 
-        public static ProgramResource CreateProgram(SaveProgramRequest request)
+        public static ProgramResource CreateProgram(string name, SaveProgramRequest request)
         {
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/program", request, new JsonMediaTypeFormatter()).Result;
             response.EnsureSuccessStatusCode();
@@ -69,15 +72,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.Dto = dto;
             }
 
+            Givens.Programs.Add(name, resource);
             return resource;
         }
 
-        public static CourseSegmentResource CreateSegment(CourseResource course, SaveCourseSegmentRequest request)
+        public static CourseSegmentResource CreateSegment(string name, CourseResource course, SaveCourseSegmentRequest request)
         {
-            return CreateSegment(course, null, request);
+            return CreateSegment(name, course, null, request);
         }
 
-        public static CourseSegmentResource CreateSegment(CourseResource course, CourseSegmentResource parentSegment, SaveCourseSegmentRequest request)
+        public static CourseSegmentResource CreateSegment(string name, CourseResource course, CourseSegmentResource parentSegment, SaveCourseSegmentRequest request)
         {
             var uri = parentSegment == null
                           ? string.Format("{0}/course/{1}/segments", ApiFeature.LeadingPath, course.Id)
@@ -99,10 +103,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.SaveRequest = request;
             }
 
+            Givens.Segments.Add(name, resource);
             return resource;
         }
 
-        public static LearningOutcomeResource CreateLearningOutcome(OutcomeRequest request)
+        public static LearningOutcomeResource CreateLearningOutcome(string name, OutcomeRequest request)
         {
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/outcome", request, new JsonMediaTypeFormatter()).Result;
 
@@ -120,10 +125,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.SaveRequest = request;
             }
 
+            Givens.LearningOutcomes.Add(name, resource);
             return resource;
         }
 
-        public static LearningOutcomeResource CreateEntityLearningOutcome(string entityType, Guid entityId, OutcomeRequest request)
+        public static LearningOutcomeResource CreateEntityLearningOutcome(string name, string entityType, Guid entityId, OutcomeRequest request)
         {
             var uri = string.Format("{0}/{1}/{2}/supports", ApiFeature.LeadingPath, entityType, entityId);
             var response = ApiFeature.ApiTestHost.Client.PostAsync(uri, request, new JsonMediaTypeFormatter()).Result;
@@ -142,10 +148,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.SaveRequest = request;
             }
 
+            Givens.LearningOutcomes.Add(name, resource);
             return resource;
         }
 
-        public static CourseLearningActivityResource CreateCourseLearningActivity(CourseSegmentResource segment, SaveCourseLearningActivityRequest request)
+        public static CourseLearningActivityResource CreateCourseLearningActivity(string name, CourseSegmentResource segment, SaveCourseLearningActivityRequest request)
         {
             var uri = string.Format("{0}/learningactivity", segment.ResourseUri);
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
@@ -166,6 +173,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.Dto = dto;
             }
 
+            Givens.CourseLearningActivities.Add(name, resource);
             return resource;
         }
     }

@@ -78,10 +78,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     OrganizationId = Guid.NewGuid()
                 };
 
-                var program = PostOperations.CreateProgram(saveProgramRequest);
-
-                var resourceId = row["Name"];
-                Programs.Add(resourceId, program);
+                PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
             }
         }
 
@@ -94,7 +91,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 string type;
                 string isTemplate;
 
-                var saveCourseRequest = new SaveCourseRequest
+                var request = new SaveCourseRequest
                 {
                     Code = row["Code"],
                     Description = row["Description"],
@@ -106,10 +103,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     IsTemplate = row.TryGetValue("IsTemplate", out isTemplate) && bool.Parse(isTemplate),
                 };
 
-                var course = PostOperations.CreateCourse(saveCourseRequest);
-
-                var resourceId = row["Name"];
-                Courses.Add(resourceId, course);
+                PostOperations.CreateCourse(request.Name, request);
             }
         }
 
@@ -126,22 +120,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     TenantId = ApiFeature.TenantId,
                 };
 
-                var course = Courses[courseName];
-                
+                var course = Courses[courseName];          
                 var parentSegmentName = row["ParentSegment"];
-                CourseSegmentResource segment = null;
+
                 if (string.IsNullOrWhiteSpace(parentSegmentName))
                 {
-                    segment = PostOperations.CreateSegment(course, request);
+                    PostOperations.CreateSegment(request.Name, course, request);
                 }
                 else
                 {
                     var parentSegment = Segments[parentSegmentName];
-                    segment = PostOperations.CreateSegment(course, parentSegment, request);
+                    PostOperations.CreateSegment(request.Name, course, parentSegment, request);
                 }
-
-                var resourceId = row["Name"];
-                Segments.Add(resourceId, segment);
             }
         }
 
@@ -156,41 +146,34 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     TenantId = ApiFeature.TenantId,
                 };
 
-                var outcome = PostOperations.CreateLearningOutcome(request);
-
-                var resourceId = row["Description"];
-                LearningOutcomes.Add(resourceId, outcome);
+                PostOperations.CreateLearningOutcome(request.Description, request);
             }
         }
 
         [Given(@"I add the following course learning activities to '(.*)' course segment")]
         public void GivenIAddTheFollowingCourseLearningActivitiesToCourseSegment(string segmentName, Table table)
         {
-            var learningActivities = table.CreateSet<SaveCourseLearningActivityRequest>();
+            var learningActivityRequests = table.CreateSet<SaveCourseLearningActivityRequest>();
             var segment = Segments[segmentName];
 
-            foreach (var activity in learningActivities)
+            foreach (var request in learningActivityRequests)
             {
-                activity.TenantId = ApiFeature.TenantId;
+                request.TenantId = ApiFeature.TenantId;
 
-                var resourse = PostOperations.CreateCourseLearningActivity(segment, activity);
-                CourseLearningActivities.Add(resourse.Dto.Name, resourse);
+                PostOperations.CreateCourseLearningActivity(request.Name, segment, request);
             }
         }
 
         [Given(@"I associate the newly created learning outcomes to '(.*)' program")]
         public void WhenIAssociateTheNewlyCreatedLearningOutcomesToProgram(string programName, Table table)
         {
-            var requests = (from r in table.Rows
-                            select new OutcomeRequest { Description = r["Description"], TenantId = ApiFeature.TenantId })
-                .ToList();
-
-            var program = Givens.Programs[programName];
+            var requests = table.CreateSet<OutcomeRequest>();
+            var program = Programs[programName];
 
             foreach (var request in requests)
             {
-                var resource = PostOperations.CreateEntityLearningOutcome("program", program.Id, request);
-                LearningOutcomes.Add(request.Description, resource);
+                request.TenantId = ApiFeature.TenantId;
+                PostOperations.CreateEntityLearningOutcome(request.Description, "program", program.Id, request);
             }
         }
     }

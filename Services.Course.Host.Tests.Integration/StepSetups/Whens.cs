@@ -35,9 +35,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var courseRequest = table.CreateInstance<SaveCourseRequest>();
             courseRequest.TemplateCourseId = template.Id;
 
-            var resourse = PostOperations.CreateCourse(courseRequest);
-
-            Givens.Courses.Add(resourse.Dto.Name, resourse);
+            PostOperations.CreateCourse(courseRequest.Name, courseRequest);
         }
 
         [When(@"I associate the existing learning outcomes to '(.*)' program")]
@@ -65,7 +63,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var request in requests)
             {
-                var resource = PostOperations.CreateEntityLearningOutcome("course", course.Id, request);
+                var resource = PostOperations.CreateEntityLearningOutcome(request.Description, "course", course.Id, request);
                 resource.Response.EnsureSuccessStatusCode();
             }
         }
@@ -223,9 +221,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var segment = Givens.Segments[segmentName];
 
             var request = table.CreateInstance<SaveCourseLearningActivityRequest>();
-            var resource = PostOperations.CreateCourseLearningActivity(segment, request);
+            var resource = PostOperations.CreateCourseLearningActivity(request.Name, segment, request);
 
-            Givens.CourseLearningActivities.Add(request.Name, resource);
             ResponseMessages.Add(resource.Response);
         }
 
@@ -318,9 +315,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Givens.Courses[courseName];         
             request.ParentVersionId = course.Id;
 
-            var resource = PostOperations.CreateCourseVersion(request);
-
-            Givens.Courses.Add(newVersionName, resource);
+            var resource = PostOperations.CreateCourseVersion(newVersionName, request);
             ResponseMessages.Add(resource.Response);
         }
 
