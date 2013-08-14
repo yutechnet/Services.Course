@@ -209,7 +209,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseTemplate.feature</DependentUpon>
     </Compile>
-    <Compile Include="CourseTemplateSteps.cs" />
+    <Compile Include="CourseSegmentSteps.cs" />
     <Compile Include="CourseVersioning.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

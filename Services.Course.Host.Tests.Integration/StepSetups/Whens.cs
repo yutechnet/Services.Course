@@ -329,8 +329,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ResponseMessages.Add(resource.Response);
         }
 
-        [When(@"I update the course segments as following")]
-        public void WhenIUpdateTheCourseSegmentAsFollowing(Table table)
+        [When(@"I update the course segments as follows")]
+        public void WhenIUpdateTheCourseSegmentAsFollows(Table table)
         {
             foreach (var row in table.Rows)
             {
@@ -341,7 +341,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 {
                     Name = courseSegmentName,
                     Description = row["Description"],
-                    Type = row["Type"]
+                    Type = row["Type"],
+                    DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0
                 };
 
                 PutOperations.UpdateCourseSegmentRequest(courseSegment, request);

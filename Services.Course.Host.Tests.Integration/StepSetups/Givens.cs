@@ -118,6 +118,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Name = row["Name"],
                     Type = row["Type"],
                     TenantId = ApiFeature.TenantId,
+                    DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0
                 };
 
                 var course = Courses[courseName];          

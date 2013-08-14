@@ -39,7 +39,7 @@ Scenario: Update the course segment info without affecting the segment tree
 	| Week1      | First week is slack time      | TimeSpan   |               |
 	| Discussion | Discussion for the first week | Discussion | Week1         |
 	| Topic      | Topic for a discussion        | Topic      | Discussion    |
-	When I update the course segments as following
+	When I update the course segments as follows
 	| Name       | Description                | Type       |
 	| Discussion | Discussion is important    | Discussion |
 	| Topic      | New Topic for a discussion | Topic      |
@@ -105,7 +105,7 @@ Scenario: Check segment tree is loaded
 	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 0          |
 
 Scenario: Ensure Course Segment display order is persisted on Save
-	When I add following course segments to 'Math 101':
+	Given I have the following course segments for 'Math 101'
 	| Name          | Description                       | Type       | ParentSegment | DisplayOrder |
 	| Week2         | second week                       | Topic      |               | 1            |
 	| Week1         | First week is slack time          | TimeSpan   |               | 0            |
@@ -113,17 +113,17 @@ Scenario: Ensure Course Segment display order is persisted on Save
 	| Discussion1   | Discussion for the first week     | Discussion | Week1         | 2            |
 	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 4            |
 	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 5            |
-	Then The course 'Math 101' segments retrieved match the display order entered:
-	| Name          | Description                       | Type       | ParentSegment | DisplayOrder |
-	| Week1         | First week is slack time          | TimeSpan   |               | 0            |
-	| Week2         | second week                       | Topic      |               | 1            |
-	| Discussion1   | Discussion for the first week     | Discussion | Week1         | 2            |
-	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 3            |
-	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 4            |
-	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 5            |
+	Then The course 'Math 101' segments retrieved match the display order entered
+	| Name          | DisplayOrder |
+	| Week1         | 0            |
+	| Week2         | 1            |
+	| Discussion1   | 2            |
+	| Discussion2   | 3            |
+	| Discussion1.1 | 4            |
+	| Discussion1.2 | 5            |
 	
 Scenario: Ensure Course Segment display order is persisted on Update
-	When I add following course segments to 'Math 101':
+	Given I have the following course segments for 'Math 101'
 	| Name          | Description                       | Type       | ParentSegment | DisplayOrder |
 	| Week1         | First week is slack time          | TimeSpan   |               | 0            |
 	| Week2         | second week                       | Topic      |               | 1            |
@@ -131,7 +131,7 @@ Scenario: Ensure Course Segment display order is persisted on Update
 	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 3            |
 	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 4            |
 	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 5            |
-	And I update the course segments as following:
+	When I update the course segments as follows
 	| Name          | Description                       | Type       | ParentSegment | DisplayOrder |
 	| Week1         | First week is slack time          | TimeSpan   |               | 5            |
 	| Week2         | second week                       | Topic      |               | 4            |
@@ -139,11 +139,11 @@ Scenario: Ensure Course Segment display order is persisted on Update
 	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 2            |
 	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 1            |
 	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 0            |
-	Then The course 'Math 101' segments retrieved match the display order entered:
-	| Name          | Description                       | Type       | ParentSegment | DisplayOrder |
-	| Week1         | First week is slack time          | TimeSpan   |               | 5            |
-	| Week2         | second week                       | Topic      |               | 4            |
-	| Discussion1   | Discussion for the first week     | Discussion | Week1         | 3            |
-	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 2            |
-	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 1            |
-	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 0            |
+	Then The course 'Math 101' segments retrieved match the display order entered
+	| Name          | DisplayOrder |
+	| Week1         | 5            |
+	| Week2         | 4            |
+	| Discussion1   | 3            |
+	| Discussion2   | 2            |
+	| Discussion1.1 | 1            |
+	| Discussion1.2 | 0            |

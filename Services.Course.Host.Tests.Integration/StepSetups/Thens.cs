@@ -317,6 +317,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
+        [Then(@"The course '(.*)' segments retrieved match the display order entered")]
+        public void ThenTheCourseSegmentsRetrievedMatchTheDisplayOrderEntered(string courseName, Table table)
+        {
+            var courseInfoResponse = GetOperations.GetCourse(Givens.Courses[courseName].ResourceUri);
+            var index = new Dictionary<string, CourseSegmentInfo>();
+
+            IndexNodes(courseInfoResponse.Segments, index);
+
+            foreach (var row in table.Rows)
+            {
+                var courseSegment = index[row["Name"]];
+
+                Assert.That(courseSegment.DisplayOrder, Is.EqualTo(Convert.ToInt32(row["DisplayOrder"])));
+            }
+        }
+
         [Then(@"the course segment '(.*)' should have these children segments")]
         public void ThenTheCourseSegmentShouldHaveTheseChildrenSegments(string parentSegmentName, Table table)
         {
