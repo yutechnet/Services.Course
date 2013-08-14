@@ -85,7 +85,7 @@ Scenario: Add another parent segment to a course
 
 Scenario: Check segment tree is loaded 
 	When I add following course segments to 'Math 101':
-	| Name          | Description                       | Type       | ParentSegment |
+	| Name          | Description                       | Type       | ParentSegment |  
 	| Week1         | First week is slack time          | TimeSpan   |               |
 	| Week2         | second week                       | Topic      |               |
 	| Discussion1   | Discussion for the first week     | Discussion | Week1         |
@@ -100,3 +100,47 @@ Scenario: Check segment tree is loaded
 	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 0          |
 	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 0          |
 	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 0          |
+
+Scenario: Ensure Course Segment display order is persisted on Save
+	When I add following course segments to 'Math 101':
+	| Name          | Description                       | Type       | ParentSegment | DisplayOrder |
+	| Week2         | second week                       | Topic      |               | 1            |
+	| Week1         | First week is slack time          | TimeSpan   |               | 0            |
+	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 3            |
+	| Discussion1   | Discussion for the first week     | Discussion | Week1         | 2            |
+	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 4            |
+	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 5            |
+	Then The course 'Math 101' segments retrieved match the display order entered:
+	| Name          | Description                       | Type       | ParentSegment | DisplayOrder |
+	| Week1         | First week is slack time          | TimeSpan   |               | 0            |
+	| Week2         | second week                       | Topic      |               | 1            |
+	| Discussion1   | Discussion for the first week     | Discussion | Week1         | 2            |
+	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 3            |
+	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 4            |
+	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 5            |
+	
+Scenario: Ensure Course Segment display order is persisted on Update
+	When I add following course segments to 'Math 101':
+	| Name          | Description                       | Type       | ParentSegment | DisplayOrder |
+	| Week1         | First week is slack time          | TimeSpan   |               | 0            |
+	| Week2         | second week                       | Topic      |               | 1            |
+	| Discussion1   | Discussion for the first week     | Discussion | Week1         | 2            |
+	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 3            |
+	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 4            |
+	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 5            |
+	And I update the course segments as following:
+	| Name          | Description                       | Type       | ParentSegment | DisplayOrder |
+	| Week1         | First week is slack time          | TimeSpan   |               | 5            |
+	| Week2         | second week                       | Topic      |               | 4            |
+	| Discussion1   | Discussion for the first week     | Discussion | Week1         | 3            |
+	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 2            |
+	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 1            |
+	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 0            |
+	Then The course 'Math 101' segments retrieved match the display order entered:
+	| Name          | Description                       | Type       | ParentSegment | DisplayOrder |
+	| Week1         | First week is slack time          | TimeSpan   |               | 5            |
+	| Week2         | second week                       | Topic      |               | 4            |
+	| Discussion1   | Discussion for the first week     | Discussion | Week1         | 3            |
+	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 2            |
+	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 1            |
+	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 0            |

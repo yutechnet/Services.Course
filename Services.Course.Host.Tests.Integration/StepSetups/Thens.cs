@@ -20,7 +20,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var courseResource = Givens.Courses[courseName];
 
-            var actual = GetOperations.GetCourse(courseResource.ResourseUri);
+            var actual = GetOperations.GetCourse(courseResource.ResourceUri);
 
             table.CompareToInstance(actual);
         }
@@ -39,7 +39,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var resource = Givens.Courses[courseName];
 
-            var course = GetOperations.GetCourse(resource.ResourseUri);
+            var course = GetOperations.GetCourse(resource.ResourceUri);
             var expectedProgramIds = (from r in table.Rows select Givens.Programs[r["Program Name"]].Id).ToList();
 
             CollectionAssert.AreEquivalent(course.ProgramIds, expectedProgramIds);
@@ -62,7 +62,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void ThenTheCourseIncludesProgramAssociation(string courseName, string programName)
         {
             var courseResource = Givens.Courses[courseName];
-            var course = GetOperations.GetCourse(courseResource.ResourseUri);
+            var course = GetOperations.GetCourse(courseResource.ResourceUri);
 
             var programResourse = Givens.Programs[programName];
 
@@ -74,7 +74,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void ThenTheCourseIncludesTheFollowingProgramInformation(string courseName, Table table)
         {
             var courseResource = Givens.Courses[courseName];
-            var course = GetOperations.GetCourse(courseResource.ResourseUri);
+            var course = GetOperations.GetCourse(courseResource.ResourceUri);
 
             var programIds = (from r in table.Rows select Givens.Programs[r["Program Name"]].Id).ToList();
 
@@ -85,7 +85,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void ThenTheCourseShouldHaveTheFollowingPrerequisites(string courseName, Table table)
         {
             var courseResource = Givens.Courses[courseName];
-            var course = GetOperations.GetCourse(courseResource.ResourseUri);
+            var course = GetOperations.GetCourse(courseResource.ResourceUri);
 
             var prereqIds = (from r in table.Rows select Givens.Courses[r["Name"]].Id).ToList();
 
@@ -163,7 +163,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void ThenTheCourseIncludesTheFollowingLearningOutcomes(string courseName, Table table)
         {
             var course = Givens.Courses[courseName];
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(course.ResourseUri + "/" + "supports").Result;
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(course.ResourceUri + "/" + "supports").Result;
             var outcomes = response.Content.ReadAsAsync<List<OutcomeInfo>>().Result;
             table.CompareToSet(outcomes);
         }

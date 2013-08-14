@@ -102,7 +102,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Givens.Courses[courseName];
             var program = Givens.Programs[programName];
 
-            course.Dto = GetOperations.GetCourse(course.ResourseUri);
+            course.Dto = GetOperations.GetCourse(course.ResourceUri);
 
             var response = PutOperations.AssociateCourseWithPrograms(course, new List<ProgramResource> {program});
             ResponseMessages.Add(response);
@@ -114,7 +114,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Givens.Courses[courseName];
             var programs = (from r in table.Rows select Givens.Programs[r["Program Name"]]).ToList();
 
-            course.Dto = GetOperations.GetCourse(course.ResourseUri);
+            course.Dto = GetOperations.GetCourse(course.ResourceUri);
 
             var response = PutOperations.AssociateCourseWithPrograms(course, programs);
             ResponseMessages.Add(response);
@@ -126,7 +126,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Givens.Courses[courseName];
             var program = Givens.Programs[programName];
 
-            course.Dto = GetOperations.GetCourse(course.ResourseUri);
+            course.Dto = GetOperations.GetCourse(course.ResourceUri);
 
             var response = PutOperations.DisassociateCourseWithPrograms(course, new List<ProgramResource> {program});
             ResponseMessages.Add(response);
@@ -290,7 +290,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I retrieve '(.*)' course")]
         public void WhenIRetrieveCourse(string courseName)
         {
-            var getUri = Givens.Courses[courseName].ResourseUri;
+            var getUri = Givens.Courses[courseName].ResourceUri;
             var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri).Result;
 
             ResponseMessages.Add(response);
@@ -340,7 +340,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I delete '(.*)' course")]
         public void WhenIDeleteCourse(string courseName)
         {
-            var resourceUri = Givens.Courses[courseName].ResourseUri;
+            var resourceUri = Givens.Courses[courseName].ResourceUri;
             var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resourceUri).Result;
 
             ScenarioContext.Current.Add("ResponseToValidate", response);

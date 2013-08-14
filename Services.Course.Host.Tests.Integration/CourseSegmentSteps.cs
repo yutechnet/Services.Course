@@ -27,11 +27,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                             Name = row["Name"],
                             Description = row["Description"],
                             Type = row["Type"],
-                            TenantId = 999999
+                            TenantId = 999999,
+                            DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0
                         }
                 }).ToList();
 
-            var resourceUri = Givens.Courses[courseName].ResourseUri;
+            var resourceUri = Givens.Courses[courseName].ResourceUri;
             var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
             response.EnsureSuccessStatusCode();
 
@@ -61,75 +62,64 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     ScenarioContext.Current.Add(s.Segment.Name, response.Headers.Location);
                 });
         }
-        
+
         [Then(@"the course '(.*)' should have these course segments:")]
-		public void ThenTheCourseShouldHaveTheseCourseSegments(string courseName, Table table)
-		{
-			int rootLevelSegmentCount=0;
-            var resourceUri = Givens.Courses[courseName].ResourseUri;
+        public void ThenTheCourseShouldHaveTheseCourseSegments(string courseName, Table table)
+        {
+            int rootLevelSegmentCount = 0;
+            var resourceUri = Givens.Courses[courseName].ResourceUri;
             var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
             response.EnsureSuccessStatusCode();
 
             var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
-			
-            foreach (var row in table.Rows)
-		    {
-		        var segmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(row["Name"]);
-		        response = ApiFeature.ApiTestHost.Client.GetAsync(segmentResourceLocation).Result;
-		        var courseSegment = response.Content.ReadAsAsync<CourseSegmentInfo>().Result;
 
-		        if (!string.IsNullOrEmpty(row["ParentSegment"]))
-		        {
+            foreach (var row in table.Rows)
+            {
+                var segmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(row["Name"]);
+                response = ApiFeature.ApiTestHost.Client.GetAsync(segmentResourceLocation).Result;
+                var courseSegment = response.Content.ReadAsAsync<CourseSegmentInfo>().Result;
+
+                if (!string.IsNullOrEmpty(row["ParentSegment"]))
+                {
                     var parentSegmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(row["ParentSegment"]);
-		            var parentSegment =
-		                ApiFeature.ApiTestHost.Client.GetAsync(parentSegmentResourceLocation)
-		                          .Result.Content.ReadAsAsync<CourseSegmentInfo>()
-		                          .Result;
+                    var parentSegment =
+                        ApiFeature.ApiTestHost.Client.GetAsync(parentSegmentResourceLocation)
+                                  .Result.Content.ReadAsAsync<CourseSegmentInfo>()
+                                  .Result;
 
                     Assert.That(parentSegment.Name, Is.EqualTo(row["ParentSegment"]));
                 }
-		        else
-		        {
-			        rootLevelSegmentCount++;
-		        }
+                else
+                {
+                    rootLevelSegmentCount++;
+                }
 
                 Assert.That(courseSegment.Description, Is.EqualTo(row["Description"]));
-		    }
-	        
-	        Assert.That(courseInfoResponse.Segments.Count,Is.EqualTo(rootLevelSegmentCount));  
-		}
+            }
 
-		[Then(@"the course '(.*)' should have this course segment tree:")]
-		public void ThenTheCourseShouldHaveThisCourseSegmentsTree(string courseName, Table table)
-		{
-			var resourceUri = Givens.Courses[courseName].ResourseUri;
-			var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
-			response.EnsureSuccessStatusCode();
+            Assert.That(courseInfoResponse.Segments.Count, Is.EqualTo(rootLevelSegmentCount));
+        }
 
-			var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
-			var index = new Dictionary<string, CourseSegmentInfo>();
-			
-			IndexNodes(courseInfoResponse.Segments,ref index);
+        [Then(@"the course '(.*)' should have this course segment tree:")]
+        public void ThenTheCourseShouldHaveThisCourseSegmentsTree(string courseName, Table table)
+        {
+            var resourceUri = Givens.Courses[courseName].ResourceUri;
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
+            response.EnsureSuccessStatusCode();
 
-			foreach (var row in table.Rows)
-			{
-				var courseSegment = index[row["Name"]];
-				Assert.That(courseSegment.Description, Is.EqualTo(row["Description"]));
-				Assert.That(courseSegment.ChildSegments.Count, Is.EqualTo(Convert.ToInt32(row["ChildCount"])));
-			}
-		}
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+            var index = new Dictionary<string, CourseSegmentInfo>();
 
-		public void IndexNodes(IList<CourseSegmentInfo> segmentInfos, ref Dictionary<string, CourseSegmentInfo> index)
-		{
-			foreach (var courseSegmentInfo in segmentInfos)
-			{
-				index[courseSegmentInfo.Name] = courseSegmentInfo;
-				if (courseSegmentInfo.ChildSegments.Count > 0)
-				{
-					IndexNodes(courseSegmentInfo.ChildSegments,ref index);
-				}
-			}
-		}
+            IndexNodes(courseInfoResponse.Segments, ref index);
+
+            foreach (var row in table.Rows)
+            {
+                var courseSegment = index[row["Name"]];
+                Assert.That(courseSegment.Description, Is.EqualTo(row["Description"]));
+                Assert.That(courseSegment.ChildSegments.Count, Is.EqualTo(Convert.ToInt32(row["ChildCount"])));
+            }
+        }
+
 
         [When(@"I update the course segments as following:")]
         public void WhenIUpdateTheCourseSegmentAsFollowing(Table table)
@@ -138,13 +128,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             {
                 var courseSegmentName = row["Name"];
                 var segmentResourceLocation = ScenarioContext.Current.Get<System.Uri>(courseSegmentName);
-                var response = ApiFeature.ApiTestHost.Client.PutAsync<SaveCourseSegmentRequest>(segmentResourceLocation.ToString(),
-                    new SaveCourseSegmentRequest
-                    {
-                        Name = courseSegmentName,
-                        Description = row["Description"],
-                        Type = row["Type"]
-                    }, new JsonMediaTypeFormatter()).Result;
+                var response =
+                    ApiFeature.ApiTestHost.Client.PutAsync<SaveCourseSegmentRequest>(segmentResourceLocation.ToString(),
+                                                                                     new SaveCourseSegmentRequest
+                                                                                         {
+                                                                                             Name = courseSegmentName,
+                                                                                             Description =
+                                                                                                 row["Description"],
+                                                                                             Type = row["Type"],
+                                                                                             DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0
+                                                                                         }, new JsonMediaTypeFormatter())
+                              .Result;
                 response.EnsureSuccessStatusCode();
             }
         }
@@ -181,7 +175,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Type = segmentInfo.Type,
                     Description = segmentInfo.Description,
                     // TenantId = 1,
-                    Content = table.Rows.Select(row => new Content { Id = Guid.Parse(row["Id"]), Type = row["Type"] }).ToList()
+                    Content =
+                        table.Rows.Select(row => new Content {Id = Guid.Parse(row["Id"]), Type = row["Type"]}).ToList()
                 };
 
             response =
@@ -210,6 +205,40 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             }
         }
 
-		
+        [Then(@"The course '(.*)' segments retrieved match the display order entered:")]
+        public void ThenTheCourseSegmentsRetrievedMatchTheDisplayOrderEntered(string courseName, Table table)
+        {
+            var resourceUri = Givens.Courses[courseName].ResourceUri;
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri.ToString()).Result;
+            response.EnsureSuccessStatusCode();
+
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+            var index = new Dictionary<string, CourseSegmentInfo>();
+
+            IndexNodes(courseInfoResponse.Segments, ref index);
+
+            foreach (var row in table.Rows)
+            {
+                var courseSegment = index[row["Name"]];
+
+                Assert.That(courseSegment.DisplayOrder, Is.EqualTo(Convert.ToInt32(row["DisplayOrder"])));
+            }
+        }
+
+        #region Helpers
+
+        public void IndexNodes(IList<CourseSegmentInfo> segmentInfos, ref Dictionary<string, CourseSegmentInfo> index)
+        {
+            foreach (var courseSegmentInfo in segmentInfos)
+            {
+                index[courseSegmentInfo.Name] = courseSegmentInfo;
+                if (courseSegmentInfo.ChildSegments.Count > 0)
+                {
+                    IndexNodes(courseSegmentInfo.ChildSegments, ref index);
+                }
+            }
+        }
+
+        #endregion
     }
 }

@@ -11,5 +11,7 @@ namespace BpeProducts.Services.Course.Contract
 	    public long DiscussionId { get; set; }
 		public List<Content> Content { get; set; }
         public int TenantId { get; set; }
+
+        public int DisplayOrder { get; set; }
 	}
 }

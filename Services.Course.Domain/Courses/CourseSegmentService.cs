@@ -71,7 +71,7 @@ namespace BpeProducts.Services.Course.Domain
                 AggregateId = courseId,
                 SegmentId = newSegmentId,
                 ParentSegmentId = Guid.Empty,
-                Request = saveCourseSegmentRequest
+                Request = saveCourseSegmentRequest,
             });
 
             return new CourseSegmentInfo
@@ -81,7 +81,8 @@ namespace BpeProducts.Services.Course.Domain
                     Name = saveCourseSegmentRequest.Name,
                     ParentSegmentId = Guid.Empty,
                     Id = newSegmentId,
-                    Type = saveCourseSegmentRequest.Type
+                    Type = saveCourseSegmentRequest.Type,
+                    DisplayOrder = saveCourseSegmentRequest.DisplayOrder
                 };
         }
 

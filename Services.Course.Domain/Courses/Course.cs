@@ -175,6 +175,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     Id = segmentId,
                     Name = request.Name,
                     Description = request.Description,
+                    DisplayOrder = request.DisplayOrder,
                     Type = request.Type,
                     //Content = request.Content ?? new List<Content>(),
                     TenantId = TenantId
@@ -201,6 +202,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             segment.Description = request.Description;
             segment.Type = request.Type;
             segment.Content = request.Content ?? new List<Content>();
+            segment.DisplayOrder = request.DisplayOrder;
 
             return segment;
         }
