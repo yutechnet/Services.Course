@@ -36,7 +36,13 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         public List<OutcomeInfo> Get(string entityType, Guid entityId)
         {
-            return _learningOutcomeService.Get(entityType, entityId).ToList();
+            return _learningOutcomeService.GetEntityOutcomes(entityId).ToList();
+        }
+
+        [HttpGet]
+        public List<OutcomeInfo> CourseSegmentOutcome(Guid courseId, Guid segmentId)
+        {
+            return _learningOutcomeService.GetEntityOutcomes(segmentId).ToList();
         }
 
         public Dictionary<Guid, List<OutcomeInfo>> GetEntityOutcomes(string entityIds)

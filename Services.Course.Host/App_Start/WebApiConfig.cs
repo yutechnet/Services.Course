@@ -28,9 +28,8 @@ namespace BpeProducts.Services.Course.Host
             config.Routes.MapHttpRoute("CourseLearningActivity", "course/{courseId}/segments/{segmentId}/learningactivity/{id}",
                                       new { controller = "courselearningactivity", id = RouteParameter.Optional});
 
-            config.Routes.MapHttpRoute("CourseSegmentOutcome", "course/{courseId}/segments/{segmentId}/outcome/{id}",
-                                       new { controller = "outcome", id = RouteParameter.Optional, action = "CourseSegmentOutcome" },
-                                       constraints: new { httpMethod = new HttpMethodConstraint(HttpMethod.Post) });
+            config.Routes.MapHttpRoute("CourseSegmentOutcome", "course/{courseId}/segments/{segmentId}/supports/{Id}",
+                                       new { controller = "outcome", id = RouteParameter.Optional, action = "CourseSegmentOutcome" });
 
 		    config.Routes.MapHttpRoute("CourseSegmentOutcome2", "outcome/entityoutcomes",
 		                               new {controller = "outcome", action = "GetEntityOutcomes"},

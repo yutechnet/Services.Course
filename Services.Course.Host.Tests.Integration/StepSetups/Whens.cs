@@ -61,7 +61,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var request in requests)
             {
-                var resource = PostOperations.CreateEntityLearningOutcome(request.Description, "course", course.Id, request);
+                var resource = PostOperations.CreateEntityLearningOutcome(request.Description, course, request);
                 resource.Response.EnsureSuccessStatusCode();
             }
         }
@@ -130,20 +130,32 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ResponseMessages.Add(response);
         }
 
-        [When(@"I assoicate the following outcomes to outcome '(.*)'")]
-        public void WhenIAssoicateTheFollowingOutcomesToOutcome(string outcomeName, Table table)
+        [When(@"the outcome '(.*)' supports the following outcomes")]
+        public void WhenOutcomeSupportsTheFollowingOutcomes(string supportingOutcomeName, Table table)
         {
-            var supportedOutcome = Givens.LearningOutcomes[outcomeName];
+            var supportingOutcome = Givens.LearningOutcomes[supportingOutcomeName];
 
-            var descriptions = (from o in table.Rows select o["Description"]).ToList();
-            var supportingOutcomes = (from o in Givens.LearningOutcomes
-                                      where descriptions.Contains(o.Value.SaveRequest.Description)
-                                      select o).ToList();
-
-            foreach (var supportingOutcome in supportingOutcomes)
+            foreach (var row in table.Rows)
             {
+                var supportedOutcome = Givens.LearningOutcomes[row["Description"]];
+
                 //TODO: This is an issue... supportingOutcome and supoortedOutcome should be flipped
-                var response = PutOperations.OutcomeSupportsLearningOutcome(supportingOutcome.Value, supportedOutcome);
+                var response = PutOperations.OutcomeSupportsLearningOutcome(supportedOutcome, supportingOutcome);
+                ResponseMessages.Add(response);
+            }
+        }
+
+        [When(@"the outcome '(.*)' is supported by the following outcomes")]
+        public void WhenOutcomeIsSupportedByTheFollowingOutcomes(string supportedOutcomeName, Table table)
+        {
+            var supportedOutcome = Givens.LearningOutcomes[supportedOutcomeName];
+
+            foreach (var row in table.Rows)
+            {
+                var supportingOutcome = Givens.LearningOutcomes[row["Description"]];
+
+                //TODO: This is an issue... supportingOutcome and supoortedOutcome should be flipped
+                var response = PutOperations.OutcomeSupportsLearningOutcome(supportingOutcome, supportedOutcome);
                 ResponseMessages.Add(response);
             }
         }
@@ -317,7 +329,46 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ResponseMessages.Add(resource.Response);
         }
 
+        [When(@"I update the course segments as following")]
+        public void WhenIUpdateTheCourseSegmentAsFollowing(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var courseSegmentName = row["Name"];
+                var courseSegment = Givens.Segments[courseSegmentName];
+
+                var request = new SaveCourseSegmentRequest
+                {
+                    Name = courseSegmentName,
+                    Description = row["Description"],
+                    Type = row["Type"]
+                };
+
+                PutOperations.UpdateCourseSegmentRequest(courseSegment, request);
+            }
+        }
+
+        [When(@"I add the following content to '(.*)' segment")]
+        public void WhenIAddTheFollowingContentToSegment(string courseSegmentName, Table table)
+        {
+            var resource = Givens.Segments[courseSegmentName];
+            var courseSegment = GetOperations.GetSegment(resource.ResourceUri);
+
+            var request = new SaveCourseSegmentRequest
+            {
+                Name = courseSegment.Name,
+                Type = courseSegment.Type,
+                Description = courseSegment.Description,
+                TenantId = ApiFeature.TenantId,
+                Content = table.Rows.Select(row => new Content { Id = Guid.Parse(row["Id"]), Type = row["Type"] }).ToList()
+            };
+
+            var reponse = PutOperations.UpdateCourseSegmentRequest(resource, request);
+            ResponseMessages.Add(reponse);
+        }
+
         //TODO: Refactor
+
         [When(@"I create a course without a version")]
         public void WhenICreateACourseWithoutAVersion()
         {
@@ -334,7 +385,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ResponseMessages.Add(response);
         }
 
-        //TODO: Refactor
         [When(@"I delete '(.*)' course")]
         public void WhenIDeleteCourse(string courseName)
         {

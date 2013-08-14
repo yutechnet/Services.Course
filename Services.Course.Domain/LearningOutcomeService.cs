@@ -43,16 +43,14 @@ namespace BpeProducts.Services.Course.Domain
 
         public OutcomeInfo Get(string entityType, Guid entityId, Guid outcomeId)
         {
-            var entity =
-                _repository.Query<ISupportingEntity>().SingleOrDefault(e => e.Id == entityId);
+            var entity = _repository.Query<ISupportingEntity>().SingleOrDefault(e => e.Id == entityId);
 
             if (entity == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            var outcome = entity.SupportedOutcomes
-                                            .SingleOrDefault(l => l.Id == outcomeId);
+            var outcome = entity.SupportedOutcomes.SingleOrDefault(l => l.Id == outcomeId);
 
             if (outcome == null)
             {
@@ -62,7 +60,7 @@ namespace BpeProducts.Services.Course.Domain
             return Mapper.Map<OutcomeInfo>(outcome);
         }
 
-        public IEnumerable<OutcomeInfo> Get(string entityType, Guid entityId)
+        public List<OutcomeInfo> GetEntityOutcomes(Guid entityId)
         {
             var entity = _repository.Query<ISupportingEntity>().SingleOrDefault(e => e.Id == entityId);
 

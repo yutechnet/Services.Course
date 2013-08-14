@@ -12,7 +12,6 @@ namespace BpeProducts.Services.Course.Domain
     {
         OutcomeInfo Get(Guid outcomeId);
         OutcomeInfo Get(string entityType, Guid entityId, Guid outcommeId);
-        IEnumerable<OutcomeInfo> Get(string entityType, Guid entityId);
 
         OutcomeInfo Create(OutcomeRequest request);
         OutcomeInfo Create(string entityType, Guid entityId, OutcomeRequest request);
@@ -26,5 +25,6 @@ namespace BpeProducts.Services.Course.Domain
         void RemoveSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId);
         List<OutcomeInfo> GetSupportingOutcomes(Guid supportingOutcomeId);
         Dictionary<Guid, List<OutcomeInfo>> GetBySupportingEntities(List<Guid> entityIds);
+        List<OutcomeInfo> GetEntityOutcomes(Guid entityId);
     }
 }

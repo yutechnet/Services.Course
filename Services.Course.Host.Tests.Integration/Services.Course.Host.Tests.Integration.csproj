@@ -204,8 +204,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseSegmentLearningOutcome.feature</DependentUpon>
     </Compile>
-    <Compile Include="CourseSegmentLearningOutcomeSteps.cs" />
-    <Compile Include="CourseSegmentSteps.cs" />
     <Compile Include="CourseTemplate.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -112,7 +112,7 @@ this.FeatureBackground();
                         "TimeSpan",
                         ""});
 #line 13
- testRunner.When("I add following course segments to \'Math 101\':", ((string)(null)), table2, "When ");
+ testRunner.Given("I have the following course segments for \'Math 101\'", ((string)(null)), table2, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -130,7 +130,7 @@ this.FeatureBackground();
                         "TimeSpan",
                         ""});
 #line 17
- testRunner.Then("the course \'Math 101\' should have these course segments:", ((string)(null)), table3, "Then ");
+ testRunner.Then("the course \'Math 101\' should have these course segments", ((string)(null)), table3, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -171,7 +171,7 @@ this.FeatureBackground();
                         "Topic",
                         "Discussion"});
 #line 23
- testRunner.When("I add following course segments to \'Math 101\':", ((string)(null)), table4, "When ");
+ testRunner.Given("I have the following course segments for \'Math 101\'", ((string)(null)), table4, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -199,7 +199,7 @@ this.FeatureBackground();
                         "Topic",
                         "Discussion"});
 #line 29
- testRunner.Then("the course \'Math 101\' should have these course segments:", ((string)(null)), table5, "Then ");
+ testRunner.Then("the course \'Math 101\' should have these course segments", ((string)(null)), table5, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -235,7 +235,7 @@ this.FeatureBackground();
                         "Topic",
                         "Discussion"});
 #line 37
- testRunner.When("I add following course segments to \'Math 101\':", ((string)(null)), table6, "When ");
+ testRunner.Given("I have the following course segments for \'Math 101\'", ((string)(null)), table6, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -250,7 +250,7 @@ this.FeatureBackground();
                         "New Topic for a discussion",
                         "Topic"});
 #line 42
- testRunner.And("I update the course segments as following:", ((string)(null)), table7, "And ");
+ testRunner.When("I update the course segments as following", ((string)(null)), table7, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -273,7 +273,7 @@ this.FeatureBackground();
                         "Topic",
                         "Discussion"});
 #line 46
- testRunner.Then("the course \'Math 101\' should have these course segments:", ((string)(null)), table8, "Then ");
+ testRunner.Then("the course \'Math 101\' should have these course segments", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -314,7 +314,7 @@ this.FeatureBackground();
                         "Topic",
                         "Discussion"});
 #line 53
- testRunner.When("I add following course segments to \'Math 101\':", ((string)(null)), table9, "When ");
+ testRunner.Given("I have the following course segments for \'Math 101\'", ((string)(null)), table9, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -325,7 +325,7 @@ this.FeatureBackground();
                         "Topic for a discussion",
                         "Topic"});
 #line 59
- testRunner.Then("the course segment \'Discussion\' should have these children segments:", ((string)(null)), table10, "Then ");
+ testRunner.Then("the course segment \'Discussion\' should have these children segments", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -356,7 +356,7 @@ this.FeatureBackground();
                         "Discussion",
                         "Week1"});
 #line 64
- testRunner.When("I add following course segments to \'Math 101\':", ((string)(null)), table11, "When ");
+ testRunner.Given("I have the following course segments for \'Math 101\'", ((string)(null)), table11, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Id",
@@ -368,9 +368,19 @@ this.FeatureBackground();
                         "806f8cc4-ed16-4a1b-b8f2-1df373b7631a",
                         "Assignment"});
 #line 68
- testRunner.And("I add the following content to \'Discussion\' segment", ((string)(null)), table12, "And ");
+ testRunner.When("I add the following content to \'Discussion\' segment", ((string)(null)), table12, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Id",
+                        "Type"});
+            table13.AddRow(new string[] {
+                        "10257797-ab74-4796-a2f7-4722f8f96abe",
+                        "Discussion"});
+            table13.AddRow(new string[] {
+                        "806f8cc4-ed16-4a1b-b8f2-1df373b7631a",
+                        "Assignment"});
 #line 72
- testRunner.Then("the course segment \'Discussion\' should have this content", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the course segment \'Discussion\' should have this content", ((string)(null)), table13, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -380,33 +390,10 @@ this.FeatureBackground();
         public virtual void AddAnotherParentSegmentToACourse()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add another parent segment to a course", ((string[])(null)));
-#line 74
+#line 77
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "Type",
-                        "ParentSegment"});
-            table13.AddRow(new string[] {
-                        "Week1",
-                        "First week is slack time",
-                        "TimeSpan",
-                        ""});
-            table13.AddRow(new string[] {
-                        "Discussion",
-                        "Discussion for the first week",
-                        "Discussion",
-                        "Week1"});
-            table13.AddRow(new string[] {
-                        "Week2",
-                        "second week",
-                        "Topic",
-                        ""});
-#line 75
- testRunner.When("I add following course segments to \'Math 101\':", ((string)(null)), table13, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -428,21 +415,8 @@ this.FeatureBackground();
                         "second week",
                         "Topic",
                         ""});
-#line 80
- testRunner.Then("the course \'Math 101\' should have these course segments:", ((string)(null)), table14, "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Check segment tree is loaded")]
-        public virtual void CheckSegmentTreeIsLoaded()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check segment tree is loaded", ((string[])(null)));
-#line 86
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
+#line 78
+ testRunner.Given("I have the following course segments for \'Math 101\'", ((string)(null)), table14, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -455,77 +429,113 @@ this.FeatureBackground();
                         "TimeSpan",
                         ""});
             table15.AddRow(new string[] {
+                        "Discussion",
+                        "Discussion for the first week",
+                        "Discussion",
+                        "Week1"});
+            table15.AddRow(new string[] {
                         "Week2",
                         "second week",
                         "Topic",
                         ""});
-            table15.AddRow(new string[] {
-                        "Discussion1",
-                        "Discussion for the first week",
-                        "Discussion",
-                        "Week1"});
-            table15.AddRow(new string[] {
-                        "Discussion2",
-                        "Discussion for the first week",
-                        "Discussion",
-                        "Week1"});
-            table15.AddRow(new string[] {
-                        "Discussion1.1",
-                        "Sub Discussion for the first week",
-                        "Discussion",
-                        "Discussion1"});
-            table15.AddRow(new string[] {
-                        "Discussion1.2",
-                        "Sub Discussion for the first week",
-                        "Discussion",
-                        "Discussion1"});
-#line 87
- testRunner.When("I add following course segments to \'Math 101\':", ((string)(null)), table15, "When ");
+#line 83
+ testRunner.Then("the course \'Math 101\' should have these course segments", ((string)(null)), table15, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Check segment tree is loaded")]
+        public virtual void CheckSegmentTreeIsLoaded()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Check segment tree is loaded", ((string[])(null)));
+#line 89
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
                         "Type",
+                        "ParentSegment"});
+            table16.AddRow(new string[] {
+                        "Week1",
+                        "First week is slack time",
+                        "TimeSpan",
+                        ""});
+            table16.AddRow(new string[] {
+                        "Week2",
+                        "second week",
+                        "Topic",
+                        ""});
+            table16.AddRow(new string[] {
+                        "Discussion1",
+                        "Discussion for the first week",
+                        "Discussion",
+                        "Week1"});
+            table16.AddRow(new string[] {
+                        "Discussion2",
+                        "Discussion for the first week",
+                        "Discussion",
+                        "Week1"});
+            table16.AddRow(new string[] {
+                        "Discussion1.1",
+                        "Sub Discussion for the first week",
+                        "Discussion",
+                        "Discussion1"});
+            table16.AddRow(new string[] {
+                        "Discussion1.2",
+                        "Sub Discussion for the first week",
+                        "Discussion",
+                        "Discussion1"});
+#line 90
+ testRunner.Given("I have the following course segments for \'Math 101\'", ((string)(null)), table16, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "Type",
                         "ParentSegment",
                         "ChildCount"});
-            table16.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "Week1",
                         "First week is slack time",
                         "TimeSpan",
                         "",
                         "2"});
-            table16.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "Week2",
                         "second week",
                         "Topic",
                         "",
                         "0"});
-            table16.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "Discussion1",
                         "Discussion for the first week",
                         "Discussion",
                         "Week1",
                         "2"});
-            table16.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "Discussion2",
                         "Discussion for the first week",
                         "Discussion",
                         "Week1",
                         "0"});
-            table16.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "Discussion1.1",
                         "Sub Discussion for the first week",
                         "Discussion",
                         "Discussion1",
                         "0"});
-            table16.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "Discussion1.2",
                         "Sub Discussion for the first week",
                         "Discussion",
                         "Discussion1",
                         "0"});
-#line 95
- testRunner.Then("the course \'Math 101\' should have this course segment tree:", ((string)(null)), table16, "Then ");
+#line 98
+ testRunner.Then("the course \'Math 101\' should have this course segment tree", ((string)(null)), table17, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

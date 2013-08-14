@@ -152,12 +152,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         }
 
-        // PUT courses/<courseId>/segments/<segmentId>/segments -- reorders the children segments
-        [HttpPut]
-        public void SubSegments(Guid courseId, Guid segmentId, IEnumerable<SaveCourseSegmentRequest> childrentSegments)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 }

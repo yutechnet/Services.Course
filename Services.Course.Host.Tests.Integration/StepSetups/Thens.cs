@@ -70,7 +70,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             CollectionAssert.Contains(course.ProgramIds, programResourse.Id);
         }
 
-        [Then(@"the course '(.*)' includes the following program information:")]
+        [Then(@"the course '(.*)' includes the following program information")]
         public void ThenTheCourseIncludesTheFollowingProgramInformation(string courseName, Table table)
         {
             var courseResource = Givens.Courses[courseName];
@@ -124,7 +124,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             table.CompareToInstance(courseLearningActivity);
         }
 
-        [Then(@"the program '(.*)' include the following course information:")]
+        [Then(@"the program '(.*)' include the following course information")]
         public void ThenTheProgramIncludeTheFollowingCourseInformation(string programName, Table table)
         {
             var programResource = Givens.Programs[programName];
@@ -135,11 +135,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             CollectionAssert.AreEquivalent(program.Courses.Select(c => c.Id).ToList(), courseIds);
         }
 
-        [Then(@"the segment '(.*)' should have the following learning activities:")]
+        [Then(@"the segment '(.*)' should have the following learning activities")]
         public void ThenTheSegmentShouldHaveTheFollowingLearningActivities(string segmentName, Table table)
         {
             var resource = Givens.Segments[segmentName];
-            var segment = GetOperations.GetSegment(resource.ResourseUri);
+            var segment = GetOperations.GetSegment(resource.ResourceUri);
 
             var expectedLearningActivities =
                 (from r in table.Rows select Givens.CourseLearningActivities[r["Name"]].Id).ToList();
@@ -159,12 +159,37 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             Assert.That(expected.Description, Is.EqualTo(actual.Description));
         }
 
-        [Then(@"the course '(.*)' includes the following learning outcomes:")]
-        public void ThenTheCourseIncludesTheFollowingLearningOutcomes(string courseName, Table table)
+        [Then(@"the course '(.*)' has the following learning outcomes")]
+        public void ThenCourseHasTheFollowingLearningOutcomes(string courseName, Table table)
         {
-            var course = Givens.Courses[courseName];
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(course.ResourceUri + "/" + "supports").Result;
-            var outcomes = response.Content.ReadAsAsync<List<OutcomeInfo>>().Result;
+            var resource = Givens.Courses[courseName];
+            var course = GetOperations.GetCourse(resource.ResourceUri);
+
+            foreach (var row in table.Rows)
+            {
+                var supportedOutcomeDescription = row["Description"];
+
+                var supporedOutcome = course.SupportedOutcomes.FirstOrDefault(o => o.Description == supportedOutcomeDescription);
+                Assert.NotNull(supporedOutcome);
+
+                if (string.IsNullOrEmpty(row["SupportingOutcomes"]))
+                    continue;
+
+                var supportingOutcomeDescriptions = row["SupportingOutcomes"].Split(',');
+
+                foreach (var outcomeDescription in supportingOutcomeDescriptions)
+                {
+                    var supportingOutcome = supporedOutcome.SupportedOutcomes.FirstOrDefault(o => o.Description == outcomeDescription.Trim());
+                    Assert.NotNull(supportingOutcome);
+                }
+            }
+        }
+   
+        [Then(@"the segment '(.*)' includes the following learning outcomes")]
+        public void ThenTheSegmentIncludesTheFollowingLearningOutcomes(string segmentName, Table table)
+        {
+            var resource = Givens.Segments[segmentName];
+            var outcomes = GetOperations.GetSupportedOutcomes(resource.ResourceUri);
             table.CompareToSet(outcomes);
         }
 
@@ -192,7 +217,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             CollectionAssert.AreEquivalent(expectedOutcomes, actualOutcomes);
         }
 
-        [Then(@"I get the entity learning outcomes as follows:")]
+        [Then(@"I get the entity learning outcomes as follows")]
         public void ThenIGetTheEntityLearningOutcomesAsFollows(Table table)
         {
             var expectedEntityOutcomes = new Dictionary<IResource, IList<Guid>>();
@@ -219,7 +244,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     throw new Exception("No recourse found for entity type " + entityType);
 
                 var expectedOutcomes = (from o in row["LearningOutcomes"].Split(new[] {','})
-                                        where !string.IsNullOrWhiteSpace(o)
+                                        where !String.IsNullOrWhiteSpace(o)
                                         select Givens.LearningOutcomes[o.Trim()].Id).ToList();
                 expectedEntityOutcomes.Add(resource, expectedOutcomes);
             }
@@ -243,12 +268,95 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [Then(@"The message returned should be (.*) passed in as a string")]
-        public void ThenTheMessageReturnedShouldBe(string httpStatusCode)
+        [Then(@"the course '(.*)' should have these course segments")]
+        public void ThenTheCourseShouldHaveTheseCourseSegments(string courseName, Table table)
         {
-            var actualStatusCode = ((HttpResponseMessage)ScenarioContext.Current["httpResponseMessage"]).StatusCode;
-            var expectedStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), httpStatusCode);
-            Assert.That(actualStatusCode, Is.EqualTo(expectedStatusCode));
+            var resource = Givens.Courses[courseName];
+            var courseInfo = GetOperations.GetCourse(resource.ResourceUri);
+
+            var index = new Dictionary<string, CourseSegmentInfo>();
+            IndexNodes(courseInfo.Segments, index);
+
+            foreach (var row in table.Rows)
+            {
+                var segmentName = row["Name"];
+                var actualSegment = index[segmentName];
+
+                var parentSegmentName = row["ParentSegment"];
+                if (String.IsNullOrEmpty(parentSegmentName))
+                {
+                    Assert.That(actualSegment.ParentSegmentId, Is.EqualTo(Guid.Empty));
+                }
+                else
+                {
+                    var parentSegment = index[parentSegmentName];
+
+                    Assert.That(actualSegment.ParentSegmentId, Is.EqualTo(parentSegment.Id));
+                    Assert.That(parentSegment.ChildSegments.Count(cs => cs.Id == actualSegment.Id), Is.EqualTo(1));
+                }
+
+                Assert.That(actualSegment.Description, Is.EqualTo(row["Description"]));
+                Assert.That(actualSegment.Type, Is.EqualTo(row["Type"]));
+            }
+        }
+
+        [Then(@"the course '(.*)' should have this course segment tree")]
+        public void ThenTheCourseShouldHaveThisCourseSegmentsTree(string courseName, Table table)
+        {
+            var resource = Givens.Courses[courseName];
+            var infoResponse = GetOperations.GetCourse(resource.ResourceUri);
+            var index = new Dictionary<string, CourseSegmentInfo>();
+
+            IndexNodes(infoResponse.Segments, index);
+
+            foreach (var row in table.Rows)
+            {
+                var courseSegment = index[row["Name"]];
+                Assert.That(courseSegment.Description, Is.EqualTo(row["Description"]));
+                Assert.That(courseSegment.ChildSegments.Count, Is.EqualTo(Convert.ToInt32(row["ChildCount"])));
+            }
+        }
+
+        [Then(@"the course segment '(.*)' should have these children segments")]
+        public void ThenTheCourseSegmentShouldHaveTheseChildrenSegments(string parentSegmentName, Table table)
+        {
+            var parentSegmentResource = Givens.Segments[parentSegmentName];
+            var parentSegment = GetOperations.GetSegment(parentSegmentResource.ResourceUri);
+
+            Assert.That(parentSegment.ChildSegments.Count, Is.EqualTo(table.Rows.Count));
+            foreach (var row in table.Rows)
+            {
+                Assert.That(parentSegment.ChildSegments.Any(
+                    s => s.Name == row["Name"] && s.Description == row["Description"] && s.Type == row["Type"]));
+            }
+        }
+
+        [Then(@"the course segment '(.*)' should have this content")]
+        public void ThenTheCourseSegmentShouldHaveThisContent(string courseSegmentName, Table table)
+        {
+            var resource = Givens.Segments[courseSegmentName];
+            var courseSegment = GetOperations.GetSegment(resource.ResourceUri);
+
+            var expectedContent = table.CreateSet<Content>().ToList();
+
+            Assert.That(courseSegment.Content.Count, Is.EqualTo(expectedContent.Count));
+            foreach (var expected in expectedContent)
+            {
+                var actual = courseSegment.Content.First(c => c.Id == expected.Id);
+                Assert.That(actual.Type, Is.EqualTo(expected.Type));
+            }
+        }
+
+        private static void IndexNodes(IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<string, CourseSegmentInfo> index)
+        {
+            foreach (var courseSegmentInfo in segmentInfos)
+            {
+                index[courseSegmentInfo.Name] = courseSegmentInfo;
+                if (courseSegmentInfo.ChildSegments.Count > 0)
+                {
+                    IndexNodes(courseSegmentInfo.ChildSegments, index);
+                }
+            }
         }
     }
 }

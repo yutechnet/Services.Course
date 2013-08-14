@@ -156,5 +156,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
             return response;
         }
+
+        public static HttpResponseMessage UpdateCourseSegmentRequest(CourseSegmentResource courseSegment, SaveCourseSegmentRequest request)
+        {
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(courseSegment.ResourceUri.ToString(), request).Result;
+
+            return response;
+        }
     }
 }

@@ -165,15 +165,41 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         }
 
         [Given(@"I associate the newly created learning outcomes to '(.*)' program")]
-        public void WhenIAssociateTheNewlyCreatedLearningOutcomesToProgram(string programName, Table table)
+        public void GivenIAssociateTheNewlyCreatedLearningOutcomesToProgram(string programName, Table table)
         {
             var requests = table.CreateSet<OutcomeRequest>();
-            var program = Programs[programName];
+            var resource = Programs[programName];
 
             foreach (var request in requests)
             {
                 request.TenantId = ApiFeature.TenantId;
-                PostOperations.CreateEntityLearningOutcome(request.Description, "program", program.Id, request);
+                PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
+            }
+        }
+
+        [Given(@"I associate the newly created learning outcomes to '(.*)' course")]
+        public void GivenIAssociateTheNewlyCreatedLearningOutcomesToCourse(string courseName, Table table)
+        {
+            var requests = table.CreateSet<OutcomeRequest>();
+            var resource = Courses[courseName];
+
+            foreach (var request in requests)
+            {
+                request.TenantId = ApiFeature.TenantId;
+                PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
+            }
+        }
+
+        [Given(@"I associate the newly created learning outcomes to '(.*)' segment")]
+        public void GivenIAssociateTheNewlyCreatedLearningOutcomesToSegment(string segmentName, Table table)
+        {
+            var requests = table.CreateSet<OutcomeRequest>();
+            var resource = Segments[segmentName];
+
+            foreach (var request in requests)
+            {
+                request.TenantId = ApiFeature.TenantId;
+                PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
             }
         }
     }

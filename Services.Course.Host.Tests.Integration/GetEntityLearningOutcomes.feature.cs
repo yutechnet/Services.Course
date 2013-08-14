@@ -205,7 +205,7 @@ this.FeatureBackground();
                         "Program3",
                         ""});
 #line 40
- testRunner.Then("I get the entity learning outcomes as follows:", ((string)(null)), table7, "Then ");
+ testRunner.Then("I get the entity learning outcomes as follows", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -265,7 +265,7 @@ this.FeatureBackground();
                         "Program3",
                         ""});
 #line 54
- testRunner.Then("I get the entity learning outcomes as follows:", ((string)(null)), table10, "Then ");
+ testRunner.Then("I get the entity learning outcomes as follows", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -343,7 +343,7 @@ this.FeatureBackground();
                         "Program3",
                         ""});
 #line 72
- testRunner.Then("I get the entity learning outcomes as follows:", ((string)(null)), table13, "Then ");
+ testRunner.Then("I get the entity learning outcomes as follows", ((string)(null)), table13, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

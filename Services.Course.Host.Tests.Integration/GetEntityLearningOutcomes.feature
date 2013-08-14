@@ -37,7 +37,7 @@ Scenario: Can get entity learning outcomes for programs
 	| Description |
 	| LO2  |
 	| LO3  |
-	Then I get the entity learning outcomes as follows:
+	Then I get the entity learning outcomes as follows
 	| EntityType | EntityName | LearningOutcomes |
 	| Program    | Program1   | LO1              |
 	| Program    | Program2   | LO2, LO3         |
@@ -51,7 +51,7 @@ Scenario: Can get entity learning outcomes for courses
 	| Description |
 	| LO2  |
 	| LO3  |
-	Then I get the entity learning outcomes as follows:
+	Then I get the entity learning outcomes as follows
 	| EntityType | EntityName | LearningOutcomes |
 	| Course     | Course1    | LO1              |
 	| Course     | Course2    |                  |
@@ -69,7 +69,7 @@ Scenario: Can get entity learning outcomes for segments
 	| LO1         |
 	| LO2         |
 	| LO3         |
-	Then I get the entity learning outcomes as follows:
+	Then I get the entity learning outcomes as follows
 	| EntityType | EntityName  | LearningOutcomes |
 	| Segment    | Week1       | LO1              |
 	| Segment    | Topic       | LO1, LO2, LO3    |

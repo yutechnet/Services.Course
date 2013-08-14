@@ -85,7 +85,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         {
             var uri = parentSegment == null
                           ? string.Format("{0}/course/{1}/segments", ApiFeature.LeadingPath, course.Id)
-                          : string.Format("{0}/course/{1}/segments/{2}", ApiFeature.LeadingPath, course.Id, parentSegment.Id);
+                          : string.Format("{0}/course/{1}/segments/{2}/segments", ApiFeature.LeadingPath, course.Id, parentSegment.Id);
 
             var response = ApiFeature.ApiTestHost.Client.PostAsync(uri, request, new JsonMediaTypeFormatter()).Result;
 
@@ -99,7 +99,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
 
                 resource.Id = Guid.Parse(id);
-                resource.ResourseUri = response.Headers.Location;
+                resource.ResourceUri = response.Headers.Location;
                 resource.SaveRequest = request;
             }
 
@@ -129,9 +129,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return resource;
         }
 
-        public static LearningOutcomeResource CreateEntityLearningOutcome(string name, string entityType, Guid entityId, OutcomeRequest request)
+        public static LearningOutcomeResource CreateEntityLearningOutcome(string name, IResource entityResource, OutcomeRequest request)
         {
-            var uri = string.Format("{0}/{1}/{2}/supports", ApiFeature.LeadingPath, entityType, entityId);
+            var uri = string.Format("{0}/supports", entityResource.ResourceUri);
             var response = ApiFeature.ApiTestHost.Client.PostAsync(uri, request, new JsonMediaTypeFormatter()).Result;
 
             var resource = new LearningOutcomeResource
@@ -154,7 +154,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static CourseLearningActivityResource CreateCourseLearningActivity(string name, CourseSegmentResource segment, SaveCourseLearningActivityRequest request)
         {
-            var uri = string.Format("{0}/learningactivity", segment.ResourseUri);
+            var uri = string.Format("{0}/learningactivity", segment.ResourceUri);
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
 
             var resource = new CourseLearningActivityResource

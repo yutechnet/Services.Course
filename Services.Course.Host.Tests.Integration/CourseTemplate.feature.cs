@@ -132,7 +132,7 @@ testRunner.And("I have the following course templates", ((string)(null)), table2
                         "Topic",
                         "Discussion"});
 #line 15
-testRunner.And("I add following course segments to \'Template 1\':", ((string)(null)), table3, "And ");
+testRunner.And("I have the following course segments for \'Template 1\'", ((string)(null)), table3, "And ");
 #line hidden
         }
         
@@ -185,7 +185,7 @@ testRunner.When("I create a course from the template \'Template 1\' with the fol
                         "IsTemplate",
                         "false"});
 #line 27
-testRunner.Then("the course \'Course 1\' should have the following info:", ((string)(null)), table5, "Then ");
+testRunner.Then("the course \'Course 1\' should have the following info", ((string)(null)), table5, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -239,7 +239,7 @@ testRunner.When("I create a course from the template \'Template 1\' with the fol
                         "IsTemplate",
                         "false"});
 #line 40
-testRunner.Then("the course \'Course 2\' should have the following info:", ((string)(null)), table7, "Then ");
+testRunner.Then("the course \'Course 2\' should have the following info", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -278,7 +278,7 @@ testRunner.When("I associate \'Template 1\' course with the following programs",
                         "Traditional",
                         "false"});
 #line 54
-testRunner.When("I create a course from the template \'Template 1\' with the following", ((string)(null)), table9, "When ");
+testRunner.And("I create a course from the template \'Template 1\' with the following", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Program Name"});
@@ -287,7 +287,7 @@ testRunner.When("I create a course from the template \'Template 1\' with the fol
             table10.AddRow(new string[] {
                         "Bachelor of Science"});
 #line 57
-testRunner.Then("the course \'Course 3\' includes the following programs:", ((string)(null)), table10, "Then ");
+testRunner.Then("the course \'Course 3\' includes the following programs", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -345,7 +345,7 @@ testRunner.When("I create a course from the template \'Template 1\' with the fol
                         "Topic",
                         "Discussion"});
 #line 66
-testRunner.Then("the course \'Course 4\' should have these course segments:", ((string)(null)), table12, "Then ");
+testRunner.Then("the course \'Course 4\' should have these course segments", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -387,13 +387,16 @@ testRunner.When("I associate the newly created learning outcomes to \'Template 1
 testRunner.And("I create a course from the template \'Template 1\' with the following", ((string)(null)), table14, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
+                        "Description",
+                        "SupportingOutcomes"});
             table15.AddRow(new string[] {
-                        "first course learning outcome"});
+                        "first course learning outcome",
+                        ""});
             table15.AddRow(new string[] {
-                        "second course learning outcome"});
+                        "second course learning outcome",
+                        ""});
 #line 81
-testRunner.Then("the course \'Template 1\' includes the following learning outcomes:", ((string)(null)), table15, "Then ");
+testRunner.Then("the course \'Template 1\' has the following learning outcomes", ((string)(null)), table15, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

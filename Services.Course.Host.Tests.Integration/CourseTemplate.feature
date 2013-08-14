@@ -12,7 +12,7 @@ Given I have the following programs
 And I have the following course templates
 	| Name       | Code          | Description              | OrganizationId                       | CourseType  | IsTemplate |
 	| Template 1 | TemplateCode1 | My First Course Template | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | true       |
-And I add following course segments to 'Template 1':
+And I have the following course segments for 'Template 1'
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
 	| Discussion  | Discussion for the first week  | Discussion | Week1         |
@@ -24,7 +24,7 @@ Scenario: Create a course from a template
 When I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description              | OrganizationId                       | CourseType  | IsTemplate |
 	| Course 1 | CourseCode1 | My First Course Template | b50cada2-b1ba-4b2e-b82c-8ca7125fb39b | Traditional | false      |
-Then the course 'Course 1' should have the following info:
+Then the course 'Course 1' should have the following info
 	| Field          | Value                                |
 	| Name           | Course 1                             |
 	| Code           | CourseCode1                          |
@@ -37,7 +37,7 @@ Scenario: Ignore course Type in the request when creating from template
 When I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description              | OrganizationId                       | CourseType | IsTemplate |
 	| Course 2 | CourseCode2 | My First Course Template | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Competency | false      |
-Then the course 'Course 2' should have the following info:
+Then the course 'Course 2' should have the following info
 	| Field          | Value                                |
 	| Name           | Course 2                             |
 	| Code           | CourseCode2                          |
@@ -51,10 +51,10 @@ When I associate 'Template 1' course with the following programs
 	| Program Name        |
 	| Bachelor of Art     |
 	| Bachelor of Science |
-When I create a course from the template 'Template 1' with the following
+And I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description                   | OrganizationId                       | CourseType  | IsTemplate |
 	| Course 3 | CourseCode3 | My First Course from Template | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-Then the course 'Course 3' includes the following programs:
+Then the course 'Course 3' includes the following programs
 	| Program Name        |
 	| Bachelor of Art     |
 	| Bachelor of Science |
@@ -63,7 +63,7 @@ Scenario: Verify segments are copied from course template
 When I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description                   | OrganizationId                       | CourseType  | IsTemplate |
 	| Course 4 | CourseCode4 | My First Course from Template | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-Then the course 'Course 4' should have these course segments:
+Then the course 'Course 4' should have these course segments
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
 	| Discussion  | Discussion for the first week  | Discussion | Week1         |
@@ -78,7 +78,7 @@ When I associate the newly created learning outcomes to 'Template 1' course
 And I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description                   | OrganizationId                       | CourseType  | IsTemplate |
 	| Course 5 | CourseCode5 | My First Course from Template | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-Then the course 'Template 1' includes the following learning outcomes:
-	| Description                    | 
-	| first course learning outcome  | 
-	| second course learning outcome |
+Then the course 'Template 1' has the following learning outcomes
+	| Description                    | SupportingOutcomes |
+	| first course learning outcome  |                    |
+	| second course learning outcome |                    |
