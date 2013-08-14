@@ -1,15 +1,13 @@
-﻿using System;
+﻿using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Text;
-using System.Text.RegularExpressions;
-using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
-using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
-using NUnit.Framework;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 
@@ -369,6 +367,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 ApiFeature.ApiTestHost.Client.PutAsync(putUrl.ToString(), outcomeRequest, new JsonMediaTypeFormatter())
                           .Result;
             response.EnsureSuccessStatusCode();
+        }
+
+        [When(@"I create a course under organization (.*)")]
+        public void WhenICreateACourseUnderOrganization(string orgObjectName)
+        {
+            var orgObjectNameId = (Guid)ScenarioContext.Current[orgObjectName];
+            var course = new
+            {
+                Name = "English 101",
+                Description = "English",
+                Code = "ENG101",
+                CourseType = "Traditional",
+                IsTemplate = false,
+                TenantId = 999999,
+                OrganizationId = orgObjectNameId
+            };
+
+            var postUri = FeatureContext.Current.Get<string>("CourseLeadingPath");
+            var httpResponseMessage = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(postUri, course).Result;
+            ScenarioContext.Current["httpResponseMessage"] = httpResponseMessage;
         }
 
         [Then(@"the learning outcome should be with the description '(.*)'")]

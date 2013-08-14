@@ -242,6 +242,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 }
             }
         }
+
+        [Then(@"The message returned should be (.*) passed in as a string")]
+        public void ThenTheMessageReturnedShouldBe(string httpStatusCode)
+        {
+            var actualStatusCode = ((HttpResponseMessage)ScenarioContext.Current["httpResponseMessage"]).StatusCode;
+            var expectedStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), httpStatusCode);
+            Assert.That(actualStatusCode, Is.EqualTo(expectedStatusCode));
+        }
     }
 }
 

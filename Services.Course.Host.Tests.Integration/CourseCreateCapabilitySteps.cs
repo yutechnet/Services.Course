@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.WebApiTest;
-using NUnit.Framework;
 using TechTalk.SpecFlow;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration
@@ -17,12 +15,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         private const string OrganizationUrl = "account/organization";
         private const string RoleUrl = "account/role";
         private const string PermissionUrl = "account/permission";
-        private const string CourseUrl = "course";
-
-        public static WebApiTestHost ApiTestHost
-        {
-            get { return (WebApiTestHost)FeatureContext.Current["ApiTestHost"]; }
-        }
 
         public static WebApiTestHost RemoteApiTestHost
         {
@@ -149,32 +141,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 var responseBody = permissionResponse.Content.ReadAsStringAsync().Result;
                 throw new Exception(responseBody);
             }
-        }
-
-        [When(@"I create a course under organization (.*)")]
-        public void WhenICreateACourseUnderOrganization(string orgObjectName)
-        {
-            var orgObjectNameId = (Guid)ScenarioContext.Current[orgObjectName];
-            var course = new
-            {
-                Name = "English 101",
-                Description = "English",
-                Code = "ENG101",
-                CourseType = "Traditional",
-                IsTemplate = false,
-                TenantId = 999999,
-                OrganizationId = orgObjectNameId
-            };
-            var httpResponseMessage = ApiTestHost.Client.PostAsJsonAsync(CourseUrl, course).Result;
-            ScenarioContext.Current["httpResponseMessage"] = httpResponseMessage;
-        }
-
-        [Then(@"The message returned should be (.*) passed in as a string")]
-        public void ThenTheMessageReturnedShouldBe(string httpStatusCode)
-        {
-            var actualStatusCode = ((HttpResponseMessage)ScenarioContext.Current["httpResponseMessage"]).StatusCode;
-            var expectedStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), httpStatusCode);
-            Assert.That(actualStatusCode, Is.EqualTo(expectedStatusCode));
         }
     }
 
