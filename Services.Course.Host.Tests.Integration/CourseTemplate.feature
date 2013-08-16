@@ -78,7 +78,38 @@ When I associate the newly created learning outcomes to 'Template 1' course
 And I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description                   | OrganizationId                       | CourseType  | IsTemplate |
 	| Course 5 | CourseCode5 | My First Course from Template | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-Then the course 'Template 1' has the following learning outcomes
-	| Description                    | SupportingOutcomes |
-	| first course learning outcome  |                    |
-	| second course learning outcome |                    |
+Then the course 'Template 1' includes the following learning outcomes:
+	| Description                    | 
+	| first course learning outcome  | 
+	| second course learning outcome |
+
+@ignore
+Scenario: I can see course templates for an organization I have CreateCourse capability on.
+    Given I am user "TestUser3"
+	And I create an organization "Org1" with no parent
+	And I create an organization "Org2" with no parent
+	And I create a course template "FindMe1" for organization "Org1"
+	And I create a course template "FindMe2" for organization "Org1"
+	And I create a course template "DontFindMe" for organization "Org2"
+	And I create a role "CurriculumCoordinator"
+	And I give capability CourseCreate to role "CurriculumCoordinator"
+	And I give role "CurriculumCoordinator" to user "TestUser3" for object "Org1" of type "organization"
+	When I get the course templates for organization "Org1"
+	Then the course templates returned are:
+	| OrgName |
+	| FindMe1 |
+	| FindMe2 |
+
+@ignore
+Scenario: I can not see course templates for an organization I do have CreateCourse capability on.
+    Given I am user "TestUser3"
+	And I create an organization "Org1" with no parent
+	And I create an organization "Org2" with no parent
+	And I create a course template "FindMe1" for organization "Org1"
+	And I create a course template "DontFindMe" for organization "Org2"
+	And I create a role "CurriculumCoordinator"
+	And I give capability CourseCreate to role "CurriculumCoordinator"
+	And I give role "CurriculumCoordinator" to user "TestUser3" for object Org1 of type organization
+	When I get the course templates for organization "Org2"
+	Then the course templates returned are:
+	| OrgName |

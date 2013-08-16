@@ -64,5 +64,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             ApiTestHost.SetTestUser(DefaultTestUser);
             RemoteApiTestHost.SetTestUser(TestUserName.SuperSaml);
         }
+
+        public static string GetDefaultConnectionString()
+        {
+            return GetDefaultConnectionString("DefaultConnection");
+        }
+
+        public static string GetDefaultConnectionString(string connectionName)
+        {
+            return ConfigurationManager.ConnectionStrings[connectionName].ConnectionString;
+        }
+
     }
 }

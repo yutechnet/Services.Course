@@ -412,20 +412,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenICreateACourseUnderOrganization(string orgObjectName)
         {
             var orgObjectNameId = (Guid)ScenarioContext.Current[orgObjectName];
-            var course = new
+            var saveCourseRequest = new SaveCourseRequest
             {
                 Name = "English 101",
                 Description = "English",
                 Code = "ENG101",
-                CourseType = "Traditional",
+                CourseType = ECourseType.Traditional,
                 IsTemplate = false,
                 TenantId = 999999,
                 OrganizationId = orgObjectNameId
             };
 
             var postUri = FeatureContext.Current.Get<string>("CourseLeadingPath");
-            var httpResponseMessage = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(postUri, course).Result;
-            ScenarioContext.Current["httpResponseMessage"] = httpResponseMessage;
+            var httpResponseMessage = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(postUri, saveCourseRequest).Result;
+
+            ScenarioContext.Current["httpResponseMessage"] = httpResponseMessage;     
         }
     }
 }

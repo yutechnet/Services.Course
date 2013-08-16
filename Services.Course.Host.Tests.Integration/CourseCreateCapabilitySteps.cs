@@ -120,20 +120,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             }
         }
 
-        [Given(@"I give test user role ""(.*)"" for object (.*) of type (.*)")]
-        public void GivenIGiveTestUserRoleForObject(string roleName, string orgObjectName, string objectOrgType)
+        [Given(@"I give role ""(.*)"" to user ""(.*)"" for object ""(.*)"" of type ""(.*)""")]
+        public void GivenIGiveRoleToUserForObjectOfType(string uniqueRoleKey, string userNameToAssign, string orgObjectName, string objectOrgType)
         {
-            var userId = TestUserFactory.GetGuid(ApiFeature.DefaultTestUser);
-            var roleId = (Guid)ScenarioContext.Current[roleName];
+            var userId = (Guid)ScenarioContext.Current[userNameToAssign];
+            var roleId = (Guid)ScenarioContext.Current[uniqueRoleKey];
             var orgObjectNameId = (Guid)ScenarioContext.Current[orgObjectName];
 
-            GivenIGiveRoleToUserForObjectOfType(roleId, userId, orgObjectNameId, objectOrgType);
-        }
-
-        private void GivenIGiveRoleToUserForObjectOfType(Guid roleGuid, Guid userGuid, Guid orgObjectGuid, string objectOrgType)
-        {
-            var requestUri = string.Format("{0}/{1}/{2}/user/{3}", PermissionUrl, objectOrgType, orgObjectGuid, userGuid);
-            var savePermissionRequest = new SavePermissionRequest { Roles = new List<Guid> { roleGuid } };
+            var requestUri = string.Format("{0}/{1}/{2}/user/{3}", PermissionUrl, objectOrgType, orgObjectNameId, userId);
+            var savePermissionRequest = new SavePermissionRequest { Roles = new List<Guid> { roleId } };
             var permissionResponse = RemoteApiTestHost.Client.PostAsJsonAsync(requestUri, savePermissionRequest).Result;
 
             if (!permissionResponse.IsSuccessStatusCode)
