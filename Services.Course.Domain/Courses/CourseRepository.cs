@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.Ioc.Validation;
-using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Domain.Courses;
 using NHibernate;
 using NHibernate.Criterion;
@@ -13,7 +12,6 @@ using NHibernate.OData;
 namespace BpeProducts.Services.Course.Domain.Repositories
 {
     [Validate]
-    // TODO Opportunity to use Repository base class.
     public class CourseRepository : ICourseRepository
     {
         private readonly ISession _session;
@@ -26,13 +24,10 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         public Courses.Course Get(Guid courseId)
         {
             var course = _session.Get<Courses.Course>(courseId);
-			//get segments in a tree structure
-	        var segments = _session.Query<CourseSegment>().Where(s => s.Course.Id == courseId && s.ParentSegment == null);
-	        course.Segments = segments.ToList();
             return course;
         }
 
-		public Courses.CourseSegment Get(Guid courseId,Guid segmentId)
+		public CourseSegment GetSegment(Guid courseId, Guid segmentId)
 		{
 			var segment = _session.Query<CourseSegment>().Single(s => s.Course.Id == courseId && s.Id == segmentId);
 			return segment;

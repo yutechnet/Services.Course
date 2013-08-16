@@ -85,9 +85,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             }
             set
             {
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    var serializedData = new
+                if (string.IsNullOrWhiteSpace(value)) return;
+
+                var serializedData = new
                     {
                         Name,
                         Description,
@@ -96,14 +96,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
                         Content
                     };
 
-                    serializedData = JsonConvert.DeserializeAnonymousType(value, serializedData);
+                serializedData = JsonConvert.DeserializeAnonymousType(value, serializedData);
 
-                    Name = serializedData.Name;
-                    Description = serializedData.Description;
-                    Type = serializedData.Type;
-                    DisplayOrder = serializedData.DisplayOrder;
-                    Content = serializedData.Content;
-                }
+                Name = serializedData.Name;
+                Description = serializedData.Description;
+                Type = serializedData.Type;
+                DisplayOrder = serializedData.DisplayOrder;
+                Content = serializedData.Content;
             }
         }
 
@@ -123,6 +122,16 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             _supportedOutcomes.Remove(outcome);
             outcome.SupportingEntities.Remove(this);
+        }
+
+        public virtual void Delete()
+        {
+            ActiveFlag = false;
+
+            foreach (var childSegment in _childSegments)
+            {
+                childSegment.Delete();
+            }
         }
     }
 }

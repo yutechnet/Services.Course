@@ -5,6 +5,8 @@ namespace BpeProducts.Services.Course.Contract
 {
 	public class SaveCourseSegmentRequest
 	{
+        public Guid? ParentSegmentId { get; set; }
+
 		public String Name { get; set; }
 		public String Description { get; set; }
 		public String Type { get; set; }

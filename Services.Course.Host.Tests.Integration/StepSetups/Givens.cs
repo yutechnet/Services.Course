@@ -113,26 +113,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var row in table.Rows)
             {
                 var request = new SaveCourseSegmentRequest
-                {
-                    Description = row["Description"],
-                    Name = row["Name"],
-                    Type = row["Type"],
-                    TenantId = ApiFeature.TenantId,
-                    DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0
-                };
+                    {
+                        Description = row["Description"],
+                        Name = row["Name"],
+                        Type = row["Type"],
+                        TenantId = ApiFeature.TenantId,
+                        DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0
+                    };
 
-                var course = Courses[courseName];          
+                var course = Courses[courseName];
                 var parentSegmentName = row["ParentSegment"];
 
-                if (string.IsNullOrWhiteSpace(parentSegmentName))
-                {
-                    PostOperations.CreateSegment(request.Name, course, request);
-                }
-                else
+                if (!string.IsNullOrWhiteSpace(parentSegmentName))
                 {
                     var parentSegment = Segments[parentSegmentName];
-                    PostOperations.CreateSegment(request.Name, course, parentSegment, request);
+                    request.ParentSegmentId = parentSegment.Id;
                 }
+
+                PostOperations.CreateSegment(request.Name, course, request);
             }
         }
 

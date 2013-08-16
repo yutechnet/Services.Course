@@ -32,7 +32,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public CourseSegmentInfo Get(Guid courseId, Guid segmentId)
         {
-            var segment = _courseRepository.Get(courseId, segmentId); 
+            var segment = _courseRepository.GetSegment(courseId, segmentId); 
             if (segment == null)
             {
                 throw new NotFoundException(string.Format("Segment {0} for Course {1} is not found.", segmentId, courseId));
@@ -40,19 +40,6 @@ namespace BpeProducts.Services.Course.Domain
 
             var returnValue = Mapper.Map<CourseSegmentInfo>(segment);
             return returnValue;
-        }
-
-        public IEnumerable<CourseSegmentInfo> GetSubSegments(Guid courseId, Guid segmentId)
-        {
-            var course = _courseRepository.Get(courseId);
-
-            var segment = course.Segments.FirstOrDefault(s => s.Id == segmentId);
-            if (segment == null)
-            {
-                throw new NotFoundException(string.Format("Segment {0} for Course {1} is not found.", segmentId, courseId));
-            }
-
-            return Mapper.Map<IList<CourseSegmentInfo>>(segment.ChildSegments);
         }
 
         public CourseSegmentInfo Create(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
@@ -64,36 +51,7 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
 
-            var newSegmentId = Guid.NewGuid();
-            // TODO: Embed the object in the message
-            _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
-            {
-                AggregateId = courseId,
-                SegmentId = newSegmentId,
-                ParentSegmentId = Guid.Empty,
-                Request = saveCourseSegmentRequest,
-            });
-
-            return new CourseSegmentInfo
-                {
-                    Description = saveCourseSegmentRequest.Description,
-                    Content = saveCourseSegmentRequest.Content ?? new List<Content>(),
-                    Name = saveCourseSegmentRequest.Name,
-                    ParentSegmentId = Guid.Empty,
-                    Id = newSegmentId,
-                    Type = saveCourseSegmentRequest.Type,
-                    DisplayOrder = saveCourseSegmentRequest.DisplayOrder
-                };
-        }
-
-        public CourseSegmentInfo Create(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
-        {
-            var course = _courseFactory.Reconstitute(courseId);
-            // TODO Need to validate this. Does the Event Store return a null object or SegmentId with Guid.Empty?
-            if (course.Id == Guid.Empty || !course.ActiveFlag)
-            {
-                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
-            }
+            var parentSegmentId = saveCourseSegmentRequest.ParentSegmentId ?? Guid.Empty;
 
             var newSegmentId = Guid.NewGuid();
             // TODO: Embed the object in the message
@@ -101,7 +59,7 @@ namespace BpeProducts.Services.Course.Domain
             {
                 AggregateId = courseId,
                 SegmentId = newSegmentId,
-                ParentSegmentId = segmentId,
+                ParentSegmentId = parentSegmentId,
                 Request = saveCourseSegmentRequest
             });
 
@@ -110,7 +68,7 @@ namespace BpeProducts.Services.Course.Domain
                     Name = saveCourseSegmentRequest.Name,
                     Description = saveCourseSegmentRequest.Description,
                     Content = saveCourseSegmentRequest.Content,
-                    ParentSegmentId = segmentId,
+                    ParentSegmentId = parentSegmentId,
                     Type = saveCourseSegmentRequest.Type,
                     Id = newSegmentId
                 };
@@ -126,16 +84,20 @@ namespace BpeProducts.Services.Course.Domain
             }
 
             _domainEvents.Raise<CourseSegmentUpdated>(new CourseSegmentUpdated
-            {
-                AggregateId = courseId,
-                SegmentId = segmentId,
-                Request = saveCourseSegmentRequest
-            });
+                {
+                    AggregateId = courseId,
+                    SegmentId = segmentId,
+                    Request = saveCourseSegmentRequest
+                });
         }
 
-        public void Update(Guid courseId, Guid segmentId, IEnumerable<SaveCourseSegmentRequest> childrentSegments)
+        public void Delete(Guid courseId, Guid segmentId)
         {
-            throw new NotImplementedException();
+            _domainEvents.Raise<CourseSegmentDeleted>(new CourseSegmentDeleted
+                {
+                    AggregateId = courseId,
+                    SegmentId = segmentId,
+                });
         }
     }
 }

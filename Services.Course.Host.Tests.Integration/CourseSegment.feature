@@ -49,6 +49,23 @@ Scenario: Update the course segment info without affecting the segment tree
 	| Discussion | Discussion is important    | Discussion | Week1         |
 	| Topic      | New Topic for a discussion | Topic      | Discussion    |
 
+Scenario: Delete the course segment
+	Given I have the following course segments for 'Math 101'
+	| Name     | Description | Type       | ParentSegment |
+	| Segment1 | Segment 1   | TimeSpan   |               |
+	| Segment2 | Segment 2   | Discussion | Segment1      |
+	| Segment3 | Segment 3   | Topic      | Segment2      |
+	| Segment4 | Segment 4   | Topic      | Segment1      |
+	| Segment5 | Segment 5   | Topic      | Segment1      |
+	When I delete the following segments
+	| Name      |
+	| Segment2  |
+	| Segment4  |
+	Then the course 'Math 101' should have these course segments
+	| Name     | Description | Type       | ParentSegment |
+	| Segment1 | Segment 1   | TimeSpan   |               |
+	| Segment5 | Segment 5   | Topic      | Segment1      |
+
 Scenario: Retrieve the course segment tree from anywhere in the structure
 	Given I have the following course segments for 'Math 101'
 	| Name        | Description                    | Type       | ParentSegment |
@@ -147,3 +164,4 @@ Scenario: Ensure Course Segment display order is persisted on Update
 	| Discussion2   | 2            |
 	| Discussion1.1 | 1            |
 	| Discussion1.2 | 0            |
+

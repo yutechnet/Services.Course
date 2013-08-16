@@ -67,6 +67,7 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<PlayCourseInfoUpated>().Keyed<IPlayEvent>(typeof(CourseInfoUpdated).Name);
 			containerBuilder.RegisterType<PlayCourseSegmentAdded>().Keyed<IPlayEvent>(typeof(CourseSegmentAdded).Name);
             containerBuilder.RegisterType<PlayCourseSegmentUpdated>().Keyed<IPlayEvent>(typeof(CourseSegmentUpdated).Name);
+            containerBuilder.RegisterType<PlayCourseSegmentUpdated>().Keyed<IPlayEvent>(typeof(CourseSegmentDeleted).Name);
             containerBuilder.RegisterType<PlayCourseLearningActivityAdded>().Keyed<IPlayEvent>(typeof(CourseLearningActivityAdded).Name);
             containerBuilder.RegisterType<PlayCourseLearningActivityUpdated>().Keyed<IPlayEvent>(typeof(CourseLearningActivityUpdated).Name);
             containerBuilder.RegisterType<PlayCourseLearningActivityDeleted>().Keyed<IPlayEvent>(typeof(CourseLearningActivityDeleted).Name);
@@ -97,7 +98,9 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentAdded>>();
             containerBuilder.RegisterType<UpdateModelOnAddingCourseSegment>().As<IHandle<CourseSegmentAdded>>();
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentUpdated>>();
+            containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentDeleted>>();
             containerBuilder.RegisterType<UpdateModelOnUpdatingCourseSegment>().As<IHandle<CourseSegmentUpdated>>();
+            containerBuilder.RegisterType<UpdateModelOnDeletingCourseSegment>().As<IHandle<CourseSegmentDeleted>>();
 
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseLearningActivityAdded>>();
             containerBuilder.RegisterType<UpdateModelOnAddingCourseLearningActivity>().As<IHandle<CourseLearningActivityAdded>>();

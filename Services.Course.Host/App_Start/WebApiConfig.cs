@@ -51,13 +51,8 @@ namespace BpeProducts.Services.Course.Host
             config.Routes.MapHttpRoute("OutcomeApi", "{entityType}/{entityId}/supports/{outcomeId}",
                                        new { controller = "outcome", outcomeId = RouteParameter.Optional });
 
-            config.Routes.MapHttpRoute("CourseSegmentsApi2", "{controller}/{courseId}/{action}");
-
-			config.Routes.MapHttpRoute("CourseSegmentsApi", "{controller}/{courseId}/{action}/{segmentId}",
-			                           new { segmentId = RouteParameter.Optional });
-
-			config.Routes.MapHttpRoute("CourseSegmentsApi3", "{controller}/{courseId}/segments/{segmentId}/segments",
-			                           new {action = "SubSegments"});
+			config.Routes.MapHttpRoute("CourseSegments", "course/{courseId}/segments/{segmentId}",
+                                       new { controller = "segment", segmentId = RouteParameter.Optional });
 
 		    config.Routes.MapHttpRoute("DefaultApi", "{controller}/{id}",
 		                               defaults: new {id = RouteParameter.Optional});

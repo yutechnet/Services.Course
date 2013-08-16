@@ -14,6 +14,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         IList<Courses.Course> ODataQuery(string queryString);
         IList<Courses.Course> Get(List<Guid> ids);
         Courses.Course Load(Guid courseId);
-	    Courses.CourseSegment Get(Guid courseId,Guid segmentId);
+	    Courses.CourseSegment GetSegment(Guid courseId,Guid segmentId);
     }
 }

@@ -78,16 +78,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static CourseSegmentResource CreateSegment(string name, CourseResource course, SaveCourseSegmentRequest request)
         {
-            return CreateSegment(name, course, null, request);
-        }
+            var uri = string.Format("{0}/course/{1}/segments", ApiFeature.LeadingPath, course.Id);
 
-        public static CourseSegmentResource CreateSegment(string name, CourseResource course, CourseSegmentResource parentSegment, SaveCourseSegmentRequest request)
-        {
-            var uri = parentSegment == null
-                          ? string.Format("{0}/course/{1}/segments", ApiFeature.LeadingPath, course.Id)
-                          : string.Format("{0}/course/{1}/segments/{2}/segments", ApiFeature.LeadingPath, course.Id, parentSegment.Id);
-
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(uri, request, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
 
             var resource = new CourseSegmentResource
             {

@@ -207,6 +207,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return segment;
         }
 
+        public virtual void DeleteSegment(Guid segmentId)
+        {
+            var segment = _segments.FirstOrDefault(s => s.Id == segmentId);
+
+            segment.Delete();
+        }
+
         protected override VersionableEntity Clone()
         {
             return new Course
@@ -228,7 +235,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     ActiveFlag = true
                 };
         }
-
 
         #region CourseLearningActivity
         private CourseSegment GetSegmentOrThrow(Guid segmentId)

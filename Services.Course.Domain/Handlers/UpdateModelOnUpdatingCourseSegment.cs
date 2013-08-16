@@ -8,9 +8,9 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 {
     public class UpdateModelOnUpdatingCourseSegment : IHandle<CourseSegmentUpdated>
     {
-        private readonly IRepository _repository;
+        private readonly ICourseRepository _repository;
 
-        public UpdateModelOnUpdatingCourseSegment(IRepository repository)
+        public UpdateModelOnUpdatingCourseSegment(ICourseRepository repository)
         {
             _repository = repository;
         }
@@ -23,7 +23,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-            var courseInDb = _repository.Get<Courses.Course>(e.AggregateId);
+            var courseInDb = _repository.Get(e.AggregateId);
             courseInDb.UpdateSegment(e.SegmentId, e.Request);
 
             _repository.Save(courseInDb);

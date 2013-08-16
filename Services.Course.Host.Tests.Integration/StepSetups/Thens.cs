@@ -298,6 +298,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 Assert.That(actualSegment.Description, Is.EqualTo(row["Description"]));
                 Assert.That(actualSegment.Type, Is.EqualTo(row["Type"]));
             }
+
+            Assert.That(index.Count, Is.EqualTo(table.Rows.Count));
         }
 
         [Then(@"the course '(.*)' should have this course segment tree")]

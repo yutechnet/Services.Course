@@ -368,6 +368,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ResponseMessages.Add(reponse);
         }
 
+        [When(@"I delete the following segments")]
+        public void WhenIDeleteTheFollowingSegments(Table table)
+        {
+            var segmentNames = (from r in table.Rows select r["Name"]).ToList();
+
+            foreach (var segmentName in segmentNames)
+            {
+                var resource = Givens.Segments[segmentName];
+                var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resource.ResourceUri).Result;
+                ResponseMessages.Add(response);
+            }
+        }
+
         //TODO: Refactor
 
         [When(@"I create a course without a version")]
@@ -378,8 +391,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     ParentVersionId = Guid.NewGuid(),
                     VersionNumber = null
                 };
-            var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("CourseLeadingPath"));
 
+            var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("CourseLeadingPath"));
             var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
 
             ScenarioContext.Current["ResponseToValidate"] = response;
@@ -392,32 +405,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var resourceUri = Givens.Courses[courseName].ResourceUri;
             var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resourceUri).Result;
 
-            ScenarioContext.Current.Add("ResponseToValidate", response);
             ResponseMessages.Add(response);
-        }
-
-        [When(@"I create a learning outcome with the description '(.*)'")]
-        [Given(@"I have a learning outcome with the description '(.*)'")]
-        public void WhenICreateALearningOutcomeWithTheDescription(string description)
-        {
-            var outcomeRequest = new OutcomeRequest {Description = description, TenantId = ApiFeature.TenantId};
-            var postUrl = FeatureContext.Current.Get<String>("OutcomeLeadingPath");
-            var response =
-                ApiFeature.ApiTestHost.Client.PostAsync(postUrl, outcomeRequest, new JsonMediaTypeFormatter()).Result;
-            response.EnsureSuccessStatusCode();
-
-            ScenarioContext.Current.Add("learningoutcomeResourceUrl", response.Headers.Location);
-        }
-
-        [When(@"I change the description to '(.*)'")]
-        public void WhenIChangeTheDescriptionTo(string description)
-        {
-            var outcomeRequest = new OutcomeRequest {Description = description, TenantId = ApiFeature.TenantId};
-            var putUrl = ScenarioContext.Current.Get<Uri>("learningoutcomeResourceUrl");
-            var response =
-                ApiFeature.ApiTestHost.Client.PutAsync(putUrl.ToString(), outcomeRequest, new JsonMediaTypeFormatter())
-                          .Result;
-            response.EnsureSuccessStatusCode();
         }
 
         [When(@"I create a course under organization (.*)")]
@@ -438,53 +426,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var postUri = FeatureContext.Current.Get<string>("CourseLeadingPath");
             var httpResponseMessage = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(postUri, course).Result;
             ScenarioContext.Current["httpResponseMessage"] = httpResponseMessage;
-        }
-
-        [Then(@"the learning outcome should be with the description '(.*)'")]
-        public void ThenTheLearningOutcomeShouldBeWithTheDescription(string description)
-        {
-            var getUrl = ScenarioContext.Current.Get<Uri>("learningoutcomeResourceUrl");
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl.ToString()).Result;
-            response.EnsureSuccessStatusCode();
-
-            var outcomeResponse = response.Content.ReadAsAsync<OutcomeInfo>().Result;
-
-            Assert.That(outcomeResponse.Description, Is.EqualTo(description));
-        }
-
-        [Then(@"the learning outcome shoud no longer exist")]
-        public void ThenTheLearningOutcomeShoudNoLongerExist()
-        {
-            var getUrl = ScenarioContext.Current.Get<Uri>("learningoutcomeResourceUrl");
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUrl.ToString()).Result;
-            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
-        }
-
-        [Then(@"disassociating the following from '(.*)' program should result:")]
-        public void ThenDisassociatingTheFollowingFromProgramShouldResult(string p0, Table table)
-        {
-            var outcomeUrls = ScenarioContext.Current.Get<Dictionary<string, Uri>>("learningoutcomeResourceUrls");
-            String deleteUrl = "";
-            foreach (var item in table.Rows)
-            {
-
-                if (outcomeUrls.ContainsKey(item["Description"]))
-                {
-                    deleteUrl = outcomeUrls[item["Description"]].ToString();
-                }
-                else
-                {
-                    deleteUrl = deleteUrl.Substring(0, deleteUrl.LastIndexOf("/") + 1) + Guid.NewGuid().ToString();
-                        //craft a fake
-                }
-                var response = ApiFeature.ApiTestHost.Client.DeleteAsync(deleteUrl).Result;
-
-                var expectedStatusCode =
-                    (HttpStatusCode) Enum.Parse(typeof (HttpStatusCode), item["Disassociation Response"]);
-
-                Assert.That(response.StatusCode.Equals(expectedStatusCode));
-
-            }
         }
     }
 }

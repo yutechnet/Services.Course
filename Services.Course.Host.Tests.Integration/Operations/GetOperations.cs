@@ -48,7 +48,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return result;
         }
 
-	public static CourseSegmentInfo GetSegment(Uri resourseUri)
+	    public static CourseSegmentInfo GetSegment(Uri resourseUri)
         {
             var response = ApiFeature.ApiTestHost.Client.GetAsync(resourseUri).Result;
             response.EnsureSuccessStatusCode();

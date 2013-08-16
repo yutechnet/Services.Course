@@ -2,11 +2,11 @@
 
 namespace BpeProducts.Services.Course.Domain
 {
-    public class PlayCourseSegmentUpdated : IPlayEvent<CourseSegmentUpdated, Courses.Course>
+    public class PlayCourseSegmentDeleted : IPlayEvent<CourseSegmentDeleted, Courses.Course>
     {
-        public Courses.Course Apply(Events.CourseSegmentUpdated msg, Courses.Course course)
+        public Courses.Course Apply(CourseSegmentDeleted msg, Courses.Course course)
         {
-            course.UpdateSegment(msg.SegmentId, msg.Request);
+            course.DeleteSegment(msg.SegmentId);
             return course;
         }
 
