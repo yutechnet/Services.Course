@@ -29,6 +29,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual int DisplayOrder { get; set; }
 
+        [NotNullable]
         public virtual Course Course { get; set; }
 
         public virtual CourseSegment ParentSegment

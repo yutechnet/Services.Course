@@ -250,5 +250,28 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
             ScenarioContext.Current[testUserName.ToString()] = futureUserId;
         }
+
+        [Given(@"I associate '(.*)' course with the following programs")]
+        public void GivenIAssociateCourseWithTheFollowingPrograms(string courseName, Table table)
+        {
+            var course = Givens.Courses[courseName];
+            var programs = (from r in table.Rows select Givens.Programs[r["Program Name"]]).ToList();
+
+            course.Dto = GetOperations.GetCourse(course.ResourceUri);
+
+            var response = PutOperations.AssociateCourseWithPrograms(course, programs);
+            response.EnsureSuccessStatusCode();
+        }
+
+        [Given(@"I create a course from the template '(.*)' with the following")]
+        public void GivenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
+        {
+            var template = Courses[templateName];
+            var courseRequest = table.CreateInstance<SaveCourseRequest>();
+            courseRequest.TemplateCourseId = template.Id;
+
+            PostOperations.CreateCourse(courseRequest.Name, courseRequest);
+
+        }
     }
 }
