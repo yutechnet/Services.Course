@@ -56,17 +56,12 @@ namespace BpeProducts.Services.Course.Domain
         {
             var course = _courseRepository.Load(courseId);
 
-            var outcomes = course.SupportedOutcomes;
-            foreach (var learningOutcome in outcomes)
-            {
-                Console.WriteLine(learningOutcome.SupportedOutcomes.Count);
-            }
+            var courseInfo = Mapper.Map<CourseInfoResponse>(course);
 
-            var courseInfoResponse = Mapper.Map<CourseInfoResponse>(course);
-            // TODO Is this necessary? Should be done in the AutoMapper
-            courseInfoResponse.Segments = Mapper.Map<List<CourseSegmentInfo>>(course.Segments);
-
-            return courseInfoResponse;
+            courseInfo.Segments = (from s in courseInfo.Segments 
+                                   where s.ParentSegmentId == Guid.Empty 
+                                   select s).ToList();
+            return courseInfo;
         }
 
         public IEnumerable<CourseInfoResponse> Search(string queryString)
