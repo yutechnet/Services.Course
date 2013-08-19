@@ -562,6 +562,26 @@ this.FeatureBackground();
                         "Sub Discussion for the first week",
                         "Discussion",
                         "Discussion1"});
+            table19.AddRow(new string[] {
+                        "Discussion2.1",
+                        "Sub Discussion for the first week",
+                        "Discussion",
+                        "Discussion2"});
+            table19.AddRow(new string[] {
+                        "Discussion2.2",
+                        "Sub Discussion for the first week",
+                        "Discussion",
+                        "Discussion2"});
+            table19.AddRow(new string[] {
+                        "Discussion2.1.1",
+                        "Sub Discussion for the first week",
+                        "Discussion",
+                        "Discussion2.1"});
+            table19.AddRow(new string[] {
+                        "Discussion2.2.1",
+                        "Sub Discussion for the first week",
+                        "Discussion",
+                        "Discussion2.2"});
 #line 107
  testRunner.Given("I have the following course segments for \'Math 101\'", ((string)(null)), table19, "Given ");
 #line hidden
@@ -569,46 +589,59 @@ this.FeatureBackground();
                         "Name",
                         "Description",
                         "Type",
-                        "ParentSegment",
-                        "ChildCount"});
+                        "ParentSegment"});
             table20.AddRow(new string[] {
                         "Week1",
                         "First week is slack time",
                         "TimeSpan",
-                        "",
-                        "2"});
+                        ""});
             table20.AddRow(new string[] {
                         "Week2",
                         "second week",
                         "Topic",
-                        "",
-                        "0"});
+                        ""});
             table20.AddRow(new string[] {
                         "Discussion1",
                         "Discussion for the first week",
                         "Discussion",
-                        "Week1",
-                        "2"});
+                        "Week1"});
             table20.AddRow(new string[] {
                         "Discussion2",
                         "Discussion for the first week",
                         "Discussion",
-                        "Week1",
-                        "0"});
+                        "Week1"});
             table20.AddRow(new string[] {
                         "Discussion1.1",
                         "Sub Discussion for the first week",
                         "Discussion",
-                        "Discussion1",
-                        "0"});
+                        "Discussion1"});
             table20.AddRow(new string[] {
                         "Discussion1.2",
                         "Sub Discussion for the first week",
                         "Discussion",
-                        "Discussion1",
-                        "0"});
-#line 115
- testRunner.Then("the course \'Math 101\' should have this course segment tree", ((string)(null)), table20, "Then ");
+                        "Discussion1"});
+            table20.AddRow(new string[] {
+                        "Discussion2.1",
+                        "Sub Discussion for the first week",
+                        "Discussion",
+                        "Discussion2"});
+            table20.AddRow(new string[] {
+                        "Discussion2.2",
+                        "Sub Discussion for the first week",
+                        "Discussion",
+                        "Discussion2"});
+            table20.AddRow(new string[] {
+                        "Discussion2.1.1",
+                        "Sub Discussion for the first week",
+                        "Discussion",
+                        "Discussion2.1"});
+            table20.AddRow(new string[] {
+                        "Discussion2.2.1",
+                        "Sub Discussion for the first week",
+                        "Discussion",
+                        "Discussion2.2"});
+#line 119
+ testRunner.Then("the course \'Math 101\' should have these course segments", ((string)(null)), table20, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -618,7 +651,7 @@ this.FeatureBackground();
         public virtual void EnsureCourseSegmentDisplayOrderIsPersistedOnSave()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure Course Segment display order is persisted on Save", ((string[])(null)));
-#line 124
+#line 132
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -665,7 +698,7 @@ this.FeatureBackground();
                         "Discussion",
                         "Discussion1",
                         "5"});
-#line 125
+#line 133
  testRunner.Given("I have the following course segments for \'Math 101\'", ((string)(null)), table21, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -689,7 +722,7 @@ this.FeatureBackground();
             table22.AddRow(new string[] {
                         "Discussion1.2",
                         "5"});
-#line 133
+#line 141
  testRunner.Then("The course \'Math 101\' segments retrieved match the display order entered", ((string)(null)), table22, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -700,7 +733,7 @@ this.FeatureBackground();
         public virtual void EnsureCourseSegmentDisplayOrderIsPersistedOnUpdate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure Course Segment display order is persisted on Update", ((string[])(null)));
-#line 142
+#line 150
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -747,7 +780,7 @@ this.FeatureBackground();
                         "Discussion",
                         "Discussion1",
                         "5"});
-#line 143
+#line 151
  testRunner.Given("I have the following course segments for \'Math 101\'", ((string)(null)), table23, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -792,7 +825,7 @@ this.FeatureBackground();
                         "Discussion",
                         "Discussion1",
                         "0"});
-#line 151
+#line 159
  testRunner.When("I update the course segments as follows", ((string)(null)), table24, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -816,7 +849,7 @@ this.FeatureBackground();
             table25.AddRow(new string[] {
                         "Discussion1.2",
                         "0"});
-#line 159
+#line 167
  testRunner.Then("The course \'Math 101\' segments retrieved match the display order entered", ((string)(null)), table25, "Then ");
 #line hidden
             this.ScenarioCleanup();

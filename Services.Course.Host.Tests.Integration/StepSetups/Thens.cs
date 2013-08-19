@@ -277,9 +277,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var index = new Dictionary<string, CourseSegmentInfo>();
             IndexNodes(courseInfo.Segments, index);
 
+            var traversed = new List<string>();
             foreach (var row in table.Rows)
             {
                 var segmentName = row["Name"];
+                
+                if(traversed.Contains(segmentName))
+                    Assert.Fail("Duplicate segment '{0}' in table", segmentName);
+                else 
+                    traversed.Add(segmentName);
+                
                 var actualSegment = index[segmentName];
 
                 var parentSegmentName = row["ParentSegment"];
@@ -300,23 +307,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
 
             Assert.That(index.Count, Is.EqualTo(table.Rows.Count));
-        }
-
-        [Then(@"the course '(.*)' should have this course segment tree")]
-        public void ThenTheCourseShouldHaveThisCourseSegmentsTree(string courseName, Table table)
-        {
-            var resource = Givens.Courses[courseName];
-            var infoResponse = GetOperations.GetCourse(resource.ResourceUri);
-            var index = new Dictionary<string, CourseSegmentInfo>();
-
-            IndexNodes(infoResponse.Segments, index);
-
-            foreach (var row in table.Rows)
-            {
-                var courseSegment = index[row["Name"]];
-                Assert.That(courseSegment.Description, Is.EqualTo(row["Description"]));
-                Assert.That(courseSegment.ChildSegments.Count, Is.EqualTo(Convert.ToInt32(row["ChildCount"])));
-            }
         }
 
         [Then(@"The course '(.*)' segments retrieved match the display order entered")]

@@ -105,21 +105,29 @@ Scenario: Add another parent segment to a course
 
 Scenario: Check segment tree is loaded 
 	Given I have the following course segments for 'Math 101'
-	| Name          | Description                       | Type       | ParentSegment |
-	| Week1         | First week is slack time          | TimeSpan   |               |
-	| Week2         | second week                       | Topic      |               |
-	| Discussion1   | Discussion for the first week     | Discussion | Week1         |
-	| Discussion2   | Discussion for the first week     | Discussion | Week1         |
-	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   |
-	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   |
-	Then the course 'Math 101' should have this course segment tree
-	| Name          | Description                       | Type       | ParentSegment | ChildCount |
-	| Week1         | First week is slack time          | TimeSpan   |               | 2          |
-	| Week2         | second week                       | Topic      |               | 0          |
-	| Discussion1   | Discussion for the first week     | Discussion | Week1         | 2          |
-	| Discussion2   | Discussion for the first week     | Discussion | Week1         | 0          |
-	| Discussion1.1 | Sub Discussion for the first week | Discussion | Discussion1   | 0          |
-	| Discussion1.2 | Sub Discussion for the first week | Discussion | Discussion1   | 0          |
+	| Name            | Description                       | Type       | ParentSegment |
+	| Week1           | First week is slack time          | TimeSpan   |               |
+	| Week2           | second week                       | Topic      |               |
+	| Discussion1     | Discussion for the first week     | Discussion | Week1         |
+	| Discussion2     | Discussion for the first week     | Discussion | Week1         |
+	| Discussion1.1   | Sub Discussion for the first week | Discussion | Discussion1   |
+	| Discussion1.2   | Sub Discussion for the first week | Discussion | Discussion1   |
+	| Discussion2.1   | Sub Discussion for the first week | Discussion | Discussion2   |
+	| Discussion2.2   | Sub Discussion for the first week | Discussion | Discussion2   |
+	| Discussion2.1.1 | Sub Discussion for the first week | Discussion | Discussion2.1 |
+	| Discussion2.2.1 | Sub Discussion for the first week | Discussion | Discussion2.2 |
+	Then the course 'Math 101' should have these course segments
+	| Name            | Description                       | Type       | ParentSegment |
+	| Week1           | First week is slack time          | TimeSpan   |               |
+	| Week2           | second week                       | Topic      |               |
+	| Discussion1     | Discussion for the first week     | Discussion | Week1         |
+	| Discussion2     | Discussion for the first week     | Discussion | Week1         |
+	| Discussion1.1   | Sub Discussion for the first week | Discussion | Discussion1   |
+	| Discussion1.2   | Sub Discussion for the first week | Discussion | Discussion1   |
+	| Discussion2.1   | Sub Discussion for the first week | Discussion | Discussion2   |
+	| Discussion2.2   | Sub Discussion for the first week | Discussion | Discussion2   |
+	| Discussion2.1.1 | Sub Discussion for the first week | Discussion | Discussion2.1 |
+	| Discussion2.2.1 | Sub Discussion for the first week | Discussion | Discussion2.2 |
 
 Scenario: Ensure Course Segment display order is persisted on Save
 	Given I have the following course segments for 'Math 101'
