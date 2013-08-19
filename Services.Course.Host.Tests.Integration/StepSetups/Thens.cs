@@ -275,7 +275,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var courseInfo = GetOperations.GetCourse(resource.ResourceUri);
 
             var index = new Dictionary<string, CourseSegmentInfo>();
-            IndexNodes(courseInfo.Segments, index);
+            IndexNodes(Guid.Empty, courseInfo.Segments, index);
 
             var traversed = new List<string>();
             foreach (var row in table.Rows)
@@ -315,7 +315,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var courseInfoResponse = GetOperations.GetCourse(Givens.Courses[courseName].ResourceUri);
             var index = new Dictionary<string, CourseSegmentInfo>();
 
-            IndexNodes(courseInfoResponse.Segments, index);
+            IndexNodes(Guid.Empty, courseInfoResponse.Segments, index);
 
             foreach (var row in table.Rows)
             {
@@ -355,14 +355,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        private static void IndexNodes(IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<string, CourseSegmentInfo> index)
+        private static void IndexNodes(Guid parentSegmentId, IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<string, CourseSegmentInfo> index)
         {
             foreach (var courseSegmentInfo in segmentInfos)
             {
-                index[courseSegmentInfo.Name] = courseSegmentInfo;
+                Assert.That(courseSegmentInfo.ParentSegmentId, Is.EqualTo(parentSegmentId));
+
+                index.Add(courseSegmentInfo.Name, courseSegmentInfo);
                 if (courseSegmentInfo.ChildSegments.Count > 0)
                 {
-                    IndexNodes(courseSegmentInfo.ChildSegments, index);
+                    IndexNodes(courseSegmentInfo.Id, courseSegmentInfo.ChildSegments, index);
                 }
             }
         }
