@@ -28,6 +28,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.Dto = dto;
             }
             
+            Whens.ResponseMessages.Add(response);
             Givens.Courses.Add(name, resource);
             return resource;
         }
@@ -48,6 +49,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.ResourceUri = response.Headers.Location;
             }
 
+            Whens.ResponseMessages.Add(response);
             Givens.Courses.Add(name, resource);
             return resource;
         }
@@ -72,6 +74,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.Dto = dto;
             }
 
+            Whens.ResponseMessages.Add(response);
             Givens.Programs.Add(name, resource);
             return resource;
         }
@@ -96,6 +99,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.SaveRequest = request;
             }
 
+            Whens.ResponseMessages.Add(response);
             Givens.Segments.Add(name, resource);
             return resource;
         }
@@ -118,6 +122,30 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.SaveRequest = request;
             }
 
+            Whens.ResponseMessages.Add(response);
+            Givens.LearningOutcomes.Add(name, resource);
+            return resource;
+        }
+
+        public static LearningOutcomeResource CreateLearningOutcomeVersion(string name, LearningOutcomeResource learningOutcome, VersionRequest request)
+        {
+            var postUri = string.Format("{0}/outcome/version", ApiFeature.LeadingPath);
+            var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, request, new JsonMediaTypeFormatter()).Result;
+            
+            var resource = new LearningOutcomeResource
+            {
+                Response = response
+            };
+
+            if (response.IsSuccessStatusCode)
+            {
+                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
+
+                resource.Id = Guid.Parse(id);
+                resource.ResourceUri = response.Headers.Location;
+            }
+
+            Whens.ResponseMessages.Add(response);
             Givens.LearningOutcomes.Add(name, resource);
             return resource;
         }
@@ -141,6 +169,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.SaveRequest = request;
             }
 
+            Whens.ResponseMessages.Add(response);
             Givens.LearningOutcomes.Add(name, resource);
             return resource;
         }
@@ -166,6 +195,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 resource.Dto = dto;
             }
 
+            Whens.ResponseMessages.Add(response);
             Givens.CourseLearningActivities.Add(name, resource);
             return resource;
         }

@@ -72,16 +72,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 #line 7
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field",
-                        "Value"});
+                        "Description"});
             table1.AddRow(new string[] {
-                        "Description",
                         "first learning outcome"});
-            table1.AddRow(new string[] {
-                        "TenantId",
-                        "999999"});
 #line 8
- testRunner.Given("I create the following learning outcome", ((string)(null)), table1, "Given ");
+ testRunner.Given("I have the following learning outcomes", ((string)(null)), table1, "Given ");
 #line hidden
         }
         
@@ -90,12 +85,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void CreateADefaultVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a default version", ((string[])(null)));
-#line 13
+#line 12
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 14
- testRunner.When("I retrieve \'first learning outcome\' learning outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -106,8 +99,8 @@ this.FeatureBackground();
             table2.AddRow(new string[] {
                         "VersionNumber",
                         "1.0.0.0"});
-#line 15
- testRunner.Then("the learning outcome should have the following info", ((string)(null)), table2, "Then ");
+#line 13
+ testRunner.Then("the learning outcome \'first learning outcome\' should contain", ((string)(null)), table2, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -117,7 +110,7 @@ this.FeatureBackground();
         public virtual void EditALearningOutcomeVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit a learning outcome version", ((string[])(null)));
-#line 20
+#line 18
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -128,10 +121,7 @@ this.FeatureBackground();
             table3.AddRow(new string[] {
                         "Description",
                         "second learning outcome"});
-            table3.AddRow(new string[] {
-                        "TenantId",
-                        "999999"});
-#line 21
+#line 19
  testRunner.When("I update \'first learning outcome\' learning outcome with the following info", ((string)(null)), table3, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -143,8 +133,8 @@ this.FeatureBackground();
             table4.AddRow(new string[] {
                         "VersionNumber",
                         "1.0.0.0"});
-#line 25
- testRunner.Then("the learning outcome \'first learning outcome\' should have the following info", ((string)(null)), table4, "Then ");
+#line 22
+ testRunner.Then("the learning outcome \'first learning outcome\' should contain", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -154,19 +144,19 @@ this.FeatureBackground();
         public virtual void PublishALearningOutcomeVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Publish a learning outcome version", ((string[])(null)));
-#line 30
+#line 27
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field",
-                        "Value"});
+                        "Name",
+                        "Note"});
             table5.AddRow(new string[] {
-                        "PublishNote",
+                        "first learning outcome",
                         "Blah blah"});
-#line 31
- testRunner.When("I publish \'first learning outcome\' learning outcome with the following info", ((string)(null)), table5, "When ");
+#line 28
+ testRunner.When("I publish the following learning outcomes", ((string)(null)), table5, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -183,8 +173,70 @@ this.FeatureBackground();
             table6.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 34
- testRunner.Then("the learning outcome \'first learning outcome\' should have the following info", ((string)(null)), table6, "Then ");
+#line 31
+ testRunner.Then("the learning outcome \'first learning outcome\' should contain", ((string)(null)), table6, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Published version cannot be modified")]
+        public virtual void PublishedVersionCannotBeModified()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Published version cannot be modified", ((string[])(null)));
+#line 38
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table7.AddRow(new string[] {
+                        "first learning outcome",
+                        "Blah blah"});
+#line 39
+ testRunner.When("I publish the following learning outcomes", ((string)(null)), table7, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table8.AddRow(new string[] {
+                        "Description",
+                        "third learning outcome"});
+            table8.AddRow(new string[] {
+                        "TenantId",
+                        "999999"});
+#line 42
+ testRunner.And("I update \'first learning outcome\' learning outcome with the following info", ((string)(null)), table8, "And ");
+#line 46
+ testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Published version cannot be deleted")]
+        public virtual void PublishedVersionCannotBeDeleted()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Published version cannot be deleted", ((string[])(null)));
+#line 48
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table9.AddRow(new string[] {
+                        "first learning outcome",
+                        "Blah blah"});
+#line 49
+ testRunner.When("I publish the following learning outcomes", ((string)(null)), table9, "When ");
+#line 52
+ testRunner.And("I delete the \'first learning outcome\' learning outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
+ testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -194,44 +246,103 @@ this.FeatureBackground();
         public virtual void CreateALearningOutcomeVersionFromAPreviously_PublishedVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a learning outcome version from a previously-published version", ((string[])(null)));
-#line 58
+#line 55
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field",
-                        "Value"});
-            table7.AddRow(new string[] {
-                        "PublishNote",
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table10.AddRow(new string[] {
+                        "first learning outcome",
                         "Blah blah"});
-#line 59
- testRunner.Given("I publish \'first learning outcome\' learning outcome with the following info", ((string)(null)), table7, "Given ");
+#line 56
+ testRunner.When("I publish the following learning outcomes", ((string)(null)), table10, "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table8.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "VersionNumber",
                         "2.0a"});
-#line 62
- testRunner.When("I create a new version of \'first learning outcome\' outcome with the following inf" +
-                    "o", ((string)(null)), table8, "When ");
+#line 59
+ testRunner.And("I create a new version of \'first learning outcome\' outcome named \'NewOutcome\' wit" +
+                    "h the following info", ((string)(null)), table11, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table9.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "Description",
                         "first learning outcome"});
-            table9.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "VersionNumber",
                         "2.0a"});
-            table9.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "IsPublished",
                         "false"});
-#line 65
- testRunner.Then("the learning outcome \'first learning outcome\' should have the following info", ((string)(null)), table9, "Then ");
+#line 62
+ testRunner.Then("the learning outcome \'NewOutcome\' should contain", ((string)(null)), table12, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Cannot publish the same version twice")]
+        public virtual void CannotPublishTheSameVersionTwice()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot publish the same version twice", ((string[])(null)));
+#line 68
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table13.AddRow(new string[] {
+                        "first learning outcome",
+                        "Blah blah"});
+#line 69
+ testRunner.When("I publish the following learning outcomes", ((string)(null)), table13, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table14.AddRow(new string[] {
+                        "VersionNumber",
+                        "1.0.0.0"});
+#line 72
+ testRunner.And("I create a new version of \'first learning outcome\' outcome named \'NewOutcome\' wit" +
+                    "h the following info", ((string)(null)), table14, "And ");
+#line 75
+ testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Cannot publish without a version")]
+        public virtual void CannotPublishWithoutAVersion()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot publish without a version", ((string[])(null)));
+#line 77
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table15.AddRow(new string[] {
+                        "VersionNumber",
+                        ""});
+#line 78
+ testRunner.When("I create a new version of \'first learning outcome\' outcome named \'NewOutcome\' wit" +
+                    "h the following info", ((string)(null)), table15, "When ");
+#line 81
+ testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

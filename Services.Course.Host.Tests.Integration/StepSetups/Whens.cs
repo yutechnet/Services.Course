@@ -21,11 +21,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             get { return ScenarioContext.Current.Get<IList<HttpResponseMessage>>("Responses"); }
         }
 
-        public Whens()
-        {
-            ScenarioContext.Current.Add("Responses", new List<HttpResponseMessage>());
-        }
-
         [When(@"I create a course from the template '(.*)' with the following")]
         public void WhenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
         {
@@ -205,7 +200,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     };
 
                 var response = PutOperations.PublishCourse(course, request);
-                response.EnsureSuccessStatusCode();
+                ResponseMessages.Add(response);
+            }
+        }
+
+        [When(@"I publish the following learning outcomes")]
+        public void WhenIPublishTheFollowingLearningOutcomes(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var learningOutcome = Givens.LearningOutcomes[row["Name"]];
+
+                var request = new PublishRequest
+                {
+                    PublishNote = row["Note"]
+                };
+
+                var response = PutOperations.PublishLearningOutcome(learningOutcome, request);
+                ResponseMessages.Add(response);
             }
         }
 
@@ -274,6 +286,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 {
                     Description = newDescription
                 };
+
+            var response = PutOperations.UpdateLearningOutcome(resource, request);
+            ResponseMessages.Add(response);
+        }
+
+        [When(@"I update '(.*)' learning outcome with the following info")]
+        public void WhenIUpdateLearningOutcomeWithTheFollowingInfo(string leaningOutcomeName, Table table)
+        {
+            var resource = Givens.LearningOutcomes[leaningOutcomeName];
+            var request = table.CreateInstance<OutcomeRequest>();
 
             var response = PutOperations.UpdateLearningOutcome(resource, request);
             ResponseMessages.Add(response);
@@ -379,6 +401,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resource.ResourceUri).Result;
                 ResponseMessages.Add(response);
             }
+        }
+
+        [When(@"I create a new version of '(.*)' outcome named '(.*)' with the following info")]
+        public void WhenICreateANewVersionOfWithTheFollowingInfo(string outcomeName, string newOutcomeName, Table table)
+        {
+            var versionRequest = table.CreateInstance<VersionRequest>();
+
+            var resource = Givens.LearningOutcomes[outcomeName];
+            versionRequest.ParentVersionId = resource.Id;
+
+            PostOperations.CreateLearningOutcomeVersion(newOutcomeName, resource, versionRequest);
         }
 
         //TODO: Refactor

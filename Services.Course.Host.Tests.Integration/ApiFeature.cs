@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Net.Http;
 using BpeProducts.Common.WebApiTest;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using TechTalk.SpecFlow;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration
@@ -60,6 +63,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [BeforeScenario("Api")]
         public static void BeforeScenario()
         {
+            ScenarioContext.Current.Add("Responses", new List<HttpResponseMessage>());
+
+            ScenarioContext.Current.Add("Courses", new Dictionary<string, CourseResource>());
+            ScenarioContext.Current.Add("Programs", new Dictionary<string, ProgramResource>());
+            ScenarioContext.Current.Add("Segments", new Dictionary<string, CourseSegmentResource>());
+            ScenarioContext.Current.Add("LearningOutcomes", new Dictionary<string, LearningOutcomeResource>());
+            ScenarioContext.Current.Add("CourseLearningActivities", new Dictionary<string, CourseLearningActivityResource>());
+
             //Some scenarios change the user, so make sure we set it to a know user for each scenario
             ApiTestHost.SetTestUser(DefaultTestUser);
             RemoteApiTestHost.SetTestUser(TestUserName.SuperSaml);

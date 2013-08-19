@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 using BpeProducts.Common.WebApiTest;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
@@ -55,15 +52,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             {
                 return ScenarioContext.Current.Get<IDictionary<string, CourseLearningActivityResource>>("CourseLearningActivities");
             }
-        }
-
-        public Givens()
-        {
-            ScenarioContext.Current.Add("Courses", new Dictionary<string, CourseResource>());
-            ScenarioContext.Current.Add("Programs", new Dictionary<string, ProgramResource>());
-            ScenarioContext.Current.Add("Segments", new Dictionary<string, CourseSegmentResource>());
-            ScenarioContext.Current.Add("LearningOutcomes", new Dictionary<string, LearningOutcomeResource>());
-            ScenarioContext.Current.Add("CourseLearningActivities", new Dictionary<string, CourseLearningActivityResource>());
         }
 
         [Given(@"I have the following programs")]

@@ -30,7 +30,7 @@ Scenario: Associate a course with multiple programs
 	| Program Name        |
 	| Bachelor of Art     |
 	| Bachelor of Science |
-	Then the course 'English 101' includes the following program information:
+	Then the course 'English 101' includes the following program information
 	| Program Name        |
 	| Bachelor of Art     |
 	| Bachelor of Science |
@@ -50,7 +50,7 @@ Scenario: Get program with all courses that belong to it
 	And I associate 'Psychology 101' course with the following programs
 	| Program Name        |
 	| Bachelor of Art     |
-	Then the program 'Bachelor of Art' include the following course information:
+	Then the program 'Bachelor of Art' include the following course information
 	| Course Name    |
 	| English 101    |
 	| Psychology 101 |

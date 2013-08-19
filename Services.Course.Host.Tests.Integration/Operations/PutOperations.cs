@@ -127,6 +127,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return response;
         }
 
+        public static HttpResponseMessage PublishLearningOutcome(LearningOutcomeResource learningOutcome, PublishRequest request)
+        {
+            var uri = string.Format("{0}/publish", learningOutcome.ResourceUri);
+
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(uri, request).Result;
+
+            return response;
+        }
+
         public static HttpResponseMessage SetCoursePrerequisites(CourseResource course, UpdateCoursePrerequisites request)
         {
             var uri = string.Format("{0}/prerequisites", course.ResourceUri);

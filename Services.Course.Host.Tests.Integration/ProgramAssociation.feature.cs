@@ -156,7 +156,7 @@ this.FeatureBackground();
             table4.AddRow(new string[] {
                         "Bachelor of Science"});
 #line 33
- testRunner.Then("the course \'English 101\' includes the following program information:", ((string)(null)), table4, "Then ");
+ testRunner.Then("the course \'English 101\' includes the following program information", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -218,7 +218,7 @@ this.FeatureBackground();
             table8.AddRow(new string[] {
                         "Psychology 101"});
 #line 53
- testRunner.Then("the program \'Bachelor of Art\' include the following course information:", ((string)(null)), table8, "Then ");
+ testRunner.Then("the program \'Bachelor of Art\' include the following course information", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
