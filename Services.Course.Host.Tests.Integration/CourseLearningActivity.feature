@@ -40,7 +40,7 @@ Scenario: Get a list of all learning activities
 	| Assignment 1 | Assignment | True        | true          | 100    | 20       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	| Quiz 1       | Quiz       | True        | true          | 100    | 20       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	| Assessment 1 | Assessment | True        | true          | 100    | 20       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	Then the segment 'Week 1' should have the following learning activities:
+	Then the segment 'Week 1' should have the following learning activities
 	| Name         |
 	| Discussion 1 |
 	| Assignment 1 |

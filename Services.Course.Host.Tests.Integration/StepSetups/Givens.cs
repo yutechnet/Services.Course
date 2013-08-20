@@ -68,7 +68,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     OrganizationId = Guid.NewGuid()
                 };
 
-                PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
+                var result = PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
+                result.EnsureSuccessStatusCode();
             }
         }
 
@@ -93,7 +94,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     IsTemplate = row.TryGetValue("IsTemplate", out isTemplate) && bool.Parse(isTemplate),
                 };
 
-                PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
+                var result = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
+                result.EnsureSuccessStatusCode();
             }
         }
 
@@ -112,7 +114,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     PrerequisiteCourseIds = new List<Guid>()
                 };
 
-            PostOperations.CreateCourse(courseName, saveCourseRequest);
+            var result = PostOperations.CreateCourse(courseName, saveCourseRequest);
+            result.EnsureSuccessStatusCode();
         }
         
         [Given(@"I have the following course segments for '(.*)'")]
@@ -138,7 +141,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     request.ParentSegmentId = parentSegment.Id;
                 }
 
-                PostOperations.CreateSegment(request.Name, course, request);
+                var result = PostOperations.CreateSegment(request.Name, course, request);
+                result.EnsureSuccessStatusCode();
             }
         }
 
@@ -153,7 +157,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     TenantId = ApiFeature.TenantId,
                 };
 
-                PostOperations.CreateLearningOutcome(request.Description, request);
+                var result = PostOperations.CreateLearningOutcome(request.Description, request);
+                result.EnsureSuccessStatusCode();
             }
         }
 
@@ -167,7 +172,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             {
                 request.TenantId = ApiFeature.TenantId;
 
-                PostOperations.CreateCourseLearningActivity(request.Name, segment, request);
+                var result = PostOperations.CreateCourseLearningActivity(request.Name, segment, request);
+                result.EnsureSuccessStatusCode();
             }
         }
 
@@ -179,8 +185,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var request in requests)
             {
-                request.TenantId = ApiFeature.TenantId;
-                PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
+                var result = PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
+                result.EnsureSuccessStatusCode();
             }
         }
 
@@ -193,7 +199,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var request in requests)
             {
                 request.TenantId = ApiFeature.TenantId;
-                PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
+                var result = PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
+                result.EnsureSuccessStatusCode();
             }
         }
 
@@ -206,7 +213,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var request in requests)
             {
                 request.TenantId = ApiFeature.TenantId;
-                PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
+                var result = PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
+                result.EnsureSuccessStatusCode();
             }
         }
         
@@ -258,8 +266,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var courseRequest = table.CreateInstance<SaveCourseRequest>();
             courseRequest.TemplateCourseId = template.Id;
 
-            PostOperations.CreateCourse(courseRequest.Name, courseRequest);
-
+            var result = PostOperations.CreateCourse(courseRequest.Name, courseRequest);
+            result.EnsureSuccessStatusCode();
         }
     }
 }

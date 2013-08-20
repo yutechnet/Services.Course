@@ -397,7 +397,7 @@ this.FeatureBackground();
             table23.AddRow(new string[] {
                         "CL2"});
 #line 109
- testRunner.When("I assoicate the following outcomes to outcome \'PL1\'", ((string)(null)), table23, "When ");
+ testRunner.When("the outcome \'PL1\' is supported by the following outcomes", ((string)(null)), table23, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
@@ -406,7 +406,7 @@ this.FeatureBackground();
             table24.AddRow(new string[] {
                         "CL2"});
 #line 113
- testRunner.Then("learning outcome \'PL1\' has the following learning outcomes", ((string)(null)), table24, "Then ");
+ testRunner.Then("learning outcome \'PL1\' is supported by the following learning outcomes", ((string)(null)), table24, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -439,7 +439,7 @@ this.FeatureBackground();
             table26.AddRow(new string[] {
                         "CL2"});
 #line 124
- testRunner.When("I assoicate the following outcomes to outcome \'PL1\'", ((string)(null)), table26, "When ");
+ testRunner.When("the outcome \'PL1\' is supported by the following outcomes", ((string)(null)), table26, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
@@ -453,7 +453,7 @@ this.FeatureBackground();
             table28.AddRow(new string[] {
                         "CL2"});
 #line 131
- testRunner.Then("learning outcome \'PL1\' has the following learning outcomes", ((string)(null)), table28, "Then ");
+ testRunner.Then("learning outcome \'PL1\' is supported by the following learning outcomes", ((string)(null)), table28, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

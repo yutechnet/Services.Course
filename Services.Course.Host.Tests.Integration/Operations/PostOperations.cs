@@ -9,195 +9,195 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 {
     public static class PostOperations
     {
-        public static CourseResource CreateCourse(string name, SaveCourseRequest request)
+        public static HttpResponseMessage CreateCourse(string name, SaveCourseRequest request)
         {
+            request.TenantId = ApiFeature.TenantId;
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course", request, new JsonMediaTypeFormatter()).Result;
 
-            var resource = new CourseResource
-            {
-                Response = response
-            };
+            Whens.ResponseMessages.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
-                var dto = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
 
-                resource.Id = dto.Id;
-                resource.ResourceUri = response.Headers.Location;
-                resource.SaveRequest = request;
-                resource.Dto = dto;
+                var resource = new CourseResource
+                {
+                    Id = Guid.Parse(id),
+                    ResourceUri = response.Headers.Location
+                };
+
+                Givens.Courses.Add(name, resource);
             }
-            
-            Whens.ResponseMessages.Add(response);
-            Givens.Courses.Add(name, resource);
-            return resource;
+
+            return response;
         }
 
-        public static CourseResource CreateCourseVersion(string name, VersionRequest request)
+        public static HttpResponseMessage CreateCourseVersion(string name, VersionRequest request)
         {
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course/version", request, new JsonMediaTypeFormatter()).Result;
 
-            var resource = new CourseResource
-            {
-                Response = response
-            };
+            Whens.ResponseMessages.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
                 var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-                resource.Id = Guid.Parse(id);
-                resource.ResourceUri = response.Headers.Location;
+
+                var resource = new CourseResource
+                {
+                    Id = Guid.Parse(id),
+                    ResourceUri = response.Headers.Location
+                };
+
+                Givens.Courses.Add(name, resource);
+
             }
 
-            Whens.ResponseMessages.Add(response);
-            Givens.Courses.Add(name, resource);
-            return resource;
+            return response;
         }
 
-        public static ProgramResource CreateProgram(string name, SaveProgramRequest request)
+        public static HttpResponseMessage CreateProgram(string name, SaveProgramRequest request)
         {
+            request.TenantId = ApiFeature.TenantId;
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/program", request, new JsonMediaTypeFormatter()).Result;
-            response.EnsureSuccessStatusCode();
 
-            var resource = new ProgramResource
-            {
-                Response = response
-            };
+            Whens.ResponseMessages.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
-                var dto = response.Content.ReadAsAsync<ProgramResponse>().Result;
+                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
 
-                resource.Id = dto.Id;
-                resource.ResourceUri = response.Headers.Location;
-                resource.SaveRequest = request;
-                resource.Dto = dto;
+                var resource = new ProgramResource
+                {
+                    Id = Guid.Parse(id),
+                    ResourceUri = response.Headers.Location
+                };
+
+                Givens.Programs.Add(name, resource);
             }
 
-            Whens.ResponseMessages.Add(response);
-            Givens.Programs.Add(name, resource);
-            return resource;
+            return response;
         }
 
-        public static CourseSegmentResource CreateSegment(string name, CourseResource course, SaveCourseSegmentRequest request)
+        public static HttpResponseMessage CreateSegment(string name, CourseResource course, SaveCourseSegmentRequest request)
         {
-            var uri = string.Format("{0}/course/{1}/segments", ApiFeature.LeadingPath, course.Id);
+            request.TenantId = ApiFeature.TenantId;
 
+            var uri = string.Format("{0}/course/{1}/segments", ApiFeature.LeadingPath, course.Id);
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
 
-            var resource = new CourseSegmentResource
-            {
-                Response = response
-            };
+            Whens.ResponseMessages.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
                 var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
 
-                resource.Id = Guid.Parse(id);
-                resource.ResourceUri = response.Headers.Location;
-                resource.SaveRequest = request;
+                var resource = new CourseSegmentResource
+                {
+                    Id = Guid.Parse(id),
+                    ResourceUri = response.Headers.Location
+                };
+
+                Givens.Segments.Add(name, resource);
             }
 
-            Whens.ResponseMessages.Add(response);
-            Givens.Segments.Add(name, resource);
-            return resource;
+            return response;
         }
 
-        public static LearningOutcomeResource CreateLearningOutcome(string name, OutcomeRequest request)
+        public static HttpResponseMessage CreateLearningOutcome(string name, OutcomeRequest request)
         {
+            request.TenantId = ApiFeature.TenantId;
+
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/outcome", request, new JsonMediaTypeFormatter()).Result;
 
-            var resource = new LearningOutcomeResource
-            {
-                Response = response
-            };
+            Whens.ResponseMessages.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
                 var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
 
-                resource.Id = Guid.Parse(id);
-                resource.ResourceUri = response.Headers.Location;
-                resource.SaveRequest = request;
+                var resource = new LearningOutcomeResource
+                {
+                    Id = Guid.Parse(id),
+                    ResourceUri = response.Headers.Location
+                };
+
+                Givens.LearningOutcomes.Add(name, resource);
             }
 
-            Whens.ResponseMessages.Add(response);
-            Givens.LearningOutcomes.Add(name, resource);
-            return resource;
+            return response;
         }
 
-        public static LearningOutcomeResource CreateLearningOutcomeVersion(string name, LearningOutcomeResource learningOutcome, VersionRequest request)
+        public static HttpResponseMessage CreateLearningOutcomeVersion(string name, LearningOutcomeResource learningOutcome, VersionRequest request)
         {
             var postUri = string.Format("{0}/outcome/version", ApiFeature.LeadingPath);
             var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, request, new JsonMediaTypeFormatter()).Result;
             
-            var resource = new LearningOutcomeResource
-            {
-                Response = response
-            };
+            Whens.ResponseMessages.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
                 var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
 
-                resource.Id = Guid.Parse(id);
-                resource.ResourceUri = response.Headers.Location;
+                var resource = new LearningOutcomeResource
+                {
+                    Id = Guid.Parse(id),
+                    ResourceUri = response.Headers.Location
+                };
+
+                Givens.LearningOutcomes.Add(name, resource);
             }
 
-            Whens.ResponseMessages.Add(response);
-            Givens.LearningOutcomes.Add(name, resource);
-            return resource;
+            return response;
         }
 
-        public static LearningOutcomeResource CreateEntityLearningOutcome(string name, IResource entityResource, OutcomeRequest request)
+        public static HttpResponseMessage CreateEntityLearningOutcome(string name, IResource entityResource, OutcomeRequest request)
         {
+            request.TenantId = ApiFeature.TenantId;
+
             var uri = string.Format("{0}/supports", entityResource.ResourceUri);
             var response = ApiFeature.ApiTestHost.Client.PostAsync(uri, request, new JsonMediaTypeFormatter()).Result;
 
-            var resource = new LearningOutcomeResource
-            {
-                Response = response
-            };
+            Whens.ResponseMessages.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
                 var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
 
-                resource.Id = Guid.Parse(id);
-                resource.ResourceUri = response.Headers.Location;
-                resource.SaveRequest = request;
+                var resource = new LearningOutcomeResource
+                {
+                    Id = Guid.Parse(id),
+                    ResourceUri = response.Headers.Location
+                };
+
+                Givens.LearningOutcomes.Add(name, resource);
             }
 
-            Whens.ResponseMessages.Add(response);
-            Givens.LearningOutcomes.Add(name, resource);
-            return resource;
+            return response;
         }
 
-        public static CourseLearningActivityResource CreateCourseLearningActivity(string name, CourseSegmentResource segment, SaveCourseLearningActivityRequest request)
+        public static HttpResponseMessage CreateCourseLearningActivity(string name, CourseSegmentResource segment, SaveCourseLearningActivityRequest request)
         {
+            request.TenantId = ApiFeature.TenantId;
+
             var uri = string.Format("{0}/learningactivity", segment.ResourceUri);
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
 
-            var resource = new CourseLearningActivityResource
-            {
-                Response = response
-            };
+            Whens.ResponseMessages.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
                 var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-                var dto = response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result;
 
-                resource.Id = Guid.Parse(id);
-                resource.ResourceUri = response.Headers.Location;
-                resource.SaveRequest = request;
-                resource.Dto = dto;
+                var resource = new CourseLearningActivityResource
+                    {
+                        Id = Guid.Parse(id),
+                        ResourceUri = response.Headers.Location
+                    };
+
+                Givens.CourseLearningActivities.Add(name, resource);
             }
 
-            Whens.ResponseMessages.Add(response);
-            Givens.CourseLearningActivities.Add(name, resource);
-            return resource;
+            return response;
         }
     }
 }

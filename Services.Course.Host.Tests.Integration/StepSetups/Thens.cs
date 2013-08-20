@@ -204,13 +204,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             CollectionAssert.AreEquivalent(expectedOutcomes, actualOutcomes);
         }
 
-        [Then(@"learning outcome '(.*)' has the following learning outcomes")]
-        public void ThenHasTheFollowingLearningOutcomes(string learningOutcomeName, Table table)
+        [Then(@"learning outcome '(.*)' is supported by the following learning outcomes")]
+        public void ThenLearningOutcomeIsSupportedByTheFollowingLearningOutcomes(string learningOutcomeName, Table table)
         {
             var resource = Givens.LearningOutcomes[learningOutcomeName];
 
-            var actualOutcomes =
-                (from o in GetOperations.GetSupportedOutcomes(resource.ResourceUri) select o.Description).ToList();
+            var actualOutcomes = (from o in GetOperations.GetSupportedOutcomes(resource.ResourceUri) select o.Description).ToList();
             var expectedOutcomes = (from o in table.Rows select o["Description"]).ToList();
 
             CollectionAssert.AreEquivalent(expectedOutcomes, actualOutcomes);
@@ -352,6 +351,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var actual = courseSegment.Content.First(c => c.Id == expected.Id);
                 Assert.That(actual.Type, Is.EqualTo(expected.Type));
             }
+        }
+
+        [Then(@"the course '(.*)' should have the following learning outcomes")]
+        public void ThenTheCourseShouldHaveTheFollowingLearningOutcomes(string courseName, Table table)
+        {
+            var resource = Givens.Courses[courseName];
+            var courseInfo = GetOperations.GetCourse(resource.ResourceUri);
+
+            var expected = (from r in table.Rows select r["Description"]).ToList();
+            var actual = (from o in courseInfo.SupportedOutcomes select o.Description).ToList();
+
+            CollectionAssert.AreEquivalent(expected, actual);
         }
 
         private static void IndexNodes(Guid parentSegmentId, IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<string, CourseSegmentInfo> index)

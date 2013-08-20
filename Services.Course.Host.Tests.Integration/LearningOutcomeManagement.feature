@@ -106,11 +106,11 @@ Scenario: Associate an outcome to another outcome
 	| PL1         |
 	| CL1         |
 	| CL2         |
-	When I assoicate the following outcomes to outcome 'PL1'
+	When the outcome 'PL1' is supported by the following outcomes
 	| Description |
 	| CL1         |
 	| CL2         |
-	Then learning outcome 'PL1' has the following learning outcomes
+	Then learning outcome 'PL1' is supported by the following learning outcomes
 	| Description |
 	| CL1         |
 	| CL2         |
@@ -121,13 +121,13 @@ Scenario: Disassociate an outcome from another outcome
 	| PL1         |
 	| CL1         |
 	| CL2         |
-	When I assoicate the following outcomes to outcome 'PL1'
+	When the outcome 'PL1' is supported by the following outcomes
 	| Description |
 	| CL1         |
 	| CL2         |
 	And I disassociate the following learning outcomes from 'PL1' learning outcome
 	| Description |
 	| CL1         |
-	Then learning outcome 'PL1' has the following learning outcomes
+	Then learning outcome 'PL1' is supported by the following learning outcomes
 	| Description |
 	| CL2         |

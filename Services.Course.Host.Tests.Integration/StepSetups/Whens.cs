@@ -153,12 +153,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             var descriptions = (from o in table.Rows select o["Description"]).ToList();
             var supportingOutcomes = (from o in Givens.LearningOutcomes
-                                      where descriptions.Contains(o.Value.SaveRequest.Description)
-                                      select o).ToList();
+                                      where descriptions.Contains(o.Key)
+                                      select o.Value).ToList();
 
             foreach (var supportingOutcome in supportingOutcomes)
             {
-                PutOperations.OutcomeDoesNotSupportLearningOutcome(supportingOutcome.Value, supportedOutcome);
+                PutOperations.OutcomeDoesNotSupportLearningOutcome(supportingOutcome, supportedOutcome);
             }
         }
 

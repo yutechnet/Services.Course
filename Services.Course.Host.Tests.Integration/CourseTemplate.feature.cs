@@ -393,7 +393,7 @@ testRunner.And("I create a course from the template \'Template 1\' with the foll
             table15.AddRow(new string[] {
                         "second course learning outcome"});
 #line 81
-testRunner.Then("the course \'Template 1\' includes the following learning outcomes:", ((string)(null)), table15, "Then ");
+testRunner.Then("the course \'Template 1\' should have the following learning outcomes", ((string)(null)), table15, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -514,8 +514,6 @@ this.FeatureBackground();
 #line 121
  testRunner.And("I give role \"CurriculumCoordinator\" to user \"TestUser3\" for object \"Org1\" of type" +
                     " \"organization\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
- testRunner.When("I get the course templates for organization \"Org1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "OrgName"});
@@ -523,8 +521,8 @@ this.FeatureBackground();
                         "FindMe1"});
             table21.AddRow(new string[] {
                         "FindMe2"});
-#line 123
- testRunner.Then("the course templates returned are:", ((string)(null)), table21, "Then ");
+#line 122
+ testRunner.Then("the organization \"Org1\" should have these course templates", ((string)(null)), table21, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -538,33 +536,33 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not see course templates for an organization I do have CreateCourse capabil" +
                     "ity on.", new string[] {
                         "ignore"});
-#line 129
+#line 128
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 130
+#line 129
     testRunner.Given("I am user \"TestUser3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 131
+#line 130
  testRunner.And("I create an organization \"Org1\" with no parent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 132
+#line 131
  testRunner.And("I create an organization \"Org2\" with no parent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 133
+#line 132
  testRunner.And("I create a course template \"FindMe1\" for organization \"Org1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 134
+#line 133
  testRunner.And("I create a course template \"DontFindMe\" for organization \"Org2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 135
+#line 134
  testRunner.And("I create a role \"CurriculumCoordinator\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
+#line 135
  testRunner.And("I give capability CourseCreate to role \"CurriculumCoordinator\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 137
+#line 136
  testRunner.And("I give role \"CurriculumCoordinator\" to user \"TestUser3\" for object Org1 of type o" +
                     "rganization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
+#line 137
  testRunner.When("I get the course templates for organization \"Org2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "OrgName"});
-#line 139
+#line 138
  testRunner.Then("the course templates returned are:", ((string)(null)), table22, "Then ");
 #line hidden
             this.ScenarioCleanup();
