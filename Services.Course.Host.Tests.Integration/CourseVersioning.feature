@@ -80,6 +80,33 @@ Scenario: Create a course version from a previously-published version
 	| VersionNumber | 2.0a                          |
 	| IsPublished   | false                         |
 
+Scenario: Create a course version from a previously-published version with segments
+	Given I have the following course segments for 'English 1010'
+	| Name        | Description                    | Type       | ParentSegment |
+	| Week1       | First week is slack time       | TimeSpan   |               |
+	| Discussion  | Discussion for the first week  | Discussion | Week1         |
+	| Discussion2 | Discussion2 for the first week | Discussion | Week1         |
+	| Topic       | Topic for a discussion         | Topic      | Discussion    |
+	When I publish the following courses
+	| Name         | Note      |
+	| English 1010 | Blah blah |
+	And I create a new version of 'English 1010' course named 'English 1010 v2' with the following info
+	| Field         | Value |
+	| VersionNumber | 2.0a  |
+	Then the course 'English 1010 v2' should have the following info
+	| Field         | Value                         |
+	| Name          | English 1010                  |
+	| Code          | ENG101                        |
+	| Description   | Ranji's awesome English Class |
+	| VersionNumber | 2.0a                          |
+	| IsPublished   | false                         |
+	And the course 'English 1010 v2' should have these course segments
+	| Name        | Description                    | Type       | ParentSegment |
+	| Week1       | First week is slack time       | TimeSpan   |               |
+	| Discussion  | Discussion for the first week  | Discussion | Week1         |
+	| Discussion2 | Discussion2 for the first week | Discussion | Week1         |
+	| Topic       | Topic for a discussion         | Topic      | Discussion    |
+
 Scenario: Cannot publish the same version twice
 	When I publish the following courses
 	| Name         | Note      |

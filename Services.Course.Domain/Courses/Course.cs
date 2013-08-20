@@ -216,24 +216,15 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         protected override VersionableEntity Clone()
         {
-            return new Course
-                {
-                    Id = Guid.NewGuid(),
-                    Name = this.Name,
-                    Code = this.Code,
-                    Description = this.Description,
+            var course = AutoMapper.Mapper.Map<Course>(this);
+            course.Id = Guid.NewGuid();
 
-                    Programs = new List<Program>(this.Programs),
-                    Segments = new List<CourseSegment>(this.Segments),
-                    SupportedOutcomes = new List<LearningOutcome>(this.SupportedOutcomes),
-                    Prerequisites = new List<Course>(this.Prerequisites),
+            foreach (var courseSegment in course.Segments)
+            {
+                courseSegment.Id = Guid.NewGuid();
+            }
 
-                    TenantId = this.TenantId,
-                    OrganizationId = this.OrganizationId,
-
-                    Template = this.Template,
-                    ActiveFlag = true
-                };
+            return course;
         }
 
         #region CourseLearningActivity
