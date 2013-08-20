@@ -5,20 +5,17 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 {
     public static class DeleteOperations
     {
-        public static HttpResponseMessage CourseLearningActivity(CourseLearningActivityResource learningActivity)
+        public static HttpResponseMessage DeleteResource(IResource resource)
         {
-            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(learningActivity.ResourceUri).Result;
-            return response;
-        }
-
-        public static HttpResponseMessage LearningOutcome(LearningOutcomeResource learningOutcome)
-        {
-            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(learningOutcome.ResourceUri).Result;
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resource.ResourceUri).Result;
+            Whens.ResponseMessages.Add(response);
+            
             return response;
         }
     }

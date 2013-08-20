@@ -204,12 +204,9 @@ this.FeatureBackground();
             table8.AddRow(new string[] {
                         "Description",
                         "third learning outcome"});
-            table8.AddRow(new string[] {
-                        "TenantId",
-                        "999999"});
 #line 42
  testRunner.And("I update \'first learning outcome\' learning outcome with the following info", ((string)(null)), table8, "And ");
-#line 46
+#line 45
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -220,7 +217,7 @@ this.FeatureBackground();
         public virtual void PublishedVersionCannotBeDeleted()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Published version cannot be deleted", ((string[])(null)));
-#line 48
+#line 47
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -231,11 +228,11 @@ this.FeatureBackground();
             table9.AddRow(new string[] {
                         "first learning outcome",
                         "Blah blah"});
-#line 49
+#line 48
  testRunner.When("I publish the following learning outcomes", ((string)(null)), table9, "When ");
-#line 52
+#line 51
  testRunner.And("I delete the \'first learning outcome\' learning outcome", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
+#line 52
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -246,7 +243,7 @@ this.FeatureBackground();
         public virtual void CreateALearningOutcomeVersionFromAPreviously_PublishedVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a learning outcome version from a previously-published version", ((string[])(null)));
-#line 55
+#line 54
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -257,7 +254,7 @@ this.FeatureBackground();
             table10.AddRow(new string[] {
                         "first learning outcome",
                         "Blah blah"});
-#line 56
+#line 55
  testRunner.When("I publish the following learning outcomes", ((string)(null)), table10, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -266,7 +263,7 @@ this.FeatureBackground();
             table11.AddRow(new string[] {
                         "VersionNumber",
                         "2.0a"});
-#line 59
+#line 58
  testRunner.And("I create a new version of \'first learning outcome\' outcome named \'NewOutcome\' wit" +
                     "h the following info", ((string)(null)), table11, "And ");
 #line hidden
@@ -282,7 +279,7 @@ this.FeatureBackground();
             table12.AddRow(new string[] {
                         "IsPublished",
                         "false"});
-#line 62
+#line 61
  testRunner.Then("the learning outcome \'NewOutcome\' should contain", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -293,7 +290,7 @@ this.FeatureBackground();
         public virtual void CannotPublishTheSameVersionTwice()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot publish the same version twice", ((string[])(null)));
-#line 68
+#line 67
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -304,7 +301,7 @@ this.FeatureBackground();
             table13.AddRow(new string[] {
                         "first learning outcome",
                         "Blah blah"});
-#line 69
+#line 68
  testRunner.When("I publish the following learning outcomes", ((string)(null)), table13, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -313,10 +310,10 @@ this.FeatureBackground();
             table14.AddRow(new string[] {
                         "VersionNumber",
                         "1.0.0.0"});
-#line 72
+#line 71
  testRunner.And("I create a new version of \'first learning outcome\' outcome named \'NewOutcome\' wit" +
                     "h the following info", ((string)(null)), table14, "And ");
-#line 75
+#line 74
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -327,7 +324,7 @@ this.FeatureBackground();
         public virtual void CannotPublishWithoutAVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot publish without a version", ((string[])(null)));
-#line 77
+#line 76
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -338,10 +335,10 @@ this.FeatureBackground();
             table15.AddRow(new string[] {
                         "VersionNumber",
                         ""});
-#line 78
+#line 77
  testRunner.When("I create a new version of \'first learning outcome\' outcome named \'NewOutcome\' wit" +
                     "h the following info", ((string)(null)), table15, "When ");
-#line 81
+#line 80
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

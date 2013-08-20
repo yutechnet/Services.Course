@@ -42,7 +42,6 @@ Scenario: Published version cannot be modified
 	And I update 'first learning outcome' learning outcome with the following info
 	| Field       | Value                  |
 	| Description | third learning outcome |
-	| TenantId    | 999999                 |
 	Then I get 'Forbidden' response
 
 Scenario: Published version cannot be deleted

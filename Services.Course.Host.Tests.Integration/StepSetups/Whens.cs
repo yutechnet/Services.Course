@@ -40,8 +40,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             {
                 var outcome = Givens.LearningOutcomes[row["Description"]];
 
-                var response = PutOperations.ProgramSupportsLearningOutcome(program, outcome);
-                response.EnsureSuccessStatusCode();
+                PutOperations.ProgramSupportsLearningOutcome(program, outcome);
             }
         }
 
@@ -56,8 +55,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var request in requests)
             {
-                var resource = PostOperations.CreateEntityLearningOutcome(request.Description, course, request);
-                resource.Response.EnsureSuccessStatusCode();
+                PostOperations.CreateEntityLearningOutcome(request.Description, course, request);
             }
         }
 
@@ -70,8 +68,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             {
                 var outcome = Givens.LearningOutcomes[row["Description"]];
 
-                var response = PutOperations.CourseSupportsLearningOutcome(course, outcome);
-                ResponseMessages.Add(response);
+                PutOperations.CourseSupportsLearningOutcome(course, outcome);
             }
         }
 
@@ -84,8 +81,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             {
                 var outcome = Givens.LearningOutcomes[row["Description"]];
 
-                var response = PutOperations.SegmentSupportsLearningOutcome(segment, outcome);
-                ResponseMessages.Add(response);
+                PutOperations.SegmentSupportsLearningOutcome(segment, outcome);
             }
         }
 
@@ -97,8 +93,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             course.Dto = GetOperations.GetCourse(course.ResourceUri);
 
-            var response = PutOperations.AssociateCourseWithPrograms(course, new List<ProgramResource> {program});
-            ResponseMessages.Add(response);
+            PutOperations.AssociateCourseWithPrograms(course, new List<ProgramResource> {program});
         }
 
         [When(@"I associate '(.*)' course with the following programs")]
@@ -109,8 +104,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             course.Dto = GetOperations.GetCourse(course.ResourceUri);
 
-            var response = PutOperations.AssociateCourseWithPrograms(course, programs);
-            ResponseMessages.Add(response);
+            PutOperations.AssociateCourseWithPrograms(course, programs);
         }
 
         [When(@"I remove '(.*)' course from '(.*)'")]
@@ -121,8 +115,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             course.Dto = GetOperations.GetCourse(course.ResourceUri);
 
-            var response = PutOperations.DisassociateCourseWithPrograms(course, new List<ProgramResource> {program});
-            ResponseMessages.Add(response);
+            PutOperations.DisassociateCourseWithPrograms(course, new List<ProgramResource> {program});
         }
 
         [When(@"the outcome '(.*)' supports the following outcomes")]
@@ -135,8 +128,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var supportedOutcome = Givens.LearningOutcomes[row["Description"]];
 
                 //TODO: This is an issue... supportingOutcome and supoortedOutcome should be flipped
-                var response = PutOperations.OutcomeSupportsLearningOutcome(supportedOutcome, supportingOutcome);
-                ResponseMessages.Add(response);
+                PutOperations.OutcomeSupportsLearningOutcome(supportedOutcome, supportingOutcome);
             }
         }
 
@@ -150,8 +142,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var supportingOutcome = Givens.LearningOutcomes[row["Description"]];
 
                 //TODO: This is an issue... supportingOutcome and supoortedOutcome should be flipped
-                var response = PutOperations.OutcomeSupportsLearningOutcome(supportingOutcome, supportedOutcome);
-                ResponseMessages.Add(response);
+                PutOperations.OutcomeSupportsLearningOutcome(supportingOutcome, supportedOutcome);
             }
         }
 
@@ -167,8 +158,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var supportingOutcome in supportingOutcomes)
             {
-                var response = PutOperations.OutcomeDoesNotSupportLearningOutcome(supportingOutcome.Value, supportedOutcome);
-                ResponseMessages.Add(response);
+                PutOperations.OutcomeDoesNotSupportLearningOutcome(supportingOutcome.Value, supportedOutcome);
             }
         }
 
@@ -182,8 +172,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var learningOutcomeName in learningOutcomeNames)
             {
                 var learningOutcome = Givens.LearningOutcomes[learningOutcomeName];
-                var response = PutOperations.ProgramDoesNotSupportLearningOutcome(programResource, learningOutcome);
-                ResponseMessages.Add(response);
+                PutOperations.ProgramDoesNotSupportLearningOutcome(programResource, learningOutcome);
             }
         }
 
@@ -199,8 +188,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                         PublishNote = row["Note"]
                     };
 
-                var response = PutOperations.PublishCourse(course, request);
-                ResponseMessages.Add(response);
+                PutOperations.PublishCourse(course, request);
             }
         }
 
@@ -216,8 +204,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     PublishNote = row["Note"]
                 };
 
-                var response = PutOperations.PublishLearningOutcome(learningOutcome, request);
-                ResponseMessages.Add(response);
+                PutOperations.PublishLearningOutcome(learningOutcome, request);
             }
         }
 
@@ -233,8 +220,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     PrerequisiteIds = prerequisiteIds
                 };
 
-            var response = PutOperations.SetCoursePrerequisites(course, request);
-            ResponseMessages.Add(response);
+            PutOperations.SetCoursePrerequisites(course, request);
         }
 
         [When(@"I add the following learning activity to '(.*)' course segment")]
@@ -243,27 +229,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var segment = Givens.Segments[segmentName];
 
             var request = table.CreateInstance<SaveCourseLearningActivityRequest>();
-            var resource = PostOperations.CreateCourseLearningActivity(request.Name, segment, request);
-
-            ResponseMessages.Add(resource.Response);
+            PostOperations.CreateCourseLearningActivity(request.Name, segment, request);
         }
 
         [When(@"I retrieve the course learning activity '(.*)'")]
         public void WhenIRetrieveTheCourseLearningActivity(string activityName)
         {
             var resource = Givens.CourseLearningActivities[activityName];
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(resource.ResourceUri).Result;
-
-            ResponseMessages.Add(response);
+            GetOperations.GetCourseLearningActivity(resource.ResourceUri);
         }
 
         [When(@"I remove ""(.*)"" learning activity")]
         public void WhenIRemoveLearningActivity(string activityName)
         {
             var resource = Givens.CourseLearningActivities[activityName];
-
-            var response = DeleteOperations.CourseLearningActivity(resource);
-            ResponseMessages.Add(response);
+            DeleteOperations.DeleteResource(resource);
         }
 
         [When(@"I update '(.*)' learning activity with the following info")]
@@ -273,8 +253,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             
             var learningActivity = table.CreateInstance<SaveCourseLearningActivityRequest>();
 
-            var response = PutOperations.UpdateCourseLearningActivity(resourse, learningActivity);
-            ResponseMessages.Add(response);
+            PutOperations.UpdateCourseLearningActivity(resourse, learningActivity);
         }
 
         [When(@"I change the '(.*)' learning outcome description to '(.*)'")]
@@ -287,8 +266,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Description = newDescription
                 };
 
-            var response = PutOperations.UpdateLearningOutcome(resource, request);
-            ResponseMessages.Add(response);
+            PutOperations.UpdateLearningOutcome(resource, request);
         }
 
         [When(@"I update '(.*)' learning outcome with the following info")]
@@ -297,17 +275,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var resource = Givens.LearningOutcomes[leaningOutcomeName];
             var request = table.CreateInstance<OutcomeRequest>();
 
-            var response = PutOperations.UpdateLearningOutcome(resource, request);
-            ResponseMessages.Add(response);
+            PutOperations.UpdateLearningOutcome(resource, request);
         }
 
         [When(@"I get the learning outcome '(.*)'")]
         public void WhenIGetTheLearningOutcome(string leaningOutcomeName)
         {
             var resource = Givens.LearningOutcomes[leaningOutcomeName];
-
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(resource.ResourceUri.ToString()).Result;
-            ResponseMessages.Add(response);
+            GetOperations.GetLearningOutcome(resource.ResourceUri);
         }
 
         [When(@"I delete the '(.*)' learning outcome")]
@@ -315,17 +290,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var resource = Givens.LearningOutcomes[leaningOutcomeName];
 
-            var response = DeleteOperations.LearningOutcome(resource);
-            ResponseMessages.Add(response);
+            DeleteOperations.DeleteResource(resource);
         }
 
         [When(@"I retrieve '(.*)' course")]
         public void WhenIRetrieveCourse(string courseName)
         {
-            var getUri = Givens.Courses[courseName].ResourceUri;
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(getUri).Result;
-
-            ResponseMessages.Add(response);
+            var resource = Givens.Courses[courseName];
+            GetOperations.GetCourse(resource.ResourceUri);
         }
 
         [When(@"I update '(.*)' course with the following info")]
@@ -334,9 +306,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Givens.Courses[courseName];
             var updateCourseRequest = table.CreateInstance<UpdateCourseRequest>();
 
-            var response = PutOperations.UpdateCourse(course, updateCourseRequest);
-
-            ResponseMessages.Add(response);
+            PutOperations.UpdateCourse(course, updateCourseRequest);
         }
 
         [When(@"I create a new version of '(.*)' course named '(.*)' with the following info")]
@@ -347,8 +317,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Givens.Courses[courseName];         
             request.ParentVersionId = course.Id;
 
-            var resource = PostOperations.CreateCourseVersion(newVersionName, request);
-            ResponseMessages.Add(resource.Response);
+            PostOperations.CreateCourseVersion(newVersionName, request);
         }
 
         [When(@"I update the course segments as follows")]
@@ -386,8 +355,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 Content = table.Rows.Select(row => new Content { Id = Guid.Parse(row["Id"]), Type = row["Type"] }).ToList()
             };
 
-            var reponse = PutOperations.UpdateCourseSegmentRequest(resource, request);
-            ResponseMessages.Add(reponse);
+            PutOperations.UpdateCourseSegmentRequest(resource, request);
         }
 
         [When(@"I delete the following segments")]
@@ -398,8 +366,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var segmentName in segmentNames)
             {
                 var resource = Givens.Segments[segmentName];
-                var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resource.ResourceUri).Result;
-                ResponseMessages.Add(response);
+                DeleteOperations.DeleteResource(resource);
             }
         }
 

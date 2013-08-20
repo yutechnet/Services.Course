@@ -229,7 +229,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LearningOutcomeVersioning.feature</DependentUpon>
     </Compile>
-    <Compile Include="LearningOutcomeVersioningSteps.cs" />
     <Compile Include="Operations\DeleteOperations.cs" />
     <Compile Include="Resources\CourseLearningActivityResource.cs" />
     <Compile Include="ProgramAssociation.feature.cs">
