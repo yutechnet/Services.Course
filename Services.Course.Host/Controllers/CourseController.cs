@@ -22,8 +22,15 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         // GET api/programs
+		//[ClaimsAuth("ViewCourses")]
         public IEnumerable<CourseInfoResponse> Get(ODataQueryOptions options)
         {
+			// get orgs/objs for which user has viewcourse capability (maybe a matrix later)
+
+			// if user does not have capabilty viewcourse on any orgs or objs return unauthorized/ or return empty collection
+
+			// add orgids and objectids filter criteria
+   
             return _courseService.Search(Request.RequestUri.Query);
         }
 
@@ -36,7 +43,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
-        // POST api/courses
+		// POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
             var courseInfoResponse = _courseService.Create(request);

@@ -83,8 +83,10 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 
         public IList<Courses.Course> ODataQuery(string queryString)
         {
+			
             var criteria = _session.ODataQuery<Courses.Course>(queryString);
             criteria.Add(Restrictions.Eq("ActiveFlag", true));
+			
             var courses = criteria.List<Courses.Course>();
 
             return courses;

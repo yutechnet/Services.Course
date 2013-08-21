@@ -66,6 +66,8 @@ namespace BpeProducts.Services.Course.Domain
 
         public IEnumerable<CourseInfoResponse> Search(string queryString)
         {
+		    
+
             var queryArray = queryString.Split('?');
             var courses = _courseRepository.ODataQuery(queryArray.Length > 1 ? queryArray[1] : "");
 
