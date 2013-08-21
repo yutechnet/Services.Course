@@ -63,9 +63,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 {
                     Description = row["Description"],
                     Name = row["Name"],
-                    TenantId = ApiFeature.TenantId,
-                    ProgramType = "BA",
-                    OrganizationId = Guid.NewGuid()
+                    ProgramType = row["ProgramType"],
+                    OrganizationId = Guid.Parse(row["OrganizationId"])
                 };
 
                 var result = PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);

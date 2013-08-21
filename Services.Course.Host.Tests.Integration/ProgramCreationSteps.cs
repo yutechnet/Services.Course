@@ -152,19 +152,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.That(_programs.Any(p => p.Id == _secondProgramResponse.Id));
         }
 
-        [Then(@"my program information is as follows:")]
-        public void ThenMyProgramInformationIsAsFollows(Table table)
-        {
-            var programId = _programResponse.Id;
-            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + programId).Result;
-            result.EnsureSuccessStatusCode();
-            _programResponse = result.Content.ReadAsAsync<ProgramResponse>().Result;
-            
-            Assert.That(_programResponse.Name, Is.EqualTo(_programRequest.Name));
-            Assert.That(_programResponse.Description, Is.EqualTo(_programRequest.Description));
-        }
-
-
         [Then(@"my program information is changed")]
         public void ThenMyProgramInformationIsChanged()
         {

@@ -5,13 +5,15 @@ Feature: ProgramCreation
 	I want to create, edit and delete a program
 
 Scenario: Create a basic program
-	Given I have a program with following info:
-	| Name                  | Description | ProgramType | OrganizationId                       | Tenant |
-	| Bachelor's of Science | Economics   | MA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | 999999 |
-	When I submit a request to create a program
-	Then my program information is as follows:
-	| Name                  | Description | ProgramType | OrganizationId                       | Tenant |
-	| Bachelor's of Science | Economics   | MA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | 999999 |
+	Given I have the following programs
+	| Name                | Description | ProgramType | OrganizationId                       |
+	| Bachelor of Science | Economics   | MA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	Then the program 'Bachelor of Science' contains
+	| Field          | Value                                |
+	| Name           | Bachelor of Science                  |
+	| Description    | Economics                            |
+	| ProgramType    | MA                                   |
+	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 
 Scenario: Modify a program
 	Given I have a program with following info:

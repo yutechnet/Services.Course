@@ -208,7 +208,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseVersioning.feature</DependentUpon>
     </Compile>
-    <Compile Include="CourseVersioningSteps.cs" />
     <Compile Include="CourseCreateCapability.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

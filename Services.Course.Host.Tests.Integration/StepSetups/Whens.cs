@@ -382,8 +382,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             PostOperations.CreateLearningOutcomeVersion(newOutcomeName, resource, versionRequest);
         }
 
-        //TODO: Refactor
-
         [When(@"I create a course without a version")]
         public void WhenICreateACourseWithoutAVersion()
         {
@@ -393,20 +391,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     VersionNumber = null
                 };
 
-            var postUri = string.Format("{0}/version", FeatureContext.Current.Get<string>("CourseLeadingPath"));
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, versionRequest, new JsonMediaTypeFormatter()).Result;
-
-            ScenarioContext.Current["ResponseToValidate"] = response;
-            ResponseMessages.Add(response);
+            PostOperations.CreateCourseVersion("badversion", versionRequest);
         }
 
         [When(@"I delete '(.*)' course")]
         public void WhenIDeleteCourse(string courseName)
         {
-            var resourceUri = Givens.Courses[courseName].ResourceUri;
-            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resourceUri).Result;
+            var resource = Givens.Courses[courseName];
 
-            ResponseMessages.Add(response);
+            DeleteOperations.DeleteResource(resource);
         }
 
         [When(@"I create a course under organization (.*)")]
@@ -420,14 +413,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 Code = "ENG101",
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false,
-                TenantId = 999999,
                 OrganizationId = orgObjectNameId
             };
 
-            var postUri = FeatureContext.Current.Get<string>("CourseLeadingPath");
-            var httpResponseMessage = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(postUri, saveCourseRequest).Result;
-
-            ScenarioContext.Current["httpResponseMessage"] = httpResponseMessage;     
+            PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
         }
 
         [When(@"I get the course templates for organization ""(.*)"" to scenario context name ""(.*)""")]

@@ -373,6 +373,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             table.CompareToSet(actualIds);
         }
 
+        [Then(@"the program '(.*)' contains")]
+        public void ThenTheProgramContains(string programName, Table table)
+        {
+            var resource = Givens.Programs[programName];
+            var program = GetOperations.GetProgram(resource.ResourceUri);
+
+            table.CompareToInstance(program);
+        }
+
         private static void IndexNodes(Guid parentSegmentId, IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<string, CourseSegmentInfo> index)
         {
             foreach (var courseSegmentInfo in segmentInfos)
