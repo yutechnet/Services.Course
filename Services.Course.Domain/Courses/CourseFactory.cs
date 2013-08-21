@@ -46,7 +46,17 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         protected Course BuildFromTemplate(Course template, SaveCourseRequest request)
         {
-            //var course = Mapper.Map<Entities.Course>(request);
+            
+            //var course = Mapper.Map<Course>(template);
+
+            //course.Id = Guid.NewGuid();
+            //course.Name = request.Name;
+            //course.Code = request.Code;
+            //course.Description = request.Description;
+            //course.OrganizationId = request.OrganizationId;
+            //course.ActiveFlag = true;
+            //course.IsTemplate = request.IsTemplate;
+
 
             var course = new Course
                 {

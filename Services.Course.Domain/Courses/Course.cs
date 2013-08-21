@@ -218,12 +218,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             var course = AutoMapper.Mapper.Map<Course>(this);
             course.Id = Guid.NewGuid();
-
-            foreach (var courseSegment in course.Segments)
-            {
-                courseSegment.Id = Guid.NewGuid();
-            }
-
             return course;
         }
 

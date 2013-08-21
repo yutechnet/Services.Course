@@ -37,20 +37,30 @@ namespace BpeProducts.Services.Course.Host.App_Start
 				  .ForMember(dest => dest.PrerequisiteCourseIds, opt => opt.MapFrom(course => course.Prerequisites.Select(p => p.Id).ToList()));
 		    Mapper.CreateMap<Domain.Courses.CourseSegment, CourseSegmentInfo>();
 		    Mapper.CreateMap<Domain.Courses.CourseLearningActivity, CourseLearningActivityResponse>();
-            Mapper.CreateMap<Domain.Courses.Course, Domain.Courses.Course>();
+
 
 			// From DTOs to Domain Entities
 			Mapper.CreateMap<SaveCourseRequest, Domain.Courses.Course>()
 			      .ForMember(x => x.Id, opt => opt.Ignore());
 			Mapper.CreateMap<SaveCourseSegmentRequest, CourseSegmentInfo>();
 		    Mapper.CreateMap<CourseSegmentInfo, Domain.Courses.CourseSegment>();
-            Mapper.CreateMap<Domain.Courses.CourseSegment, Domain.Courses.CourseSegment>();
 
 		    Mapper.CreateMap<CourseSegmentAdded, CourseSegmentInfo>();
 
 		    Mapper.CreateMap<SaveCourseLearningActivityRequest, Domain.Courses.CourseLearningActivity>()
                 .ForMember(x =>x.Id, opt=>opt.Ignore());
-		    //
+
+            //for course deep copy purpose
+            Mapper.CreateMap<Domain.Courses.Course, Domain.Courses.Course>()
+                .ForMember(dest=>dest.IsPublished, opt=>opt.UseValue(false)); 
+
+            Mapper.CreateMap<Domain.Courses.CourseSegment, Domain.Courses.CourseSegment>()
+		          .ForMember(dest => dest.Id, opt => opt.MapFrom(dest => Guid.NewGuid()));
+
+		    Mapper.CreateMap<Domain.Courses.CourseLearningActivity, Domain.Courses.CourseLearningActivity>()
+		          .ForMember(dest => dest.Id, opt => opt.MapFrom(dest => Guid.NewGuid()));
+
+
 		}
 
         private static void OutcomeMappings()
