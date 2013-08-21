@@ -14,7 +14,7 @@ namespace BpeProducts.Services.Course.Domain
             where T : IDomainEvent
             where TE : class
         {
-            return Apply(msg as CourseSegmentUpdated, entity as Courses.Course) as TE;
+            return Apply(msg as CourseSegmentDeleted, entity as Courses.Course) as TE;
         }
     }
 }

@@ -65,6 +65,16 @@ Scenario: Delete the course segment
 	| Name     | Description | Type       | ParentSegment |
 	| Segment1 | Segment 1   | TimeSpan   |               |
 	| Segment5 | Segment 5   | Topic      | Segment1      |
+	Given I have the following course segments for 'Math 101'
+	| Name     | Description | Type       | ParentSegment |
+	| Segment6 | Segment 1   | TimeSpan   | Segment1      |
+	| Segment7 | Segment 2   | Discussion | Segment5      |
+	Then the course 'Math 101' should have these course segments
+	| Name     | Description | Type       | ParentSegment |
+	| Segment1 | Segment 1   | TimeSpan   |               |
+	| Segment5 | Segment 5   | Topic      | Segment1      |
+	| Segment6 | Segment 1   | TimeSpan   | Segment1      |
+	| Segment7 | Segment 2   | Discussion | Segment5      |
 
 Scenario: Retrieve the course segment tree from anywhere in the structure
 	Given I have the following course segments for 'Math 101'
