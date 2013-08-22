@@ -11,10 +11,12 @@ namespace BpeProducts.Services.Course.Domain
     public class VersionableEntityFactory : IVersionableEntityFactory
     {
         private readonly IRepository _repository;
+        private readonly ICourseFactory _courseFactory;
 
-        public VersionableEntityFactory(IRepository repository)
+        public VersionableEntityFactory(IRepository repository, ICourseFactory courseFactory)
         {
             _repository = repository;
+            _courseFactory = courseFactory;
         }
 
         public VersionableEntity Get(string entityType, Guid id)
@@ -35,8 +37,16 @@ namespace BpeProducts.Services.Course.Domain
 
         public VersionableEntity Get(Type type, Guid id)
         {
-            // var type = Type.GetType(entityNamespace + entityType);
-            var versionable = _repository.Get(type, id) as VersionableEntity;
+            VersionableEntity versionable;
+
+            if (type.Name == typeof(Courses.Course).Name)
+            {
+                versionable = _courseFactory.Reconstitute(id);
+            }
+            else
+            {
+                versionable = _repository.Get(type, id) as VersionableEntity;
+            }
 
             if (versionable == null)
                 throw new NotFoundException(string.Format("{0} {1} is not found.", type.Name, id));

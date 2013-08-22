@@ -108,6 +108,33 @@ Scenario: Publish a course version, created from a template
 	| Bachelor of Art     |
 	| Bachelor of Science |
 
+Scenario: Version a course, which was created from a template
+	Given I associate 'Template 1' course with the following programs
+	| Program Name        |
+	| Bachelor of Art     |
+	| Bachelor of Science |
+	And I create a course from the template 'Template 1' with the following
+	| Name         | Code   | Description                   | OrganizationId                       | CourseType | IsTemplate |
+	| English 1010 | ENG101 | Ranji's awesome English Class | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Competency | false      |
+	When I publish the following courses
+	| Name         | Note      |
+	| English 1010 | Blah blah |
+	And I create a new version of 'English 1010' course named 'English 1010 v2' with the following info
+	| Field         | Value |
+	| VersionNumber | 2.0a  |
+	Then the course 'English 1010 v2' should have the following info
+	| Field         | Value                         |
+	| Name          | English 1010                  |
+	| Code          | ENG101                        |
+	| Description   | Ranji's awesome English Class |
+	| CourseType    | Traditional                   |
+	| IsPublished   | false                         |
+	| VersionNumber | 2.0a                          |
+	And the course 'English 1010 v2' includes the following programs
+	| Program Name        |
+	| Bachelor of Art     |
+	| Bachelor of Science |
+
 @ignore
 Scenario: I can see course templates for an organization I have CreateCourse capability on.
     Given I am user "TestUser3"

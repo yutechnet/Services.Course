@@ -66,7 +66,7 @@ namespace BpeProducts.Services.Course.Domain
 
             if (entity.IsPublished)
             {
-                throw new BadRequestException(string.Format("{0} {1} is already published and cannot be published again."));
+                throw new BadRequestException(string.Format("{0} {1} is already published and cannot be published again.", entityType, entityId));
             }
 
             _domainEvents.Raise<VersionPublished>(new VersionPublished
