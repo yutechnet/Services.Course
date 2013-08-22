@@ -7,6 +7,7 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Domain;
+using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
@@ -17,19 +18,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
     public class VersionableEntityFactoryTests
     {
         private Mock<IRepository> _mockRepository;
+        private Mock<ICourseFactory> _mockCourseFactory;
         private VersionableEntityFactory _factory;
 
         [SetUp]
         public void SetUp()
         {
             _mockRepository = new Mock<IRepository>();
-            _factory = new VersionableEntityFactory(_mockRepository.Object);
+            _mockCourseFactory = new Mock<ICourseFactory>();
+            _factory = new VersionableEntityFactory(_mockRepository.Object, _mockCourseFactory.Object);
         }
 
         [Test]
         public void Can_locate_type_from_entity_assembly()
         {
-            _mockRepository.Setup(r => r.Get(It.IsAny<Type>(), It.IsAny<Guid>())).Returns(new Domain.Courses.Course());
+            _mockCourseFactory.Setup(c => c.Reconstitute(It.IsAny<Guid>())).Returns(new Domain.Courses.Course());
+            _mockRepository.Setup(r => r.Get(It.IsAny<Type>(), It.IsAny<Guid>())).Returns(new LearningOutcome());
 
             var entityType = "course";
             var versionableEntity = _factory.Get(entityType, Guid.NewGuid());
