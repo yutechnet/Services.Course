@@ -73,8 +73,16 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 courseSegment.Id = Guid.NewGuid();
                 courseSegment.Course = course;
             }
+            var programs = new List<Program>();
+            foreach (var program in template.Programs)
+            {
+                programs.Add(Mapper.Map(program,new Program()));
+                
+                
+            }
+           // course.SetPrograms(template.Programs);
+            course.Programs = programs;
 
-            course.Programs = new List<Program>(template.Programs);
             course.SupportedOutcomes = new List<LearningOutcome>(template.SupportedOutcomes);
 
             course.CourseType = template.CourseType;

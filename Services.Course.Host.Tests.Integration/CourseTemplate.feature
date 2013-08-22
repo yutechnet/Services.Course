@@ -119,7 +119,11 @@ Scenario: Version a course, which was created from a template
 	When I publish the following courses
 	| Name         | Note      |
 	| English 1010 | Blah blah |
-	And I create a new version of 'English 1010' course named 'English 1010 v2' with the following info
+	#Then the course 'English 1010' includes the following programs
+	#| Program Name        |
+	#| Bachelor of Art     |
+	#| Bachelor of Science |
+	When I create a new version of 'English 1010' course named 'English 1010 v2' with the following info
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the course 'English 1010 v2' should have the following info
