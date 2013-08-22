@@ -1,6 +1,7 @@
 ﻿using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+using NHibernate.Linq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -427,6 +428,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var httpResponseMessage = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(postUri, saveCourseRequest).Result;
 
             ScenarioContext.Current["httpResponseMessage"] = httpResponseMessage;     
+        }
+
+        [When(@"I get the course templates for organization ""(.*)"" to scenario context name ""(.*)""")]
+        public void WhenIGetTheCourseTemplatesForOrganizationToScenarioContextName(string organizationName, string scenarioContextName)
+        {
+            var organizationId = ScenarioContext.Current[organizationName].As<Guid>();
+            List<Guid> courseTemplateIds = GetOperations.GetCourseTemplateIds(organizationId);
+            ScenarioContext.Current[scenarioContextName] = courseTemplateIds;
         }
     }
 }

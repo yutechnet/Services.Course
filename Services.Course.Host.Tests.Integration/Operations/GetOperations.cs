@@ -82,5 +82,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                        ? response.Content.ReadAsAsync<List<OutcomeInfo>>().Result
                        : null;
         }
+
+        public static List<Guid> GetCourseTemplateIds(Guid organizationId)
+        {
+            //TODO: Replace with we implement the service.
+            return new List<Guid> { Guid.NewGuid() };
+        }
     }
 }

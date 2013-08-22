@@ -5,6 +5,7 @@ using System.Net;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+using NHibernate.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -363,6 +364,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var actual = (from o in courseInfo.SupportedOutcomes select o.Description).ToList();
 
             CollectionAssert.AreEquivalent(expected, actual);
+        }
+
+        [Then(@"the course template Ids in ""(.*)"" are:")]
+        public void ThenTheCourseTemplateIdsInAre(string scenarioContextName, Table table)
+        {
+            var actualIds = ScenarioContext.Current[scenarioContextName].As<List<string>>();
+            table.CompareToSet(actualIds);
         }
 
         private static void IndexNodes(Guid parentSegmentId, IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<string, CourseSegmentInfo> index)
