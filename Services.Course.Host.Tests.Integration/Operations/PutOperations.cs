@@ -189,5 +189,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             Whens.ResponseMessages.Add(response);
             return response;
         }
+
+        public static HttpResponseMessage UpdateResource(IResource resource, object request)
+        {
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(resource.ResourceUri.ToString(), request).Result;
+
+            Whens.ResponseMessages.Add(response);
+            return response;
+        }
     }
 }

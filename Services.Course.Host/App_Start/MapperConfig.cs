@@ -26,6 +26,7 @@ namespace BpeProducts.Services.Course.Host.App_Start
                         Code = c.Code
                     }).ToList()));
 			Mapper.CreateMap<SaveProgramRequest, Program>();
+            Mapper.CreateMap<UpdateProgramRequest, Program>();
 		}
 
 		private static void CourseMappings()

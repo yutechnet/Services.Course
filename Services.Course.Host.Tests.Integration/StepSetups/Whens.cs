@@ -419,7 +419,47 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
         }
 
-        [When(@"I get the course templates for organization ""(.*)"" to scenario context name ""(.*)""")]
+        [When(@"I modify the program '(.*)' info to reflect the following")]
+        public void WhenIModifyTheProgramInfoToReflectTheFollowing(string programName, Table table)
+        {
+            var resource = Givens.Programs[programName];
+            var request = table.CreateInstance<UpdateProgramRequest>();
+
+            PutOperations.UpdateResource(resource, request);
+        }
+
+        [When(@"I delete the program '(.*)'")]
+        public void WhenIDeleteTheProgram(string programName)
+        {
+            var resource = Givens.Programs[programName];
+            DeleteOperations.DeleteResource(resource);
+        }
+
+        [When(@"I get the program '(.*)'")]
+        public void WhenIGetTheProgram(string programName)
+        {
+            var resource = Givens.Programs[programName];
+            GetOperations.GetProgram(resource.ResourceUri);
+        }
+
+        [When(@"I attempt to create the following programs")]
+        public void WhenIAttemptToCreateTheFollowingPrograms(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var saveProgramRequest = new SaveProgramRequest
+                {
+                    Description = row["Description"],
+                    Name = row["Name"],
+                    ProgramType = row["ProgramType"],
+                    OrganizationId = Guid.Parse(row["OrganizationId"])
+                };
+
+                PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
+            }
+        }
+
+	[When(@"I get the course templates for organization ""(.*)"" to scenario context name ""(.*)""")]
         public void WhenIGetTheCourseTemplatesForOrganizationToScenarioContextName(string organizationName, string scenarioContextName)
         {
             var organizationId = ScenarioContext.Current[organizationName].As<Guid>();

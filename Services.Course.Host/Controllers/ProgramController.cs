@@ -60,7 +60,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		[CheckModelForNull]
 		[ValidateModelState]
 		// PUT api/programs/5
-		public HttpResponseMessage Put(Guid id, SaveProgramRequest request)
+		public HttpResponseMessage Put(Guid id, UpdateProgramRequest request)
 		{
             _programService.Update(id, request);
 			var response = Request.CreateResponse(HttpStatusCode.OK);

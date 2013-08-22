@@ -13,7 +13,7 @@ namespace BpeProducts.Services.Course.Domain
         IEnumerable<ProgramResponse> Search(string queryString);
 
         ProgramResponse Create(SaveProgramRequest request);
-        void Update(Guid programId, SaveProgramRequest request);
+        void Update(Guid programId, UpdateProgramRequest request);
         void Delete(Guid programId);
     }
 }

@@ -22,7 +22,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public ProgramResponse Search(Guid programId)
         {
-            var program = _repository.Get<Entities.Program>(programId);
+            var program = _repository.Get<Program>(programId);
             if (program == null || !program.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
@@ -34,9 +34,9 @@ namespace BpeProducts.Services.Course.Domain
         {
             var queryArray = queryString.Split('?');
             ICriteria criteria =
-                _repository.ODataQuery<Entities.Program>(queryArray.Length > 1 ? queryArray[1] : "");
+                _repository.ODataQuery<Program>(queryArray.Length > 1 ? queryArray[1] : "");
             criteria.Add(Restrictions.Eq("ActiveFlag", true));
-            var programs = criteria.List<Domain.Entities.Program>();
+            var programs = criteria.List<Program>();
             var programResponses = new List<ProgramResponse>();
             Mapper.Map(programs, programResponses);
             return programResponses;
@@ -49,13 +49,14 @@ namespace BpeProducts.Services.Course.Domain
             return Mapper.Map<ProgramResponse>(program);
         }
 
-        public void Update(Guid programId, SaveProgramRequest request)
+        public void Update(Guid programId, UpdateProgramRequest request)
         {
             var program = _repository.Get<Program>(programId);
             if (program == null || !program.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
             }
+
             Mapper.Map(request, program);
             _repository.Save(program);
         }

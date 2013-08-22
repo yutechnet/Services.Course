@@ -382,6 +382,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             table.CompareToInstance(program);
         }
 
+        [Then(@"I have the following programs")]
+        public void ThenIHaveTheFollowingPrograms(Table table)
+        {
+            var expectedPrograms = table.CreateSet<ProgramResponse>().OrderBy(p => p.Name);
+            var actualPrograms = GetOperations.GetAllPrograms();
+
+            foreach (var expectedProgram in expectedPrograms)
+            {
+                var actualProgram = actualPrograms.First(p => p.Name == expectedProgram.Name);
+
+                Assert.That(actualProgram.Description, Is.EqualTo(expectedProgram.Description));
+                Assert.That(actualProgram.OrganizationId, Is.EqualTo(expectedProgram.OrganizationId));
+                Assert.That(actualProgram.ProgramType, Is.EqualTo(expectedProgram.ProgramType));
+            }
+        }
+
         private static void IndexNodes(Guid parentSegmentId, IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<string, CourseSegmentInfo> index)
         {
             foreach (var courseSegmentInfo in segmentInfos)

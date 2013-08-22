@@ -72,29 +72,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
         }
 
-        [When(@"I modify the program info to reflect the following:")]
-        public void WhenIModifyTheProgramInfoToReflectTheFollowing(Table table)
-        {
-            _editProgramRequest = new SaveProgramRequest
-                {
-                    Name = table.Rows[0]["Name"] + ScenarioContext.Current.Get<long>("ticks"),
-                    Description = table.Rows[0]["Description"],
-                    TenantId = int.Parse(table.Rows[0]["Tenant"]),
-                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
-                    ProgramType = table.Rows[0]["ProgramType"]
-                };
-
-            _responseMessageToValidate = ApiFeature.ApiTestHost.Client.PutAsync(_leadingPath + "/" + _programResponse.Id, _editProgramRequest, new JsonMediaTypeFormatter()).Result;
-            _responseMessageToValidate.EnsureSuccessStatusCode();
-        }
-
-        [When(@"I delete the program")]
-        public void WhenIDeleteTheProgram()
-        {
-            _responseMessageToValidate = ApiFeature.ApiTestHost.Client.DeleteAsync(_leadingPath + "/" + _programResponse.Id).Result;
-            _responseMessageToValidate.EnsureSuccessStatusCode();
-        }
-
         [When(@"I create a new program with (.*), (.*), (.*)")]
         public void WhenICreateANewProgramWith(string tenant, string name, string description)
         {

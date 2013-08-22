@@ -83,7 +83,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                        : null;
         }
 
-        public static List<Guid> GetCourseTemplateIds(Guid organizationId)
+        public static List<ProgramResponse> GetAllPrograms()
+        {
+            var uri = string.Format("{0}/program", ApiFeature.LeadingPath);
+            var response = ApiFeature.ApiTestHost.Client.GetAsync(uri).Result;
+            Whens.ResponseMessages.Add(response);
+
+            return response.IsSuccessStatusCode
+                       ? response.Content.ReadAsAsync<List<ProgramResponse>>().Result
+                       : null;
+        }
+
+	public static List<Guid> GetCourseTemplateIds(Guid organizationId)
         {
             //TODO: Replace with we implement the service.
             return new List<Guid> { Guid.NewGuid() };

@@ -121,35 +121,50 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId",
-                        "Tenant"});
+                        "OrganizationId"});
             table3.AddRow(new string[] {
-                        "Bachelor\'s of Science",
+                        "Bachelor of Science",
                         "Economics",
-                        "BA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "999999"});
+                        "MA",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 19
- testRunner.Given("I have a program with following info:", ((string)(null)), table3, "Given ");
-#line 22
- testRunner.When("I submit a request to create a program", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have the following programs", ((string)(null)), table3, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "ProgramType",
-                        "OrganizationId",
-                        "Tenant"});
+                        "Field",
+                        "Value"});
             table4.AddRow(new string[] {
-                        "Bachelor\'s of Art",
-                        "English",
-                        "BA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "999999"});
-#line 23
- testRunner.And("I modify the program info to reflect the following:", ((string)(null)), table4, "And ");
-#line 26
- testRunner.Then("my program information is changed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                        "Name",
+                        "Bachelor of Arts"});
+            table4.AddRow(new string[] {
+                        "Description",
+                        "English"});
+            table4.AddRow(new string[] {
+                        "ProgramType",
+                        "BA"});
+            table4.AddRow(new string[] {
+                        "OrganizationId",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+#line 22
+ testRunner.When("I modify the program \'Bachelor of Science\' info to reflect the following", ((string)(null)), table4, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table5.AddRow(new string[] {
+                        "Name",
+                        "Bachelor of Arts"});
+            table5.AddRow(new string[] {
+                        "Description",
+                        "English"});
+            table5.AddRow(new string[] {
+                        "ProgramType",
+                        "BA"});
+            table5.AddRow(new string[] {
+                        "OrganizationId",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+#line 28
+ testRunner.Then("the program \'Bachelor of Science\' contains", ((string)(null)), table5, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -159,27 +174,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeleteAProgram()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a program", ((string[])(null)));
-#line 28
+#line 35
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId",
-                        "Tenant"});
-            table5.AddRow(new string[] {
-                        "Bachelor\'s of Science",
+                        "OrganizationId"});
+            table6.AddRow(new string[] {
+                        "Bachelor of Science",
                         "Economics",
                         "BA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "999999"});
-#line 29
- testRunner.Given("I have an existing program with following info:", ((string)(null)), table5, "Given ");
-#line 32
- testRunner.When("I delete the program", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 33
- testRunner.Then("the program no longer exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+#line 36
+ testRunner.Given("I have the following programs", ((string)(null)), table6, "Given ");
+#line 39
+ testRunner.When("I delete the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 40
+ testRunner.And("I get the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.Then("I get \'NotFound\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -189,77 +204,82 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GetAllPrograms()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get all programs", ((string[])(null)));
-#line 35
+#line 43
 this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "ProgramType",
-                        "OrganizationId",
-                        "Tenant"});
-            table6.AddRow(new string[] {
-                        "Bachelor\'s of Science",
-                        "Economics",
-                        "AA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "999999"});
-#line 36
- testRunner.Given("I have a program with following info:", ((string)(null)), table6, "Given ");
-#line 39
- testRunner.When("I submit a request to create a program", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId",
-                        "Tenant"});
+                        "OrganizationId"});
             table7.AddRow(new string[] {
-                        "Bachelor\'s of Art",
+                        "Bachelor of Science",
+                        "Economics",
+                        "MA",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+            table7.AddRow(new string[] {
+                        "Bachelor of Arts",
                         "Philosophy",
                         "AA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "999999"});
-#line 40
- testRunner.And("I submit another request to create another program", ((string)(null)), table7, "And ");
-#line 43
- testRunner.And("I request to get all programs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 44
- testRunner.Then("my program is returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I have the following programs", ((string)(null)), table7, "Given ");
 #line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Return 404 when program id is not found")]
-        [NUnit.Framework.TestCaseAttribute("NotFound", null)]
-        public virtual void Return404WhenProgramIdIsNotFound(string status, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Return 404 when program id is not found", exampleTags);
-#line 46
-this.ScenarioSetup(scenarioInfo);
-#line 47
- testRunner.When("I request a program id that does not exist", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "ProgramType",
+                        "OrganizationId"});
+            table8.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "Economics",
+                        "MA",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+            table8.AddRow(new string[] {
+                        "Bachelor of Arts",
+                        "Philosophy",
+                        "AA",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 48
- testRunner.Then(string.Format("I should get the expected status code {0}", status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I have the following programs", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Unable to create program due to missing info")]
-        [NUnit.Framework.TestCaseAttribute("Bachelor\'s of Science", "", "BadRequest", "999999", null)]
-        [NUnit.Framework.TestCaseAttribute("", "Economics", "BadRequest", "999999", null)]
-        public virtual void UnableToCreateProgramDueToMissingInfo(string name, string description, string status, string tenant, string[] exampleTags)
+        public virtual void UnableToCreateProgramDueToMissingInfo()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unable to create program due to missing info", exampleTags);
-#line 54
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unable to create program due to missing info", ((string[])(null)));
+#line 53
 this.ScenarioSetup(scenarioInfo);
-#line 55
- testRunner.When(string.Format("I create a new program with {0}, {1}, {2}", tenant, name, description), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 56
- testRunner.Then(string.Format("I should get the expected status code {0}", status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "ProgramType",
+                        "OrganizationId"});
+            table9.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "",
+                        "MA",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+            table9.AddRow(new string[] {
+                        "",
+                        "Economics",
+                        "MA",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+#line 54
+ testRunner.When("I attempt to create the following programs", ((string)(null)), table9, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "StatusCode"});
+            table10.AddRow(new string[] {
+                        "BadRequest"});
+            table10.AddRow(new string[] {
+                        "BadRequest"});
+#line 58
+ testRunner.Then("I get the following responses", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
