@@ -218,6 +218,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             var course = AutoMapper.Mapper.Map<Course>(this);
             course.Id = Guid.NewGuid();
+            course.Programs = new List<Program>(this.Programs);
+            SupportedOutcomes = new List<LearningOutcome>(this.SupportedOutcomes);
+            Prerequisites = new List<Course>(this.Prerequisites);
+
             return course;
         }
 

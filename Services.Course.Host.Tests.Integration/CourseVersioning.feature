@@ -6,8 +6,9 @@ Feature: CourseVersioning
 
 Background: 
 	Given I have the following courses
-	| Name         | Code   | Description                   | OrganizationName | CourseType  | IsTemplate |
-	| English 1010 | ENG101 | Ranji's awesome English Class | Default          | Traditional | false      |
+	| Name         | Code   | Description                   | OrganizationId                       | CourseType  | IsTemplate |
+	| English 1010 | ENG101 | Ranji's awesome English Class | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
+	| English 101011	 | E10011   | Macroeconomics        | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
 
 Scenario: Create a default version
 	Then the course 'English 1010' should have the following info
@@ -30,6 +31,7 @@ Scenario: Edit a course version
 	| Code           | ENG10101                             |
 	| Description    | Ranji's terrible English Class       |
 	| VersionNumber  | 1.0.0.0                              |
+	| OrganizationId | C3885307-BDAD-480F-8E7C-51DFE5D80387 |
 	| IsTemplate     | true                                 |
 
 Scenario: Publish a course version
@@ -54,6 +56,7 @@ Scenario: Published version cannot be modified
 	| Name           | English 10101                        |
 	| Code           | ENG101                               |
 	| Description    | Johns's terrible English Class       |
+	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	Then I get 'Forbidden' response
 
 Scenario: Published version cannot be deleted
@@ -77,6 +80,31 @@ Scenario: Create a course version from a previously-published version
 	| Description   | Ranji's awesome English Class |
 	| VersionNumber | 2.0a                          |
 	| IsPublished   | false                         |
+
+@ignore
+Scenario: Create a course version from a previously-published version with prerequisites
+	When I publish the following courses
+	| Name         | Note      |
+	| English 101011 | Blah blah |
+	And I add the following prerequisites to 'English 1010'
+	| Name			 | 
+	| English 101011 | 
+	And I publish the following courses
+	| Name         | Note      |
+	| English 1010 | Blah blah |
+	And I create a new version of 'English 1010' course named 'English 1010 v2' with the following info
+	| Field         | Value |
+	| VersionNumber | 2.0a  |
+	Then the course 'English 1010 v2' should have the following info
+	| Field         | Value                         |
+	| Name          | English 1010                  |
+	| Code          | ENG101                        |
+	| Description   | Ranji's awesome English Class |
+	| VersionNumber | 2.0a                          |
+	| IsPublished   | false                         |
+	And the course 'English 1010 v2' should have the following prerequisites
+	| Name     | 
+	| English 101011 | 
 
 Scenario: Create a course version from a previously-published version with segments
 	Given I have the following course segments for 'English 1010'

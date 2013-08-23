@@ -6,5 +6,6 @@ namespace BpeProducts.Services.Course.Domain.Events
 	{
 		public Guid AggregateId { get; set; }
 		public Guid PrerequisiteCourseId { get; set; }
+        public Courses.Course PrerequisiteCourse { get; set; }
 	}
 }

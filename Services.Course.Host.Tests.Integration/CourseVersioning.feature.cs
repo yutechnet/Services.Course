@@ -85,6 +85,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Default",
                         "Traditional",
                         "false"});
+            table1.AddRow(new string[] {
+                        "English 101011",
+                        "E10011",
+                        "Macroeconomics",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Traditional",
+                        "False"});
 #line 8
  testRunner.Given("I have the following courses", ((string)(null)), table1, "Given ");
 #line hidden
@@ -95,7 +102,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void CreateADefaultVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a default version", ((string[])(null)));
-#line 12
+#line 13
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -115,7 +122,7 @@ this.FeatureBackground();
             table2.AddRow(new string[] {
                         "VersionNumber",
                         "1.0.0.0"});
-#line 13
+#line 14
  testRunner.Then("the course \'English 1010\' should have the following info", ((string)(null)), table2, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -126,7 +133,7 @@ this.FeatureBackground();
         public virtual void EditACourseVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Edit a course version", ((string[])(null)));
-#line 20
+#line 21
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -146,7 +153,7 @@ this.FeatureBackground();
             table3.AddRow(new string[] {
                         "IsTemplate",
                         "true"});
-#line 21
+#line 22
  testRunner.When("I update \'English 1010\' course with the following info", ((string)(null)), table3, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -167,7 +174,7 @@ this.FeatureBackground();
             table4.AddRow(new string[] {
                         "IsTemplate",
                         "true"});
-#line 27
+#line 28
  testRunner.Then("the course \'English 1010\' should have the following info", ((string)(null)), table4, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -178,7 +185,7 @@ this.FeatureBackground();
         public virtual void PublishACourseVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Publish a course version", ((string[])(null)));
-#line 35
+#line 36
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -189,7 +196,7 @@ this.FeatureBackground();
             table5.AddRow(new string[] {
                         "English 1010",
                         "Blah blah"});
-#line 36
+#line 37
  testRunner.When("I publish the following courses", ((string)(null)), table5, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -213,7 +220,7 @@ this.FeatureBackground();
             table6.AddRow(new string[] {
                         "PublishNote",
                         "Blah blah"});
-#line 39
+#line 40
  testRunner.Then("the course \'English 1010\' should have the following info", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -224,7 +231,7 @@ this.FeatureBackground();
         public virtual void PublishedVersionCannotBeModified()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Published version cannot be modified", ((string[])(null)));
-#line 48
+#line 49
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -235,7 +242,7 @@ this.FeatureBackground();
             table7.AddRow(new string[] {
                         "English 1010",
                         "Blah blah"});
-#line 49
+#line 50
  testRunner.When("I publish the following courses", ((string)(null)), table7, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -250,9 +257,12 @@ this.FeatureBackground();
             table8.AddRow(new string[] {
                         "Description",
                         "Johns\'s terrible English Class"});
-#line 52
+            table8.AddRow(new string[] {
+                        "OrganizationId",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+#line 53
  testRunner.And("I update \'English 1010\' course with the following info", ((string)(null)), table8, "And ");
-#line 57
+#line 59
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -263,7 +273,7 @@ this.FeatureBackground();
         public virtual void PublishedVersionCannotBeDeleted()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Published version cannot be deleted", ((string[])(null)));
-#line 59
+#line 61
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -274,11 +284,11 @@ this.FeatureBackground();
             table9.AddRow(new string[] {
                         "English 1010",
                         "Blah blah"});
-#line 60
+#line 62
  testRunner.When("I publish the following courses", ((string)(null)), table9, "When ");
-#line 63
+#line 65
  testRunner.And("I delete \'English 1010\' course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
+#line 66
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -289,7 +299,7 @@ this.FeatureBackground();
         public virtual void CreateACourseVersionFromAPreviously_PublishedVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a course version from a previously-published version", ((string[])(null)));
-#line 66
+#line 68
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -300,7 +310,7 @@ this.FeatureBackground();
             table10.AddRow(new string[] {
                         "English 1010",
                         "Blah blah"});
-#line 67
+#line 69
  testRunner.When("I publish the following courses", ((string)(null)), table10, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -309,7 +319,7 @@ this.FeatureBackground();
             table11.AddRow(new string[] {
                         "VersionNumber",
                         "2.0a"});
-#line 70
+#line 72
  testRunner.And("I create a new version of \'English 1010\' course named \'English 1010 v2\' with the " +
                     "following info", ((string)(null)), table11, "And ");
 #line hidden
@@ -331,8 +341,86 @@ this.FeatureBackground();
             table12.AddRow(new string[] {
                         "IsPublished",
                         "false"});
-#line 73
+#line 75
  testRunner.Then("the course \'English 1010 v2\' should have the following info", ((string)(null)), table12, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Create a course version from a previously-published version with prerequisites")]
+        [NUnit.Framework.IgnoreAttribute()]
+        public virtual void CreateACourseVersionFromAPreviously_PublishedVersionWithPrerequisites()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a course version from a previously-published version with prerequisites", new string[] {
+                        "ignore"});
+#line 85
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table13.AddRow(new string[] {
+                        "English 101011",
+                        "Blah blah"});
+#line 86
+ testRunner.When("I publish the following courses", ((string)(null)), table13, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table14.AddRow(new string[] {
+                        "English 101011"});
+#line 89
+ testRunner.And("I add the following prerequisites to \'English 1010\'", ((string)(null)), table14, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table15.AddRow(new string[] {
+                        "English 1010",
+                        "Blah blah"});
+#line 92
+ testRunner.And("I publish the following courses", ((string)(null)), table15, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table16.AddRow(new string[] {
+                        "VersionNumber",
+                        "2.0a"});
+#line 95
+ testRunner.And("I create a new version of \'English 1010\' course named \'English 1010 v2\' with the " +
+                    "following info", ((string)(null)), table16, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table17.AddRow(new string[] {
+                        "Name",
+                        "English 1010"});
+            table17.AddRow(new string[] {
+                        "Code",
+                        "ENG101"});
+            table17.AddRow(new string[] {
+                        "Description",
+                        "Ranji\'s awesome English Class"});
+            table17.AddRow(new string[] {
+                        "VersionNumber",
+                        "2.0a"});
+            table17.AddRow(new string[] {
+                        "IsPublished",
+                        "false"});
+#line 98
+ testRunner.Then("the course \'English 1010 v2\' should have the following info", ((string)(null)), table17, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table18.AddRow(new string[] {
+                        "English 101011"});
+#line 105
+ testRunner.And("the course \'English 1010 v2\' should have the following prerequisites", ((string)(null)), table18, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -342,168 +430,38 @@ this.FeatureBackground();
         public virtual void CreateACourseVersionFromAPreviously_PublishedVersionWithSegments()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a course version from a previously-published version with segments", ((string[])(null)));
-#line 81
+#line 83
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "Type",
-                        "ParentSegment"});
-            table13.AddRow(new string[] {
-                        "Week1",
-                        "First week is slack time",
-                        "TimeSpan",
-                        ""});
-            table13.AddRow(new string[] {
-                        "Discussion",
-                        "Discussion for the first week",
-                        "Discussion",
-                        "Week1"});
-            table13.AddRow(new string[] {
-                        "Discussion2",
-                        "Discussion2 for the first week",
-                        "Discussion",
-                        "Week1"});
-            table13.AddRow(new string[] {
-                        "Topic",
-                        "Topic for a discussion",
-                        "Topic",
-                        "Discussion"});
-#line 82
- testRunner.Given("I have the following course segments for \'English 1010\'", ((string)(null)), table13, "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Note"});
-            table14.AddRow(new string[] {
-                        "English 1010",
-                        "Blah blah"});
-#line 88
- testRunner.When("I publish the following courses", ((string)(null)), table14, "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field",
-                        "Value"});
-            table15.AddRow(new string[] {
-                        "VersionNumber",
-                        "2.0a"});
-#line 91
- testRunner.And("I create a new version of \'English 1010\' course named \'English 1010 v2\' with the " +
-                    "following info", ((string)(null)), table15, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field",
-                        "Value"});
-            table16.AddRow(new string[] {
-                        "Name",
-                        "English 1010"});
-            table16.AddRow(new string[] {
-                        "Code",
-                        "ENG101"});
-            table16.AddRow(new string[] {
-                        "Description",
-                        "Ranji\'s awesome English Class"});
-            table16.AddRow(new string[] {
-                        "VersionNumber",
-                        "2.0a"});
-            table16.AddRow(new string[] {
-                        "IsPublished",
-                        "false"});
-#line 94
- testRunner.Then("the course \'English 1010 v2\' should have the following info", ((string)(null)), table16, "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "Type",
-                        "ParentSegment"});
-            table17.AddRow(new string[] {
-                        "Week1",
-                        "First week is slack time",
-                        "TimeSpan",
-                        ""});
-            table17.AddRow(new string[] {
-                        "Discussion",
-                        "Discussion for the first week",
-                        "Discussion",
-                        "Week1"});
-            table17.AddRow(new string[] {
-                        "Discussion2",
-                        "Discussion2 for the first week",
-                        "Discussion",
-                        "Week1"});
-            table17.AddRow(new string[] {
-                        "Topic",
-                        "Topic for a discussion",
-                        "Topic",
-                        "Discussion"});
-#line 101
- testRunner.And("the course \'English 1010 v2\' should have these course segments", ((string)(null)), table17, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Create a course version from a previously-published version with segments and lea" +
-            "rning activities")]
-        public virtual void CreateACourseVersionFromAPreviously_PublishedVersionWithSegmentsAndLearningActivities()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a course version from a previously-published version with segments and lea" +
-                    "rning activities", ((string[])(null)));
-#line 108
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "Type",
-                        "ParentSegment"});
-            table18.AddRow(new string[] {
-                        "Week1",
-                        "First week is slack time",
-                        "TimeSpan",
-                        ""});
-            table18.AddRow(new string[] {
-                        "Discussion",
-                        "Discussion for the first week",
-                        "Discussion",
-                        "Week1"});
-            table18.AddRow(new string[] {
-                        "Discussion2",
-                        "Discussion2 for the first week",
-                        "Discussion",
-                        "Week1"});
-            table18.AddRow(new string[] {
-                        "Topic",
-                        "Topic for a discussion",
-                        "Topic",
-                        "Discussion"});
-#line 109
- testRunner.Given("I have the following course segments for \'English 1010\'", ((string)(null)), table18, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
+                        "Description",
                         "Type",
-                        "IsGradeable",
-                        "IsExtraCredit",
-                        "Weight",
-                        "MaxPoint",
-                        "ObjectId"});
+                        "ParentSegment"});
             table19.AddRow(new string[] {
-                        "Discussion 1",
+                        "Week1",
+                        "First week is slack time",
+                        "TimeSpan",
+                        ""});
+            table19.AddRow(new string[] {
                         "Discussion",
-                        "True",
-                        "true",
-                        "100",
-                        "20",
-                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 115
- testRunner.And("I add the following course learning activities to \'Week1\' course segment", ((string)(null)), table19, "And ");
+                        "Discussion for the first week",
+                        "Discussion",
+                        "Week1"});
+            table19.AddRow(new string[] {
+                        "Discussion2",
+                        "Discussion2 for the first week",
+                        "Discussion",
+                        "Week1"});
+            table19.AddRow(new string[] {
+                        "Topic",
+                        "Topic for a discussion",
+                        "Topic",
+                        "Discussion"});
+#line 84
+ testRunner.Given("I have the following course segments for \'English 1010\'", ((string)(null)), table13, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -511,8 +469,8 @@ this.FeatureBackground();
             table20.AddRow(new string[] {
                         "English 1010",
                         "Blah blah"});
-#line 118
- testRunner.When("I publish the following courses", ((string)(null)), table20, "When ");
+#line 90
+ testRunner.When("I publish the following courses", ((string)(null)), table14, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -520,7 +478,7 @@ this.FeatureBackground();
             table21.AddRow(new string[] {
                         "VersionNumber",
                         "2.0a"});
-#line 121
+#line 93
  testRunner.And("I create a new version of \'English 1010\' course named \'English 1010 v2\' with the " +
                     "following info", ((string)(null)), table21, "And ");
 #line hidden
@@ -542,8 +500,8 @@ this.FeatureBackground();
             table22.AddRow(new string[] {
                         "IsPublished",
                         "false"});
-#line 124
- testRunner.Then("the course \'English 1010 v2\' should have the following info", ((string)(null)), table22, "Then ");
+#line 96
+ testRunner.Then("the course \'English 1010 v2\' should have the following info", ((string)(null)), table16, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -570,34 +528,164 @@ this.FeatureBackground();
                         "Topic for a discussion",
                         "Topic",
                         "Discussion"});
-#line 131
- testRunner.And("the course \'English 1010 v2\' should have these course segments", ((string)(null)), table23, "And ");
+#line 103
+ testRunner.And("the course \'English 1010 v2\' should have these course segments", ((string)(null)), table17, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Create a course version from a previously-published version with segments and lea" +
+            "rning activities")]
+        public virtual void CreateACourseVersionFromAPreviously_PublishedVersionWithSegmentsAndLearningActivities()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a course version from a previously-published version with segments and lea" +
+                    "rning activities", ((string[])(null)));
+#line 110
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "Type",
+                        "ParentSegment"});
+            table24.AddRow(new string[] {
+                        "Week1",
+                        "First week is slack time",
+                        "TimeSpan",
+                        ""});
+            table24.AddRow(new string[] {
+                        "Discussion",
+                        "Discussion for the first week",
+                        "Discussion",
+                        "Week1"});
+            table24.AddRow(new string[] {
+                        "Discussion2",
+                        "Discussion2 for the first week",
+                        "Discussion",
+                        "Week1"});
+            table24.AddRow(new string[] {
+                        "Topic",
+                        "Topic for a discussion",
+                        "Topic",
+                        "Discussion"});
+#line 111
+ testRunner.Given("I have the following course segments for \'English 1010\'", ((string)(null)), table18, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Type",
+                        "IsGradeable",
+                        "IsExtraCredit",
+                        "Weight",
+                        "MaxPoint",
+                        "ObjectId"});
+            table25.AddRow(new string[] {
+                        "Discussion 1",
+                        "Discussion",
+                        "True",
+                        "true",
+                        "100",
+                        "20",
+                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+#line 117
+ testRunner.And("I add the following course learning activities to \'Week1\' course segment", ((string)(null)), table19, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table26.AddRow(new string[] {
+                        "English 1010",
+                        "Blah blah"});
+#line 120
+ testRunner.When("I publish the following courses", ((string)(null)), table20, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table24.AddRow(new string[] {
+            table27.AddRow(new string[] {
+                        "VersionNumber",
+                        "2.0a"});
+#line 123
+ testRunner.And("I create a new version of \'English 1010\' course named \'English 1010 v2\' with the " +
+                    "following info", ((string)(null)), table27, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table28.AddRow(new string[] {
+                        "Name",
+                        "English 1010"});
+            table28.AddRow(new string[] {
+                        "Code",
+                        "ENG101"});
+            table28.AddRow(new string[] {
+                        "Description",
+                        "Ranji\'s awesome English Class"});
+            table28.AddRow(new string[] {
+                        "VersionNumber",
+                        "2.0a"});
+            table28.AddRow(new string[] {
+                        "IsPublished",
+                        "false"});
+#line 126
+ testRunner.Then("the course \'English 1010 v2\' should have the following info", ((string)(null)), table22, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "Type",
+                        "ParentSegment"});
+            table29.AddRow(new string[] {
+                        "Week1",
+                        "First week is slack time",
+                        "TimeSpan",
+                        ""});
+            table29.AddRow(new string[] {
+                        "Discussion",
+                        "Discussion for the first week",
+                        "Discussion",
+                        "Week1"});
+            table29.AddRow(new string[] {
+                        "Discussion2",
+                        "Discussion2 for the first week",
+                        "Discussion",
+                        "Week1"});
+            table29.AddRow(new string[] {
+                        "Topic",
+                        "Topic for a discussion",
+                        "Topic",
+                        "Discussion"});
+#line 133
+ testRunner.And("the course \'English 1010 v2\' should have these course segments", ((string)(null)), table23, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table30.AddRow(new string[] {
                         "Name",
                         "Discussion 1"});
-            table24.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "Type",
                         "Discussion"});
-            table24.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "IsGradeable",
                         "true"});
-            table24.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "IsExtraCredit",
                         "true"});
-            table24.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "Weight",
                         "100"});
-            table24.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "MaxPoint",
                         "20"});
-            table24.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 137
+#line 139
  testRunner.And("my course learning activity \'Discussion 1\' contains the following", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -608,30 +696,30 @@ this.FeatureBackground();
         public virtual void CannotPublishTheSameVersionTwice()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot publish the same version twice", ((string[])(null)));
-#line 147
+#line 149
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Note"});
-            table25.AddRow(new string[] {
+            table31.AddRow(new string[] {
                         "English 1010",
                         "Blah blah"});
-#line 148
+#line 150
  testRunner.When("I publish the following courses", ((string)(null)), table25, "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table26.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "VersionNumber",
                         "1.0.0.0"});
-#line 151
+#line 153
  testRunner.And("I create a new version of \'English 1010\' course named \'English 1010 v2\' with the " +
                     "following info", ((string)(null)), table26, "And ");
-#line 154
+#line 156
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -642,13 +730,13 @@ this.FeatureBackground();
         public virtual void CannotPublishWithoutAVersion()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot publish without a version", ((string[])(null)));
-#line 156
+#line 158
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 157
+#line 159
  testRunner.When("I create a course without a version", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 158
+#line 160
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

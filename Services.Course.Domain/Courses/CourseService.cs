@@ -116,7 +116,7 @@ namespace BpeProducts.Services.Course.Domain
         public void UpdatePrerequisiteList(Guid courseId, List<Guid> prerequisiteIds)
         {
             var course = _courseRepository.Get(courseId);
-
+            var prerequisites = _courseRepository.Get(prerequisiteIds);
 			// Can't work directly off of course below since NHB will update the prereq list with any additions
 	        var beforeStateOfPrerequisites = new List<Guid>();
 			course.Prerequisites.Each(p => beforeStateOfPrerequisites.Add(p.Id));
@@ -133,24 +133,28 @@ namespace BpeProducts.Services.Course.Domain
                 // If all of the current prerequisite courses do not equal this incoming prerequisiteId, it's new
                 if (course.Prerequisites.All(existingPrereqs => existingPrereqs.Id != incomingPrereqId))
                 {
+                    var prereq = prerequisites.Single(p => p.Id == incomingPrereqId);
+                   
                     _domainEvents.Raise<CoursePrerequisiteAdded>(new CoursePrerequisiteAdded
                     {
                         AggregateId = courseId,
-                        PrerequisiteCourseId = incomingPrereqId
+                        PrerequisiteCourseId = incomingPrereqId,
+                        PrerequisiteCourse = prereq
                     });
                 }
             }
 
             // Determine prerequisites removed
-			foreach (var currentPrereqCourse in beforeStateOfPrerequisites)
+			foreach (var prerequisiteCourseId in beforeStateOfPrerequisites)
             {
                 // If all of the incoming prerequisite Ids do not equal this existing prerequisiteId, it's been removed
-                if (prerequisiteIds.All(incomingPrereqIds => incomingPrereqIds != currentPrereqCourse))
+                if (prerequisiteIds.All(incomingPrereqIds => incomingPrereqIds != prerequisiteCourseId))
                 {
                     _domainEvents.Raise<CoursePrerequisiteRemoved>(new CoursePrerequisiteRemoved
                     {
                         AggregateId = courseId,
-                        PrerequisiteCourseId = currentPrereqCourse
+                        PrerequisiteCourseId = prerequisiteCourseId,
+                        PrerequisiteCourse = prerequisites.Single(p => p.Id == prerequisiteCourseId)
                     });
                 }
             }

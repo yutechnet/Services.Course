@@ -73,6 +73,8 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<PlayCourseLearningActivityDeleted>().Keyed<IPlayEvent>(typeof(CourseLearningActivityDeleted).Name);
             containerBuilder.RegisterType<PlayVersionCreated>().Keyed<IPlayEvent>(typeof(VersionCreated).Name);
             containerBuilder.RegisterType<PlayVersionPublished>().Keyed<IPlayEvent>(typeof(VersionPublished).Name);
+            containerBuilder.RegisterType<PlayCoursePrerequisiteAdded>().Keyed<IPlayEvent>(typeof(CoursePrerequisiteAdded).Name);
+            containerBuilder.RegisterType<PlayCoursePrerequisiteRemoved>().Keyed<IPlayEvent>(typeof(CoursePrerequisiteRemoved).Name);
 
             containerBuilder.RegisterType<PlayOutcomeCreated>().Keyed<IPlayEvent>(typeof(OutcomeCreated).Name);
             containerBuilder.RegisterType<PlayOutcomeUpdated>().Keyed<IPlayEvent>(typeof(OutcomeUpdated).Name);

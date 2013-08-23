@@ -177,6 +177,7 @@
     <Compile Include="Courses\Events\PlayCourseLearningActivityAdded.cs" />
     <Compile Include="Courses\Events\PlayCourseLearningActivityDeleted.cs" />
     <Compile Include="Courses\Events\PlayCourseLearningActivityUpdated.cs" />
+    <Compile Include="Courses\Events\PlayCoursePrerequisiteAdded.cs" />
     <Compile Include="Courses\Events\PlayCourseSegmentDeleted.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
     <Compile Include="Courses\CourseSegment.cs" />
