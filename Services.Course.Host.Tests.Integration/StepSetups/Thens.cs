@@ -25,15 +25,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             table.CompareToInstance(actual);
         }
 
-        [Then(@"I should get a '(.*)' status for course '(.*)'")]
-        public void ThenIShouldGetAStatus(string status, string courseName)
-        {
-            var courseResource = Givens.Courses[courseName];
-
-            var expectedCode = (HttpStatusCode) Enum.Parse(typeof (HttpStatusCode), status);
-            Assert.That(courseResource.Response.StatusCode, Is.EqualTo(expectedCode));
-        }
-
         [Then(@"the course '(.*)' includes the following programs")]
         public void ThenTheCourseIncludesTheFollowingPrograms(string courseName, Table table)
         {

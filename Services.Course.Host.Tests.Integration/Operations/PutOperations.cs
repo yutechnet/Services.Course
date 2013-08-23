@@ -85,16 +85,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static HttpResponseMessage AssociateCourseWithPrograms(CourseResource course, IList<ProgramResource> programs)
         {
+            var courseInfo = GetOperations.GetCourse(course.ResourceUri);
+
             var saveCourseRequest = new SaveCourseRequest
             {
-                Code = course.Dto.Code,
-                Description = course.Dto.Description,
-                Name = course.Dto.Name,
-                ProgramIds = course.Dto.ProgramIds,
+                Code = courseInfo.Code,
+                Description = courseInfo.Description,
+                Name = courseInfo.Name,
+                ProgramIds = courseInfo.ProgramIds,
                 TenantId = ApiFeature.TenantId,
-                OrganizationId = course.Dto.OrganizationId,
-                IsTemplate = course.Dto.IsTemplate,
-                PrerequisiteCourseIds = course.Dto.PrerequisiteCourseIds
+                OrganizationId = courseInfo.OrganizationId,
+                IsTemplate = courseInfo.IsTemplate,
+                PrerequisiteCourseIds = courseInfo.PrerequisiteCourseIds
             };
 
             var programIds = (from p in programs select p.Id).ToList();
@@ -108,16 +110,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static HttpResponseMessage DisassociateCourseWithPrograms(CourseResource course, List<ProgramResource> programs)
         {
+            var courseInfo = GetOperations.GetCourse(course.ResourceUri);
+
             var saveCourseRequest = new SaveCourseRequest
             {
-                Code = course.Dto.Code,
-                Description = course.Dto.Description,
-                Name = course.Dto.Name,
-                ProgramIds = course.Dto.ProgramIds,
+                Code = courseInfo.Code,
+                Description = courseInfo.Description,
+                Name = courseInfo.Name,
+                ProgramIds = courseInfo.ProgramIds,
                 TenantId = ApiFeature.TenantId,
-                OrganizationId = course.Dto.OrganizationId,
-                IsTemplate = course.Dto.IsTemplate,
-                PrerequisiteCourseIds = course.Dto.PrerequisiteCourseIds
+                OrganizationId = courseInfo.OrganizationId,
+                IsTemplate = courseInfo.IsTemplate,
+                PrerequisiteCourseIds = courseInfo.PrerequisiteCourseIds
             };
 
             var idsToRemove = (from p in programs select p.Id).ToList();

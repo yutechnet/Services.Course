@@ -252,8 +252,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Givens.Courses[courseName];
             var programs = (from r in table.Rows select Givens.Programs[r["Program Name"]]).ToList();
 
-            course.Dto = GetOperations.GetCourse(course.ResourceUri);
-
             var response = PutOperations.AssociateCourseWithPrograms(course, programs);
             response.EnsureSuccessStatusCode();
         }

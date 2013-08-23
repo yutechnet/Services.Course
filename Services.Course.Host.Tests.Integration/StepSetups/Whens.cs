@@ -92,8 +92,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Givens.Courses[courseName];
             var program = Givens.Programs[programName];
 
-            course.Dto = GetOperations.GetCourse(course.ResourceUri);
-
             PutOperations.AssociateCourseWithPrograms(course, new List<ProgramResource> {program});
         }
 
@@ -103,8 +101,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Givens.Courses[courseName];
             var programs = (from r in table.Rows select Givens.Programs[r["Program Name"]]).ToList();
 
-            course.Dto = GetOperations.GetCourse(course.ResourceUri);
-
             PutOperations.AssociateCourseWithPrograms(course, programs);
         }
 
@@ -113,8 +109,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var course = Givens.Courses[courseName];
             var program = Givens.Programs[programName];
-
-            course.Dto = GetOperations.GetCourse(course.ResourceUri);
 
             PutOperations.DisassociateCourseWithPrograms(course, new List<ProgramResource> {program});
         }
