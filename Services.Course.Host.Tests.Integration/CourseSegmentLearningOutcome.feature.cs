@@ -75,12 +75,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Name",
                         "Code",
                         "Description",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table1.AddRow(new string[] {
                         "Math 101",
                         "M101",
                         "Basic mathematics",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 8
  testRunner.Given("I have the following courses", ((string)(null)), table1, "Given ");
 #line hidden

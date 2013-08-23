@@ -6,17 +6,17 @@ Feature: CoursePrerequisites
 
 Background: 
 	Given I have the following courses
-	| Name     | Code | Description           | OrganizationId                       | CourseType  | IsTemplate |
-	| Econ 100 | E100 | Macroeconomics        | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
-	| Econ 200 | E200 | Microeconomics        | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
-	| Econ 250 | E100 | Intro to Econometrics | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
-	| Econ 300 | E100 | Applied Econometrics  | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
-	| Econ 350 | E350 | Labor Economics       | 7DB51BC8-D0CD-44C5-9C67-C64021068B03 | Traditional | False      |
-	| Econ 400 | E400 | Advanced Econometrics | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
-	| Econ 450 | E100 | Financial Economics   | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
-	| Math 101 | M101 | Basic mathematics     | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
-	| Math 150 | M101 | Geometry              | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
-	| Math 200 | M200 | Calculus              | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
+	| Name     | Code | Description           | OrganizationName | CourseType  | IsTemplate |
+	| Econ 100 | E100 | Macroeconomics        | Default          | Traditional | False      |
+	| Econ 200 | E200 | Microeconomics        | Default          | Traditional | False      |
+	| Econ 250 | E100 | Intro to Econometrics | Default          | Traditional | False      |
+	| Econ 300 | E100 | Applied Econometrics  | Default          | Traditional | False      |
+	| Econ 350 | E350 | Labor Economics       | Default          | Traditional | False      |
+	| Econ 400 | E400 | Advanced Econometrics | Default          | Traditional | False      |
+	| Econ 450 | E100 | Financial Economics   | Default          | Traditional | False      |
+	| Math 101 | M101 | Basic mathematics     | Default          | Traditional | False      |
+	| Math 150 | M101 | Geometry              | Default          | Traditional | False      |
+	| Math 200 | M200 | Calculus              | Default          | Traditional | False      |
 
 Scenario: Add a course prerequisite
 	When I publish the following courses

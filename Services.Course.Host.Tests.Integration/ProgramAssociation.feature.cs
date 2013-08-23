@@ -75,17 +75,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table1.AddRow(new string[] {
                         "Bachelor of Art",
                         "BA Program",
                         "BA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
             table1.AddRow(new string[] {
                         "Bachelor of Science",
                         "BS program",
                         "BS",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 8
  testRunner.Given("I have the following programs", ((string)(null)), table1, "Given ");
 #line hidden
@@ -93,17 +93,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Name",
                         "Code",
                         "Description",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table2.AddRow(new string[] {
                         "English 101",
                         "ENG101",
                         "English 101",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
             table2.AddRow(new string[] {
                         "Psychology 101",
                         "PSY101",
                         "Psychology 101",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 12
  testRunner.And("I have the following courses", ((string)(null)), table2, "And ");
 #line hidden

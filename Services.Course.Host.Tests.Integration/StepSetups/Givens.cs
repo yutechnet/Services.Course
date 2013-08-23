@@ -64,7 +64,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Description = row["Description"],
                     Name = row["Name"],
                     ProgramType = row["ProgramType"],
-                    OrganizationId = Guid.Parse(row["OrganizationId"])
+                    OrganizationId = Account.Givens.Organizations[row["OrganizationName"]].Id,
                 };
 
                 var result = PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
@@ -87,7 +87,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Description = row["Description"],
                     Name = row["Name"],
                     TenantId = ApiFeature.TenantId,
-                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                    OrganizationId = Account.Givens.Organizations[row["OrganizationName"]].Id,
                     PrerequisiteCourseIds = new List<Guid>(),
                     CourseType = row.TryGetValue("CourseType", out type) ? (ECourseType)Enum.Parse(typeof(ECourseType), type) : ECourseType.Traditional,
                     IsTemplate = row.TryGetValue("IsTemplate", out isTemplate) && bool.Parse(isTemplate),

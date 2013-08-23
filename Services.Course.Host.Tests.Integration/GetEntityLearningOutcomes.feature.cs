@@ -75,22 +75,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table1.AddRow(new string[] {
                         "Program1",
                         "Program1",
                         "BA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
             table1.AddRow(new string[] {
                         "Program2",
                         "Program2",
                         "BS",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
             table1.AddRow(new string[] {
                         "Program3",
                         "Program3",
                         "MA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 8
  testRunner.Given("I have the following programs", ((string)(null)), table1, "Given ");
 #line hidden
@@ -98,22 +98,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Name",
                         "Code",
                         "Description",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table2.AddRow(new string[] {
                         "Course1",
                         "1",
                         "Course1",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
             table2.AddRow(new string[] {
                         "Course2",
                         "2",
                         "Course2",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
             table2.AddRow(new string[] {
                         "Course3",
                         "3",
                         "Course3",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 13
  testRunner.And("I have the following courses", ((string)(null)), table2, "And ");
 #line hidden

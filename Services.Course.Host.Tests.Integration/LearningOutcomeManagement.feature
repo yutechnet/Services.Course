@@ -31,11 +31,11 @@ Scenario: Delete an existing learning outcome
 
 Background: 
 Given I have the following programs
-	| Name | Description | ProgramType | OrganizationId                       |
-	| BA   | BA Program  | BA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Name | Description | ProgramType | OrganizationName |
+	| BA   | BA Program  | BA          | Default          |
 And I have the following courses
-	| Name        | Code   | Description                   | OrganizationId                       |
-	| English 101 | ENG101 | Ranji's awesome English class | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Name        | Code   | Description                   | OrganizationName |
+	| English 101 | ENG101 | Ranji's awesome English class | Default          |
 
 Scenario: Associate a new learning outcome to a program
 	Given I associate the newly created learning outcomes to 'BA' program

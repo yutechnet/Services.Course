@@ -402,22 +402,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             DeleteOperations.DeleteResource(resource);
         }
 
-        [When(@"I create a course under organization (.*)")]
-        public void WhenICreateACourseUnderOrganization(string orgObjectName)
-        {
-            var orgObjectNameId = (Guid)ScenarioContext.Current[orgObjectName];
-            var saveCourseRequest = new SaveCourseRequest
-            {
-                Name = "English 101",
-                Description = "English",
-                Code = "ENG101",
-                CourseType = ECourseType.Traditional,
-                IsTemplate = false,
-                OrganizationId = orgObjectNameId
-            };
+        //[When(@"I create a course under organization (.*)")]
+        //public void WhenICreateACourseUnderOrganization(string orgObjectName)
+        //{
+        //    var orgObjectNameId = (Guid)ScenarioContext.Current[orgObjectName];
+        //    var saveCourseRequest = new SaveCourseRequest
+        //    {
+        //        Name = "English 101",
+        //        Description = "English",
+        //        Code = "ENG101",
+        //        CourseType = ECourseType.Traditional,
+        //        IsTemplate = false,
+        //        OrganizationId = orgObjectNameId
+        //    };
 
-            PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
-        }
+        //    PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
+        //}
 
         [When(@"I modify the program '(.*)' info to reflect the following")]
         public void WhenIModifyTheProgramInfoToReflectTheFollowing(string programName, Table table)
@@ -452,14 +452,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Description = row["Description"],
                     Name = row["Name"],
                     ProgramType = row["ProgramType"],
-                    OrganizationId = Guid.Parse(row["OrganizationId"])
+                    OrganizationId = Account.Givens.Organizations[row["OrganizationName"]].Id
                 };
 
                 PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
             }
         }
 
-	[When(@"I get the course templates for organization ""(.*)"" to scenario context name ""(.*)""")]
+	    [When(@"I get the course templates for organization ""(.*)"" to scenario context name ""(.*)""")]
         public void WhenIGetTheCourseTemplatesForOrganizationToScenarioContextName(string organizationName, string scenarioContextName)
         {
             var organizationId = ScenarioContext.Current[organizationName].As<Guid>();

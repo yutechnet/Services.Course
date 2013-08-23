@@ -391,9 +391,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var expectedProgram in expectedPrograms)
             {
                 var actualProgram = actualPrograms.First(p => p.Name == expectedProgram.Name);
+                var expectedOrgId = expectedProgram.OrganizationId == Guid.Empty
+                                        ? Account.Givens.Organizations["Default"].Id
+                                        : expectedProgram.OrganizationId;
 
                 Assert.That(actualProgram.Description, Is.EqualTo(expectedProgram.Description));
-                Assert.That(actualProgram.OrganizationId, Is.EqualTo(expectedProgram.OrganizationId));
+                Assert.That(actualProgram.OrganizationId, Is.EqualTo(expectedOrgId));
                 Assert.That(actualProgram.ProgramType, Is.EqualTo(expectedProgram.ProgramType));
             }
         }

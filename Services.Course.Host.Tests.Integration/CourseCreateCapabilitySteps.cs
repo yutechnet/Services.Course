@@ -12,7 +12,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     public class CourseCreateCapabilitySteps
     {
         private const int TenantId = 999999;
-        private const string OrganizationUrl = "account/organization";
+        private const string OrganizationUrl = "https://devapi.thuze.com/Account/organization";
         private const string RoleUrl = "account/role";
         private const string PermissionUrl = "account/permission";
 
@@ -74,18 +74,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             ScenarioContext.Current[roleName] = roleId;
         }
 
-        [Given(@"I give capability (.*) to role ""(.*)""")]
-        public void GivenIGiveCapabilityToRole(string capability, string roleName)
-        {
-            if (capability == "")
-            {
-                return;
-            }
-            var capabilityEnum = (Capability)Enum.Parse(typeof(Capability), capability);
-            var roleId = (Guid)ScenarioContext.Current[roleName];
-            var roleResponse = GetRole(roleId);
-            UpdateRoleWithCapability(roleResponse, capabilityEnum);
-        }
+        //[Given(@"I give capability (.*) to role ""(.*)""")]
+        //public void GivenIGiveCapabilityToRole(string capability, string roleName)
+        //{
+        //    if (capability == "")
+        //    {
+        //        return;
+        //    }
+        //    var capabilityEnum = (Capability)Enum.Parse(typeof(Capability), capability);
+        //    var roleId = (Guid)ScenarioContext.Current[roleName];
+        //    var roleResponse = GetRole(roleId);
+        //    UpdateRoleWithCapability(roleResponse, capabilityEnum);
+        //}
 
         private RoleResponse GetRole(Guid roleId)
         {
@@ -156,6 +156,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
         public int? TenantId { get; set; }
 
+        public string Name { get; set; }
+
+        public List<Capability> Capabilities { get; set; }
+    }
+
+    public class UpdateRoleRequest
+    {
         public string Name { get; set; }
 
         public List<Capability> Capabilities { get; set; }

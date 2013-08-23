@@ -6,8 +6,8 @@ Feature: CourseSegment
 
 Background: 
 	Given I have the following courses
-	| Name     | Code | Description       | OrganizationId |
-	| Math 101 | M101 | Basic mathematics | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Name     | Code | Description       | OrganizationName |
+	| Math 101 | M101 | Basic mathematics | Default          |
 
 Scenario: Add course segment
 	Given I have the following course segments for 'Math 101'

@@ -79,12 +79,12 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table1.AddRow(new string[] {
                         "Bachelor of Science",
                         "Economics",
                         "MA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 8
  testRunner.Given("I have the following programs", ((string)(null)), table1, "Given ");
 #line hidden
@@ -121,12 +121,12 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table3.AddRow(new string[] {
                         "Bachelor of Science",
                         "Economics",
                         "MA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 19
  testRunner.Given("I have the following programs", ((string)(null)), table3, "Given ");
 #line hidden
@@ -181,12 +181,12 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table6.AddRow(new string[] {
                         "Bachelor of Science",
                         "Economics",
                         "BA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 36
  testRunner.Given("I have the following programs", ((string)(null)), table6, "Given ");
 #line 39
@@ -211,17 +211,17 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table7.AddRow(new string[] {
                         "Bachelor of Science",
                         "Economics",
                         "MA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
             table7.AddRow(new string[] {
                         "Bachelor of Arts",
                         "Philosophy",
                         "AA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 44
  testRunner.Given("I have the following programs", ((string)(null)), table7, "Given ");
 #line hidden
@@ -229,17 +229,17 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table8.AddRow(new string[] {
                         "Bachelor of Science",
                         "Economics",
                         "MA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
             table8.AddRow(new string[] {
                         "Bachelor of Arts",
                         "Philosophy",
                         "AA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 48
  testRunner.Then("I have the following programs", ((string)(null)), table8, "Then ");
 #line hidden
@@ -258,17 +258,17 @@ this.ScenarioSetup(scenarioInfo);
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table9.AddRow(new string[] {
                         "Bachelor of Science",
                         "",
                         "MA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
             table9.AddRow(new string[] {
                         "",
                         "Economics",
                         "MA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 54
  testRunner.When("I attempt to create the following programs", ((string)(null)), table9, "When ");
 #line hidden

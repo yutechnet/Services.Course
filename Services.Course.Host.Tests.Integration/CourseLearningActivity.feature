@@ -6,8 +6,8 @@ Feature: CourseLearningActivity
 
 Background: 
 Given I have the following courses
-	| Name     | Code | Description    | OrganizationId                       | CourseType  | IsTemplate |
-	| Econ 100 | E100 | Macroeconomics | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
+	| Name     | Code | Description    | OrganizationName | CourseType  | IsTemplate |
+	| Econ 100 | E100 | Macroeconomics | Default          | Traditional | False      |
 And I have the following course segments for 'Econ 100'
 	| Name   | Description              | Type     | ParentSegment |
 	| Week 1 | First week is slack time | TimeSpan |               |

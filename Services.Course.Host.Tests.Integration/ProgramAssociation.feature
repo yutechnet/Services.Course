@@ -6,13 +6,13 @@ Feature: ProgramAssociation
 
 Background: 
 	Given I have the following programs
-	| Name                | Description | ProgramType | OrganizationId                       |
-	| Bachelor of Art     | BA Program  | BA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	| Bachelor of Science | BS program  | BS          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Name                | Description | ProgramType | OrganizationName |
+	| Bachelor of Art     | BA Program  | BA          | Default          |
+	| Bachelor of Science | BS program  | BS          | Default          |
 	And I have the following courses
-	| Name           | Code   | Description    | OrganizationId |
-	| English 101    | ENG101 | English 101    | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	| Psychology 101 | PSY101 | Psychology 101 | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Name           | Code   | Description    | OrganizationName |
+	| English 101    | ENG101 | English 101    | Default          |
+	| Psychology 101 | PSY101 | Psychology 101 | Default          |
 
 Scenario Template: Associate a course with a program
 	When I associate '<Course Name>' course with '<Program Name>' program

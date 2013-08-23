@@ -6,13 +6,17 @@ Feature: CourseCreateCapability
 	
 @ignore
 Scenario Outline: I can not create a course unless I have permission to do so.
-	And I create an organization "OrgTop" with no parent
-	And I create an organization "OrgMiddle" with parent organization "OrgTop"
-	And I create a role "Role1"
+	Given the following organizations exist
+	| Name      | Description | ParentOrganization |
+	| OrgTop    | Top         |                    |
+	| OrgMiddle | Middle      | OrgTop             |
+	And I create the following roles
+	| Name  | Organization |
+	| Role1 | OrgTop       |
 	And I give capability <Capability> to role "Role1"
-	And I give test user role "Role1" for object <OrganizationAssignedTo> of type Organization
+	And I give the user role "Role1" for organization <OrganizationAssignedTo>
 	When I create a course under organization <OrganizationCreatedAttempt>
-	Then The message returned should be <StatusCode> passed in as a string
+	Then I get <StatusCode> response
 Examples:
 | Capability    | OrganizationAssignedTo | OrganizationCreatedAttempt | StatusCode   |
 | CourseCreate  | OrgTop                 | OrgTop                     | Created      |

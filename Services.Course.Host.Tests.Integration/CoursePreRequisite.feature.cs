@@ -76,77 +76,77 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Name",
                         "Code",
                         "Description",
-                        "OrganizationId",
+                        "OrganizationName",
                         "CourseType",
                         "IsTemplate"});
             table1.AddRow(new string[] {
                         "Econ 100",
                         "E100",
                         "Macroeconomics",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Default",
                         "Traditional",
                         "False"});
             table1.AddRow(new string[] {
                         "Econ 200",
                         "E200",
                         "Microeconomics",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Default",
                         "Traditional",
                         "False"});
             table1.AddRow(new string[] {
                         "Econ 250",
                         "E100",
                         "Intro to Econometrics",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Default",
                         "Traditional",
                         "False"});
             table1.AddRow(new string[] {
                         "Econ 300",
                         "E100",
                         "Applied Econometrics",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Default",
                         "Traditional",
                         "False"});
             table1.AddRow(new string[] {
                         "Econ 350",
                         "E350",
                         "Labor Economics",
-                        "7DB51BC8-D0CD-44C5-9C67-C64021068B03",
+                        "Default",
                         "Traditional",
                         "False"});
             table1.AddRow(new string[] {
                         "Econ 400",
                         "E400",
                         "Advanced Econometrics",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Default",
                         "Traditional",
                         "False"});
             table1.AddRow(new string[] {
                         "Econ 450",
                         "E100",
                         "Financial Economics",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Default",
                         "Traditional",
                         "False"});
             table1.AddRow(new string[] {
                         "Math 101",
                         "M101",
                         "Basic mathematics",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Default",
                         "Traditional",
                         "False"});
             table1.AddRow(new string[] {
                         "Math 150",
                         "M101",
                         "Geometry",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Default",
                         "Traditional",
                         "False"});
             table1.AddRow(new string[] {
                         "Math 200",
                         "M200",
                         "Calculus",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Default",
                         "Traditional",
                         "False"});
 #line 8

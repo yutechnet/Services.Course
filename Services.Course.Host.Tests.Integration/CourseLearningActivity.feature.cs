@@ -75,14 +75,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Name",
                         "Code",
                         "Description",
-                        "OrganizationId",
+                        "OrganizationName",
                         "CourseType",
                         "IsTemplate"});
             table1.AddRow(new string[] {
                         "Econ 100",
                         "E100",
                         "Macroeconomics",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F",
+                        "Default",
                         "Traditional",
                         "False"});
 #line 8

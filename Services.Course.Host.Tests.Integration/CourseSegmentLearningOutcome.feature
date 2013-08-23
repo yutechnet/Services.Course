@@ -6,15 +6,15 @@ Feature: CourseSegmentLearningOutcome
 
 Background: 
 	Given I have the following courses
-	| Name     | Code | Description       | OrganizationId |
-	| Math 101 | M101 | Basic mathematics | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Name     | Code | Description       | OrganizationName |
+	| Math 101 | M101 | Basic mathematics | Default          |
 	And I associate the newly created learning outcomes to 'Math 101' course
 	| Description |
 	| CLO1        |
 	| CLO2        |
 	And I have the following course segments for 'Math 101'
-	| Name        | Description                    | Type       | ParentSegment |
-	| Week 1       | First week is slack time       | TimeSpan   |               |
+	| Name   | Description              | Type     | ParentSegment |
+	| Week 1 | First week is slack time | TimeSpan |               |
 
 Scenario: Add learning outcome to a course segment
 	Given I associate the newly created learning outcomes to 'Week 1' segment

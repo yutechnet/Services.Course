@@ -6,15 +6,15 @@ Feature: GetEntityLearningOutcome
 
 Background: 
 	Given I have the following programs
-	| Name     | Description | ProgramType | OrganizationId                       |
-	| Program1 | Program1    | BA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	| Program2 | Program2    | BS          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	| Program3 | Program3    | MA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Name     | Description | ProgramType | OrganizationName |
+	| Program1 | Program1    | BA          | Default          |
+	| Program2 | Program2    | BS          | Default          |
+	| Program3 | Program3    | MA          | Default          |
 	And I have the following courses
-	| Name    | Code | Description | OrganizationId                       |
-	| Course1 | 1    | Course1     | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	| Course2 | 2    | Course2     | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	| Course3 | 3    | Course3     | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Name    | Code | Description | OrganizationName |
+	| Course1 | 1    | Course1     | Default          |
+	| Course2 | 2    | Course2     | Default          |
+	| Course3 | 3    | Course3     | Default          |
     And I have the following course segments for 'Course1'
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |

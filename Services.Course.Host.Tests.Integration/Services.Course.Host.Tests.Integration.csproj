@@ -228,6 +228,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LearningOutcomeVersioning.feature</DependentUpon>
     </Compile>
+    <Compile Include="Operations\Account\GetOperations.cs" />
+    <Compile Include="Operations\Account\PostOperations.cs" />
     <Compile Include="Operations\DeleteOperations.cs" />
     <Compile Include="Resources\CourseLearningActivityResource.cs" />
     <Compile Include="ProgramAssociation.feature.cs">
@@ -245,8 +247,12 @@
     <Compile Include="Resources\IResource.cs" />
     <Compile Include="Resources\LearningOutcomeResource.cs" />
     <Compile Include="Resources\CourseSegmentResource.cs" />
+    <Compile Include="Resources\OrganizationResource.cs" />
     <Compile Include="Resources\ProgramResource.cs" />
     <Compile Include="Operations\GetOperations.cs" />
+    <Compile Include="StepSetups\Account\Givens.cs" />
+    <Compile Include="Operations\Account\PutOperations.cs" />
+    <Compile Include="StepSetups\Account\Whens.cs" />
     <Compile Include="StepSetups\Givens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Operations\PostOperations.cs" />

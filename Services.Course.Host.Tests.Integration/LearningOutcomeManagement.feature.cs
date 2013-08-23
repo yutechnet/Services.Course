@@ -75,12 +75,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table1.AddRow(new string[] {
                         "BA",
                         "BA Program",
                         "BA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 33
 testRunner.Given("I have the following programs", ((string)(null)), table1, "Given ");
 #line hidden
@@ -88,12 +88,12 @@ testRunner.Given("I have the following programs", ((string)(null)), table1, "Giv
                         "Name",
                         "Code",
                         "Description",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table2.AddRow(new string[] {
                         "English 101",
                         "ENG101",
                         "Ranji\'s awesome English class",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
 #line 36
 testRunner.And("I have the following courses", ((string)(null)), table2, "And ");
 #line hidden
