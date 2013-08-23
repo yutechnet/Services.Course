@@ -390,7 +390,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var expectedProgram in expectedPrograms)
             {
-                var actualProgram = actualPrograms.First(p => p.Name == expectedProgram.Name);
+                var expectedId = Givens.Programs[expectedProgram.Name].Id;
+                var actualProgram = actualPrograms.First(p => p.Id == expectedId);
                 var expectedOrgId = expectedProgram.OrganizationId == Guid.Empty
                                         ? Account.Givens.Organizations["Default"].Id
                                         : expectedProgram.OrganizationId;
