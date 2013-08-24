@@ -6,9 +6,12 @@ Feature: CourseVersioning
 
 Background: 
 	Given I have the following courses
-	| Name         | Code   | Description                   | OrganizationId                       | CourseType  | IsTemplate |
-	| English 1010 | ENG101 | Ranji's awesome English Class | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-	| English 101011	 | E10011   | Macroeconomics        | E2DF063D-E2A1-4F83-9BE0-218EC676C05F | Traditional | False      |
+#   | Name         | Code   | Description                   | OrganizationId                       | CourseType  | IsTemplate |
+#	| English 1010 | ENG101 | Ranji's awesome English Class | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
+#	| English 101011	 | E10011   | Macroeconomics        | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | False      |
+    | Name         | Code   | Description                   | OrganizationName | CourseType  | IsTemplate |
+    | English 1010 | ENG101 | Ranji's awesome English Class | Default          | Traditional | false      |
+
 
 Scenario: Create a default version
 	Then the course 'English 1010' should have the following info
@@ -31,7 +34,7 @@ Scenario: Edit a course version
 	| Code           | ENG10101                             |
 	| Description    | Ranji's terrible English Class       |
 	| VersionNumber  | 1.0.0.0                              |
-	| OrganizationId | C3885307-BDAD-480F-8E7C-51DFE5D80387 |
+	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	| IsTemplate     | true                                 |
 
 Scenario: Publish a course version
