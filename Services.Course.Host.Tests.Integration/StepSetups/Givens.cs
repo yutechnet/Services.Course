@@ -14,46 +14,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
     [Binding]
     public class Givens
     {
-        public static IDictionary<string, CourseResource> Courses
-        {
-            get
-            {
-                return ScenarioContext.Current.Get<IDictionary<string, CourseResource>>("Courses");
-            }
-        }
-
-        public static IDictionary<string, ProgramResource> Programs
-        {
-            get
-            {
-                return ScenarioContext.Current.Get<IDictionary<string, ProgramResource>>("Programs");
-            }
-        }
-
-        public static IDictionary<string, CourseSegmentResource> Segments
-        {
-            get
-            {
-                return ScenarioContext.Current.Get<IDictionary<string, CourseSegmentResource>>("Segments");
-            }
-        }
-
-        public static IDictionary<string, LearningOutcomeResource> LearningOutcomes
-        {
-            get
-            {
-                return ScenarioContext.Current.Get<IDictionary<string, LearningOutcomeResource>>("LearningOutcomes");
-            }
-        }
-
-        public static IDictionary<string, CourseLearningActivityResource> CourseLearningActivities
-        {
-            get
-            {
-                return ScenarioContext.Current.Get<IDictionary<string, CourseLearningActivityResource>>("CourseLearningActivities");
-            }
-        }
-
         [Given(@"I have the following programs")]
         public void GivenIHaveTheFollowingPrograms(Table table)
         {
@@ -131,12 +91,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                         DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0
                     };
 
-                var course = Courses[courseName];
+                var course = Resources<CourseResource>.Get(courseName);
                 var parentSegmentName = row["ParentSegment"];
 
                 if (!string.IsNullOrWhiteSpace(parentSegmentName))
                 {
-                    var parentSegment = Segments[parentSegmentName];
+                    var parentSegment = Resources<CourseSegmentResource>.Get(parentSegmentName);
                     request.ParentSegmentId = parentSegment.Id;
                 }
 
@@ -165,7 +125,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void GivenIAddTheFollowingCourseLearningActivitiesToCourseSegment(string segmentName, Table table)
         {
             var learningActivityRequests = table.CreateSet<SaveCourseLearningActivityRequest>();
-            var segment = Segments[segmentName];
+            var segment = Resources<CourseSegmentResource>.Get(segmentName);
 
             foreach (var request in learningActivityRequests)
             {
@@ -180,7 +140,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void GivenIAssociateTheNewlyCreatedLearningOutcomesToProgram(string programName, Table table)
         {
             var requests = table.CreateSet<OutcomeRequest>();
-            var resource = Programs[programName];
+            var resource = Resources<ProgramResource>.Get(programName);
 
             foreach (var request in requests)
             {
@@ -193,7 +153,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void GivenIAssociateTheNewlyCreatedLearningOutcomesToCourse(string courseName, Table table)
         {
             var requests = table.CreateSet<OutcomeRequest>();
-            var resource = Courses[courseName];
+            var resource = Resources<CourseResource>.Get(courseName);
 
             foreach (var request in requests)
             {
@@ -207,7 +167,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void GivenIAssociateTheNewlyCreatedLearningOutcomesToSegment(string segmentName, Table table)
         {
             var requests = table.CreateSet<OutcomeRequest>();
-            var resource = Segments[segmentName];
+            var resource = Resources<CourseSegmentResource>.Get(segmentName);
 
             foreach (var request in requests)
             {
@@ -249,8 +209,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Given(@"I associate '(.*)' course with the following programs")]
         public void GivenIAssociateCourseWithTheFollowingPrograms(string courseName, Table table)
         {
-            var course = Givens.Courses[courseName];
-            var programs = (from r in table.Rows select Givens.Programs[r["Program Name"]]).ToList();
+            var course = Resources<CourseResource>.Get(courseName);
+            var programs = (from r in table.Rows select Resources<ProgramResource>.Get(r["Program Name"])).ToList();
 
             var response = PutOperations.AssociateCourseWithPrograms(course, programs);
             response.EnsureSuccessStatusCode();
@@ -259,7 +219,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Given(@"I create a course from the template '(.*)' with the following")]
         public void GivenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
         {
-            var template = Courses[templateName];
+            var template = Resources<CourseResource>.Get(templateName);
             var courseRequest = table.CreateInstance<SaveCourseRequest>();
             courseRequest.TemplateCourseId = template.Id;
 

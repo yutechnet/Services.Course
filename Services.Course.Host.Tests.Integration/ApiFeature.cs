@@ -68,12 +68,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public static void BeforeScenario()
         {
             ScenarioContext.Current.Add("Responses", new List<HttpResponseMessage>());
-
-            ScenarioContext.Current.Add("Courses", new Dictionary<string, CourseResource>());
-            ScenarioContext.Current.Add("Programs", new Dictionary<string, ProgramResource>());
-            ScenarioContext.Current.Add("Segments", new Dictionary<string, CourseSegmentResource>());
-            ScenarioContext.Current.Add("LearningOutcomes", new Dictionary<string, LearningOutcomeResource>());
-            ScenarioContext.Current.Add("CourseLearningActivities", new Dictionary<string, CourseLearningActivityResource>());
             ScenarioContext.Current.Add("Organizations", new Dictionary<string, OrganizationResource>());
 
             var defaultOrg = new OrganizationResource

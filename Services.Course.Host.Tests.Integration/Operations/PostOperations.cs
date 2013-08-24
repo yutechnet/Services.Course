@@ -14,21 +14,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             request.TenantId = ApiFeature.TenantId;
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course", request, new JsonMediaTypeFormatter()).Result;
 
-            Whens.ResponseMessages.Add(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-
-                var resource = new CourseResource
-                {
-                    Id = Guid.Parse(id),
-                    ResourceUri = response.Headers.Location
-                };
-
-                Givens.Courses.Add(name, resource);
-            }
-
+            BuildResource<CourseResource>(name, response);
             return response;
         }
 
@@ -36,22 +22,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         {
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course/version", request, new JsonMediaTypeFormatter()).Result;
 
-            Whens.ResponseMessages.Add(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-
-                var resource = new CourseResource
-                {
-                    Id = Guid.Parse(id),
-                    ResourceUri = response.Headers.Location
-                };
-
-                Givens.Courses.Add(name, resource);
-
-            }
-
+            BuildResource<CourseResource>(name, response);
             return response;
         }
 
@@ -60,21 +31,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             request.TenantId = ApiFeature.TenantId;
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/program", request, new JsonMediaTypeFormatter()).Result;
 
-            Whens.ResponseMessages.Add(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-
-                var resource = new ProgramResource
-                {
-                    Id = Guid.Parse(id),
-                    ResourceUri = response.Headers.Location
-                };
-
-                Givens.Programs.Add(name, resource);
-            }
-
+            BuildResource<ProgramResource>(name, response);
             return response;
         }
 
@@ -85,21 +42,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var uri = string.Format("{0}/course/{1}/segments", ApiFeature.LeadingPath, course.Id);
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
 
-            Whens.ResponseMessages.Add(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-
-                var resource = new CourseSegmentResource
-                {
-                    Id = Guid.Parse(id),
-                    ResourceUri = response.Headers.Location
-                };
-
-                Givens.Segments.Add(name, resource);
-            }
-
+            BuildResource<CourseSegmentResource>(name, response);
             return response;
         }
 
@@ -109,21 +52,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/outcome", request, new JsonMediaTypeFormatter()).Result;
 
-            Whens.ResponseMessages.Add(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-
-                var resource = new LearningOutcomeResource
-                {
-                    Id = Guid.Parse(id),
-                    ResourceUri = response.Headers.Location
-                };
-
-                Givens.LearningOutcomes.Add(name, resource);
-            }
-
+            BuildResource<LearningOutcomeResource>(name, response);
             return response;
         }
 
@@ -131,22 +60,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         {
             var postUri = string.Format("{0}/outcome/version", ApiFeature.LeadingPath);
             var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, request, new JsonMediaTypeFormatter()).Result;
-            
-            Whens.ResponseMessages.Add(response);
 
-            if (response.IsSuccessStatusCode)
-            {
-                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-
-                var resource = new LearningOutcomeResource
-                {
-                    Id = Guid.Parse(id),
-                    ResourceUri = response.Headers.Location
-                };
-
-                Givens.LearningOutcomes.Add(name, resource);
-            }
-
+            BuildResource<LearningOutcomeResource>(name, response);
             return response;
         }
 
@@ -157,21 +72,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var uri = string.Format("{0}/supports", entityResource.ResourceUri);
             var response = ApiFeature.ApiTestHost.Client.PostAsync(uri, request, new JsonMediaTypeFormatter()).Result;
 
-            Whens.ResponseMessages.Add(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-
-                var resource = new LearningOutcomeResource
-                {
-                    Id = Guid.Parse(id),
-                    ResourceUri = response.Headers.Location
-                };
-
-                Givens.LearningOutcomes.Add(name, resource);
-            }
-
+            BuildResource<LearningOutcomeResource>(name, response);
             return response;
         }
 
@@ -182,22 +83,30 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var uri = string.Format("{0}/learningactivity", segment.ResourceUri);
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
 
+            BuildResource<CourseLearningActivityResource>(name, response);
+            return response;
+        }
+
+        private static IResource BuildResource<T>(string name, HttpResponseMessage response) where T : IResource, new()
+        {
             Whens.ResponseMessages.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
                 var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
 
-                var resource = new CourseLearningActivityResource
-                    {
-                        Id = Guid.Parse(id),
-                        ResourceUri = response.Headers.Location
-                    };
+                var resource = new T
+                {
+                    Id = Guid.Parse(id),
+                    ResourceUri = response.Headers.Location
+                };
 
-                Givens.CourseLearningActivities.Add(name, resource);
+                Resources<T>.Add(name, resource);
+
+                return resource;
             }
 
-            return response;
+            return null;
         }
     }
 }

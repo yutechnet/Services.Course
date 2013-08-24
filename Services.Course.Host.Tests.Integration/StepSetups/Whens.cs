@@ -25,7 +25,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I create a course from the template '(.*)' with the following")]
         public void WhenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
         {
-            var template = Givens.Courses[templateName];
+            var template = Resources<CourseResource>.Get(templateName);
             var courseRequest = table.CreateInstance<SaveCourseRequest>();
             courseRequest.TemplateCourseId = template.Id;
 
@@ -35,11 +35,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I associate the existing learning outcomes to '(.*)' program")]
         public void WhenIAssociateTheExistingLearningOutcomesToProgram(string programName, Table table)
         {
-            var program = Givens.Programs[programName];
+            var program = Resources<ProgramResource>.Get(programName);
 
             foreach (var row in table.Rows)
             {
-                var outcome = Givens.LearningOutcomes[row["Description"]];
+                var outcome = Resources<LearningOutcomeResource>.Get(row["Description"]);
 
                 PutOperations.ProgramSupportsLearningOutcome(program, outcome);
             }
@@ -52,7 +52,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                             select new OutcomeRequest {Description = r["Description"], TenantId = ApiFeature.TenantId})
                 .ToList();
 
-            var course = Givens.Courses[courseName];
+            var course = Resources<CourseResource>.Get(courseName);
 
             foreach (var request in requests)
             {
@@ -63,11 +63,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I associate the existing learning outcomes to '(.*)' course")]
         public void WhenIAssociateTheExistingLearningOutcomesToCourse(string courseName, Table table)
         {
-            var course = Givens.Courses[courseName];
+            var course = Resources<CourseResource>.Get(courseName);
 
             foreach (var row in table.Rows)
             {
-                var outcome = Givens.LearningOutcomes[row["Description"]];
+                var outcome = Resources<LearningOutcomeResource>.Get(row["Description"]);
 
                 PutOperations.CourseSupportsLearningOutcome(course, outcome);
             }
@@ -76,11 +76,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I associate the existing learning outcomes to '(.*)' segment")]
         public void WhenIAssociateTheExistingLearningOutcomesToSegment(string segmentName, Table table)
         {
-            var segment = Givens.Segments[segmentName];
+            var segment = Resources<CourseSegmentResource>.Get(segmentName);
 
             foreach (var row in table.Rows)
             {
-                var outcome = Givens.LearningOutcomes[row["Description"]];
+                var outcome = Resources<LearningOutcomeResource>.Get(row["Description"]);
 
                 PutOperations.SegmentSupportsLearningOutcome(segment, outcome);
             }
@@ -89,8 +89,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I associate '(.*)' course with '(.*)' program")]
         public void WhenIAssociateCourseWithProgram(string courseName, string programName)
         {
-            var course = Givens.Courses[courseName];
-            var program = Givens.Programs[programName];
+            var course = Resources<CourseResource>.Get(courseName);
+            var program = Resources<ProgramResource>.Get(programName);
 
             PutOperations.AssociateCourseWithPrograms(course, new List<ProgramResource> {program});
         }
@@ -98,8 +98,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I associate '(.*)' course with the following programs")]
         public void WhenIAssociateCourseWithTheFollowingPrograms(string courseName, Table table)
         {
-            var course = Givens.Courses[courseName];
-            var programs = (from r in table.Rows select Givens.Programs[r["Program Name"]]).ToList();
+            var course = Resources<CourseResource>.Get(courseName);
+            var programs = (from r in table.Rows select Resources<ProgramResource>.Get(r["Program Name"])).ToList();
 
             PutOperations.AssociateCourseWithPrograms(course, programs);
         }
@@ -107,8 +107,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I remove '(.*)' course from '(.*)'")]
         public void WhenIRemoveCourseFrom(string courseName, string programName)
         {
-            var course = Givens.Courses[courseName];
-            var program = Givens.Programs[programName];
+            var course = Resources<CourseResource>.Get(courseName);
+            var program = Resources<ProgramResource>.Get(programName);
 
             PutOperations.DisassociateCourseWithPrograms(course, new List<ProgramResource> {program});
         }
@@ -116,11 +116,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"the outcome '(.*)' supports the following outcomes")]
         public void WhenOutcomeSupportsTheFollowingOutcomes(string supportingOutcomeName, Table table)
         {
-            var supportingOutcome = Givens.LearningOutcomes[supportingOutcomeName];
+            var supportingOutcome = Resources<LearningOutcomeResource>.Get(supportingOutcomeName);
 
             foreach (var row in table.Rows)
             {
-                var supportedOutcome = Givens.LearningOutcomes[row["Description"]];
+                var supportedOutcome = Resources<LearningOutcomeResource>.Get(row["Description"]);
 
                 //TODO: This is an issue... supportingOutcome and supoortedOutcome should be flipped
                 PutOperations.OutcomeSupportsLearningOutcome(supportedOutcome, supportingOutcome);
@@ -130,11 +130,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"the outcome '(.*)' is supported by the following outcomes")]
         public void WhenOutcomeIsSupportedByTheFollowingOutcomes(string supportedOutcomeName, Table table)
         {
-            var supportedOutcome = Givens.LearningOutcomes[supportedOutcomeName];
+            var supportedOutcome = Resources<LearningOutcomeResource>.Get(supportedOutcomeName);
 
             foreach (var row in table.Rows)
             {
-                var supportingOutcome = Givens.LearningOutcomes[row["Description"]];
+                var supportingOutcome = Resources<LearningOutcomeResource>.Get(row["Description"]);
 
                 //TODO: This is an issue... supportingOutcome and supoortedOutcome should be flipped
                 PutOperations.OutcomeSupportsLearningOutcome(supportingOutcome, supportedOutcome);
@@ -144,10 +144,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I disassociate the following learning outcomes from '(.*)' learning outcome")]
         public void WhenIDisassociateTheFollowingLearningOutcomesFromLearningOutcome(string learningOutcomeName, Table table)
         {
-            var supportedOutcome = Givens.LearningOutcomes[learningOutcomeName];
+            var supportedOutcome = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
 
             var descriptions = (from o in table.Rows select o["Description"]).ToList();
-            var supportingOutcomes = (from o in Givens.LearningOutcomes
+            var supportingOutcomes = (from o in Resources<LearningOutcomeResource>.Get()
                                       where descriptions.Contains(o.Key)
                                       select o.Value).ToList();
 
@@ -160,13 +160,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I disassociate the following learning outcomes from '(.*)' program")]
         public void WhenIDisassociateTheFollowingLearningOutcomesFromProgram(string programName, Table table)
         {
-            var programResource = Givens.Programs[programName];
+            var programResource = Resources<ProgramResource>.Get(programName);
 
             var learningOutcomeNames = (from o in table.Rows select o["Description"]).ToList();
 
             foreach (var learningOutcomeName in learningOutcomeNames)
             {
-                var learningOutcome = Givens.LearningOutcomes[learningOutcomeName];
+                var learningOutcome = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
                 PutOperations.ProgramDoesNotSupportLearningOutcome(programResource, learningOutcome);
             }
         }
@@ -176,7 +176,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             foreach (var row in table.Rows)
             {
-                var course = Givens.Courses[row["Name"]];
+                var course = Resources<CourseResource>.Get(row["Name"]);
 
                 var request = new PublishRequest
                     {
@@ -192,7 +192,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             foreach (var row in table.Rows)
             {
-                var learningOutcome = Givens.LearningOutcomes[row["Name"]];
+                var learningOutcome = Resources<LearningOutcomeResource>.Get(row["Name"]);
 
                 var request = new PublishRequest
                 {
@@ -206,9 +206,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I add the following prerequisites to '(.*)'")]
         public void WhenIAddTheFollowingPrerequisitesTo(string courseName, Table table)
         {
-            var course = Givens.Courses[courseName];
+            var course = Resources<CourseResource>.Get(courseName);
 
-            var prerequisiteIds = (from r in table.Rows select Givens.Courses[r["Name"]].Id).ToList();
+            var prerequisiteIds = (from r in table.Rows select Resources<CourseResource>.Get(r["Name"]).Id).ToList();
 
             var request = new UpdateCoursePrerequisites
                 {
@@ -221,7 +221,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I add the following learning activity to '(.*)' course segment")]
         public void WhenIAddTheFollowingLearningActivityToCourseSegment(string segmentName, Table table)
         {
-            var segment = Givens.Segments[segmentName];
+            var segment = Resources<CourseSegmentResource>.Get(segmentName);
 
             var request = table.CreateInstance<SaveCourseLearningActivityRequest>();
             PostOperations.CreateCourseLearningActivity(request.Name, segment, request);
@@ -230,21 +230,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I retrieve the course learning activity '(.*)'")]
         public void WhenIRetrieveTheCourseLearningActivity(string activityName)
         {
-            var resource = Givens.CourseLearningActivities[activityName];
+            var resource = Resources<CourseLearningActivityResource>.Get(activityName);
             GetOperations.GetCourseLearningActivity(resource.ResourceUri);
         }
 
         [When(@"I remove ""(.*)"" learning activity")]
         public void WhenIRemoveLearningActivity(string activityName)
         {
-            var resource = Givens.CourseLearningActivities[activityName];
+            var resource = Resources<CourseLearningActivityResource>.Get(activityName);
             DeleteOperations.DeleteResource(resource);
         }
 
         [When(@"I update '(.*)' learning activity with the following info")]
         public void WhenIUpdateLearningActivityWithTheFollowingInfo(string activityName, Table table)
         {
-            var resourse = Givens.CourseLearningActivities[activityName];
+            var resourse = Resources<CourseLearningActivityResource>.Get(activityName);
             
             var learningActivity = table.CreateInstance<SaveCourseLearningActivityRequest>();
 
@@ -252,9 +252,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         }
 
         [When(@"I change the '(.*)' learning outcome description to '(.*)'")]
-        public void WhenIChangeTheLearningOutcomeDescriptionTo(string leaningOutcomeName, string newDescription)
+        public void WhenIChangeTheLearningOutcomeDescriptionTo(string learningOutcomeName, string newDescription)
         {
-            var resource = Givens.LearningOutcomes[leaningOutcomeName];
+            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
 
             var request = new OutcomeRequest
                 {
@@ -265,25 +265,25 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         }
 
         [When(@"I update '(.*)' learning outcome with the following info")]
-        public void WhenIUpdateLearningOutcomeWithTheFollowingInfo(string leaningOutcomeName, Table table)
+        public void WhenIUpdateLearningOutcomeWithTheFollowingInfo(string learningOutcomeName, Table table)
         {
-            var resource = Givens.LearningOutcomes[leaningOutcomeName];
+            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
             var request = table.CreateInstance<OutcomeRequest>();
 
             PutOperations.UpdateLearningOutcome(resource, request);
         }
 
         [When(@"I get the learning outcome '(.*)'")]
-        public void WhenIGetTheLearningOutcome(string leaningOutcomeName)
+        public void WhenIGetTheLearningOutcome(string learningOutcomeName)
         {
-            var resource = Givens.LearningOutcomes[leaningOutcomeName];
+            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
             GetOperations.GetLearningOutcome(resource.ResourceUri);
         }
 
         [When(@"I delete the '(.*)' learning outcome")]
-        public void WhenIDeleteTheLearningOutcome(string leaningOutcomeName)
+        public void WhenIDeleteTheLearningOutcome(string learningOutcomeName)
         {
-            var resource = Givens.LearningOutcomes[leaningOutcomeName];
+            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
 
             DeleteOperations.DeleteResource(resource);
         }
@@ -291,14 +291,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I retrieve '(.*)' course")]
         public void WhenIRetrieveCourse(string courseName)
         {
-            var resource = Givens.Courses[courseName];
+            var resource = Resources<CourseResource>.Get(courseName);
             GetOperations.GetCourse(resource.ResourceUri);
         }
 
         [When(@"I update '(.*)' course with the following info")]
         public void WhenIUpdateCourseWithTheFollowingInfo(string courseName, Table table)
         {
-            var course = Givens.Courses[courseName];
+            var course = Resources<CourseResource>.Get(courseName);
             var updateCourseRequest = table.CreateInstance<UpdateCourseRequest>();
 
             PutOperations.UpdateCourse(course, updateCourseRequest);
@@ -309,7 +309,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var request = table.CreateInstance<VersionRequest>();
 
-            var course = Givens.Courses[courseName];         
+            var course = Resources<CourseResource>.Get(courseName);       
             request.ParentVersionId = course.Id;
 
             PostOperations.CreateCourseVersion(newVersionName, request);
@@ -320,12 +320,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             foreach (var row in table.Rows)
             {
-                var courseSegmentName = row["Name"];
-                var courseSegment = Givens.Segments[courseSegmentName];
+                var segmentName = row["Name"];
+                var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
 
                 var request = new SaveCourseSegmentRequest
                 {
-                    Name = courseSegmentName,
+                    Name = segmentName,
                     Description = row["Description"],
                     Type = row["Type"],
                     DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0
@@ -336,9 +336,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         }
 
         [When(@"I add the following content to '(.*)' segment")]
-        public void WhenIAddTheFollowingContentToSegment(string courseSegmentName, Table table)
+        public void WhenIAddTheFollowingContentToSegment(string segmentName, Table table)
         {
-            var resource = Givens.Segments[courseSegmentName];
+            var resource = Resources<CourseSegmentResource>.Get(segmentName);
             var courseSegment = GetOperations.GetSegment(resource.ResourceUri);
 
             var request = new SaveCourseSegmentRequest
@@ -360,17 +360,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var segmentName in segmentNames)
             {
-                var resource = Givens.Segments[segmentName];
+                var resource = Resources<CourseSegmentResource>.Get(segmentName);
                 DeleteOperations.DeleteResource(resource);
             }
         }
 
         [When(@"I create a new version of '(.*)' outcome named '(.*)' with the following info")]
-        public void WhenICreateANewVersionOfWithTheFollowingInfo(string outcomeName, string newOutcomeName, Table table)
+        public void WhenICreateANewVersionOfWithTheFollowingInfo(string learningOutcomeName, string newOutcomeName, Table table)
         {
             var versionRequest = table.CreateInstance<VersionRequest>();
 
-            var resource = Givens.LearningOutcomes[outcomeName];
+            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
             versionRequest.ParentVersionId = resource.Id;
 
             PostOperations.CreateLearningOutcomeVersion(newOutcomeName, resource, versionRequest);
@@ -391,7 +391,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I delete '(.*)' course")]
         public void WhenIDeleteCourse(string courseName)
         {
-            var resource = Givens.Courses[courseName];
+            var resource = Resources<CourseResource>.Get(courseName);
 
             DeleteOperations.DeleteResource(resource);
         }
@@ -416,7 +416,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I modify the program '(.*)' info to reflect the following")]
         public void WhenIModifyTheProgramInfoToReflectTheFollowing(string programName, Table table)
         {
-            var resource = Givens.Programs[programName];
+            var resource = Resources<ProgramResource>.Get(programName);
             var request = table.CreateInstance<UpdateProgramRequest>();
 
             PutOperations.UpdateResource(resource, request);
@@ -425,14 +425,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I delete the program '(.*)'")]
         public void WhenIDeleteTheProgram(string programName)
         {
-            var resource = Givens.Programs[programName];
+            var resource = Resources<ProgramResource>.Get(programName);
             DeleteOperations.DeleteResource(resource);
         }
 
         [When(@"I get the program '(.*)'")]
         public void WhenIGetTheProgram(string programName)
         {
-            var resource = Givens.Programs[programName];
+            var resource = Resources<ProgramResource>.Get(programName);
             GetOperations.GetProgram(resource.ResourceUri);
         }
 

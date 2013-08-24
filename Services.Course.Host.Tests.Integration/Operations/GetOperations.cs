@@ -12,9 +12,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
     {
         public static Dictionary<Guid, List<OutcomeInfo>> GetEntityLearningOutcomes(IList<Guid> entityIds)
         {
-            var queryString = entityIds.Aggregate("?entityIds=", (current, entityId) => current + (entityId + ",")).TrimEnd(',');
+            var queryString =
+                entityIds.Aggregate("?entityIds=", (current, entityId) => current + (entityId + ",")).TrimEnd(',');
 
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(ApiFeature.LeadingPath + "/outcome/entityoutcomes" + queryString).Result;
+            var response =
+                ApiFeature.ApiTestHost.Client.GetAsync(ApiFeature.LeadingPath + "/outcome/entityoutcomes" + queryString)
+                          .Result;
             Whens.ResponseMessages.Add(response);
 
             return response.IsSuccessStatusCode
@@ -52,7 +55,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                        : null;
         }
 
-	    public static CourseSegmentInfo GetSegment(Uri resourseUri)
+        public static CourseSegmentInfo GetSegment(Uri resourseUri)
         {
             var response = ApiFeature.ApiTestHost.Client.GetAsync(resourseUri).Result;
             Whens.ResponseMessages.Add(response);
@@ -94,10 +97,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                        : null;
         }
 
-	public static List<Guid> GetCourseTemplateIds(Guid organizationId)
+        public static List<Guid> GetCourseTemplateIds(Guid organizationId)
         {
             //TODO: Replace with we implement the service.
-            return new List<Guid> { Guid.NewGuid() };
+            return new List<Guid> {Guid.NewGuid()};
         }
     }
 }

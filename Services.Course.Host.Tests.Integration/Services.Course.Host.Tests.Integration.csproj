@@ -250,6 +250,8 @@
     <Compile Include="Resources\OrganizationResource.cs" />
     <Compile Include="Resources\ProgramResource.cs" />
     <Compile Include="Operations\GetOperations.cs" />
+    <Compile Include="Resources\Resources.cs" />
+    <Compile Include="Resources\RoleResource.cs" />
     <Compile Include="StepSetups\Account\Givens.cs" />
     <Compile Include="Operations\Account\PutOperations.cs" />
     <Compile Include="StepSetups\Account\Whens.cs" />
