@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using BpeProducts.Common.NHibernate;
+using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Entities
 {
+	//[JsonObject(MemberSerialization.Fields)]
+	//[Serializable]
     public class Program : TenantEntity, ISupportingEntity
     {
         private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();

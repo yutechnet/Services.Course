@@ -6,9 +6,11 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
+	
     public class Course : VersionableEntity, ISupportingEntity
     {
         #region Properties
@@ -67,10 +69,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
             }
         }
 
+		//[JsonProperty]
         public virtual IList<Program> Programs
         {
             get { return _programs; }
-            protected internal set { _programs = value; }
+            set { _programs = value; }
         }
 
         public virtual IList<CourseSegment> Segments

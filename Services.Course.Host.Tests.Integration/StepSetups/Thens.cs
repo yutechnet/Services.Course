@@ -18,9 +18,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the course '(.*)' should have the following info")]
         public void ThenTheCourseShouldHaveTheFollowingInfo(string courseName, Table table)
         {
-            var courseResource = Givens.Courses[courseName];
+            var resource = Resources<CourseResource>.Get(courseName);
 
-            var actual = GetOperations.GetCourse(courseResource.ResourceUri);
+            var actual = GetOperations.GetCourse(resource.ResourceUri);
 
             table.CompareToInstance(actual);
         }
@@ -28,10 +28,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the course '(.*)' includes the following programs")]
         public void ThenTheCourseIncludesTheFollowingPrograms(string courseName, Table table)
         {
-            var resource = Givens.Courses[courseName];
+            var resource = Resources<CourseResource>.Get(courseName);
 
             var course = GetOperations.GetCourse(resource.ResourceUri);
-            var expectedProgramIds = (from r in table.Rows select Givens.Programs[r["Program Name"]].Id).ToList();
+            var expectedProgramIds = (from r in table.Rows select Resources<ProgramResource>.Get(r["Program Name"]).Id).ToList();
 
             CollectionAssert.AreEquivalent(course.ProgramIds, expectedProgramIds);
         }
@@ -39,7 +39,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"'(.*)' program is associated with the following learning outcomes")]
         public void ThenProgramIsAssociatedWithTheFollowingLearningOutcomes(string programName, Table table)
         {
-            var resource = Givens.Programs[programName];
+            var resource = Resources<ProgramResource>.Get(programName);
 
             var outcomes = GetOperations.GetEntityLearningOutcomes(new List<Guid> {resource.Id});
 
@@ -52,10 +52,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the course '(.*)' includes '(.*)' program association")]
         public void ThenTheCourseIncludesProgramAssociation(string courseName, string programName)
         {
-            var courseResource = Givens.Courses[courseName];
+            var courseResource = Resources<CourseResource>.Get(courseName);
             var course = GetOperations.GetCourse(courseResource.ResourceUri);
 
-            var programResourse = Givens.Programs[programName];
+            var programResourse = Resources<ProgramResource>.Get(programName);
 
             Assert.That(course.ProgramIds.Count, Is.EqualTo(1));
             CollectionAssert.Contains(course.ProgramIds, programResourse.Id);
@@ -64,10 +64,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the course '(.*)' includes the following program information")]
         public void ThenTheCourseIncludesTheFollowingProgramInformation(string courseName, Table table)
         {
-            var courseResource = Givens.Courses[courseName];
+            var courseResource = Resources<CourseResource>.Get(courseName);
             var course = GetOperations.GetCourse(courseResource.ResourceUri);
 
-            var programIds = (from r in table.Rows select Givens.Programs[r["Program Name"]].Id).ToList();
+            var programIds = (from r in table.Rows select Resources<ProgramResource>.Get(r["Program Name"]).Id).ToList();
 
             CollectionAssert.AreEquivalent(course.ProgramIds, programIds);
         }
@@ -75,10 +75,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the course '(.*)' should have the following prerequisites")]
         public void ThenTheCourseShouldHaveTheFollowingPrerequisites(string courseName, Table table)
         {
-            var courseResource = Givens.Courses[courseName];
+            var courseResource = Resources<CourseResource>.Get(courseName);
             var course = GetOperations.GetCourse(courseResource.ResourceUri);
 
-            var prereqIds = (from r in table.Rows select Givens.Courses[r["Name"]].Id).ToList();
+            var prereqIds = (from r in table.Rows select Resources<CourseResource>.Get(r["Name"]).Id).ToList();
 
             CollectionAssert.AreEquivalent(prereqIds, course.PrerequisiteCourseIds);
         }
@@ -108,7 +108,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"my course learning activity '(.*)' contains the following")]
         public void ThenMyCourseLearningActivityContainsTheFollowing(string learningActivityName, Table table)
         {
-            var resource = Givens.CourseLearningActivities[learningActivityName];
+            var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
 
             var courseLearningActivity = GetOperations.GetCourseLearningActivity(resource.ResourceUri);
 
@@ -118,10 +118,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the program '(.*)' include the following course information")]
         public void ThenTheProgramIncludeTheFollowingCourseInformation(string programName, Table table)
         {
-            var programResource = Givens.Programs[programName];
+            var programResource = Resources<ProgramResource>.Get(programName);
+
             var program = GetOperations.GetProgram(programResource.ResourceUri);
 
-            var courseIds = (from r in table.Rows select Givens.Courses[r["Course Name"]].Id).ToList();
+            var courseIds = (from r in table.Rows select Resources<CourseResource>.Get(r["Course Name"]).Id).ToList();
 
             CollectionAssert.AreEquivalent(program.Courses.Select(c => c.Id).ToList(), courseIds);
         }
@@ -129,11 +130,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the segment '(.*)' should have the following learning activities")]
         public void ThenTheSegmentShouldHaveTheFollowingLearningActivities(string segmentName, Table table)
         {
-            var resource = Givens.Segments[segmentName];
+            var resource = Resources<CourseSegmentResource>.Get(segmentName);
             var segment = GetOperations.GetSegment(resource.ResourceUri);
 
             var expectedLearningActivities =
-                (from r in table.Rows select Givens.CourseLearningActivities[r["Name"]].Id).ToList();
+                (from r in table.Rows select Resources<CourseLearningActivityResource>.Get(r["Name"]).Id).ToList();
             var actualLearningActivities = (from a in segment.CourseLearningActivities select a.Id).ToList();
 
             CollectionAssert.AreEquivalent(expectedLearningActivities, actualLearningActivities);
@@ -142,7 +143,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the learning outcome '(.*)' should contain")]
         public void ThenTheLearningOutcomeShouldContain(string learningOutcomeName, Table table)
         {
-            var resource = Givens.LearningOutcomes[learningOutcomeName];
+            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
 
             var actual = GetOperations.GetLearningOutcome(resource.ResourceUri);
             var expected = table.CreateInstance<OutcomeInfo>();
@@ -153,7 +154,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the course '(.*)' has the following learning outcomes")]
         public void ThenCourseHasTheFollowingLearningOutcomes(string courseName, Table table)
         {
-            var resource = Givens.Courses[courseName];
+            var resource = Resources<CourseResource>.Get(courseName);
             var course = GetOperations.GetCourse(resource.ResourceUri);
 
             foreach (var row in table.Rows)
@@ -179,7 +180,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the segment '(.*)' includes the following learning outcomes")]
         public void ThenTheSegmentIncludesTheFollowingLearningOutcomes(string segmentName, Table table)
         {
-            var resource = Givens.Segments[segmentName];
+            var resource = Resources<CourseSegmentResource>.Get(segmentName);
             var outcomes = GetOperations.GetSupportedOutcomes(resource.ResourceUri);
             table.CompareToSet(outcomes);
         }
@@ -187,7 +188,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"'(.*)' program is associated with the only following learning outcomes")]
         public void ThenProgramIsAssociatedWithTheOnlyFollowingLearningOutcomes(string programName, Table table)
         {
-            var resource = Givens.Programs[programName];
+            var resource = Resources<ProgramResource>.Get(programName);
 
             var actualOutcomes =
                 (from o in GetOperations.GetSupportedOutcomes(resource.ResourceUri) select o.Description).ToList();
@@ -199,7 +200,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"learning outcome '(.*)' is supported by the following learning outcomes")]
         public void ThenLearningOutcomeIsSupportedByTheFollowingLearningOutcomes(string learningOutcomeName, Table table)
         {
-            var resource = Givens.LearningOutcomes[learningOutcomeName];
+            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
 
             var actualOutcomes = (from o in GetOperations.GetSupportedOutcomes(resource.ResourceUri) select o.Description).ToList();
             var expectedOutcomes = (from o in table.Rows select o["Description"]).ToList();
@@ -220,13 +221,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 switch (entityType)
                 {
                     case "Program":
-                        resource = Givens.Programs[entityName];
+                        resource = Resources<ProgramResource>.Get(entityName);
                         break;
                     case "Course":
-                        resource = Givens.Courses[entityName];
+                        resource = Resources<CourseResource>.Get(entityName);
                         break;
                     case "Segment":
-                        resource = Givens.Segments[entityName];
+                        resource = Resources<CourseSegmentResource>.Get(entityName);
                         break;
                 }
 
@@ -235,7 +236,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
                 var expectedOutcomes = (from o in row["LearningOutcomes"].Split(new[] {','})
                                         where !String.IsNullOrWhiteSpace(o)
-                                        select Givens.LearningOutcomes[o.Trim()].Id).ToList();
+                                        select Resources<LearningOutcomeResource>.Get(o.Trim()).Id).ToList();
                 expectedEntityOutcomes.Add(resource, expectedOutcomes);
             }
 
@@ -261,7 +262,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the course '(.*)' should have these course segments")]
         public void ThenTheCourseShouldHaveTheseCourseSegments(string courseName, Table table)
         {
-            var resource = Givens.Courses[courseName];
+            var resource = Resources<CourseResource>.Get(courseName);
             var courseInfo = GetOperations.GetCourse(resource.ResourceUri);
 
             var index = new Dictionary<string, CourseSegmentInfo>();
@@ -302,7 +303,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"The course '(.*)' segments retrieved match the display order entered")]
         public void ThenTheCourseSegmentsRetrievedMatchTheDisplayOrderEntered(string courseName, Table table)
         {
-            var courseInfoResponse = GetOperations.GetCourse(Givens.Courses[courseName].ResourceUri);
+            var courseInfoResponse = GetOperations.GetCourse(Resources<CourseResource>.Get(courseName).ResourceUri);
             var index = new Dictionary<string, CourseSegmentInfo>();
 
             IndexNodes(Guid.Empty, courseInfoResponse.Segments, index);
@@ -318,7 +319,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the course segment '(.*)' should have these children segments")]
         public void ThenTheCourseSegmentShouldHaveTheseChildrenSegments(string parentSegmentName, Table table)
         {
-            var parentSegmentResource = Givens.Segments[parentSegmentName];
+            var parentSegmentResource = Resources<CourseSegmentResource>.Get(parentSegmentName);
             var parentSegment = GetOperations.GetSegment(parentSegmentResource.ResourceUri);
 
             Assert.That(parentSegment.ChildSegments.Count, Is.EqualTo(table.Rows.Count));
@@ -332,7 +333,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the course segment '(.*)' should have this content")]
         public void ThenTheCourseSegmentShouldHaveThisContent(string courseSegmentName, Table table)
         {
-            var resource = Givens.Segments[courseSegmentName];
+            var resource = Resources<CourseSegmentResource>.Get(courseSegmentName);
             var courseSegment = GetOperations.GetSegment(resource.ResourceUri);
 
             var expectedContent = table.CreateSet<Content>().ToList();
@@ -348,7 +349,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the course '(.*)' should have the following learning outcomes")]
         public void ThenTheCourseShouldHaveTheFollowingLearningOutcomes(string courseName, Table table)
         {
-            var resource = Givens.Courses[courseName];
+            var resource = Resources<CourseResource>.Get(courseName);
             var courseInfo = GetOperations.GetCourse(resource.ResourceUri);
 
             var expected = (from r in table.Rows select r["Description"]).ToList();
@@ -367,7 +368,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"the program '(.*)' contains")]
         public void ThenTheProgramContains(string programName, Table table)
         {
-            var resource = Givens.Programs[programName];
+            var resource = Resources<ProgramResource>.Get(programName);
             var program = GetOperations.GetProgram(resource.ResourceUri);
 
             table.CompareToInstance(program);
@@ -381,7 +382,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var expectedProgram in expectedPrograms)
             {
-                var expectedId = Givens.Programs[expectedProgram.Name].Id;
+                var expectedId = Resources<ProgramResource>.Get(expectedProgram.Name).Id;
                 var actualProgram = actualPrograms.First(p => p.Id == expectedId);
                 var expectedOrgId = expectedProgram.OrganizationId == Guid.Empty
                                         ? Account.Givens.Organizations["Default"].Id

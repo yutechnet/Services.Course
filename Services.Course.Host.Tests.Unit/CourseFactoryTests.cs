@@ -90,8 +90,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             template.SetPrograms(new List<Program>
                         {
-                            new Program(),
-                            new Program()
+                            new Program{Id=Guid.NewGuid()},
+                            new Program{Id=Guid.NewGuid()}
                         });
 
             template.SupportOutcome(
@@ -139,7 +139,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Assert.That(course.Programs.Count, Is.EqualTo(template.Programs.Count));
             foreach (var program in course.Programs)
             {
-                Assert.That(template.Programs.Contains(program));
+                Assert.That(template.Programs.Any(p=>p.Id==program.Id));
             }
 
             // Validating the learning outcomes are clones
