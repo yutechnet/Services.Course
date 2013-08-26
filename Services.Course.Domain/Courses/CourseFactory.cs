@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
 using AutoMapper;
 using Autofac.Features.Indexed;
 using BpeProducts.Common.Capabilities;
@@ -74,7 +76,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 courseSegment.Course = course;
             }
 
-            course.Programs = new List<Program>(template.Programs);
+            var pgms = new List<Program>();
+	        foreach (var program in template.Programs)
+	        {
+		        pgms.Add(program.DeepClone());
+	        }
+	        course.Programs = pgms;
             course.SupportedOutcomes = new List<LearningOutcome>(template.SupportedOutcomes);
 
             course.CourseType = template.CourseType;
