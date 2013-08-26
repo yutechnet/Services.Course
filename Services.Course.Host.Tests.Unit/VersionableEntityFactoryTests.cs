@@ -78,8 +78,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
 	public class TestEntity
 	{
-		
-
 		public void Publish()
 		{
 			this.IsPublished = true;
