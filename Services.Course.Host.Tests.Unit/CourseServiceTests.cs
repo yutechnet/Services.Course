@@ -33,7 +33,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         public void Can_Add_prerequisites()
         {
             var courseToReturn = new Domain.Courses.Course {Id = Guid.NewGuid(), ActiveFlag = true};
-			_repoMock.Setup(r => r.Get(It.IsAny<Guid>())).Returns(courseToReturn);
+			_courseFactoryMock.Setup(r => r.Reconstitute(It.IsAny<Guid>())).Returns(courseToReturn);
 
             var courseToBePrerequisite = new Domain.Courses.Course { Id = Guid.NewGuid(), ActiveFlag = true };
             var prereqCoursesInDb = new List<Course.Domain.Courses.Course> {courseToBePrerequisite };
@@ -58,7 +58,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             var courseToReturn = new Domain.Courses.Course { Id = Guid.NewGuid(), ActiveFlag = true };
 			courseToReturn.AddPrerequisite(prerequisiteCourse);
-			_repoMock.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseToReturn);
+			_courseFactoryMock.Setup(r => r.Reconstitute(It.IsAny<Guid>())).Returns(courseToReturn);
+			//_repoMock.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseToReturn);
 
             var newPrerequisiteList = new List<Guid>();
             _courseService.UpdatePrerequisiteList(courseToReturn.Id, newPrerequisiteList);
@@ -85,7 +86,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             var courseToReturn = new Domain.Courses.Course { Id = Guid.NewGuid(), ActiveFlag = true };
 			courseToReturn.AddPrerequisite(prerequisiteCourse);
 			courseToReturn.AddPrerequisite(prerequisiteCourse2);
-			_repoMock.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseToReturn);
+			_courseFactoryMock.Setup(r => r.Reconstitute(It.IsAny<Guid>())).Returns(courseToReturn);
+			//_repoMock.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseToReturn);
             _repoMock.Setup(c => c.Get(It.IsAny<List<Guid>>())).Returns(prereqCoursesInDb);
 
             var newPrerequisiteList = new List<Guid> { guid2, prerequisiteCourseToBeAdded.Id };

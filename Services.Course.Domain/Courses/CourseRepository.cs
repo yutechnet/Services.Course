@@ -49,6 +49,8 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             return courses;
         }
 
+	
+
         public Courses.Course Load(Guid courseId)
         {
             var course = Get(courseId);

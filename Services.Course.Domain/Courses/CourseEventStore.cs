@@ -63,11 +63,13 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 
         public void Store<T>(T domainEvent) where T : IDomainEvent
         {
+
             using (var scope = new TransactionScope())
             using (_eventStore)
             {
                 using (IEventStream stream = _eventStore.OpenStream(domainEvent.AggregateId, 0, int.MaxValue))
                 {
+
                     stream.Add(new EventMessage { Body = domainEvent });
                     stream.CommitChanges(Guid.NewGuid());
                 }
@@ -77,7 +79,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 
         public void Store<T>(Guid aggregateId, List<T> domainEvents) where T : IDomainEvent
         {
-            using (var scope = new TransactionScope())
+            using (var scope = new TransactionScope(TransactionScopeOption.Required))
             using (_eventStore)
             {
                 using (IEventStream stream = _eventStore.OpenStream(aggregateId, 0, int.MaxValue))

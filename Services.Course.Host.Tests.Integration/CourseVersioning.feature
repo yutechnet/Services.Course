@@ -9,9 +9,11 @@ Background:
 #   | Name         | Code   | Description                   | OrganizationId                       | CourseType  | IsTemplate |
 #	| English 1010 | ENG101 | Ranji's awesome English Class | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
 #	| English 101011	 | E10011   | Macroeconomics        | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | False      |
-    | Name           | Code     | Description                   | OrganizationName | CourseType  | IsTemplate |
-    | English 1010   | ENG101   | Ranji's awesome English Class | Default          | Traditional | false      |
-	| English 101011 | E10011   | Macroeconomics                | Default          | Traditional | False      |
+    
+	| Name           | Code   | Description                   | OrganizationName | CourseType  | IsTemplate |
+	| English 1010   | ENG101 | Ranji's awesome English Class | Default          | Traditional | false      |
+	| English 101011 | E10011 | Macroeconomics                | Default          | Traditional | False      |
+
 
 Scenario: Create a default version
 	Then the course 'English 1010' should have the following info
