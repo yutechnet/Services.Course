@@ -91,7 +91,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "Macroeconomics",
                         "Default",
                         "Traditional",
-                        "False"});
+                        "false"});
 #line 8
  testRunner.Given("I have the following courses", ((string)(null)), table1, "Given ");
 #line hidden

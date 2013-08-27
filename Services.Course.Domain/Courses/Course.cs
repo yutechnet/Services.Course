@@ -222,18 +222,18 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var course = AutoMapper.Mapper.Map<Course>(this);
             course.Id = Guid.NewGuid();
 
-            //course.Programs = new List<Program>(this.Programs);
+            course.Programs = new List<Program>(this.Programs);
 
-            var pgms = new List<Program>();
-            foreach (var program in this.Programs)
-            {
-                pgms.Add(program.DeepClone());
-            }
-            course.Programs = pgms;
+			//var pgms = new List<Program>();
+			//foreach (var program in this.Programs)
+			//{
+			//	pgms.Add(program.DeepClone());
+			//}
+			//course.Programs = pgms;
             
             SupportedOutcomes = new List<LearningOutcome>(this.SupportedOutcomes);
             Prerequisites = new List<Course>(this.Prerequisites);
-
+			
             return course;
         }
 

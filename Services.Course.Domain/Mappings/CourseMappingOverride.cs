@@ -37,7 +37,8 @@ namespace BpeProducts.Services.Course.Domain.Overrides
 				.ParentKeyColumn("CourseId")
 				.ChildKeyColumn("PrerequisiteCourseId")
 				.ForeignKeyConstraintNames("FK_CoursePrerequisite_Course", "FK_CoursePrerequisite_Course2")
-				.Table("CoursePrerequisite");
+				.Table("CoursePrerequisite")
+				.Cascade.None();
 
             mapping
                 .HasManyToMany(x => x.Programs)

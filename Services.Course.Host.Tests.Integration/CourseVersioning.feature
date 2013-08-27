@@ -12,7 +12,7 @@ Background:
     
 	| Name           | Code   | Description                   | OrganizationName | CourseType  | IsTemplate |
 	| English 1010   | ENG101 | Ranji's awesome English Class | Default          | Traditional | false      |
-	| English 101011 | E10011 | Macroeconomics                | Default          | Traditional | False      |
+	| English 101011 | E10011 | Macroeconomics                | Default          | Traditional | false      |
 
 
 Scenario: Create a default version
