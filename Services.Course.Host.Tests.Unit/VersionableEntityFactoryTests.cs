@@ -76,13 +76,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
 	}
 
-	public class TestEntity
+	public class TestEntity:VersionableEntity
 	{
 		public void Publish()
 		{
+			this.ParentEntity = null;
+			this.OriginalEntity = null;
 			this.IsPublished = true;
 		}
-		[JsonProperty]
-		public bool IsPublished { get; private set; }
+	
+		protected override VersionableEntity Clone()
+		{
+			return this;
+			//throw new NotImplementedException();
+		}
+
 	}
 }
