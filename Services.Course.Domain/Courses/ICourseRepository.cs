@@ -15,5 +15,5 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         IList<Courses.Course> Get(List<Guid> ids);
         Courses.Course Load(Guid courseId);
 	    Courses.CourseSegment GetSegment(Guid courseId,Guid segmentId);
-    }
+	}
 }
