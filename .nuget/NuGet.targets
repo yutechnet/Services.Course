@@ -22,9 +22,9 @@
         <!--
             <PackageSource Include="https://nuget.org/api/v2/" />
             <PackageSource Include="https://my-nuget-source/nuget/" />
+            <PackageSource Include="https://nuget.org/api/v2/" />
+            <PackageSource Include="http://teamcity.bridgepoint.local/guestAuth/app/nuget/v1/FeedService.svc" />  
         -->
-        <PackageSource Include="https://nuget.org/api/v2/" />
-        <PackageSource Include="http://teamcity.bridgepoint.local/guestAuth/app/nuget/v1/FeedService.svc" />  
     </ItemGroup>
 
     <PropertyGroup Condition=" '$(OS)' == 'Windows_NT'">
