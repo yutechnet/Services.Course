@@ -69,6 +69,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             ScenarioContext.Current.Add("Responses", new List<HttpResponseMessage>());
             ScenarioContext.Current.Add("Organizations", new Dictionary<string, OrganizationResource>());
+            ScenarioContext.Current.Add("Roles", new Dictionary<string, RoleResource>());
 
             var defaultOrg = new OrganizationResource
                 {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Formatting;
-using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
 
@@ -13,7 +11,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
         public static HttpResponseMessage CreateOrganization(string name, SaveOrganizationRequest request)
         {
             request.TenantId = ApiFeature.TenantId;
-            var response = ApiFeature.AccountApiTestHost.Client.PutAsJsonAsync(ApiFeature.AccountLeadingPath + "/organization", request).Result;
+            var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath + "/organization", request).Result;
 
             Whens.ResponseMessages.Add(response);
 
@@ -36,7 +34,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
         public static HttpResponseMessage CreateRole(string name, SaveRoleRequest request)
         {
             request.TenantId = ApiFeature.TenantId;
-            var response = ApiFeature.AccountApiTestHost.Client.PutAsJsonAsync(ApiFeature.AccountLeadingPath + "/role", request).Result;
+            var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath + "/role", request).Result;
 
             Whens.ResponseMessages.Add(response);
 

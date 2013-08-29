@@ -46,7 +46,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
                             string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Organizations[parentOrgName].Id
                     };
 
-                Operations.Account.PostOperations.CreateRole(request.Name, request);
+                PostOperations.CreateRole(request.Name, request);
             }
         }
 
@@ -64,7 +64,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
                     Parent = string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Organizations[parentOrgName].Id
                 };
 
-                Operations.Account.PostOperations.CreateOrganization(request.Name, request);
+                PostOperations.CreateOrganization(request.Name, request);
             }
         }
 
