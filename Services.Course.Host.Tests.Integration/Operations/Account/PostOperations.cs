@@ -33,7 +33,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
 
         public static HttpResponseMessage CreateRole(string name, SaveRoleRequest request)
         {
-            request.TenantId = ApiFeature.TenantId;
             var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath + "/role", request).Result;
 
             Whens.ResponseMessages.Add(response);

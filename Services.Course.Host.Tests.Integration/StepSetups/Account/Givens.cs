@@ -42,8 +42,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
                 var request = new SaveRoleRequest
                     {
                         Name = row["Name"],
-                        OrganizationId =
-                            string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Organizations[parentOrgName].Id
+                        OrganizationId = string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Organizations[parentOrgName].Id,
+                        TenantId = ApiFeature.TenantId
                     };
 
                 PostOperations.CreateRole(request.Name, request);
