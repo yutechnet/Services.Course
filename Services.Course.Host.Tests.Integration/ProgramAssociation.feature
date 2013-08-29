@@ -51,6 +51,6 @@ Scenario: Get program with all courses that belong to it
 	| Program Name        |
 	| Bachelor of Art     |
 	Then the program 'Bachelor of Art' include the following course information
-	| Course Name    |
-	| English 101    |
-	| Psychology 101 |
+	| Course Name    | Code   | Description    | 
+	| English 101    | ENG101 | English 101    |
+	| Psychology 101 | PSY101 | Psychology 101 |
