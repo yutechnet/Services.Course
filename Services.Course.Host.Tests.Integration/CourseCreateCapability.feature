@@ -11,9 +11,8 @@ Scenario Outline: I can not create a course unless I have permission to do so.
 	| OrgTop    | Top         |                    |
 	| OrgMiddle | Middle      | OrgTop             |
 	And I create the following roles
-	| Name  | Organization | Capabilities   |
+	| Name  | Organization | Capabilities |
 	| Role1 | OrgTop       | <Capability> |
-	#And I add capability <Capability> to role "Role1"
 	And I give the user role "Role1" for organization <OrganizationAssignedTo>
 	When I create a course under organization <OrganizationCreatedAttempt>
 	Then I get <StatusCode> response

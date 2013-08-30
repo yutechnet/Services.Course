@@ -113,11 +113,11 @@ this.ScenarioSetup(scenarioInfo);
                         string.Format("{0}", capability)});
 #line 13
  testRunner.And("I create the following roles", ((string)(null)), table2, "And ");
-#line 17
+#line 16
  testRunner.And(string.Format("I give the user role \"Role1\" for organization {0}", organizationAssignedTo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
+#line 17
  testRunner.When(string.Format("I create a course under organization {0}", organizationCreatedAttempt), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 19
+#line 18
  testRunner.Then(string.Format("I get {0} response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -130,7 +130,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not create a course when capabilities have been removed.", new string[] {
                         "ignore"});
-#line 30
+#line 29
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -141,7 +141,7 @@ this.ScenarioSetup(scenarioInfo);
                         "OrgTop",
                         "Top",
                         ""});
-#line 31
+#line 30
  testRunner.Given("the following organizations exist", ((string)(null)), table3, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -152,15 +152,15 @@ this.ScenarioSetup(scenarioInfo);
                         "Role1",
                         "OrgTop",
                         "CourseCreate"});
-#line 34
+#line 33
  testRunner.And("I create the following roles", ((string)(null)), table4, "And ");
-#line 37
+#line 36
  testRunner.And("I give the user role \"Role1\" for organization \"OrgTop\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 37
  testRunner.And("I update the role \"Role1\" with capabilities \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
+#line 38
  testRunner.When("I create a course under organization \"OrgTop\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 40
+#line 39
  testRunner.Then("I get \"Unauthorized\" response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

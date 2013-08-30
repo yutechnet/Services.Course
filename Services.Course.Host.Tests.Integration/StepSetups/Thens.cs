@@ -83,7 +83,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             CollectionAssert.AreEquivalent(prereqIds, course.PrerequisiteCourseIds);
         }
 
-
         [Then(@"I get (.*) response")]
         [Then(@"I get '(.*)' response")]
         [Then(@"I get ""(.*)"" response")]
