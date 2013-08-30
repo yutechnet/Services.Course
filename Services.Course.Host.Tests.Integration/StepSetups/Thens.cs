@@ -83,14 +83,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             CollectionAssert.AreEquivalent(prereqIds, course.PrerequisiteCourseIds);
         }
 
+
+        [Then(@"I get (.*) response")]
         [Then(@"I get '(.*)' response")]
+        [Then(@"I get ""(.*)"" response")]
         public void ThenIGetResponse(string status)
         {
             var response = Whens.ResponseMessages.Last();
 
             var expectedStatusCode = (HttpStatusCode) Enum.Parse(typeof (HttpStatusCode), status);
 
-            Assert.That(response.StatusCode.Equals(expectedStatusCode));
+            Assert.That(response.StatusCode, Is.EqualTo(expectedStatusCode));
         }
 
         [Then(@"I get the following responses")]

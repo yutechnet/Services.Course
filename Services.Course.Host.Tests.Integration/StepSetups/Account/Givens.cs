@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.WebApiTest;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+using System;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
 {
@@ -46,6 +42,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
                         TenantId = ApiFeature.TenantId
                     };
 
+                var capabilities = row["Capabilities"];
+                if (capabilities != "")
+                {
+                    var capabilityList = capabilities.Split(',').Select(c => (Capability)Enum.Parse(typeof(Capability), c)).ToList();
+                    request.Capabilities = capabilityList;
+                }
+
                 PostOperations.CreateRole(request.Name, request);
             }
         }
@@ -68,8 +71,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
             }
         }
 
-        [Given(@"I give capability ""(.*)"" to role ""(.*)""")]
-        [Given(@"I give capability (.*) to role ""(.*)""")]
+        [Given(@"I add capability ""(.*)"" to role ""(.*)""")]
+        [Given(@"I add capability (.*) to role ""(.*)""")]
         public void GivenIGiveCapabilityToRole(string capability, string roleName)
         {
             var resource = Roles[roleName];
@@ -93,6 +96,27 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
             PutOperations.UpdateRoleWithCapability(resource, request);
         }
 
+        [Given(@"I update the role ""(.*)"" with capabilities ""(.*)""")]
+        public void GivenIUpdateTheRoleWithCapabilities(string roleName, string capabilities)
+        {
+            var resource = Roles[roleName];
+            var role = GetOperations.GetRole(resource.ResourceUri);
+
+            var request = new UpdateRoleRequest
+                {
+                    Name = role.Name
+                };
+
+            if (capabilities!="")
+            {
+                var capabilityList = capabilities.Split(',').Select(c=> (Capability)Enum.Parse(typeof(Capability), c)).ToList();
+                request.Capabilities = capabilityList;
+            }
+
+            PutOperations.UpdateRoleWithCapability(resource, request);
+        }
+
+        [Given(@"I give the user role ""(.*)"" for organization (.*)")]
         [Given(@"I give the user role ""(.*)"" for organization ""(.*)""")]
         public void GivenIGiveTheUserRoleForOrganizationOrgTop(string roleName, string organizatonName)
         {

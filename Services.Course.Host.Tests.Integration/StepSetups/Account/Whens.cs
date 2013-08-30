@@ -13,6 +13,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
     public class Whens
     {
         [When(@"I create a course under organization (.*)")]
+        [When(@"I create a course under organization ""(.*)""")]
         public void WhenICreateACourseUnderOrganization(string oranizationName)
         {
             var org = Givens.Organizations[oranizationName];

@@ -142,7 +142,7 @@ Scenario: I can see course templates for an organization I have CreateCourse cap
 	And I create a course template "FindMe2" for organization "Org1"
 	And I create a course template "DontFindMe" for organization "Org2"
 	And I create a role "CurriculumCoordinator"
-	And I give capability CourseCreate to role "CurriculumCoordinator"
+	And I add capability CourseCreate to role "CurriculumCoordinator"
 	And I give role "CurriculumCoordinator" to user "TestUser3" for object "Org1" of type "organization"
 	When I get the course templates for organization "Org1" to scenario context name "templateIds"
 	Then the course template Ids in "templateIds" are:
@@ -158,7 +158,7 @@ Scenario: I can not see course templates for an organization I do have CreateCou
 	And I create a course template "FindMe1" for organization "Org1"
 	And I create a course template "DontFindMe" for organization "Org2"
 	And I create a role "CurriculumCoordinator"
-	And I give capability CourseCreate to role "CurriculumCoordinator"
+	And I add capability CourseCreate to role "CurriculumCoordinator"
 	And I give role "CurriculumCoordinator" to user "TestUser3" for object "Org1" of type "organization"
 	When I get the course templates for organization "Org2" to scenario context name "templateIds"
 	Then the course template Ids in "templateIds" are:

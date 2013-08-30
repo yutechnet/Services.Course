@@ -74,19 +74,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             ScenarioContext.Current[roleName] = roleId;
         }
 
-        //[Given(@"I give capability (.*) to role ""(.*)""")]
-        //public void GivenIGiveCapabilityToRole(string capability, string roleName)
-        //{
-        //    if (capability == "")
-        //    {
-        //        return;
-        //    }
-        //    var capabilityEnum = (Capability)Enum.Parse(typeof(Capability), capability);
-        //    var roleId = (Guid)ScenarioContext.Current[roleName];
-        //    var roleResponse = GetRole(roleId);
-        //    UpdateRoleWithCapability(roleResponse, capabilityEnum);
-        //}
-
         private RoleResponse GetRole(Guid roleId)
         {
             var response = RemoteApiTestHost.Client.GetAsync(string.Format("{0}/{1}", RoleUrl, roleId)).Result;

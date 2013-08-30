@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
+using System;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
 {
@@ -13,7 +8,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
     {
         public static RoleResponse GetRole(Uri resourceUri)
         {
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri).Result;
+            var response = ApiFeature.AccountApiTestHost.Client.GetAsync(resourceUri).Result;
             Whens.ResponseMessages.Add(response);
 
             return response.IsSuccessStatusCode
