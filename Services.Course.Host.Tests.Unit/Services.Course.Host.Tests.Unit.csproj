@@ -228,6 +228,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizationAspectTests.cs" />
     <Compile Include="CourseFactoryTests.cs" />
     <Compile Include="CourseServiceTests.cs" />
     <Compile Include="Entities\CourseTests.cs" />
