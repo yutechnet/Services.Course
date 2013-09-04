@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using System.Net;
 using Autofac;
 using Autofac.Extras.DynamicProxy2;
 using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Audit;
+using BpeProducts.Services.Acl.Client;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Repositories;
-using Castle.DynamicProxy;
 using Moq;
 using NHibernate;
 using NUnit.Framework;
-using IInterceptor = Castle.DynamicProxy.IInterceptor;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit
 {
@@ -24,9 +22,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		public void Setup()
 		{
 			_repositoryMock = new Mock<IRepository>();
-			_aclClientMock = new Mock<IAclClient>();
+			_aclClientMock = new Mock<IAclHttpClient>();
 			_auditDataProviderMock = new Mock<IAuditDataProvider>(); 
-			
+			_tokenExtractor = new Mock<ITokenExtractor>();
+
 			var builder = new ContainerBuilder();
 			builder.RegisterType<TestService>().As<ITestService>()
 			       .EnableInterfaceInterceptors().InterceptedBy(typeof (AuthorizeAclAspect));
@@ -34,21 +33,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			builder.Register(x => _repositoryMock.Object);
 			builder.Register(x => _aclClientMock.Object);
 			builder.Register(x => _auditDataProviderMock.Object);
+			builder.Register(x => _tokenExtractor.Object);
 			_container = builder.Build();
 
-			
-			
 		}
 
 		private IContainer _container;
 		private Mock<IRepository> _repositoryMock;
-		private Mock<IAclClient> _aclClientMock;
+		private Mock<IAclHttpClient> _aclClientMock;
 		private Mock<IAuditDataProvider> _auditDataProviderMock;
+		private Mock<ITokenExtractor> _tokenExtractor;
 
-		[Test]
 		public void Should_intercept_method()
 		{
-			SetupMocksAuthorize(true);
+			SetupMocksAuthorize(HttpStatusCode.OK);
 
 			Guid id = Guid.NewGuid();
 			var svc = _container.Resolve<ITestService>();
@@ -58,7 +56,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_intercept_method_and_throw_if_access_is_denied()
 		{
-			SetupMocksAuthorize(false);
+			SetupMocksAuthorize(HttpStatusCode.Unauthorized);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWork(Guid.Empty));
@@ -67,7 +65,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_throw_exception_if_attribute_params_not_set()
 		{
-			SetupMocksAuthorize(true);
+			SetupMocksAuthorize(HttpStatusCode.OK);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWorkNoAttributeParams(Guid.Empty));
@@ -76,7 +74,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_throw_exception_if_no_object_id()
 		{
-			SetupMocksAuthorize(true);
+			SetupMocksAuthorize(HttpStatusCode.OK);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWorkNoObjectIdInAttribute(Guid.Empty));
@@ -85,7 +83,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_throw_exception_if_missing_method_params()
 		{
-			SetupMocksAuthorize(true);
+			SetupMocksAuthorize(HttpStatusCode.OK);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWorkMissingMethodParams());
@@ -94,7 +92,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_throw_exception_if_no_capability()
 		{
-			SetupMocksAuthorize(true);
+			SetupMocksAuthorize(HttpStatusCode.OK);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWorkNoCapability(Guid.Empty));
@@ -103,7 +101,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_throw_exception_if_no_object_type()
 		{
-			SetupMocksAuthorize(true);
+			SetupMocksAuthorize(HttpStatusCode.OK);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWorkNoObjectType(Guid.Empty));
@@ -112,19 +110,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_get_org_id_from_org_object_when_specified()
 		{
-			SetupMocksAuthorize(true);
+			SetupMocksAuthorize(HttpStatusCode.OK);
 			var orgObject = new OrgObject{OrganizationId = Guid.NewGuid()};
 			var svc = _container.Resolve<ITestService>();
 
 			svc.DoWorkOrgObject(orgObject);
 
-			_aclClientMock.Verify(m=>m.CheckAccess(It.IsAny<Guid>(),It.Is<Guid>(x=>x==orgObject.OrganizationId),It.IsAny<Guid>(),It.IsAny<Capability>()));
+			_aclClientMock.Verify(m=>m.HasAccess(It.IsAny<string>(),It.IsAny<Guid>(),It.Is<Guid>(x=>x==orgObject.OrganizationId),It.IsAny<Guid>(),It.IsAny<Capability>()));
 			_repositoryMock.Verify(r=>r.Get(It.IsAny<string>(),It.IsAny<object>()),Times.Never());
 		}
-		private void SetupMocksAuthorize(bool authorizeUser)
+		private void SetupMocksAuthorize(HttpStatusCode authorizeUser)
 		{
 			_repositoryMock.Setup(q => q.Get(It.IsAny<String>(), It.IsAny<Guid>())).Returns(new Course.Domain.Courses.Course() { Id = new Guid() });
-			_aclClientMock.Setup(q => q.CheckAccess(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Capability>())).Returns(authorizeUser);
+			_aclClientMock.Setup(q => q.HasAccess(It.IsAny<string>(),It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Capability>())).Returns(authorizeUser);
 			_auditDataProviderMock.Setup(s => s.GetUserGuid()).Returns(Guid.NewGuid);
 		}
 	}
@@ -133,10 +131,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 	{
 	}
 
-	public interface IAclClient
-	{
-		bool CheckAccess(Guid objectId, Guid OrganizationId, Guid userId, Capability capability);
-	}
+	
 
 	public interface ITestService
 	{
@@ -197,82 +192,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		public Guid DoWorkOrgObject(OrgObject orgObject)
 		{
 			return orgObject.OrganizationId;
-		}
-	}
-
-	public class AuthByAclAttribute : Attribute
-	{
-		public string ObjectIdArgument { get; set; }
-
-		public Capability Capability { get; set; }
-
-		public Type ObjectType { get; set; }
-
-		public string OrganizationObject { get; set; }
-	}
-
-	public class AuthorizeAclAspect : IInterceptor
-	{
-		private readonly IAclClient _aclClient;
-		private readonly IAuditDataProvider _auditDataProvider;
-		private readonly IRepository _repository;
-
-		public AuthorizeAclAspect(IRepository repository, IAclClient aclClient,IAuditDataProvider auditDataProvider)
-		{
-			_repository = repository;
-			_aclClient = aclClient;
-			_auditDataProvider = auditDataProvider;
-		}
-
-		public void Intercept(IInvocation invocation)
-		{
-			MethodInfo methodInfo = invocation.MethodInvocationTarget ?? invocation.Method;
-			IEnumerable<AuthByAclAttribute> authAttrs =
-				methodInfo.GetCustomAttributes(typeof (AuthByAclAttribute), true).Cast<AuthByAclAttribute>();
-			AuthByAclAttribute authAttr = authAttrs.FirstOrDefault();
-
-			if (authAttr != null)
-			{
-				ParameterInfo[] parameters = methodInfo.GetParameters();
-
-				if (!parameters.Any())
-					throw new AuthorizationException("missing auth info in aspect");
-
-
-				if (authAttr.OrganizationObject == null && (authAttr.ObjectType == null || String.IsNullOrEmpty(authAttr.ObjectIdArgument)))
-					throw new AuthorizationException("missing auth info in aspect");
-
-				if (Enum.IsDefined(typeof(Capability),authAttr.Capability)==false)
-					throw new AuthorizationException("missing auth info in aspect");
-
-				var objectId = Guid.Empty;
-				if (!String.IsNullOrEmpty(authAttr.ObjectIdArgument))
-				{
-					var objectIdPosition =
-						parameters.Single(x => x.Name == authAttr.ObjectIdArgument && x.ParameterType == typeof (Guid)).Position;
-					objectId = (Guid) invocation.GetArgumentValue(objectIdPosition);
-				}
-				
-				Guid orgId;
-				if (String.IsNullOrEmpty(authAttr.OrganizationObject) == false)
-				{
-					var orgObjectPosition = parameters.Single(x => x.Name == authAttr.OrganizationObject ).Position;
-					var orgObject = invocation.GetArgumentValue(orgObjectPosition);
-					orgId=(Guid) orgObject.GetType().GetProperty("OrganizationId").GetValue(orgObject);
-				}
-				else
-				{
-					var orgEntity = (OrganizationEntity) _repository.Get(authAttr.ObjectType.Name, objectId);
-					orgId = orgEntity.OrganizationId;
-				}
-
-				var uid = _auditDataProvider.GetUserGuid();
-				
-				var hasAccess = _aclClient.CheckAccess(objectId, orgId, uid, authAttr.Capability);
-				if (hasAccess==false) throw new AuthorizationException("invalid info");
-			}
-
-			invocation.Proceed();
 		}
 	}
 

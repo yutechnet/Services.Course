@@ -51,7 +51,9 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<CourseEventStore>().As<IStoreCourseEvents>();
             containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
             containerBuilder.RegisterType<OutcomeFactory>().As<IOutcomeFactory>();
-            containerBuilder.RegisterType<CourseService>().As<ICourseService>();
+            containerBuilder.RegisterType<CourseService>().As<ICourseService>()
+							.EnableInterfaceInterceptors()
+							.InterceptedBy(typeof(AuthorizeAclAspect));
             containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
             containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>();
             containerBuilder.RegisterType<LearningOutcomeService>().As<ILearningOutcomeService>();
@@ -141,6 +143,10 @@ namespace BpeProducts.Services.Course.Domain
 
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeVersionPublished>>();
             containerBuilder.RegisterType<UpdateModelOnOutcomeVersionPublished>().As<IHandle<OutcomeVersionPublished>>();
+
+			//Acl aspect dependencies
+			containerBuilder.RegisterType<AuthorizeAclAspect>();
+	        containerBuilder.RegisterType<TokenExtractor>().As<ITokenExtractor>();
         }
     }
 }

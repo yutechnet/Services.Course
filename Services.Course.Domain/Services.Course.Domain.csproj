@@ -77,6 +77,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.73\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
+    <Reference Include="BpeProducts.Services.Acl.Client">
+      <HintPath>..\packages\BpeProducts.Services.Acl.Client.1.0.13\lib\net40\BpeProducts.Services.Acl.Client.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
@@ -177,6 +180,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizeAclAspect.cs" />
     <Compile Include="Courses\CourseLearningActivity.cs" />
     <Compile Include="Courses\CourseSegmentService.cs" />
     <Compile Include="Courses\CourseService.cs" />
