@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Threading;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
 using BpeProducts.Common.WebApi.Attributes;
@@ -46,6 +50,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		// POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
+			//TODO: move this to common.webapi
+			var user = User as ClaimsPrincipal;
+	        var identity = user.Identities.First();
+	        var authenticationHeadervalue = Request.Headers.Authorization;
+			identity.BootstrapContext =new BootstrapContext(authenticationHeadervalue.Parameter); 
+			
             var courseInfoResponse = _courseService.Create(request);
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Autofac;
 using BpeProducts.Common.Ioc;
+using BpeProducts.Services.Course.Domain;
 
 namespace BpeProducts.Services.Course.Host
 {

@@ -4,7 +4,7 @@ Feature: CourseCreateCapability
 	As a system owner
 	I want to make sure that users cannot access resources they are not allowed to
 	
-@ignore
+#@ignore
 Scenario Outline: I can not create a course unless I have permission to do so.
 	Given the following organizations exist
 	| Name      | Description | ParentOrganization |
@@ -25,7 +25,7 @@ Examples:
 | CourseCreate  | OrgTop                 | OrgMiddle                  | Created      |
 | CourseCreate  | OrgMiddle              | OrgTop                     | Unauthorized |
 
-@ignore
+#@ignore
 Scenario: I can not create a course when capabilities have been removed.
 	Given the following organizations exist
 	| Name      | Description | ParentOrganization |
