@@ -11,7 +11,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
         public static HttpResponseMessage CreateOrganization(string name, SaveOrganizationRequest request)
         {
             request.TenantId = ApiFeature.TenantId;
-            var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath + "/organization", request).Result;
+			var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath == "/" ? "/organization" : ApiFeature.AccountLeadingPath + "/organization", request).Result;
 
             Whens.ResponseMessages.Add(response);
 
@@ -33,7 +33,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
 
         public static HttpResponseMessage CreateRole(string name, SaveRoleRequest request)
         {
-            var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath + "/role", request).Result;
+			var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath == "/" ? "/role" : ApiFeature.AccountLeadingPath + "/role", request).Result;
 
             Whens.ResponseMessages.Add(response);
 
@@ -55,7 +55,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
 
         public static HttpResponseMessage GrantPermission(Guid userGuid, RoleResource role, OrganizationResource org)
         {
-            var requestUri = string.Format("{0}/permission/organization/{1}/user/{2}", ApiFeature.AccountLeadingPath, org.Id, userGuid);
+			var requestUri = string.Format("{0}/permission/organization/{1}/user/{2}", ApiFeature.AccountLeadingPath == "/" ? "" : ApiFeature.AccountLeadingPath, org.Id, userGuid);
             var savePermissionRequest = new SavePermissionRequest { Roles = new List<Guid> { role.Id } };
 
             var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(requestUri, savePermissionRequest).Result;
