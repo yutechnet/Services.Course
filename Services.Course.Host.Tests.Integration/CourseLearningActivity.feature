@@ -5,9 +5,17 @@ Feature: CourseLearningActivity
 	So that I can turn them into gradebook items
 
 Background: 
-Given I have the following courses
+Given I am user "TestUser3"
+And the following organizations exist
+	| Name      | Description | ParentOrganization |
+	| COB    | Bus School         |                    |
+And I create the following roles
+	| Name  | Organization | Capabilities |
+	| Role1 | COB      | CourseCreate |
+And I give the user role "Role1" for organization COB
+And I have the following courses
 	| Name     | Code | Description    | OrganizationName | CourseType  | IsTemplate |
-	| Econ 100 | E100 | Macroeconomics | Default          | Traditional | False      |
+	| Econ 100 | E100 | Macroeconomics | COB          | Traditional | False      |
 And I have the following course segments for 'Econ 100'
 	| Name   | Description              | Type     | ParentSegment |
 	| Week 1 | First week is slack time | TimeSpan |               |

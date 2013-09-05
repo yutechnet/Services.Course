@@ -25,7 +25,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
                     ResourceUri = response.Headers.Location,
                 };
 
-                StepSetups.Account.Givens.Organizations.Add(name, resource);
+				if (StepSetups.Account.Givens.Organizations.ContainsKey(name))
+				{
+					StepSetups.Account.Givens.Organizations[name] = resource;
+				}
+				else
+				{
+					StepSetups.Account.Givens.Organizations.Add(name, resource);
+				}
             }
 
             return response;

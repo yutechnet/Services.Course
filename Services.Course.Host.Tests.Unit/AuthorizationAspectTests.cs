@@ -46,7 +46,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
 		public void Should_intercept_method()
 		{
-			SetupMocksAuthorize(HttpStatusCode.OK);
+			SetupMocksAuthorize(true);
 
 			Guid id = Guid.NewGuid();
 			var svc = _container.Resolve<ITestService>();
@@ -56,7 +56,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_intercept_method_and_throw_if_access_is_denied()
 		{
-			SetupMocksAuthorize(HttpStatusCode.Unauthorized);
+			SetupMocksAuthorize(false);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWork(Guid.Empty));
@@ -65,7 +65,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_throw_exception_if_attribute_params_not_set()
 		{
-			SetupMocksAuthorize(HttpStatusCode.OK);
+			SetupMocksAuthorize(true);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWorkNoAttributeParams(Guid.Empty));
@@ -74,7 +74,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_throw_exception_if_no_object_id()
 		{
-			SetupMocksAuthorize(HttpStatusCode.OK);
+			SetupMocksAuthorize(true);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWorkNoObjectIdInAttribute(Guid.Empty));
@@ -83,7 +83,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_throw_exception_if_missing_method_params()
 		{
-			SetupMocksAuthorize(HttpStatusCode.OK);
+			SetupMocksAuthorize(true);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWorkMissingMethodParams());
@@ -92,7 +92,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_throw_exception_if_no_capability()
 		{
-			SetupMocksAuthorize(HttpStatusCode.OK);
+			SetupMocksAuthorize(true);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWorkNoCapability(Guid.Empty));
@@ -101,7 +101,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_throw_exception_if_no_object_type()
 		{
-			SetupMocksAuthorize(HttpStatusCode.OK);
+			SetupMocksAuthorize(true);
 
 			var svc = _container.Resolve<ITestService>();
 			Assert.Throws<AuthorizationException>(() => svc.DoWorkNoObjectType(Guid.Empty));
@@ -110,7 +110,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		[Test]
 		public void Should_get_org_id_from_org_object_when_specified()
 		{
-			SetupMocksAuthorize(HttpStatusCode.OK);
+			SetupMocksAuthorize(true);
 			var orgObject = new OrgObject{OrganizationId = Guid.NewGuid()};
 			var svc = _container.Resolve<ITestService>();
 
@@ -119,7 +119,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			_aclClientMock.Verify(m=>m.HasAccess(It.IsAny<string>(),It.IsAny<Guid>(),It.Is<Guid>(x=>x==orgObject.OrganizationId),It.IsAny<Guid>(),It.IsAny<Capability>()));
 			_repositoryMock.Verify(r=>r.Get(It.IsAny<string>(),It.IsAny<object>()),Times.Never());
 		}
-		private void SetupMocksAuthorize(HttpStatusCode authorizeUser)
+		private void SetupMocksAuthorize(bool authorizeUser)
 		{
 			_repositoryMock.Setup(q => q.Get(It.IsAny<String>(), It.IsAny<Guid>())).Returns(new Course.Domain.Courses.Course() { Id = new Guid() });
 			_aclClientMock.Setup(q => q.HasAccess(It.IsAny<string>(),It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Capability>())).Returns(authorizeUser);
