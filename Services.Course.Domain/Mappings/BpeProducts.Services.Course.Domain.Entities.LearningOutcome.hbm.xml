@@ -4,14 +4,14 @@
       <column name="LearningOutcomeId" />
       <generator class="assigned" />
     </id>
-    <set access="field.camelcase-underscore" cascade="all" name="SupportedOutcomes" table="LearningLearningOutcome">
+    <idbag access="field.camelcase-underscore" cascade="all" name="SupportedOutcomes" table="LearningLearningOutcome">
       <key foreign-key="FK_LearningOutcome">
         <column name="LearningOutcomeId" />
       </key>
       <many-to-many class="BpeProducts.Services.Course.Domain.Entities.LearningOutcome, BpeProducts.Services.Course.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" foreign-key="none">
         <column name="SupportingId" />
       </many-to-many>
-    </set>
+    </idbag>
     <bag access="field.camelcase-underscore" name="SupportingEntities" table="EntityLearningOutcome" cascade="all">
       <key column="LearningOutcomeId"/>
       <many-to-any id-type="System.Guid"
