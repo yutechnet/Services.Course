@@ -40,10 +40,10 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             //var outcome = Get(outcomeId);
             var outcome = _session.Load<LearningOutcome>(outcomeId);
 
-            if (outcome == null)
-            {
-                throw new NotFoundException(string.Format("Learing outcome {0} not found.", outcomeId));
-            }
+            //if (outcome == null)
+            //{
+            //    throw new NotFoundException(string.Format("Learing outcome {0} not found.", outcomeId));
+            //}
 
             return outcome;
         }
