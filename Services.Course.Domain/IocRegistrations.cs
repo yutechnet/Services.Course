@@ -8,6 +8,7 @@ using Autofac;
 using Autofac.Extras.DynamicProxy2;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Log;
+using BpeProducts.Services.Acl.Client;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Courses.Events;
 using BpeProducts.Services.Course.Domain.Entities;
@@ -150,6 +151,7 @@ namespace BpeProducts.Services.Course.Domain
 			//Acl aspect dependencies
 			containerBuilder.RegisterType<AuthorizeAclAspect>();
 	        containerBuilder.RegisterType<TokenExtractor>().As<ITokenExtractor>();
+	        
         }
     }
 }

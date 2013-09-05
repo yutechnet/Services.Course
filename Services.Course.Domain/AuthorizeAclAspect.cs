@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading;
 using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.Ioc.Configuration;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Audit;
 using BpeProducts.Services.Acl.Client;
@@ -88,9 +89,16 @@ namespace BpeProducts.Services.Course.Domain
 				}
 
 				var uid = _auditDataProvider.GetUserGuid();
-				
-				var hasAccess = _aclClient.HasAccess(_tokenExtractor.GetSamlToken(), uid, orgId, objectId, authAttr.Capability);
-				
+				HttpStatusCode hasAccess;
+				if (objectId != Guid.Empty)
+				{
+					hasAccess = _aclClient.HasAccess(_tokenExtractor.GetSamlToken(), uid, orgId, objectId, authAttr.Capability);
+				}
+				else
+				{
+					hasAccess = _aclClient.HasAccess(_tokenExtractor.GetSamlToken(), uid, orgId, authAttr.Capability);
+				}
+
 				if (hasAccess!=HttpStatusCode.OK) throw new AuthorizationException(hasAccess.ToString());//TODO:check from browser
 			}
 
@@ -116,4 +124,6 @@ namespace BpeProducts.Services.Course.Domain
 		}
 	}
 
+	
+	
 }
