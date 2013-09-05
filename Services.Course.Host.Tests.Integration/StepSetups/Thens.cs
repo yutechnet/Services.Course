@@ -409,6 +409,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
+
+        [Then(@"the learning outcome '(.*)' supports the following learning outcomes")]
+        public void ThenTheLearningOutcomeSupportsTheFollowingLearningOutcomes(string learningOutcomeName, Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var resource = Resources<LearningOutcomeResource>.Get(row["Description"]);
+
+                var actualOutcomes = (from o in GetOperations.GetSupportedOutcomes(resource.ResourceUri) select o.Description).ToList();
+
+                Assert.That(actualOutcomes.Count, Is.EqualTo(1));
+                Assert.That(actualOutcomes[0], Is.EqualTo(learningOutcomeName));
+            }
+        }
+
+
         private static void IndexNodes(Guid parentSegmentId, IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<string, CourseSegmentInfo> index)
         {
             foreach (var courseSegmentInfo in segmentInfos)

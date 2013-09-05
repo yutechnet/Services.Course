@@ -123,6 +123,46 @@ Scenario: Associate an outcome to another outcome
 	| CL1         |
 	| CL2         |
 
+Scenario: Associate multiple outcomes to another outcome asynchronously
+	Given I have the following learning outcomes
+	| Description |
+	| PL1         |
+	| PL2         |
+	| PL3         |
+	| PL4         |
+	| PL5         |
+	| PL6         |
+	| PL7         |
+	| PL8         |
+	| PL9         |
+	| PL10        |
+	| CL1         |
+	When the outcome 'CL1' supports the following learning outcomes asynchronously
+	| Description |
+	| PL1         |
+	| PL2         |
+	| PL3         |
+	| PL4         |
+	| PL5         |
+	| PL6         |
+	| PL7         |
+	| PL8         |
+	| PL9         |
+	| PL10        |
+	Then the learning outcome 'CL1' supports the following learning outcomes
+	| Description |
+	| PL1         |
+	| PL2         |
+	| PL3         |
+	| PL4         |
+	| PL5         |
+	| PL6         |
+	| PL7         |
+	| PL8         |
+	| PL9         |
+	| PL10        |
+
+
 Scenario: Disassociate an outcome from another outcome
 	Given I have the following learning outcomes
 	| Description |

@@ -49,7 +49,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 
         public void Save(LearningOutcome outcome)
         {
-            _session.SaveOrUpdate(outcome);
+            _session.Save(outcome);
         }
 
         public void Delete(LearningOutcome outcome)

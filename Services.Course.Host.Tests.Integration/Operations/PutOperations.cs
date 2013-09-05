@@ -65,12 +65,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return response;
         }
 
-        public static HttpResponseMessage OutcomeSupportsLearningOutcome(LearningOutcomeResource supportingOutcome, LearningOutcomeResource supportedOutcome)
+        public static HttpResponseMessage OutcomeSupportsLearningOutcome(LearningOutcomeResource supportingOutcome, LearningOutcomeResource supportedOutcome, bool isAsync = false)
         {
             var uri = string.Format("{0}/outcome/{1}/supports/{2}", ApiFeature.LeadingPath, supportingOutcome.Id, supportedOutcome.Id);
-            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(uri, new { }).Result;
 
-            Whens.ResponseMessages.Add(response);
+            HttpResponseMessage response = null; 
+            if (isAsync)
+            {
+                ApiFeature.ApiTestHost.Client.PutAsJsonAsync(uri, new {});
+            }
+            else
+            {
+                response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(uri, new { }).Result;
+
+                Whens.ResponseMessages.Add(response);
+            }
+
             return response;
         }
 
