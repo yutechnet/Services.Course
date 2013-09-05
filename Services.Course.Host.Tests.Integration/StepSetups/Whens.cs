@@ -533,5 +533,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             return null;
         }
+
+        [When(@"the outcome '(.*)' supports the following learning outcomes asynchronously")]
+        public void WhenTheOutcomeSupportsTheFollowingLearningOutcomesAsynchronously(string supportingOutcomeName, Table table)
+        {
+            var supportingOutcome = Resources<LearningOutcomeResource>.Get(supportingOutcomeName);
+
+            foreach (var row in table.Rows)
+            {
+                var supportedOutcome = Resources<LearningOutcomeResource>.Get(row["Description"]);
+
+                //TODO: This is an issue... supportingOutcome and supoortedOutcome should be flipped
+                PutOperations.OutcomeSupportsLearningOutcome(supportingOutcome, supportedOutcome, true);
+            }
+        }
+
     }
 }
