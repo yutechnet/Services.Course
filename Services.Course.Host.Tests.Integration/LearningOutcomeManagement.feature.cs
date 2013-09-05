@@ -412,10 +412,10 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Disassociate an outcome from another outcome")]
-        public virtual void DisassociateAnOutcomeFromAnotherOutcome()
+        [NUnit.Framework.DescriptionAttribute("Associate multiple outcomes to another outcome asynchronously")]
+        public virtual void AssociateMultipleOutcomesToAnotherOutcomeAsynchronously()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disassociate an outcome from another outcome", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Associate multiple outcomes to another outcome asynchronously", ((string[])(null)));
 #line 118
 this.ScenarioSetup(scenarioInfo);
 #line 32
@@ -426,34 +426,124 @@ this.FeatureBackground();
             table25.AddRow(new string[] {
                         "PL1"});
             table25.AddRow(new string[] {
-                        "CL1"});
+                        "PL2"});
             table25.AddRow(new string[] {
-                        "CL2"});
+                        "PL3"});
+            table25.AddRow(new string[] {
+                        "PL4"});
+            table25.AddRow(new string[] {
+                        "PL5"});
+            table25.AddRow(new string[] {
+                        "PL6"});
+            table25.AddRow(new string[] {
+                        "PL7"});
+            table25.AddRow(new string[] {
+                        "PL8"});
+            table25.AddRow(new string[] {
+                        "PL9"});
+            table25.AddRow(new string[] {
+                        "PL10"});
+            table25.AddRow(new string[] {
+                        "CL1"});
 #line 119
  testRunner.Given("I have the following learning outcomes", ((string)(null)), table25, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
             table26.AddRow(new string[] {
-                        "CL1"});
+                        "PL1"});
             table26.AddRow(new string[] {
-                        "CL2"});
-#line 124
- testRunner.When("the outcome \'PL1\' is supported by the following outcomes", ((string)(null)), table26, "When ");
+                        "PL2"});
+            table26.AddRow(new string[] {
+                        "PL3"});
+            table26.AddRow(new string[] {
+                        "PL4"});
+            table26.AddRow(new string[] {
+                        "PL5"});
+            table26.AddRow(new string[] {
+                        "PL6"});
+            table26.AddRow(new string[] {
+                        "PL7"});
+            table26.AddRow(new string[] {
+                        "PL8"});
+            table26.AddRow(new string[] {
+                        "PL9"});
+            table26.AddRow(new string[] {
+                        "PL10"});
+#line 132
+ testRunner.When("the outcome \'CL1\' supports the following learning outcomes asynchronously", ((string)(null)), table26, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
             table27.AddRow(new string[] {
-                        "CL1"});
-#line 128
- testRunner.And("I disassociate the following learning outcomes from \'PL1\' learning outcome", ((string)(null)), table27, "And ");
+                        "PL1"});
+            table27.AddRow(new string[] {
+                        "PL2"});
+            table27.AddRow(new string[] {
+                        "PL3"});
+            table27.AddRow(new string[] {
+                        "PL4"});
+            table27.AddRow(new string[] {
+                        "PL5"});
+            table27.AddRow(new string[] {
+                        "PL6"});
+            table27.AddRow(new string[] {
+                        "PL7"});
+            table27.AddRow(new string[] {
+                        "PL8"});
+            table27.AddRow(new string[] {
+                        "PL9"});
+            table27.AddRow(new string[] {
+                        "PL10"});
+#line 144
+ testRunner.Then("the learning outcome \'CL1\' supports the following learning outcomes", ((string)(null)), table27, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Disassociate an outcome from another outcome")]
+        public virtual void DisassociateAnOutcomeFromAnotherOutcome()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disassociate an outcome from another outcome", ((string[])(null)));
+#line 158
+this.ScenarioSetup(scenarioInfo);
+#line 32
+this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
             table28.AddRow(new string[] {
+                        "PL1"});
+            table28.AddRow(new string[] {
+                        "CL1"});
+            table28.AddRow(new string[] {
                         "CL2"});
-#line 131
- testRunner.Then("learning outcome \'PL1\' is supported by the following learning outcomes", ((string)(null)), table28, "Then ");
+#line 159
+ testRunner.Given("I have the following learning outcomes", ((string)(null)), table28, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table29.AddRow(new string[] {
+                        "CL1"});
+            table29.AddRow(new string[] {
+                        "CL2"});
+#line 164
+ testRunner.When("the outcome \'PL1\' is supported by the following outcomes", ((string)(null)), table29, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table30.AddRow(new string[] {
+                        "CL1"});
+#line 168
+ testRunner.And("I disassociate the following learning outcomes from \'PL1\' learning outcome", ((string)(null)), table30, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table31.AddRow(new string[] {
+                        "CL2"});
+#line 171
+ testRunner.Then("learning outcome \'PL1\' is supported by the following learning outcomes", ((string)(null)), table31, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
