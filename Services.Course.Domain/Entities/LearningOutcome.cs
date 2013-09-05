@@ -12,7 +12,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
 {
     public class LearningOutcome : VersionableEntity
     {
-        private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();
+        private ICollection<LearningOutcome> _supportedOutcomes = new HashSet<LearningOutcome>();
         private IList<LearningOutcome> _supportingOutcomes = new List<LearningOutcome>();
 
         private IList<ISupportingEntity> _supportingEntities = new List<ISupportingEntity>();
@@ -20,10 +20,11 @@ namespace BpeProducts.Services.Course.Domain.Entities
         [Required]
         public virtual string Description { get; set; }
 
-        public virtual IList<LearningOutcome> SupportedOutcomes
+        public virtual ICollection<LearningOutcome> SupportedOutcomes
         {
-            get { return _supportedOutcomes; }
-            protected internal set { _supportedOutcomes = value; }
+            get { return new List<LearningOutcome>(_supportedOutcomes); }
+            protected internal set 
+            { _supportedOutcomes = new HashSet<LearningOutcome>(value); }
         }
 
         public virtual IList<LearningOutcome> SupportingOutcomes
@@ -45,8 +46,11 @@ namespace BpeProducts.Services.Course.Domain.Entities
             if (this == outcome)
                 throw new ForbiddenException("Outcome cannot support itself");
 
-            _supportedOutcomes.Add(outcome);
-            outcome.SupportingOutcomes.Add(this);
+            if (!_supportedOutcomes.Contains(outcome))
+            {
+                _supportedOutcomes.Add(outcome);
+                outcome.SupportingOutcomes.Add(this);
+            }
 
             return this;
         }
@@ -63,7 +67,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
             {
                 Id = Guid.NewGuid(),
                 Description = this.Description,
-                _supportedOutcomes = new List<LearningOutcome>(_supportedOutcomes),
+                _supportedOutcomes = new HashSet<LearningOutcome>(_supportedOutcomes),
                 _supportingOutcomes = new List<LearningOutcome>(_supportingOutcomes),
                 _supportingEntities = new List<ISupportingEntity>(_supportingEntities),
                 ActiveFlag = true,
