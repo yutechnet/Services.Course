@@ -2,24 +2,20 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Security.Claims;
 using System.Threading;
+using System.Web;
 using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.Exceptions;
-using BpeProducts.Common.Ioc.Configuration;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Audit;
 using BpeProducts.Services.Acl.Client;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Castle.DynamicProxy;
-using Thinktecture.IdentityModel.Extensions;
 
 namespace BpeProducts.Services.Course.Domain
 {
-	
-
 	public class AuthByAclAttribute : Attribute
 	{
 		public string ObjectIdArgument { get; set; }
@@ -35,10 +31,11 @@ namespace BpeProducts.Services.Course.Domain
 	{
 		private readonly IAclHttpClient _aclClient;
 		private readonly IAuditDataProvider _auditDataProvider;
-		private readonly ITokenExtractor _tokenExtractor;
 		private readonly IRepository _repository;
-		
-		public AuthorizeAclAspect(IRepository repository, IAclHttpClient aclClient,IAuditDataProvider auditDataProvider, ITokenExtractor tokenExtractor)
+		private readonly ITokenExtractor _tokenExtractor;
+
+		public AuthorizeAclAspect(IRepository repository, IAclHttpClient aclClient, IAuditDataProvider auditDataProvider,
+		                          ITokenExtractor tokenExtractor)
 		{
 			_repository = repository;
 			_aclClient = aclClient;
@@ -61,26 +58,27 @@ namespace BpeProducts.Services.Course.Domain
 					throw new AuthorizationException("missing auth info in aspect");
 
 
-				if (authAttr.OrganizationObject == null && (authAttr.ObjectType == null || String.IsNullOrEmpty(authAttr.ObjectIdArgument)))
+				if (authAttr.OrganizationObject == null &&
+				    (authAttr.ObjectType == null || String.IsNullOrEmpty(authAttr.ObjectIdArgument)))
 					throw new AuthorizationException("missing auth info in aspect");
 
-				if (Enum.IsDefined(typeof(Capability),authAttr.Capability)==false)
+				if (Enum.IsDefined(typeof (Capability), authAttr.Capability) == false)
 					throw new AuthorizationException("missing auth info in aspect");
 
-				var objectId = Guid.Empty;
+				Guid objectId = Guid.Empty;
 				if (!String.IsNullOrEmpty(authAttr.ObjectIdArgument))
 				{
-					var objectIdPosition =
+					int objectIdPosition =
 						parameters.Single(x => x.Name == authAttr.ObjectIdArgument && x.ParameterType == typeof (Guid)).Position;
 					objectId = (Guid) invocation.GetArgumentValue(objectIdPosition);
 				}
-				
+
 				Guid orgId;
 				if (String.IsNullOrEmpty(authAttr.OrganizationObject) == false)
 				{
-					var orgObjectPosition = parameters.Single(x => x.Name == authAttr.OrganizationObject ).Position;
-					var orgObject = invocation.GetArgumentValue(orgObjectPosition);
-					orgId=(Guid) orgObject.GetType().GetProperty("OrganizationId").GetValue(orgObject);
+					int orgObjectPosition = parameters.Single(x => x.Name == authAttr.OrganizationObject).Position;
+					object orgObject = invocation.GetArgumentValue(orgObjectPosition);
+					orgId = (Guid) orgObject.GetType().GetProperty("OrganizationId").GetValue(orgObject);
 				}
 				else
 				{
@@ -88,8 +86,8 @@ namespace BpeProducts.Services.Course.Domain
 					orgId = orgEntity.OrganizationId;
 				}
 
-				var uid = _auditDataProvider.GetUserGuid();
-				HttpStatusCode hasAccess;
+				Guid uid = _auditDataProvider.GetUserGuid();
+				bool hasAccess;
 				if (objectId != Guid.Empty)
 				{
 					hasAccess = _aclClient.HasAccess(_tokenExtractor.GetSamlToken(), uid, orgId, objectId, authAttr.Capability);
@@ -99,7 +97,13 @@ namespace BpeProducts.Services.Course.Domain
 					hasAccess = _aclClient.HasAccess(_tokenExtractor.GetSamlToken(), uid, orgId, authAttr.Capability);
 				}
 
-				if (hasAccess!=HttpStatusCode.OK) throw new AuthorizationException(hasAccess.ToString());//TODO:check from browser
+				if (hasAccess == false)
+				{
+					throw new AuthorizationException("Unauthorized, please configure permissions",
+					                                 new HttpException(401,
+					                                                   "please contact your admin for permission to access this resource"));
+					//throw new AuthorizationException(HttpStatusCode.Unauthorized.ToString());//TODO:check from browser
+				}
 			}
 
 			invocation.Proceed();
@@ -111,19 +115,16 @@ namespace BpeProducts.Services.Course.Domain
 		string GetSamlToken();
 	}
 
-	public class TokenExtractor:ITokenExtractor
+	public class TokenExtractor : ITokenExtractor
 	{
 		public string GetSamlToken()
 		{
 			var claimsPrincipal = Thread.CurrentPrincipal as ClaimsPrincipal;
-			 
-			var context = (BootstrapContext)claimsPrincipal.Identities.First().BootstrapContext;
-			var token = context.Token;
-			
+
+			var context = (BootstrapContext) claimsPrincipal.Identities.First().BootstrapContext;
+			string token = context.Token;
+
 			return token;
 		}
 	}
-
-	
-	
 }

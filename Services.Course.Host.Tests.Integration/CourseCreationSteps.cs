@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -46,8 +48,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
                 TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
-                OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
-                CourseType = ECourseType.Traditional,
+                //OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+				OrganizationId = StepSetups.Account.Givens.Organizations[table.Rows[0]["OrganizationName"]].Id,
+				CourseType = ECourseType.Traditional,
                 IsTemplate = false
             };
 
@@ -88,7 +91,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
                 TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
-                OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                OrganizationId = Givens.Organizations[table.Rows[0]["OrganizationName"]].Id,
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false
             };
@@ -237,8 +240,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.That(getResponse.StatusCode.Equals(HttpStatusCode.NotFound));
         }
 
-        [When(@"I create a new course with (.*), (.*), (.*)")]
-        public void WhenICreateANewCourseWith(string name, string code, string description)
+		[When(@"I create a new course with (.*), (.*), (.*), (.*)")]
+        public void WhenICreateANewCourseWith(string name, string code, string description,string organizationName)
         {
             var saveCourseRequest = new SaveCourseRequest
             {
@@ -246,7 +249,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Code = string.IsNullOrEmpty(code) ? code : ScenarioContext.Current.Get<long>("ticks") + code,
                 Description = description,
                 TenantId = 999999,
-                OrganizationId = Guid.NewGuid(),
+                OrganizationId = Givens.Organizations[organizationName].Id,
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false
             };
