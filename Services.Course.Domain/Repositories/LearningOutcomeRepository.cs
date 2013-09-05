@@ -37,7 +37,8 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 
         public LearningOutcome Load(Guid outcomeId)
         {
-            var outcome = Get(outcomeId);
+            //var outcome = Get(outcomeId);
+            var outcome = _session.Load<LearningOutcome>(outcomeId);
 
             if (outcome == null)
             {
