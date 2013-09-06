@@ -22,6 +22,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             var actual = GetOperations.GetCourse(resource.ResourceUri);
 
+
+            var orgName = table.GetValue("OrganizationName", String.Empty);
+          
+            if (String.IsNullOrEmpty(orgName)==false)
+            {
+                var newRows = new Dictionary<string, string>
+                    {
+                        {"Field", "OrganizationId"},
+                        {"Value", Account.Givens.Organizations[orgName].Id.ToString()}
+                    };
+                 table.ReplaceRow("Field","OrganizationName",newRows);
+           }
+           
             table.CompareToInstance(actual);
         }
 

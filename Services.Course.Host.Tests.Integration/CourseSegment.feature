@@ -5,9 +5,17 @@ Feature: CourseSegment
 	I want to add segments to the course
 
 Background: 
-	Given I have the following courses
+	Given I am user "TestUser3"
+	And the following organizations exist
+	| Name | Description | ParentOrganization |
+	| COB  | Bus School  |                    |
+	And I create the following roles
+	| Name  | Organization | Capabilities |
+	| Role1 | COB          | CourseCreate |
+	And I give the user role "Role1" for organization COB
+	And I have the following courses
 	| Name     | Code | Description       | OrganizationName |
-	| Math 101 | M101 | Basic mathematics | Default          |
+	| Math 101 | M101 | Basic mathematics | COB              |
 
 Scenario: Add course segment
 	Given I have the following course segments for 'Math 101'

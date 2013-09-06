@@ -70,41 +70,67 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureBackground()
         {
 #line 7
+#line 8
+ testRunner.Given("I am user \"TestUser3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "ParentOrganization"});
+            table1.AddRow(new string[] {
+                        "COB",
+                        "Bus School",
+                        ""});
+#line 9
+ testRunner.And("the following organizations exist", ((string)(null)), table1, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Organization",
+                        "Capabilities"});
+            table2.AddRow(new string[] {
+                        "Role1",
+                        "COB",
+                        "CourseCreate"});
+#line 12
+ testRunner.And("I create the following roles", ((string)(null)), table2, "And ");
+#line 15
+ testRunner.And("I give the user role \"Role1\" for organization COB", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
                         "Description",
                         "OrganizationName"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Math 101",
                         "M101",
                         "Basic mathematics",
-                        "Default"});
-#line 8
- testRunner.Given("I have the following courses", ((string)(null)), table1, "Given ");
+                        "COB"});
+#line 16
+ testRunner.And("I have the following courses", ((string)(null)), table3, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
-            table2.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "CLO1"});
-            table2.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "CLO2"});
-#line 11
- testRunner.And("I associate the newly created learning outcomes to \'Math 101\' course", ((string)(null)), table2, "And ");
+#line 19
+ testRunner.And("I associate the newly created learning outcomes to \'Math 101\' course", ((string)(null)), table4, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
                         "Type",
                         "ParentSegment"});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "Week 1",
                         "First week is slack time",
                         "TimeSpan",
                         ""});
-#line 15
- testRunner.And("I have the following course segments for \'Math 101\'", ((string)(null)), table3, "And ");
+#line 23
+ testRunner.And("I have the following course segments for \'Math 101\'", ((string)(null)), table5, "And ");
 #line hidden
         }
         
@@ -113,38 +139,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void AddLearningOutcomeToACourseSegment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add learning outcome to a course segment", ((string[])(null)));
-#line 19
-this.ScenarioSetup(scenarioInfo);
-#line 7
-this.FeatureBackground();
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table4.AddRow(new string[] {
-                        "WLO1"});
-            table4.AddRow(new string[] {
-                        "WLO2"});
-#line 20
- testRunner.Given("I associate the newly created learning outcomes to \'Week 1\' segment", ((string)(null)), table4, "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table5.AddRow(new string[] {
-                        "WLO1"});
-            table5.AddRow(new string[] {
-                        "WLO2"});
-#line 24
- testRunner.Then("the segment \'Week 1\' includes the following learning outcomes", ((string)(null)), table5, "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Add learning outcome to a course segment which satisfies course outcome")]
-        public virtual void AddLearningOutcomeToACourseSegmentWhichSatisfiesCourseOutcome()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add learning outcome to a course segment which satisfies course outcome", ((string[])(null)));
-#line 29
+#line 27
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -155,7 +150,7 @@ this.FeatureBackground();
                         "WLO1"});
             table6.AddRow(new string[] {
                         "WLO2"});
-#line 30
+#line 28
  testRunner.Given("I associate the newly created learning outcomes to \'Week 1\' segment", ((string)(null)), table6, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -164,20 +159,51 @@ this.FeatureBackground();
                         "WLO1"});
             table7.AddRow(new string[] {
                         "WLO2"});
-#line 34
- testRunner.When("the outcome \'CLO1\' is supported by the following outcomes", ((string)(null)), table7, "When ");
+#line 32
+ testRunner.Then("the segment \'Week 1\' includes the following learning outcomes", ((string)(null)), table7, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Add learning outcome to a course segment which satisfies course outcome")]
+        public virtual void AddLearningOutcomeToACourseSegmentWhichSatisfiesCourseOutcome()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add learning outcome to a course segment which satisfies course outcome", ((string[])(null)));
+#line 37
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table8.AddRow(new string[] {
+                        "WLO1"});
+            table8.AddRow(new string[] {
+                        "WLO2"});
+#line 38
+ testRunner.Given("I associate the newly created learning outcomes to \'Week 1\' segment", ((string)(null)), table8, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table9.AddRow(new string[] {
+                        "WLO1"});
+            table9.AddRow(new string[] {
+                        "WLO2"});
+#line 42
+ testRunner.When("the outcome \'CLO1\' is supported by the following outcomes", ((string)(null)), table9, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description",
                         "SupportingOutcomes"});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "CLO1",
                         "WLO1, WLO2"});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "CLO2",
                         ""});
-#line 38
- testRunner.Then("the course \'Math 101\' has the following learning outcomes", ((string)(null)), table8, "Then ");
+#line 46
+ testRunner.Then("the course \'Math 101\' has the following learning outcomes", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

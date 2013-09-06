@@ -58,10 +58,10 @@ Scenario Template: cannot create a course with missing data
 	Then I should get the status code <Status>
 
 	Examples: 
-		 | Name           | Code   | Description                             | Status     |
-		 | Psychology 101 |        | Amro's another awesome Psychology class | BadRequest |
-		 |                | PSY101 | Amro's another awesome Psychology class | BadRequest |
-		 | Physcology 103 | PSY103 |                                         | Created    |
+		 | Name           | Code   | Description                             | OrganizationName | Status     |
+		 | Psychology 101 |        | Amro's another awesome Psychology class | COB              | BadRequest |
+		 |                | PSY101 | Amro's another awesome Psychology class | COB              | BadRequest |
+		 | Physcology 103 | PSY103 |                                         | COB              | Created    |
 
 
 ## Old orgid: C3885307-BDAD-480F-8E7C-51DFE5D80387

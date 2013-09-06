@@ -29,13 +29,21 @@ Scenario: Delete an existing learning outcome
 	And I get the learning outcome 'SomeDescription'
 	Then I get 'NotFound' response
 
-Background: 
+Background:
+Given I am user "TestUser3"
+And the following organizations exist
+	| Name | Description | ParentOrganization |
+	| COB  | Bus School  |                    |
+And I create the following roles
+	| Name  | Organization | Capabilities |
+	| Role1 | COB          | CourseCreate |
+And I give the user role "Role1" for organization COB 
 Given I have the following programs
 	| Name | Description | ProgramType | OrganizationName |
-	| BA   | BA Program  | BA          | Default          |
+	| BA   | BA Program  | BA          | COB              |
 And I have the following courses
 	| Name        | Code   | Description                   | OrganizationName |
-	| English 101 | ENG101 | Ranji's awesome English class | Default          |
+	| English 101 | ENG101 | Ranji's awesome English class | COB              |
 
 Scenario: Associate a new learning outcome to a program
 	Given I associate the newly created learning outcomes to 'BA' program

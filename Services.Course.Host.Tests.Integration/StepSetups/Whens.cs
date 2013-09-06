@@ -26,11 +26,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I create a course from the template '(.*)' with the following")]
         public void WhenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
         {
-            var template = Resources<CourseResource>.Get(templateName);
-            var courseRequest = table.CreateInstance<SaveCourseRequest>();
-            courseRequest.TemplateCourseId = template.Id;
-
-            PostOperations.CreateCourse(courseRequest.Name, courseRequest);
+            //TODO: Why not create a course steps file to put common code?
+            Givens.CreateCourseTemplate(templateName, table);
         }
 
         [When(@"I associate the existing learning outcomes to '(.*)' program")]
