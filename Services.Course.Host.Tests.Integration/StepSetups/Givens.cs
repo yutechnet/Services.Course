@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http;
 using BpeProducts.Common.WebApiTest;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
@@ -219,12 +220,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Given(@"I create a course from the template '(.*)' with the following")]
         public void GivenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
         {
+            //TODO: Why not create a course steps file to put common code?
+            var result = CreateCourseTemplate(templateName, table);
+            result.EnsureSuccessStatusCode();
+        }
+
+        public static HttpResponseMessage CreateCourseTemplate(string templateName, Table table)
+        {
             var template = Resources<CourseResource>.Get(templateName);
             var courseRequest = table.CreateInstance<SaveCourseRequest>();
+            courseRequest.OrganizationId = Account.Givens.Organizations[table.Rows[0]["OrganizationName"]].Id;
             courseRequest.TemplateCourseId = template.Id;
 
             var result = PostOperations.CreateCourse(courseRequest.Name, courseRequest);
-            result.EnsureSuccessStatusCode();
+            return result;
         }
     }
 }

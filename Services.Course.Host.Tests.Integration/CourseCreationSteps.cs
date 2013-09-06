@@ -211,7 +211,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
                     Description = row["Description"],
                     TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
-                    OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                    OrganizationId = Givens.Organizations[table.Rows[0]["OrganizationName"]].Id,
                     CourseType = ECourseType.Traditional,
                     IsTemplate = false
                 };

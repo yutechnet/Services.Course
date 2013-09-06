@@ -4,15 +4,23 @@ Feature: CourseVersioning
 	As a course builder
 	I want to version the course
 
-Background: 
+Background:
+	Given I am user "TestUser3"
+	And the following organizations exist
+	| Name | Description | ParentOrganization |
+	| COB  | Bus School  |                    |
+	And I create the following roles
+	| Name  | Organization | Capabilities |
+	| Role1 | COB          | CourseCreate |
+	And I give the user role "Role1" for organization COB 
 	Given I have the following courses
 #   | Name         | Code   | Description                   | OrganizationId                       | CourseType  | IsTemplate |
 #	| English 1010 | ENG101 | Ranji's awesome English Class | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
 #	| English 101011	 | E10011   | Macroeconomics        | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | False      |
     
 	| Name           | Code   | Description                   | OrganizationName | CourseType  | IsTemplate |
-	| English 1010   | ENG101 | Ranji's awesome English Class | Default          | Traditional | false      |
-	| English 101011 | E10011 | Macroeconomics                | Default          | Traditional | false      |
+	| English 1010   | ENG101 | Ranji's awesome English Class | COB              | Traditional | false      |
+	| English 101011 | E10011 | Macroeconomics                | COB              | Traditional | false      |
 
 
 Scenario: Create a default version
@@ -31,13 +39,13 @@ Scenario: Edit a course version
 	| Description | Ranji's terrible English Class |
 	| IsTemplate  | true                           |
 	Then the course 'English 1010' should have the following info
-	| Field          | Value                                |
-	| Name           | English 10101                        |
-	| Code           | ENG10101                             |
-	| Description    | Ranji's terrible English Class       |
-	| VersionNumber  | 1.0.0.0                              |
-	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	| IsTemplate     | true                                 |
+	| Field            | Value                          |
+	| Name             | English 10101                  |
+	| Code             | ENG10101                       |
+	| Description      | Ranji's terrible English Class |
+	| VersionNumber    | 1.0.0.0                        |
+	| OrganizationName | COB                            |
+	| IsTemplate       | true                           |
 
 Scenario: Publish a course version
 	When I publish the following courses

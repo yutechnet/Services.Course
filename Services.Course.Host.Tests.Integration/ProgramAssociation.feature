@@ -4,15 +4,23 @@ Feature: ProgramAssociation
 	As a course builder
 	I want to associate course to programs
 
-Background: 
-	Given I have the following programs
+Background:
+	Given I am user "TestUser3"
+	And the following organizations exist
+	| Name | Description | ParentOrganization |
+	| COB  | Bus School  |                    |
+	And I create the following roles
+	| Name  | Organization | Capabilities |
+	| Role1 | COB          | CourseCreate |
+	And I give the user role "Role1" for organization COB 
+	And I have the following programs
 	| Name                | Description | ProgramType | OrganizationName |
-	| Bachelor of Art     | BA Program  | BA          | Default          |
-	| Bachelor of Science | BS program  | BS          | Default          |
+	| Bachelor of Art     | BA Program  | BA          | COB              |
+	| Bachelor of Science | BS program  | BS          | COB              |
 	And I have the following courses
 	| Name           | Code   | Description    | OrganizationName |
-	| English 101    | ENG101 | English 101    | Default          |
-	| Psychology 101 | PSY101 | Psychology 101 | Default          |
+	| English 101    | ENG101 | English 101    | COB              |
+	| Psychology 101 | PSY101 | Psychology 101 | COB              |
 
 Scenario Template: Associate a course with a program
 	When I associate '<Course Name>' course with '<Program Name>' program

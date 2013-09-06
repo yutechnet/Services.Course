@@ -71,86 +71,112 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureBackground()
         {
 #line 7
+#line 8
+ testRunner.Given("I am user \"TestUser3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "ParentOrganization"});
+            table1.AddRow(new string[] {
+                        "COB",
+                        "Bus School",
+                        ""});
+#line 9
+ testRunner.And("the following organizations exist", ((string)(null)), table1, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Organization",
+                        "Capabilities"});
+            table2.AddRow(new string[] {
+                        "Role1",
+                        "COB",
+                        "CourseCreate"});
+#line 12
+ testRunner.And("I create the following roles", ((string)(null)), table2, "And ");
+#line 15
+ testRunner.And("I give the user role \"Role1\" for organization COB", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Code",
                         "Description",
                         "OrganizationName",
                         "CourseType",
                         "IsTemplate"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Econ 100",
                         "E100",
                         "Macroeconomics",
-                        "Default",
+                        "COB",
                         "Traditional",
                         "False"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Econ 200",
                         "E200",
                         "Microeconomics",
-                        "Default",
+                        "COB",
                         "Traditional",
                         "False"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Econ 250",
                         "E100",
                         "Intro to Econometrics",
-                        "Default",
+                        "COB",
                         "Traditional",
                         "False"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Econ 300",
                         "E100",
                         "Applied Econometrics",
-                        "Default",
+                        "COB",
                         "Traditional",
                         "False"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Econ 350",
                         "E350",
                         "Labor Economics",
-                        "Default",
+                        "COB",
                         "Traditional",
                         "False"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Econ 400",
                         "E400",
                         "Advanced Econometrics",
-                        "Default",
+                        "COB",
                         "Traditional",
                         "False"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Econ 450",
                         "E100",
                         "Financial Economics",
-                        "Default",
+                        "COB",
                         "Traditional",
                         "False"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Math 101",
                         "M101",
                         "Basic mathematics",
-                        "Default",
+                        "COB",
                         "Traditional",
                         "False"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Math 150",
                         "M101",
                         "Geometry",
-                        "Default",
+                        "COB",
                         "Traditional",
                         "False"});
-            table1.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Math 200",
                         "M200",
                         "Calculus",
-                        "Default",
+                        "COB",
                         "Traditional",
                         "False"});
-#line 8
- testRunner.Given("I have the following courses", ((string)(null)), table1, "Given ");
+#line 16
+ testRunner.And("I have the following courses", ((string)(null)), table3, "And ");
 #line hidden
         }
         
@@ -159,40 +185,40 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void AddACoursePrerequisite()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a course prerequisite", ((string[])(null)));
-#line 21
+#line 29
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Note"});
-            table2.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "Econ 100",
                         "a note"});
-            table2.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "Econ 200",
                         "a note"});
-#line 22
- testRunner.When("I publish the following courses", ((string)(null)), table2, "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name"});
-            table3.AddRow(new string[] {
-                        "Econ 100"});
-            table3.AddRow(new string[] {
-                        "Econ 200"});
-#line 26
- testRunner.And("I add the following prerequisites to \'Econ 400\'", ((string)(null)), table3, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name"});
-            table4.AddRow(new string[] {
-                        "Econ 100"});
-            table4.AddRow(new string[] {
-                        "Econ 200"});
 #line 30
- testRunner.Then("the course \'Econ 400\' should have the following prerequisites", ((string)(null)), table4, "Then ");
+ testRunner.When("I publish the following courses", ((string)(null)), table4, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table5.AddRow(new string[] {
+                        "Econ 100"});
+            table5.AddRow(new string[] {
+                        "Econ 200"});
+#line 34
+ testRunner.And("I add the following prerequisites to \'Econ 400\'", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table6.AddRow(new string[] {
+                        "Econ 100"});
+            table6.AddRow(new string[] {
+                        "Econ 200"});
+#line 38
+ testRunner.Then("the course \'Econ 400\' should have the following prerequisites", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -202,55 +228,55 @@ this.FeatureBackground();
         public virtual void RemoveACourseFromThePrerequisiteList()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove a course from the prerequisite list", ((string[])(null)));
-#line 35
+#line 43
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Note"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "Econ 100",
                         "a note"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "Econ 200",
                         "a note"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "Econ 300",
                         "a note"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "Econ 350",
                         "a note"});
-#line 36
- testRunner.When("I publish the following courses", ((string)(null)), table5, "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name"});
-            table6.AddRow(new string[] {
-                        "Econ 100"});
-            table6.AddRow(new string[] {
-                        "Econ 200"});
-#line 42
- testRunner.And("I add the following prerequisites to \'Econ 450\'", ((string)(null)), table6, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name"});
-            table7.AddRow(new string[] {
-                        "Econ 300"});
-            table7.AddRow(new string[] {
-                        "Econ 350"});
-#line 46
- testRunner.And("I add the following prerequisites to \'Econ 450\'", ((string)(null)), table7, "And ");
+#line 44
+ testRunner.When("I publish the following courses", ((string)(null)), table7, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
             table8.AddRow(new string[] {
-                        "Econ 300"});
+                        "Econ 100"});
             table8.AddRow(new string[] {
-                        "Econ 350"});
+                        "Econ 200"});
 #line 50
- testRunner.Then("the course \'Econ 450\' should have the following prerequisites", ((string)(null)), table8, "Then ");
+ testRunner.And("I add the following prerequisites to \'Econ 450\'", ((string)(null)), table8, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table9.AddRow(new string[] {
+                        "Econ 300"});
+            table9.AddRow(new string[] {
+                        "Econ 350"});
+#line 54
+ testRunner.And("I add the following prerequisites to \'Econ 450\'", ((string)(null)), table9, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table10.AddRow(new string[] {
+                        "Econ 300"});
+            table10.AddRow(new string[] {
+                        "Econ 350"});
+#line 58
+ testRunner.Then("the course \'Econ 450\' should have the following prerequisites", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -260,27 +286,27 @@ this.FeatureBackground();
         public virtual void CannotAddAPrerequisiteToACourseThatIsPublished()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a prerequisite to a course that is published", ((string[])(null)));
-#line 55
+#line 63
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Note"});
-            table9.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "Econ 300",
                         "a note"});
-#line 56
- testRunner.When("I publish the following courses", ((string)(null)), table9, "When ");
+#line 64
+ testRunner.When("I publish the following courses", ((string)(null)), table11, "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "Math 101"});
-#line 59
- testRunner.And("I add the following prerequisites to \'Econ 300\'", ((string)(null)), table10, "And ");
-#line 62
+#line 67
+ testRunner.And("I add the following prerequisites to \'Econ 300\'", ((string)(null)), table12, "And ");
+#line 70
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -291,18 +317,18 @@ this.FeatureBackground();
         public virtual void CannotAddAnUnpublishedCourseAssAPrerequisite()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add an unpublished course ass a prerequisite", ((string[])(null)));
-#line 64
+#line 72
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
-            table11.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "Math 150"});
-#line 65
- testRunner.When("I add the following prerequisites to \'Math 200\'", ((string)(null)), table11, "When ");
-#line 68
+#line 73
+ testRunner.When("I add the following prerequisites to \'Math 200\'", ((string)(null)), table13, "When ");
+#line 76
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

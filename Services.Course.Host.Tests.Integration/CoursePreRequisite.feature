@@ -5,18 +5,26 @@ Feature: CoursePrerequisites
 	So that students can be enrolled in these courses
 
 Background: 
-	Given I have the following courses
+	Given I am user "TestUser3"
+	And the following organizations exist
+	| Name | Description | ParentOrganization |
+	| COB  | Bus School  |                    |
+	And I create the following roles
+	| Name  | Organization | Capabilities |
+	| Role1 | COB          | CourseCreate |
+	And I give the user role "Role1" for organization COB
+	And I have the following courses
 	| Name     | Code | Description           | OrganizationName | CourseType  | IsTemplate |
-	| Econ 100 | E100 | Macroeconomics        | Default          | Traditional | False      |
-	| Econ 200 | E200 | Microeconomics        | Default          | Traditional | False      |
-	| Econ 250 | E100 | Intro to Econometrics | Default          | Traditional | False      |
-	| Econ 300 | E100 | Applied Econometrics  | Default          | Traditional | False      |
-	| Econ 350 | E350 | Labor Economics       | Default          | Traditional | False      |
-	| Econ 400 | E400 | Advanced Econometrics | Default          | Traditional | False      |
-	| Econ 450 | E100 | Financial Economics   | Default          | Traditional | False      |
-	| Math 101 | M101 | Basic mathematics     | Default          | Traditional | False      |
-	| Math 150 | M101 | Geometry              | Default          | Traditional | False      |
-	| Math 200 | M200 | Calculus              | Default          | Traditional | False      |
+	| Econ 100 | E100 | Macroeconomics        | COB              | Traditional | False      |
+	| Econ 200 | E200 | Microeconomics        | COB              | Traditional | False      |
+	| Econ 250 | E100 | Intro to Econometrics | COB              | Traditional | False      |
+	| Econ 300 | E100 | Applied Econometrics  | COB              | Traditional | False      |
+	| Econ 350 | E350 | Labor Economics       | COB              | Traditional | False      |
+	| Econ 400 | E400 | Advanced Econometrics | COB              | Traditional | False      |
+	| Econ 450 | E100 | Financial Economics   | COB              | Traditional | False      |
+	| Math 101 | M101 | Basic mathematics     | COB              | Traditional | False      |
+	| Math 150 | M101 | Geometry              | COB              | Traditional | False      |
+	| Math 200 | M200 | Calculus              | COB              | Traditional | False      |
 
 Scenario: Add a course prerequisite
 	When I publish the following courses

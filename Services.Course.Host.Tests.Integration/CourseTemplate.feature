@@ -5,13 +5,21 @@ As a course builder
 I want to create courses from a template
 
 Background: 
-Given I have the following programs
+Given I am user "TestUser3"
+And the following organizations exist
+	| Name | Description | ParentOrganization |
+	| COB  | Bus School  |                    |
+And I create the following roles
+	| Name  | Organization | Capabilities |
+	| Role1 | COB          | CourseCreate |
+And I give the user role "Role1" for organization COB
+And I have the following programs
 	| Name                | Description | ProgramType | OrganizationName |
-	| Bachelor of Art     | BA Program  | BA          | Default          |
-	| Bachelor of Science | BS program  | BS          | Default          |
+	| Bachelor of Art     | BA Program  | BA          | COB              |
+	| Bachelor of Science | BS program  | BS          | COB              |
 And I have the following course templates
 	| Name       | Code          | Description              | OrganizationName | CourseType  | IsTemplate |
-	| Template 1 | TemplateCode1 | My First Course Template | Default          | Traditional | true       |
+	| Template 1 | TemplateCode1 | My First Course Template | COB              | Traditional | true       |
 And I have the following course segments for 'Template 1'
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
@@ -23,7 +31,7 @@ And I have the following course segments for 'Template 1'
 Scenario: Create a course from a template
 When I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description              | OrganizationName | CourseType  | IsTemplate |
-	| Course 1 | CourseCode1 | My First Course Template | Default          | Traditional | false      |
+	| Course 1 | CourseCode1 | My First Course Template | COB              | Traditional | false      |
 Then the course 'Course 1' should have the following info
 	| Field       | Value                    |
 	| Name        | Course 1                 |
@@ -35,7 +43,7 @@ Then the course 'Course 1' should have the following info
 Scenario: Ignore course Type in the request when creating from template
 When I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description              | OrganizationName | CourseType | IsTemplate |
-	| Course 2 | CourseCode2 | My First Course Template | Default          | Competency | false      |
+	| Course 2 | CourseCode2 | My First Course Template | COB              | Competency | false      |
 Then the course 'Course 2' should have the following info
 	| Field       | Value                    |
 	| Name        | Course 2                 |
@@ -51,7 +59,7 @@ When I associate 'Template 1' course with the following programs
 	| Bachelor of Science |
 And I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description                   | OrganizationName | CourseType  | IsTemplate |
-	| Course 3 | CourseCode3 | My First Course from Template | Default          | Traditional | false      |
+	| Course 3 | CourseCode3 | My First Course from Template | COB              | Traditional | false      |
 Then the course 'Course 3' includes the following programs
 	| Program Name        |
 	| Bachelor of Art     |
@@ -60,7 +68,7 @@ Then the course 'Course 3' includes the following programs
 Scenario: Verify segments are copied from course template
 When I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description                   | OrganizationName | CourseType  | IsTemplate |
-	| Course 4 | CourseCode4 | My First Course from Template | Default          | Traditional | false      |
+	| Course 4 | CourseCode4 | My First Course from Template | COB              | Traditional | false      |
 Then the course 'Course 4' should have these course segments
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
@@ -75,7 +83,7 @@ When I associate the newly created learning outcomes to 'Template 1' course
 	| second course learning outcome |
 And I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description                   | OrganizationName | CourseType  | IsTemplate |
-	| Course 5 | CourseCode5 | My First Course from Template | Default          | Traditional | false      |
+	| Course 5 | CourseCode5 | My First Course from Template | COB              | Traditional | false      |
 Then the course 'Template 1' should have the following learning outcomes
 	| Description                    | 
 	| first course learning outcome  | 
@@ -88,7 +96,7 @@ Scenario: Publish a course version, created from a template
 	| Bachelor of Science |
 	And I create a course from the template 'Template 1' with the following
 	| Name         | Code   | Description                   | OrganizationName | CourseType | IsTemplate |
-	| English 1010 | ENG101 | Ranji's awesome English Class | Default          | Competency | false      |
+	| English 1010 | ENG101 | Ranji's awesome English Class | COB              | Competency | false      |
 	When I publish the following courses
 	| Name         | Note      |
 	| English 1010 | Blah blah |
@@ -113,7 +121,7 @@ Scenario: Version a course, which was created from a template
 	| Bachelor of Science |
 	And I create a course from the template 'Template 1' with the following
 	| Name         | Code   | Description                   | OrganizationName | CourseType | IsTemplate |
-	| English 1010 | ENG101 | Ranji's awesome English Class | Default          | Competency | false      |
+	| English 1010 | ENG101 | Ranji's awesome English Class | COB              | Competency | false      |
 	When I publish the following courses
 	| Name         | Note      |
 	| English 1010 | Blah blah |

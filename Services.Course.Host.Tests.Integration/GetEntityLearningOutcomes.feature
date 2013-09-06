@@ -4,17 +4,25 @@ Feature: GetEntityLearningOutcome
 	As a program manager
 	I want to know what LearningOutcomes are associated with them
 
-Background: 
-	Given I have the following programs
+Background:
+	Given I am user "TestUser3"
+	And the following organizations exist
+	| Name | Description | ParentOrganization |
+	| COB  | Bus School  |                    |
+	And I create the following roles
+	| Name  | Organization | Capabilities |
+	| Role1 | COB          | CourseCreate |
+	And I give the user role "Role1" for organization COB  
+	And I have the following programs
 	| Name     | Description | ProgramType | OrganizationName |
 	| Program1 | Program1    | BA          | Default          |
 	| Program2 | Program2    | BS          | Default          |
 	| Program3 | Program3    | MA          | Default          |
 	And I have the following courses
 	| Name    | Code | Description | OrganizationName |
-	| Course1 | 1    | Course1     | Default          |
-	| Course2 | 2    | Course2     | Default          |
-	| Course3 | 3    | Course3     | Default          |
+	| Course1 | 1    | Course1     | COB              |
+	| Course2 | 2    | Course2     | COB              |
+	| Course3 | 3    | Course3     | COB              |
     And I have the following course segments for 'Course1'
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |

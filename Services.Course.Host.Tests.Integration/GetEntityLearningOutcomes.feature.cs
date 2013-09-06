@@ -70,95 +70,121 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureBackground()
         {
 #line 7
+#line 8
+ testRunner.Given("I am user \"TestUser3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
-                        "ProgramType",
-                        "OrganizationName"});
+                        "ParentOrganization"});
             table1.AddRow(new string[] {
-                        "Program1",
-                        "Program1",
-                        "BA",
-                        "Default"});
-            table1.AddRow(new string[] {
-                        "Program2",
-                        "Program2",
-                        "BS",
-                        "Default"});
-            table1.AddRow(new string[] {
-                        "Program3",
-                        "Program3",
-                        "MA",
-                        "Default"});
-#line 8
- testRunner.Given("I have the following programs", ((string)(null)), table1, "Given ");
+                        "COB",
+                        "Bus School",
+                        ""});
+#line 9
+ testRunner.And("the following organizations exist", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
-                        "Code",
-                        "Description",
-                        "OrganizationName"});
+                        "Organization",
+                        "Capabilities"});
             table2.AddRow(new string[] {
-                        "Course1",
-                        "1",
-                        "Course1",
-                        "Default"});
-            table2.AddRow(new string[] {
-                        "Course2",
-                        "2",
-                        "Course2",
-                        "Default"});
-            table2.AddRow(new string[] {
-                        "Course3",
-                        "3",
-                        "Course3",
-                        "Default"});
-#line 13
- testRunner.And("I have the following courses", ((string)(null)), table2, "And ");
+                        "Role1",
+                        "COB",
+                        "CourseCreate"});
+#line 12
+ testRunner.And("I create the following roles", ((string)(null)), table2, "And ");
+#line 15
+ testRunner.And("I give the user role \"Role1\" for organization COB", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
+                        "ProgramType",
+                        "OrganizationName"});
+            table3.AddRow(new string[] {
+                        "Program1",
+                        "Program1",
+                        "BA",
+                        "Default"});
+            table3.AddRow(new string[] {
+                        "Program2",
+                        "Program2",
+                        "BS",
+                        "Default"});
+            table3.AddRow(new string[] {
+                        "Program3",
+                        "Program3",
+                        "MA",
+                        "Default"});
+#line 16
+ testRunner.And("I have the following programs", ((string)(null)), table3, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Code",
+                        "Description",
+                        "OrganizationName"});
+            table4.AddRow(new string[] {
+                        "Course1",
+                        "1",
+                        "Course1",
+                        "COB"});
+            table4.AddRow(new string[] {
+                        "Course2",
+                        "2",
+                        "Course2",
+                        "COB"});
+            table4.AddRow(new string[] {
+                        "Course3",
+                        "3",
+                        "Course3",
+                        "COB"});
+#line 21
+ testRunner.And("I have the following courses", ((string)(null)), table4, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
                         "Type",
                         "ParentSegment"});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "Week1",
                         "First week is slack time",
                         "TimeSpan",
                         ""});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "Discussion",
                         "Discussion for the first week",
                         "Discussion",
                         "Week1"});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "Discussion2",
                         "Discussion2 for the first week",
                         "Discussion",
                         "Week1"});
-            table3.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         "Topic",
                         "Topic for a discussion",
                         "Topic",
                         "Discussion"});
-#line 18
-    testRunner.And("I have the following course segments for \'Course1\'", ((string)(null)), table3, "And ");
+#line 26
+    testRunner.And("I have the following course segments for \'Course1\'", ((string)(null)), table5, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Description"});
-            table4.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "LO1"});
-            table4.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "LO2"});
-            table4.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "LO3"});
-            table4.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "LO4"});
-            table4.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "LO5"});
-#line 24
- testRunner.And("I have the following learning outcomes", ((string)(null)), table4, "And ");
+#line 32
+ testRunner.And("I have the following learning outcomes", ((string)(null)), table6, "And ");
 #line hidden
         }
         
@@ -167,45 +193,45 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void CanGetEntityLearningOutcomesForPrograms()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Can get entity learning outcomes for programs", ((string[])(null)));
-#line 32
+#line 40
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table5.AddRow(new string[] {
-                        "LO1"});
-#line 33
- testRunner.When("I associate the existing learning outcomes to \'Program1\' program", ((string)(null)), table5, "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table6.AddRow(new string[] {
-                        "LO2"});
-            table6.AddRow(new string[] {
-                        "LO3"});
-#line 36
- testRunner.And("I associate the existing learning outcomes to \'Program2\' program", ((string)(null)), table6, "And ");
-#line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table7.AddRow(new string[] {
+                        "LO1"});
+#line 41
+ testRunner.When("I associate the existing learning outcomes to \'Program1\' program", ((string)(null)), table7, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table8.AddRow(new string[] {
+                        "LO2"});
+            table8.AddRow(new string[] {
+                        "LO3"});
+#line 44
+ testRunner.And("I associate the existing learning outcomes to \'Program2\' program", ((string)(null)), table8, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "EntityType",
                         "EntityName",
                         "LearningOutcomes"});
-            table7.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "Program",
                         "Program1",
                         "LO1"});
-            table7.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "Program",
                         "Program2",
                         "LO2, LO3"});
-            table7.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "Program",
                         "Program3",
                         ""});
-#line 40
- testRunner.Then("I get the entity learning outcomes as follows", ((string)(null)), table7, "Then ");
+#line 48
+ testRunner.Then("I get the entity learning outcomes as follows", ((string)(null)), table9, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -215,57 +241,57 @@ this.FeatureBackground();
         public virtual void CanGetEntityLearningOutcomesForCourses()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Can get entity learning outcomes for courses", ((string[])(null)));
-#line 46
+#line 54
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table8.AddRow(new string[] {
-                        "LO1"});
-#line 47
- testRunner.When("I associate the existing learning outcomes to \'Course1\' course", ((string)(null)), table8, "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table9.AddRow(new string[] {
-                        "LO2"});
-            table9.AddRow(new string[] {
-                        "LO3"});
-#line 50
- testRunner.And("I associate the existing learning outcomes to \'Course3\' course", ((string)(null)), table9, "And ");
-#line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table10.AddRow(new string[] {
+                        "LO1"});
+#line 55
+ testRunner.When("I associate the existing learning outcomes to \'Course1\' course", ((string)(null)), table10, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table11.AddRow(new string[] {
+                        "LO2"});
+            table11.AddRow(new string[] {
+                        "LO3"});
+#line 58
+ testRunner.And("I associate the existing learning outcomes to \'Course3\' course", ((string)(null)), table11, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "EntityType",
                         "EntityName",
                         "LearningOutcomes"});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "Course",
                         "Course1",
                         "LO1"});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "Course",
                         "Course2",
                         ""});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "Course",
                         "Course3",
                         "LO2, LO3"});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "Program",
                         "Program1",
                         ""});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "Program",
                         "Program2",
                         ""});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "Program",
                         "Program3",
                         ""});
-#line 54
- testRunner.Then("I get the entity learning outcomes as follows", ((string)(null)), table10, "Then ");
+#line 62
+ testRunner.Then("I get the entity learning outcomes as follows", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -275,75 +301,75 @@ this.FeatureBackground();
         public virtual void CanGetEntityLearningOutcomesForSegments()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Can get entity learning outcomes for segments", ((string[])(null)));
-#line 63
+#line 71
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table11.AddRow(new string[] {
-                        "LO1"});
-#line 64
- testRunner.When("I associate the existing learning outcomes to \'Week1\' segment", ((string)(null)), table11, "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table12.AddRow(new string[] {
-                        "LO1"});
-            table12.AddRow(new string[] {
-                        "LO2"});
-            table12.AddRow(new string[] {
-                        "LO3"});
-#line 67
- testRunner.When("I associate the existing learning outcomes to \'Topic\' segment", ((string)(null)), table12, "When ");
-#line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table13.AddRow(new string[] {
+                        "LO1"});
+#line 72
+ testRunner.When("I associate the existing learning outcomes to \'Week1\' segment", ((string)(null)), table13, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table14.AddRow(new string[] {
+                        "LO1"});
+            table14.AddRow(new string[] {
+                        "LO2"});
+            table14.AddRow(new string[] {
+                        "LO3"});
+#line 75
+ testRunner.When("I associate the existing learning outcomes to \'Topic\' segment", ((string)(null)), table14, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "EntityType",
                         "EntityName",
                         "LearningOutcomes"});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Segment",
                         "Week1",
                         "LO1"});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Segment",
                         "Topic",
                         "LO1, LO2, LO3"});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Segment",
                         "Discussion",
                         ""});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Segment",
                         "Discussion2",
                         ""});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Course",
                         "Course1",
                         ""});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Course",
                         "Course2",
                         ""});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Course",
                         "Course3",
                         ""});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Program",
                         "Program1",
                         ""});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Program",
                         "Program2",
                         ""});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Program",
                         "Program3",
                         ""});
-#line 72
- testRunner.Then("I get the entity learning outcomes as follows", ((string)(null)), table13, "Then ");
+#line 80
+ testRunner.Then("I get the entity learning outcomes as follows", ((string)(null)), table15, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
