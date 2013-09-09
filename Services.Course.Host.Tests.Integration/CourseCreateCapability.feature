@@ -16,7 +16,7 @@ Scenario Outline: I can not create a course unless I have permission to do so.
 	| Role1 | OrgTop       | <Capability> |
 	And I give the user role "Role1" for organization <OrganizationAssignedTo>
 	When I create a course under organization <OrganizationCreatedAttempt>
-	Then I get <StatusCode> response
+	Then I get '<StatusCode>' response
 Examples:
 | Capability    | OrganizationAssignedTo | OrganizationCreatedAttempt | StatusCode |
 | CourseCreate  | OrgTop                 | OrgTop                     | Created    |
@@ -38,4 +38,4 @@ Scenario: I can not create a course when capabilities have been removed.
 	And I give the user role "Role1" for organization OrgTop
 	And I update the role "Role1" with capabilities ""
 	When I create a course under organization OrgTop
-	Then I get "Unauthorized" response
+	Then I get 'Unauthorized' response
