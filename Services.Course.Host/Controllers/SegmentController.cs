@@ -44,6 +44,13 @@ namespace BpeProducts.Services.Course.Host.Controllers
             _courseSegmentService.Update(courseId, segmentId, saveCourseSegmentRequest);
         }
 
+        // courses/<courseId>/segments/<segmentId>/segments
+        [Transaction]
+        public void Put(Guid courseId, IList<UpdateCourseSegmentRequest> updateCourseSegmentRequest)
+        {
+            _courseSegmentService.Update(courseId, updateCourseSegmentRequest);
+        }
+
         // courses/<courseId>/segments/<segmentId>
         [Transaction]
         public void Delete(Guid courseId, Guid segmentId)

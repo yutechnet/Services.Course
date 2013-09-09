@@ -68,6 +68,7 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<PlayCourseSegmentAdded>().Keyed<IPlayEvent>(typeof(CourseSegmentAdded).Name);
             containerBuilder.RegisterType<PlayCourseSegmentUpdated>().Keyed<IPlayEvent>(typeof(CourseSegmentUpdated).Name);
             containerBuilder.RegisterType<PlayCourseSegmentDeleted>().Keyed<IPlayEvent>(typeof(CourseSegmentDeleted).Name);
+            containerBuilder.RegisterType<PlayCourseSegmentReordered>().Keyed<IPlayEvent>(typeof(CourseSegmentReordered).Name);
             containerBuilder.RegisterType<PlayCourseLearningActivityAdded>().Keyed<IPlayEvent>(typeof(CourseLearningActivityAdded).Name);
             containerBuilder.RegisterType<PlayCourseLearningActivityUpdated>().Keyed<IPlayEvent>(typeof(CourseLearningActivityUpdated).Name);
             containerBuilder.RegisterType<PlayCourseLearningActivityDeleted>().Keyed<IPlayEvent>(typeof(CourseLearningActivityDeleted).Name);
@@ -101,8 +102,10 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<UpdateModelOnAddingCourseSegment>().As<IHandle<CourseSegmentAdded>>();
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentUpdated>>();
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentDeleted>>();
+            containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentReordered>>();
             containerBuilder.RegisterType<UpdateModelOnUpdatingCourseSegment>().As<IHandle<CourseSegmentUpdated>>();
             containerBuilder.RegisterType<UpdateModelOnDeletingCourseSegment>().As<IHandle<CourseSegmentDeleted>>();
+            containerBuilder.RegisterType<UpdateModelOnReorderingCourseSegment>().As<IHandle<CourseSegmentReordered>>();
 
             containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseLearningActivityAdded>>();
             containerBuilder.RegisterType<UpdateModelOnAddingCourseLearningActivity>().As<IHandle<CourseLearningActivityAdded>>();

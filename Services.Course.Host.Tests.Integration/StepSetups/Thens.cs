@@ -412,6 +412,52 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         }
 
 
+        [Then(@"the course '(.*)' should have these course segments in the following order")]
+        public void ThenTheCourseShouldHaveTheseCourseSegmentsInTheFollowingOrder(string courseName, Table table)
+        {
+            var resource = Resources<CourseResource>.Get(courseName);
+            var courseInfo = GetOperations.GetCourse(resource.ResourceUri);
+
+            var courseSegments = courseInfo.Segments;
+            var uncollapsedSegments = new List<CourseSegmentInfo>();
+
+            var index = new Dictionary<Guid, CourseSegmentInfo>();
+            IndexNodes(Guid.Empty, courseInfo.Segments, index);
+
+
+            foreach (var segment in courseSegments)
+            {
+                uncollapsedSegments.Add(segment);
+                if (segment.ChildSegments.Count > 0)
+                {
+                    foreach (var childSegment in segment.ChildSegments)
+                    {
+                        uncollapsedSegments.Add(childSegment);
+                        if (segment.ChildSegments.Count > 0)
+                        {
+                            foreach (var grandChildSegment in childSegment.ChildSegments)
+                            {
+                                uncollapsedSegments.Add(grandChildSegment);
+                            }
+                        }
+                    }
+                }
+            }
+
+            Assert.That(table.RowCount, Is.EqualTo(uncollapsedSegments.Count));
+
+            for (int i = 0; i < uncollapsedSegments.Count; i++)
+            {
+                Assert.That(table.Rows[i]["Name"], Is.EqualTo(uncollapsedSegments[i].Name));
+                if (table.Rows[i]["ParentSegment"] != string.Empty)
+                {
+                    Assert.That(uncollapsedSegments[i].ParentSegmentId, Is.Not.Null);
+                    Assert.That(index[uncollapsedSegments[i].ParentSegmentId].Name, Is.EqualTo(table.Rows[i]["ParentSegment"]));
+                }
+            }
+
+        }
+
         private static void IndexNodes(Guid parentSegmentId, IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<string, CourseSegmentInfo> index)
         {
             foreach (var courseSegmentInfo in segmentInfos)
@@ -419,6 +465,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 Assert.That(courseSegmentInfo.ParentSegmentId, Is.EqualTo(parentSegmentId));
 
                 index.Add(courseSegmentInfo.Name, courseSegmentInfo);
+                if (courseSegmentInfo.ChildSegments.Count > 0)
+                {
+                    IndexNodes(courseSegmentInfo.Id, courseSegmentInfo.ChildSegments, index);
+                }
+            }
+        }
+
+        private static void IndexNodes(Guid parentSegmentId, IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<Guid, CourseSegmentInfo> index)
+        {
+            foreach (var courseSegmentInfo in segmentInfos)
+            {
+                Assert.That(courseSegmentInfo.ParentSegmentId, Is.EqualTo(parentSegmentId));
+
+                index.Add(courseSegmentInfo.Id, courseSegmentInfo);
                 if (courseSegmentInfo.ChildSegments.Count > 0)
                 {
                     IndexNodes(courseSegmentInfo.Id, courseSegmentInfo.ChildSegments, index);

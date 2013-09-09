@@ -23,6 +23,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
 
             mapping.HasMany(x => x.ChildSegments)
                 .Access.CamelCaseField(Prefix.Underscore)
+                .OrderBy("DisplayOrder")
                 .KeyColumn("ParentSegmentId");
            
             //mapping.IgnoreProperty(segment => segment.Name);

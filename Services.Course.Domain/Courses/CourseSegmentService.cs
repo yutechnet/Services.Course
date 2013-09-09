@@ -99,5 +99,24 @@ namespace BpeProducts.Services.Course.Domain
                     SegmentId = segmentId,
                 });
         }
+
+        public void Update(Guid courseId, IList<UpdateCourseSegmentRequest> updateCourseSegmentRequest)
+        {
+            for (int i = 0; i < updateCourseSegmentRequest.Count(); i++)
+            {
+                _domainEvents.Raise<CourseSegmentReordered>(new CourseSegmentReordered
+                    {
+                        AggregateId = courseId,
+                        SegmentId = updateCourseSegmentRequest[i].Id,
+                        Request = updateCourseSegmentRequest[i],
+                        DisplayOrder = i
+                    });
+
+                if (updateCourseSegmentRequest[i].ChildrenSegments.Count > 0)
+                {
+                    Update(courseId, updateCourseSegmentRequest[i].ChildrenSegments);
+                }
+            }
+        }
     }
 }

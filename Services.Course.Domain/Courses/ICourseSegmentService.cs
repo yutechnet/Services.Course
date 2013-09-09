@@ -43,5 +43,7 @@ namespace BpeProducts.Services.Course.Domain
         /// <param name="courseId"></param>
         /// <param name="segmentId"></param>
         void Delete(Guid courseId, Guid segmentId);
+
+        void Update(Guid courseId, IList<UpdateCourseSegmentRequest> updateCourseSegmentRequest);
     }
 }
