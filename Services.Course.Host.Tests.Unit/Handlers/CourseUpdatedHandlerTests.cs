@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Entities;

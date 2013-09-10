@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Autofac.Extras.Moq;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;

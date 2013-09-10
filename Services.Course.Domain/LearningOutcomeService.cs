@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Http;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Outcomes;

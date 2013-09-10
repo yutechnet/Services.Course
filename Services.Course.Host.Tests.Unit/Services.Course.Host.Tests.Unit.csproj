@@ -56,9 +56,9 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Authorization">
-      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.13\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="BpeProducts.Common.Authorization, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.15\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Capability, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -76,9 +76,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.11\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.57.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.58.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.57\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.58\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -132,8 +132,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.Caches.Redis.1.2.1.0\lib\net40\NHibernate.Caches.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate.OData">
-      <HintPath>..\packages\NHibernate.OData.0.2.4.0\lib\net35\NHibernate.OData.dll</HintPath>
+    <Reference Include="NHibernate.OData, Version=0.3.0.0, Culture=neutral, PublicKeyToken=d2da1ed826cfe201, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NHibernate.OData.0.3.0.0\lib\net35\NHibernate.OData.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -232,7 +233,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthorizationAspectTests.cs" />
     <Compile Include="CourseFactoryTests.cs" />
     <Compile Include="CourseServiceTests.cs" />
     <Compile Include="Entities\CourseTests.cs" />

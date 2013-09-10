@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Domain.Repositories;
 

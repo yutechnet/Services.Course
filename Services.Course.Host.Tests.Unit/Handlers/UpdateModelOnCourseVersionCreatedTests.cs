@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac.Extras.Moq;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;

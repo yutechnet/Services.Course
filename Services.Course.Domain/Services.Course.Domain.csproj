@@ -50,8 +50,9 @@
     <Reference Include="AutoMapper">
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Authorization">
-      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.13\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+    <Reference Include="BpeProducts.Common.Authorization, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.15\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Capability">
       <HintPath>..\packages\BpeProducts.Common.Capability.1.0.7\lib\net40\BpeProducts.Common.Capability.dll</HintPath>
@@ -66,9 +67,8 @@
     <Reference Include="BpeProducts.Common.Log">
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.11\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.57.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.57\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+    <Reference Include="BpeProducts.Common.NHibernate">
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.58\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -126,7 +126,7 @@
       <HintPath>..\packages\NHibernate.Caches.Redis.1.2.1.0\lib\net40\NHibernate.Caches.Redis.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate.OData">
-      <HintPath>..\packages\NHibernate.OData.0.2.4.0\lib\net35\NHibernate.OData.dll</HintPath>
+      <HintPath>..\packages\NHibernate.OData.0.3.0.0\lib\net35\NHibernate.OData.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.59.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -182,7 +182,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthorizeAclAspect.cs" />
     <Compile Include="Courses\CourseLearningActivity.cs" />
     <Compile Include="Courses\CourseSegmentService.cs" />
     <Compile Include="Courses\CourseService.cs" />
@@ -288,7 +287,6 @@
     <Compile Include="Courses\ICourseRepository.cs" />
     <Compile Include="Repositories\ILearningOutcomeRepository.cs" />
     <Compile Include="Repositories\LearningOutcomeRepository.cs" />
-    <Compile Include="Repositories\Repository.cs" />
     <Compile Include="VersionableEntityFactory.cs" />
     <Compile Include="VersionFactory.cs" />
     <Compile Include="VersionHandler.cs" />
