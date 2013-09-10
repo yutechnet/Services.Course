@@ -1,4 +1,5 @@
 ﻿using System;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Repositories;

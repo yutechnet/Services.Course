@@ -1,4 +1,6 @@
 ﻿//using System.Web.Http.Odata.Query;
+
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;

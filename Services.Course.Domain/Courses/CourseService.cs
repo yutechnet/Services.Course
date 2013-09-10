@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
