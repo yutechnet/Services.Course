@@ -29,6 +29,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping
                 .HasMany(x => x.Segments)
                 .Access.CamelCaseField(Prefix.Underscore)
+                .OrderBy("DisplayOrder")
                 .ForeignKeyConstraintName("FK_Course_CourseSegment");
 
 			mapping

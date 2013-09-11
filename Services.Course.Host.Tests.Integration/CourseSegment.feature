@@ -191,3 +191,29 @@ Scenario: Ensure Course Segment display order is persisted on Update
 	| Discussion1.1 | 1            |
 	| Discussion1.2 | 0            |
 
+Scenario: Bulk update reorder validation
+	Given I have the following course segments for 'Math 101'
+	| Name        | Description                      | Type       | ParentSegment |
+	| Week1       | First week is slack time         | TimeSpan   |               |
+	| Discussion  | Discussion for the first week    | Discussion | Week1         |
+	| Discussion2 | Discussion2 for the first week   | Discussion | Week1         |
+	| Topic       | Topic for a discussion           | Topic      | Discussion    |
+	| Week2       | Second week is where work begins | TimeSpan   |               |
+	| Discussion3 | Discussion for week 2            | Discussion | Week2         |
+	When I perform a bulk update for 'Math 101' with the following order
+	| Name        | Description                      | Type       | ParentSegment |
+	| Week2       | Second week is where work begins | TimeSpan   |               |
+	| Discussion3 | Discussion for week 2            | Discussion | Week2         |
+	| Week1       | First week is slack time         | TimeSpan   |               |
+	| Discussion2 | Discussion2 for the first week   | Discussion | Week1         |
+	| Discussion  | Discussion for the first week    | Discussion | Week1         |
+	| Topic       | Topic for a discussion           | Topic      | Discussion    |
+	Then the course 'Math 101' should have these course segments in the following order
+	| Name        | Description                      | Type       | ParentSegment |
+	| Week2       | Second week is where work begins | TimeSpan   |               |
+	| Discussion3 | Discussion for week 2            | Discussion | Week2         |
+	| Week1       | First week is slack time         | TimeSpan   |               |
+	| Discussion2 | Discussion2 for the first week   | Discussion | Week1         |
+	| Discussion  | Discussion for the first week    | Discussion | Week1         |
+	| Topic       | Topic for a discussion           | Topic      | Discussion    |
+

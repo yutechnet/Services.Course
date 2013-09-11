@@ -54,7 +54,10 @@ namespace BpeProducts.Services.Course.Host
 			config.Routes.MapHttpRoute("CourseSegments", "course/{courseId}/segments/{segmentId}",
                                        new { controller = "segment", segmentId = RouteParameter.Optional });
 
-		    config.Routes.MapHttpRoute("DefaultApi", "{controller}/{id}",
+            config.Routes.MapHttpRoute("BulkUpdateCourseSegments", "course/{courseId}/segments",
+                                       new { controller = "segment" });
+
+            config.Routes.MapHttpRoute("DefaultApi", "{controller}/{id}",
 		                               defaults: new {id = RouteParameter.Optional});
 
             config.EnableSystemDiagnosticsTracing();

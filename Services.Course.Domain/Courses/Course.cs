@@ -210,6 +210,22 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return segment;
         }
 
+        public virtual CourseSegment ReorderSegment(Guid segmentId, UpdateCourseSegmentRequest request, int displayOrder)
+        {
+            var segment = _segments.FirstOrDefault(s => s.Id == segmentId);
+
+            if (segment == null)
+                throw new NotFoundException(string.Format("Segment {0} for Course {1} is not found.", segmentId, Id));
+
+            segment.Name = request.Name;
+            segment.Description = request.Description;
+            segment.Type = request.Type;
+            segment.DisplayOrder = displayOrder;
+
+            return segment;
+        }
+
+
         public virtual void DeleteSegment(Guid segmentId)
         {
             var segment = _segments.FirstOrDefault(s => s.Id == segmentId);
@@ -330,5 +346,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity;
         }
         #endregion
+
     }
 }

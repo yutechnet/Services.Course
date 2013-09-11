@@ -200,11 +200,13 @@
     <Compile Include="Events\CoursePrerequisiteAdded.cs" />
     <Compile Include="Events\CoursePrerequisiteRemoved.cs" />
     <Compile Include="Events\CourseSegmentDeleted.cs" />
+    <Compile Include="Events\CourseSegmentReordered.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCoursePrerequisite.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCourseLearningActivity.cs" />
     <Compile Include="Handlers\UpdateModelOnDeletingCourseLearningActivity.cs" />
     <Compile Include="Handlers\UpdateModelOnDeletingCourseSegment.cs" />
     <Compile Include="Handlers\UpdateModelOnRemovingCoursePrerequisite.cs" />
+    <Compile Include="Handlers\UpdateModelOnReorderingCourseSegment.cs" />
     <Compile Include="Handlers\UpdateModelOnUpdatingCourseLearningActivity.cs" />
     <Compile Include="ICourseLearningActivityService.cs" />
     <Compile Include="IVersionableEntityFactory.cs" />

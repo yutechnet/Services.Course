@@ -211,5 +211,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             Whens.ResponseMessages.Add(response);
             return response;
         }
+
+        public static HttpResponseMessage UpdateBulkCourseSegments(CourseResource course, IList<UpdateCourseSegmentRequest> topSegments)
+        {
+            var putUri = string.Format("{0}/segments", course.ResourceUri);
+            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(putUri, topSegments).Result;
+
+            Whens.ResponseMessages.Add(response);
+            return response;
+        }
     }
 }

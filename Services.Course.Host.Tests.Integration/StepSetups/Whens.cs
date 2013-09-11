@@ -5,6 +5,7 @@ using NHibernate.Linq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -456,6 +457,81 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var organizationId = ScenarioContext.Current[organizationName].As<Guid>();
             List<Guid> courseTemplateIds = GetOperations.GetCourseTemplateIds(organizationId);
             ScenarioContext.Current[scenarioContextName] = courseTemplateIds;
+        }
+
+        [When(@"the outcome '(.*)' supports the following learning outcomes asynchronously")]
+        public void WhenTheOutcomeSupportsTheFollowingLearningOutcomesAsynchronously(string supportingOutcomeName, Table table)
+        {
+            var supportingOutcome = Resources<LearningOutcomeResource>.Get(supportingOutcomeName);
+
+            foreach (var row in table.Rows)
+            {
+                var supportedOutcome = Resources<LearningOutcomeResource>.Get(row["Description"]);
+
+                //TODO: This is an issue... supportingOutcome and supoortedOutcome should be flipped
+                PutOperations.OutcomeSupportsLearningOutcome(supportingOutcome, supportedOutcome, true);
+            }
+        }
+
+        [When(@"I perform a bulk update for '(.*)' with the following order")]
+        public void WhenIPerformABulkUpdateForWithTheFollowingOrder(string courseName, Table table)
+        {
+            // Get Math 101 request from dictionary
+            var course = Resources<CourseResource>.Get(courseName);
+            var courseInfo = GetOperations.GetCourse(course.ResourceUri);
+
+            var requestDictionary = new Dictionary<Guid, UpdateCourseSegmentRequest>();
+            foreach (var row in table.Rows)
+            {
+                var courseSegmentInfo = FindInCourseSegmentTree(courseInfo.Segments, row["Name"]);
+
+                var request = new UpdateCourseSegmentRequest
+                    {
+                        Id = courseSegmentInfo.Id,
+                        Name = courseSegmentInfo.Name,
+                        Type = courseSegmentInfo.Type,
+                        Description = courseSegmentInfo.Description
+                    };
+
+                requestDictionary.Add(courseSegmentInfo.Id, request);
+
+                if (!string.IsNullOrEmpty(row["ParentSegment"]))
+                {
+                    var parentSegmentInfo = FindInCourseSegmentTree(courseInfo.Segments, row["ParentSegment"]);
+                    var parentSegmentInTheDictionary = requestDictionary[parentSegmentInfo.Id];
+
+                    request.ParentSegmentId = parentSegmentInfo.Id;
+                    parentSegmentInTheDictionary.ChildrenSegments.Add(request);
+                }
+            }
+
+            // Now we have the dictionary, which has all the segments, with children segments associated with the parent segments
+            // Get the top-level course segments
+            var topSegments = requestDictionary.Values.Where(x => x.ParentSegmentId == null).ToList();
+
+            PutOperations.UpdateBulkCourseSegments(course, topSegments);
+        }
+
+        private CourseSegmentInfo FindInCourseSegmentTree(IEnumerable<CourseSegmentInfo> segments, string segmentName)
+        {
+            foreach (var segmentInfo in segments)
+            {
+                if (segmentInfo.Name == segmentName)
+                {
+                    return segmentInfo;
+                }
+
+                if (segmentInfo.ChildSegments.Count > 0)
+                {
+                    var result = FindInCourseSegmentTree(segmentInfo.ChildSegments, segmentName);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
         }
 
         [When(@"the outcome '(.*)' supports the following learning outcomes asynchronously")]
