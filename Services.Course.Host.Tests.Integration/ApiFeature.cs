@@ -1,9 +1,9 @@
-﻿using System;
+﻿using BpeProducts.Common.WebApiTest;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Http;
-using BpeProducts.Common.WebApiTest;
-using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using TechTalk.SpecFlow;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration

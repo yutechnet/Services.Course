@@ -7,8 +7,8 @@ Feature: CourseLearningActivity
 Background: 
 Given I am user "TestUser3"
 And the following organizations exist
-	| Name      | Description | ParentOrganization |
-	| COB    | Bus School         |                    |
+	| Name | Description | ParentOrganization |
+	| COB  | Bus School  |                    |
 And I create the following roles
 	| Name  | Organization | Capabilities |
 	| Role1 | COB      | CourseCreate |

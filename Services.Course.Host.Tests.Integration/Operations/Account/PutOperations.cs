@@ -1,7 +1,6 @@
-﻿using System;
-using System.Net.Http;
-using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+﻿using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
+using System.Net.Http;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
 {

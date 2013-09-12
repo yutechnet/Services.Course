@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BpeProducts.Services.Course.Host.Tests.Integration.Resources
+namespace BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account
 {
     public class OrganizationResource : IResource
     {

@@ -1,10 +1,12 @@
-﻿using System.Linq;
-using BpeProducts.Common.Capabilities;
+﻿using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.WebApiTest;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using TechTalk.SpecFlow;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
@@ -25,6 +27,53 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
             get
             {
                 return ScenarioContext.Current.Get<IDictionary<string, RoleResource>>("Roles");
+            }
+        }
+
+        [Given(@"I am user ""(.*)""")]
+        public void GivenIAmUser(TestUserName testUserName)
+        {
+            //TODO: replace this with an api call when we can create a user and get saml token on the fly
+            //Code was copied from Services.Account
+            var futureUserId = TestUserFactory.GetGuid(testUserName);
+            const string query = "Insert into [User] (UserId, DateAdded, DateUpdated) Values (@uuid,@dateAdded,@dateUpdated) ";
+
+            using (var connection = new SqlConnection(ApiFeature.GetDefaultConnectionString("AccountConnection")))
+            {
+                try
+                {
+                    var command = new SqlCommand(query, connection);
+                    command.Parameters.Add(new SqlParameter("uuid", futureUserId));
+                    command.Parameters.Add(new SqlParameter("dateAdded", DateTime.UtcNow));
+                    command.Parameters.Add(new SqlParameter("dateUpdated", DateTime.UtcNow));
+                    command.Connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                }
+                catch (SqlException exception)
+                {
+                    //2627 is a primary key constraint violation that assures us that the record is already in db and life is good
+                    if (exception.Number != 2627) throw;
+                }
+            }
+            ScenarioContext.Current[testUserName.ToString()] = futureUserId;
+        }
+
+        [Given(@"the following organizations exist")]
+        public void GivenTheFollowingOrganizationsExist(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var parentOrgName = row["ParentOrganization"];
+
+                var request = new SaveOrganizationRequest
+                {
+                    Name = row["Name"],
+                    Description = row["Description"],
+                    Parent = string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Organizations[parentOrgName].Id
+                };
+
+                PostOperations.CreateOrganization(request.Name, request);
             }
         }
 
@@ -50,24 +99,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
                 }
 
                 PostOperations.CreateRole(request.Name, request);
-            }
-        }
-
-        [Given(@"the following organizations exist")]
-        public void GivenTheFollowingOrganizationsExist(Table table)
-        {
-            foreach (var row in table.Rows)
-            {
-                var parentOrgName = row["ParentOrganization"];
-
-                var request = new SaveOrganizationRequest
-                {
-                    Name = row["Name"],
-                    Description = row["Description"],
-                    Parent = string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Organizations[parentOrgName].Id
-                };
-
-                PostOperations.CreateOrganization(request.Name, request);
             }
         }
 
