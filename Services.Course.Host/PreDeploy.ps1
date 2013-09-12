@@ -80,8 +80,7 @@ Deployment-InstallWindowsFeatures -FeatureArray $installWindowsFeatures
 $removeWindowsFeatures = @(
 	# Feature, Description
 	("Web-ASP", "Web Server\Application Development\ASP"),
-	("Web-CGI", "Web Server\Application Development\CGI"),
-	("Web-Includes", "Web Server\Application Development\Server Side Includes")
+	("Web-CGI", "Web Server\Application Development\CGI")
 )
 Deployment-RemoveWindowsFeatures -FeatureArray $removeWindowsFeatures
 
