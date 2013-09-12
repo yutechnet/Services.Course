@@ -24,7 +24,7 @@ namespace BpeProducts.Services.Course.Domain
             _courseRepository = courseRepository;
         }
 
-		[AuthByAcl(Capability = Capability.CourseCreate, ObjectType = typeof(Course.Domain.Courses.Course), OrganizationObject = "request")]
+		[AuthByAcl(Capability = Capability.CourseCreate, OrganizationObject = "request")]
         public CourseInfoResponse Create(SaveCourseRequest request)
         {
             var course = _courseFactory.Create(request);
