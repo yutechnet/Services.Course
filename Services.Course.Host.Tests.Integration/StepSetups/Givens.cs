@@ -204,5 +204,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var result = PostOperations.CreateCourse(courseRequest.Name, courseRequest);
             return result;
         }
+
+		[Given(@"I create a course '(.*)' under organization '(.*)'")]
+		public void GivenICreateACourseUnderOrganization(string courseName, string orgName)
+		{
+			CourseCreationSteps.CreateACourse(courseName, orgName);
+		}
+
     }
 }

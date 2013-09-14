@@ -15,15 +15,15 @@ Scenario Outline: I can not create a course unless I have permission to do so.
 	| Name  | Organization | Capabilities |
 	| Role1 | OrgTop       | <Capability> |
 	And I give the user role "Role1" for organization <OrganizationAssignedTo>
-	When I create a course under organization <OrganizationCreatedAttempt>
+	When I create a course <course> under organization <OrganizationCreatedAttempt>
 	Then I get '<StatusCode>' response
 Examples:
-| Capability    | OrganizationAssignedTo | OrganizationCreatedAttempt | StatusCode |
-| CourseCreate  | OrgTop                 | OrgTop                     | Created    |
-| CoursePublish | OrgTop                 | OrgTop                     | Forbidden  |
-|               | OrgTop                 | OrgTop                     | Forbidden  |
-| CourseCreate  | OrgTop                 | OrgMiddle                  | Created    |
-| CourseCreate  | OrgMiddle              | OrgTop                     | Forbidden  |
+| course | Capability    | OrganizationAssignedTo | OrganizationCreatedAttempt | StatusCode |
+| eng101 | CourseCreate  | OrgTop                 | OrgTop                     | Created    |
+| eng101 | CoursePublish | OrgTop                 | OrgTop                     | Forbidden  |
+| eng101 |               | OrgTop                 | OrgTop                     | Forbidden  |
+| eng101 | CourseCreate  | OrgTop                 | OrgMiddle                  | Created    |
+| eng101 | CourseCreate  | OrgMiddle              | OrgTop                     | Forbidden  |
 
 #This is ignored pending DE377 : https://rally1.rallydev.com/#/10482122379ud/detail/defect/13871086436
 @ignore

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account;
 using NUnit.Framework;
@@ -360,5 +361,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.That(info.CourseType, Is.EqualTo(originalRequest.CourseType));
             Assert.That(info.IsTemplate, Is.EqualTo(originalRequest.IsTemplate));
         }
+
+		public static HttpResponseMessage CreateACourse(string courseName, string oranizationName)
+		{
+			var org = Givens.Organizations[oranizationName];
+
+			var saveCourseRequest = new SaveCourseRequest
+			{
+				Name = courseName,
+				Description = "RandomCourse",
+				Code = "RandomCourse",
+				CourseType = ECourseType.Traditional,
+				IsTemplate = false,
+				OrganizationId = org.Id
+			};
+
+			var response = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
+			return response;
+
+		} 
     }
 }
