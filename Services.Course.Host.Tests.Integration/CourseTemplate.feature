@@ -171,3 +171,16 @@ Scenario: I can not see course templates for an organization I do have CreateCou
 	When I get the course templates for organization "Org2" to scenario context name "templateIds"
 	Then the course template Ids in "templateIds" are:
 	| OrgName |
+
+Scenario: Cannot get the template after create a course version from a previously-published version（DE395）
+	When I create a course from the template 'Template 1' with the following
+    | Name         | Code        | Description              | OrganizationName | CourseType  | IsTemplate |
+    | English 2020 | CourseCode1 | My First Course Template | COB              | Traditional | false      |
+	And I publish the following courses
+	| Name         | Note     |
+	| English 2020 | Blah blah |
+	And I create a new version of 'English 2020' course named 'English 2020 v1.0.0.1' with the following info
+	| Field         | Value   |
+	| VersionNumber | 1.0.0.1 |
+	Then The course 'English 2020 v1.0.0.1' should have the template named 'Template 1'
+	

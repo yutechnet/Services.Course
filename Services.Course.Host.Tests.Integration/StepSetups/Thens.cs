@@ -107,6 +107,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             Assert.That(response.StatusCode, Is.EqualTo(expectedStatusCode));
         }
 
+        [Then(@"The course '(.*)' should have the template named '(.*)'")]
+        public void ThenTheCourseShouldHaveTheTemplateNamed(string courseName, string templateName)
+        {
+            var courseResource = Resources<CourseResource>.Get(courseName);
+            var course = GetOperations.GetCourse(courseResource.ResourceUri);
+            var templateResource = Resources<CourseResource>.Get(templateName);
+            Assert.That(course.TemplateCourseId, Is.EqualTo(templateResource.Id));
+        }
+
+
         [Then(@"I get the following responses")]
         public void ThenIGetTheFollowingResponses(Table table)
         {
