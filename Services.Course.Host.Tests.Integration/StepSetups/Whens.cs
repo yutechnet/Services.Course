@@ -286,6 +286,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             DeleteOperations.DeleteResource(resource);
         }
 
+		[When(@"I view '(.*)' course")]
         [When(@"I retrieve '(.*)' course")]
         public void WhenIRetrieveCourse(string courseName)
         {

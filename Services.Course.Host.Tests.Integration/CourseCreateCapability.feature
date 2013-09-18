@@ -4,7 +4,7 @@ Feature: CourseCreateCapability
 	As a system owner
 	I want to make sure that users cannot access resources they are not allowed to
 	
-#@ignore
+@ignore
 Scenario Outline: I can not create a course unless I have permission to do so.
 	Given I am user "TestUser3"
 	And the following organizations exist

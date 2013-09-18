@@ -191,11 +191,11 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I can not view a course unless I have permission to do so.")]
         [NUnit.Framework.IgnoreAttribute()]
-        [NUnit.Framework.TestCaseAttribute("", "", "CourseView", "eng101", "eng101", "Success", "#No org level, permission at object", null)]
-        [NUnit.Framework.TestCaseAttribute("CourseView", "OrgMiddle", "", "", "", "Success", "#Org level permission, no object level", null)]
-        [NUnit.Framework.TestCaseAttribute("CourseView", "OrgTop", "", "", "", "Success", "#parent org level perm, no object level", null)]
-        [NUnit.Framework.TestCaseAttribute("CourseView", "OrgTop", "CourseView", "eng101", "", "Success", "#org level and object level permission", null)]
-        [NUnit.Framework.TestCaseAttribute("", "", "", "", "", "Fail", "#no permissions", null)]
+        [NUnit.Framework.TestCaseAttribute("", "OrgMiddle", "CourseView", "eng101", "eng101", "OK", "#No org level, permission at object", null)]
+        [NUnit.Framework.TestCaseAttribute("CourseView", "OrgMiddle", "", "", "", "OK", "#Org level permission, no object level", null)]
+        [NUnit.Framework.TestCaseAttribute("CourseView", "OrgTop", "", "", "", "OK", "#parent org level perm, no object level", null)]
+        [NUnit.Framework.TestCaseAttribute("CourseView", "OrgTop", "CourseView", "eng101", "", "OK", "#org level and object level permission", null)]
+        [NUnit.Framework.TestCaseAttribute("", "OrgMiddle", "", "", "", "Forbidden", "#no permissions", null)]
         public virtual void ICanNotViewACourseUnlessIHavePermissionToDoSo_(string orgCapability, string orgLevel, string objectCapability, string objectAssignedTo, string courseAssignedCapability, string statusCode, string description, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -242,9 +242,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 61
  testRunner.And("I give the user role \"CreateCourseRole\" for organization OrgTop", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
- testRunner.And(string.Format("I give the user role \"ViewCourseRole\" for organization {0}", orgLevel), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I give the user role \"ViewOrNothingCourseRole\" for organization {0}", orgLevel), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
  testRunner.And("I create a course \'eng101\' under organization \'OrgMiddle\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 65
+ testRunner.When("I view \'eng101\' course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 66
  testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

@@ -69,6 +69,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I can not create a course unless I have permission to do so.")]
+        [NUnit.Framework.IgnoreAttribute()]
         [NUnit.Framework.TestCaseAttribute("eng101", "CourseCreate", "OrgTop", "OrgTop", "Created", null)]
         [NUnit.Framework.TestCaseAttribute("eng101", "CoursePublish", "OrgTop", "OrgTop", "Forbidden", null)]
         [NUnit.Framework.TestCaseAttribute("eng101", "", "OrgTop", "OrgTop", "Forbidden", null)]
@@ -76,7 +77,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [NUnit.Framework.TestCaseAttribute("eng101", "CourseCreate", "OrgMiddle", "OrgTop", "Forbidden", null)]
         public virtual void ICanNotCreateACourseUnlessIHavePermissionToDoSo_(string course, string capability, string organizationAssignedTo, string organizationCreatedAttempt, string statusCode, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not create a course unless I have permission to do so.", exampleTags);
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not create a course unless I have permission to do so.", @__tags);
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9

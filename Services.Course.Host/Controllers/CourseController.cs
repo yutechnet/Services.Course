@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
+using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
@@ -41,6 +42,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         // GET api/courses/5
         public CourseInfoResponse Get(Guid id)
         {
+	        SetSamlTokenInBootstrapContext();
             return _courseService.Get(id);
         }
 
@@ -50,13 +52,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		// POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
-			//TODO: move this to common.webapi
-			var user = User as ClaimsPrincipal;
-	        var identity = user.Identities.First();
-	        var authenticationHeadervalue = Request.Headers.Authorization;
-			identity.BootstrapContext =new BootstrapContext(authenticationHeadervalue.Parameter); 
-			
-            var courseInfoResponse = _courseService.Create(request);
+			SetSamlTokenInBootstrapContext();
+	       
+	        var courseInfoResponse = _courseService.Create(request);
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("DefaultApi", new {id = courseInfoResponse.Id});
@@ -67,7 +65,16 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return response;
         }
 
-        [Transaction]
+	    private void SetSamlTokenInBootstrapContext()
+	    {
+			//TODO: move this to common.webapi
+		    var user = User as ClaimsPrincipal;
+		    var identity = user.Identities.First();
+		    var authenticationHeadervalue = Request.Headers.Authorization;
+		    identity.BootstrapContext = new BootstrapContext(authenticationHeadervalue.Parameter);
+	    }
+
+	    [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
         // PUT api/courses/5

@@ -59,15 +59,15 @@ Scenario Outline: I can not view a course unless I have permission to do so.
 	| CreateCourseRole        | OrgTop       | CourseCreate    |
 	| ViewOrNothingCourseRole | <OrgLevel>   | <OrgCapability> |
 	And I give the user role "CreateCourseRole" for organization OrgTop
-	And I give the user role "ViewCourseRole" for organization <OrgLevel>
+	And I give the user role "ViewOrNothingCourseRole" for organization <OrgLevel>
 	And I create a course 'eng101' under organization 'OrgMiddle'
 	#And I create a course 'math101' under organization 'OrgMiddle'
-	#When I view 'eng101' course 
+	When I view 'eng101' course 
 	Then I get '<StatusCode>' response
 Examples:
 | OrgCapability | OrgLevel  | ObjectCapability | ObjectAssignedTo | CourseAssignedCapability | StatusCode | Description                             |
-|               |           | CourseView       | eng101           | eng101                   | Success    | #No org level, permission at object     |
-| CourseView    | OrgMiddle |                  |                  |                          | Success    | #Org level permission, no object level  |
-| CourseView    | OrgTop    |                  |                  |                          | Success    | #parent org level perm, no object level |
-| CourseView    | OrgTop    | CourseView       | eng101           |                          | Success    | #org level and object level permission  |
-|               |           |                  |                  |                          | Fail       | #no permissions                         |
+|               | OrgMiddle | CourseView       | eng101           | eng101                   | OK         | #No org level, permission at object     |
+| CourseView    | OrgMiddle |                  |                  |                          | OK         | #Org level permission, no object level  |
+| CourseView    | OrgTop    |                  |                  |                          | OK         | #parent org level perm, no object level |
+| CourseView    | OrgTop    | CourseView       | eng101           |                          | OK         | #org level and object level permission  |
+|               | OrgMiddle |                  |                  |                          | Forbidden  | #no permissions                         |
