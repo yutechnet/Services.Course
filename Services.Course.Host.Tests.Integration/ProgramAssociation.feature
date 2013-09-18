@@ -21,6 +21,8 @@ Background:
 	| Name           | Code   | Description    | OrganizationName |
 	| English 101    | ENG101 | English 101    | COB              |
 	| Psychology 101 | PSY101 | Psychology 101 | COB              |
+	| Econ 100       | E100   | Macroeconomics | COB              |
+	| Econ 400       | E400   | Microeconomics | COB              |
 
 Scenario Template: Associate a course with a program
 	When I associate '<Course Name>' course with '<Program Name>' program
@@ -62,3 +64,27 @@ Scenario: Get program with all courses that belong to it
 	| Course Name    | Code   | Description    | 
 	| English 101    | ENG101 | English 101    |
 	| Psychology 101 | PSY101 | Psychology 101 |
+
+@ignore
+Scenario: Verify a course version can be created from a previously-published version with prerequisites
+	When I associate 'Econ 100' course with the following programs
+	| Program Name        |
+	| Bachelor of Art     |
+	And I publish the following courses
+	| Name     | Note   |
+	| Econ 100 | a note |
+	And I associate 'Econ 400' course with the following programs
+	| Program Name        |
+	| Bachelor of Art     |
+	And I add the following prerequisites to 'Econ 400'
+	| Name     | 
+	| Econ 100 | 
+	And I publish the following courses
+	| Name     | Note   |
+	| Econ 400 | a note |
+	And I create a new version of 'Econ 400' course named 'Econ 400 v1.0.0.1' with the following info
+	| Field         | Value   |
+	| VersionNumber | 1.0.0.1 |
+	Then the course 'Econ 400 v1.0.0.1' should have the following prerequisites
+	| Name     | 
+	| Econ 100 | 
