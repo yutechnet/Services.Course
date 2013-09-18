@@ -7,6 +7,7 @@ using AutoMapper;
 using Autofac.Features.Indexed;
 using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.WebApi.Authorization;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
@@ -17,9 +18,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
 {
 	public class CourseFactory : VersionFactory<Course>, ICourseFactory
 	{
-	    private readonly ICourseRepository _courseRepository;
+        private readonly IRepository _courseRepository;
 
-	    public CourseFactory(IStoreEvents store, IIndex<string, IPlayEvent> index, ICourseRepository courseRepository) : base(store, index)
+        public CourseFactory(IStoreEvents store, IIndex<string, IPlayEvent> index, IRepository courseRepository)
+            : base(store, index, courseRepository)
 	    {
 	        _courseRepository = courseRepository;
 	    }
@@ -30,7 +32,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
 	        Course course = null;
             if (request.TemplateCourseId.HasValue)
             {
-                var template = Reconstitute(request.TemplateCourseId.Value);
+               // var template = Reconstitute(request.TemplateCourseId.Value);
+                var template = _courseRepository.Get<Domain.Courses.Course>(request.TemplateCourseId.Value);
                 if (template == null)
                 {
                     throw new NotFoundException(string.Format("Course template {0} not found.", request.TemplateCourseId.Value));
@@ -49,17 +52,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
         protected Course BuildFromTemplate(Course template, SaveCourseRequest request)
         {
             
-            //var course = Mapper.Map<Course>(template);
-
-            //course.Id = Guid.NewGuid();
-            //course.Name = request.Name;
-            //course.Code = request.Code;
-            //course.Description = request.Description;
-            //course.OrganizationId = request.OrganizationId;
-            //course.ActiveFlag = true;
-            //course.IsTemplate = request.IsTemplate;
-
-
             var course = new Course
                 {
                     Id = Guid.NewGuid(),
@@ -76,12 +68,16 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 courseSegment.Course = course;
             }
 
-            var pgms = new List<Program>();
-	        foreach (var program in template.Programs)
-	        {
-		        pgms.Add(program.DeepClone());
-	        }
-	        course.Programs = pgms;
+            //var pgms = new List<Program>();
+            //foreach (var program in template.Programs)
+            //{
+            //    pgms.Add(program.DeepClone());
+            //}
+            //course.Programs = pgms;
+
+            course.Programs = new List<Program>(template.Programs);
+
+
             course.SupportedOutcomes = new List<LearningOutcome>(template.SupportedOutcomes);
 
             course.CourseType = template.CourseType;

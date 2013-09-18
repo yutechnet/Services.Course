@@ -40,14 +40,16 @@ namespace BpeProducts.Services.Course.Domain
         {
             VersionableEntity versionable;
 
-            if (type.Name == typeof(Courses.Course).Name)
-            {
-                versionable = _courseFactory.Reconstitute(id);
-            }
-            else
-            {
-                versionable = _repository.Get(type, id) as VersionableEntity;
-            }
+            //if (type.Name == typeof(Courses.Course).Name)
+            //{
+            //    versionable = _courseFactory.Reconstitute(id);
+            //}
+            //else
+            //{
+            //    versionable = _repository.Get(type, id) as VersionableEntity;
+            //}
+            // use repository for course for now
+            versionable = _repository.Get(type, id) as VersionableEntity;
 
             if (versionable == null)
                 throw new NotFoundException(string.Format("{0} {1} is not found.", type.Name, id));

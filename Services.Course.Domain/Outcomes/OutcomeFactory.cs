@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Autofac.Features.Indexed;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
@@ -12,9 +13,10 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
 {
     public class OutcomeFactory : VersionFactory<LearningOutcome>, IOutcomeFactory
     {
-        private readonly ILearningOutcomeRepository _learningOutcomeRepository;
+        private readonly IRepository _learningOutcomeRepository;
 
-        public OutcomeFactory(IStoreEvents store, IIndex<string, IPlayEvent> index, ILearningOutcomeRepository learningOutcomeRepository ) : base(store, index)
+        public OutcomeFactory(IStoreEvents store, IIndex<string, IPlayEvent> index, IRepository learningOutcomeRepository)
+            : base(store, index,learningOutcomeRepository)
         {
             _learningOutcomeRepository = learningOutcomeRepository;
         }
