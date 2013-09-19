@@ -27,7 +27,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         // GET api/programs
-		//[ClaimsAuth("ViewCourses")]
         public IEnumerable<CourseInfoResponse> Get(ODataQueryOptions options)
         {
 			// get orgs/objs for which user has viewcourse capability (maybe a matrix later)
@@ -40,20 +39,19 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         // GET api/courses/5
+        [SetSamlTokenInBootstrapContext]
         public CourseInfoResponse Get(Guid id)
         {
-	        SetSamlTokenInBootstrapContext();
             return _courseService.Get(id);
         }
 
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
+        [SetSamlTokenInBootstrapContext]
 		// POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
-			SetSamlTokenInBootstrapContext();
-	       
 	        var courseInfoResponse = _courseService.Create(request);
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
@@ -64,15 +62,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
             }
             return response;
         }
-
-	    private void SetSamlTokenInBootstrapContext()
-	    {
-			//TODO: move this to common.webapi
-		    var user = User as ClaimsPrincipal;
-		    var identity = user.Identities.First();
-		    var authenticationHeadervalue = Request.Headers.Authorization;
-		    identity.BootstrapContext = new BootstrapContext(authenticationHeadervalue.Parameter);
-	    }
 
 	    [Transaction]
         [CheckModelForNull]

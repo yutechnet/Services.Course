@@ -149,7 +149,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
 
         [Given(@"I give the user role ""(.*)"" for organization (.*)")]
         [Given(@"I give the user role ""(.*)"" for organization ""(.*)""")]
-        public void GivenIGiveTheUserRoleForOrganizationOrgTop(string roleName, string organizatonName)
+        public void GivenIGiveTheUserRoleForOrganization(string roleName, string organizatonName)
         {
             var role = Roles[roleName];
             var org = Organizations[organizatonName];
@@ -157,5 +157,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
 
             PostOperations.GrantPermission(userGuid, role, org);
         }
+
+		[Given(@"I give the user role ""(.*)"" for object (.*)")]
+		public void GivenIGiveTheUserRoleForObject(string roleName, string objectName)
+		{
+			if (String.IsNullOrWhiteSpace(objectName)==false)
+			{
+				var role = Roles[roleName];
+				var obj = Resources<CourseResource>.Get(objectName);
+				var userGuid = TestUserFactory.GetGuid(ApiFeature.DefaultTestUser);
+
+				PostOperations.GrantPermission(userGuid, role, obj.Id);
+			}
+		}
+
     }
 }
