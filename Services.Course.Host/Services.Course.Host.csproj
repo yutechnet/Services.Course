@@ -85,9 +85,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.14\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApi, Version=1.0.74.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.WebApi, Version=1.0.76.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.74\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.76\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Acl.Client, Version=1.0.16.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

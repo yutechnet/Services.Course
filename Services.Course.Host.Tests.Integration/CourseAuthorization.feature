@@ -24,6 +24,7 @@ Examples:
 | eng101 | CourseCreate  | OrgTop                 | OrgMiddle                  | Created    |
 | eng101 | CourseCreate  | OrgMiddle              | OrgTop                     | Forbidden  |
 
+
 #This is ignored pending DE377 : https://rally1.rallydev.com/#/10482122379ud/detail/defect/13871086436
 @ignore
 Scenario: I can not create a course when capabilities have been removed.
@@ -39,14 +40,10 @@ Scenario: I can not create a course when capabilities have been removed.
 	When I create a course eng101 under organization OrgTop
 	Then I get 'Unauthorized' response
 
-@ignore
 Scenario: Create a course as a guest
 	Given That I am guest
 	When I submit an authorized creation request
 	Then I should get a failure response
-
-
-
 
 Scenario Outline: I can not view a course unless I have permission to do so.
 	Given I am user "TestUser3"
@@ -60,9 +57,9 @@ Scenario Outline: I can not view a course unless I have permission to do so.
 	| CourseCreator | OrgTop          | CourseCreate |
 	| CourseViewer  | <OrgAssignedTo> | CourseView   |
 	And I give the user role "CourseCreator" for organization OrgTop
-	And I give the user role "CourseViewer" for organization <OrgAssignedTo>
 	And I create a course 'eng101' under organization 'OrgMiddle'
 	And I create a course 'math101' under organization 'OrgMiddle'
+	And I give the user role "CourseViewer" for organization <OrgAssignedTo>
 	And I give the user role "CourseViewer" for object <ObjectAssignedTo>
 	When I view 'eng101' course 
 	Then I get '<StatusCode>' response

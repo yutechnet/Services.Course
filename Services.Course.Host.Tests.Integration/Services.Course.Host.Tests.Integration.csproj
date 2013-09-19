@@ -78,9 +78,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.14\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApi, Version=1.0.74.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.WebApi, Version=1.0.76.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.74\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.76\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.29.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -180,7 +180,6 @@
       <DependentUpon>CourseAuthorization.feature</DependentUpon>
     </Compile>
     <Compile Include="CourseAuthorizationSteps.cs" />
-    <Compile Include="CourseCreateCapabilitySteps.cs" />
     <Compile Include="CourseCreation.feature.cs">
       <DependentUpon>CourseCreation.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -216,11 +215,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseVersioning.feature</DependentUpon>
-    </Compile>
-    <Compile Include="CourseCreateCapability.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CourseCreateCapability.feature</DependentUpon>
     </Compile>
     <Compile Include="GetEntityLearningOutcomes.feature.cs">
       <AutoGen>True</AutoGen>
@@ -307,10 +301,6 @@
     <None Include="CourseVersioning.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseVersioning.feature.cs</LastGenOutput>
-    </None>
-    <None Include="CourseCreateCapability.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CourseCreateCapability.feature.cs</LastGenOutput>
     </None>
     <None Include="GetEntityLearningOutcomes.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
