@@ -3,7 +3,7 @@ Feature: CourseAuthorization
 	In order to protect the system
 	As a system owner
 	I want to make sure that users cannot access resources they are not allowed to
-@ignore
+
 Scenario Outline: I can not create a course unless I have permission to do so.
 	Given I am user "TestUser3"
 	And the following organizations exist
@@ -47,27 +47,31 @@ Scenario: Create a course as a guest
 
 
 
-@ignore
+
 Scenario Outline: I can not view a course unless I have permission to do so.
 	Given I am user "TestUser3"
 	And the following organizations exist
 	| Name      | Description | ParentOrganization |
 	| OrgTop    | Top         |                    |
 	| OrgMiddle | Middle      | OrgTop             |
+	| QADept    | QA Dept     |                    |
 	And I create the following roles
-	| Name                    | Organization | Capabilities    |
-	| CreateCourseRole        | OrgTop       | CourseCreate    |
-	| ViewOrNothingCourseRole | <OrgLevel>   | <OrgCapability> |
-	And I give the user role "CreateCourseRole" for organization OrgTop
-	And I give the user role "ViewOrNothingCourseRole" for organization <OrgLevel>
+	| Name          | Organization    | Capabilities |
+	| CourseCreator | OrgTop          | CourseCreate |
+	| CourseViewer  | <OrgAssignedTo> | CourseView   |
+	And I give the user role "CourseCreator" for organization OrgTop
+	And I give the user role "CourseViewer" for organization <OrgAssignedTo>
 	And I create a course 'eng101' under organization 'OrgMiddle'
-	#And I create a course 'math101' under organization 'OrgMiddle'
+	And I create a course 'math101' under organization 'OrgMiddle'
+	And I give the user role "CourseViewer" for object <ObjectAssignedTo>
 	When I view 'eng101' course 
 	Then I get '<StatusCode>' response
 Examples:
-| OrgCapability | OrgLevel  | ObjectCapability | ObjectAssignedTo | CourseAssignedCapability | StatusCode | Description                             |
-|               | OrgMiddle | CourseView       | eng101           | eng101                   | OK         | #No org level, permission at object     |
-| CourseView    | OrgMiddle |                  |                  |                          | OK         | #Org level permission, no object level  |
-| CourseView    | OrgTop    |                  |                  |                          | OK         | #parent org level perm, no object level |
-| CourseView    | OrgTop    | CourseView       | eng101           |                          | OK         | #org level and object level permission  |
-|               | OrgMiddle |                  |                  |                          | Forbidden  | #no permissions                         |
+| OrgAssignedTo | ObjectAssignedTo | StatusCode | Description                               |
+| QADept        | eng101           | OK         | #No org level, permission at object       |
+| QADept        | math101          | Forbidden  | #No org level, permission at wrong object |
+| OrgMiddle     |                  | OK         | #Org level permission, no object level    |
+| OrgTop        |                  | OK         | #parent org level perm, no object level   |
+| OrgTop        | eng101           | OK         | #org level and object level permission    |
+| QADept        |                  | Forbidden  | #no permissions in right org or obj       |
+
