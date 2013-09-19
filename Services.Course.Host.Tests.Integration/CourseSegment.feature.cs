@@ -91,7 +91,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             table2.AddRow(new string[] {
                         "Role1",
                         "COB",
-                        "CourseCreate"});
+                        "CourseCreate,CourseView"});
 #line 12
  testRunner.And("I create the following roles", ((string)(null)), table2, "And ");
 #line 15

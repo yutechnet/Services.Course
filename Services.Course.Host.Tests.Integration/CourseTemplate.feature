@@ -11,7 +11,7 @@ And the following organizations exist
 	| COB  | Bus School  |                    |
 And I create the following roles
 	| Name  | Organization | Capabilities |
-	| Role1 | COB          | CourseCreate |
+	| Role1 | COB          | CourseCreate,CourseView |
 And I give the user role "Role1" for organization COB
 And I have the following programs
 	| Name                | Description | ProgramType | OrganizationName |
