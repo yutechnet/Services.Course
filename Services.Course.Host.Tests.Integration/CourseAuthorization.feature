@@ -45,7 +45,6 @@ Scenario: Create a course as a guest
 	When I submit an authorized creation request
 	Then I should get a failure response
 
-@ignore
 Scenario Outline: I can not view a course unless I have permission to do so.
 	Given I am user "TestUser3"
 	And the following organizations exist
