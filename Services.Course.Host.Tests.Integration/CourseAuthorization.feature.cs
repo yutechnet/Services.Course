@@ -181,6 +181,7 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I can not view a course unless I have permission to do so.")]
+        [NUnit.Framework.IgnoreAttribute()]
         [NUnit.Framework.TestCaseAttribute("QADept", "eng101", "OK", "#No org level, permission at object", null)]
         [NUnit.Framework.TestCaseAttribute("QADept", "math101", "Forbidden", "#No org level, permission at wrong object", null)]
         [NUnit.Framework.TestCaseAttribute("OrgMiddle", "", "OK", "#Org level permission, no object level", null)]
@@ -189,10 +190,16 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("QADept", "", "Forbidden", "#no permissions in right org or obj", null)]
         public virtual void ICanNotViewACourseUnlessIHavePermissionToDoSo_(string orgAssignedTo, string objectAssignedTo, string statusCode, string description, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not view a course unless I have permission to do so.", exampleTags);
-#line 48
-this.ScenarioSetup(scenarioInfo);
+            string[] @__tags = new string[] {
+                    "ignore"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not view a course unless I have permission to do so.", @__tags);
 #line 49
+this.ScenarioSetup(scenarioInfo);
+#line 50
  testRunner.Given("I am user \"TestUser3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -211,7 +218,7 @@ this.ScenarioSetup(scenarioInfo);
                         "QADept",
                         "QA Dept",
                         ""});
-#line 50
+#line 51
  testRunner.And("the following organizations exist", ((string)(null)), table5, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -226,21 +233,21 @@ this.ScenarioSetup(scenarioInfo);
                         "CourseViewer",
                         string.Format("{0}", orgAssignedTo),
                         "CourseView"});
-#line 55
+#line 56
  testRunner.And("I create the following roles", ((string)(null)), table6, "And ");
-#line 59
- testRunner.And("I give the user role \"CourseCreator\" for organization OrgTop", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
- testRunner.And("I create a course \'eng101\' under organization \'OrgMiddle\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I give the user role \"CourseCreator\" for organization OrgTop", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
- testRunner.And("I create a course \'math101\' under organization \'OrgMiddle\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I create a course \'eng101\' under organization \'OrgMiddle\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
- testRunner.And(string.Format("I give the user role \"CourseViewer\" for organization {0}", orgAssignedTo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I create a course \'math101\' under organization \'OrgMiddle\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
- testRunner.And(string.Format("I give the user role \"CourseViewer\" for object {0}", objectAssignedTo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("I give the user role \"CourseViewer\" for organization {0}", orgAssignedTo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
- testRunner.When("I view \'eng101\' course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("I give the user role \"CourseViewer\" for object {0}", objectAssignedTo), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
+ testRunner.When("I view \'eng101\' course", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 66
  testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

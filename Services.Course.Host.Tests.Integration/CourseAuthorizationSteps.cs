@@ -19,9 +19,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 	[Binding]
 	public class CourseAuthorizationSteps
 	{
-		private readonly string _leadingPath;
+        private const int TenantId = 999999;
+        private const string OrganizationUrl = "https://devapi.thuze.com/Account/organization";
+        private const string RoleUrl = "account/role";
+        private const string PermissionUrl = "account/permission";
+        private readonly string _leadingPath;
 
 		private AuthenticationHeaderValue _originalToken;
+        
+        //TODO: Move methods to Given/When/Then/AccountGive/AccountWhen/etc.
 
 		// For additional details on SpecFlow step definitions see http://go.specflow.org/doc-stepdef
 		public CourseAuthorizationSteps()
@@ -72,7 +78,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 					TenantId = 999999,					              
 					OrganizationId = Guid.NewGuid()
 				};
-
 			var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
 
 			if (ScenarioContext.Current.ContainsKey("createCourseResponse"))
@@ -103,12 +108,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 			Assert.AreEqual(response.StatusCode,HttpStatusCode.Unauthorized);
 		}
 
-        //TODO: Move methods to Given/When/Then/AccountGive/AccountWhen/etc.
+        
 
-        private const int TenantId = 999999;
-        private const string OrganizationUrl = "https://devapi.thuze.com/Account/organization";
-        private const string RoleUrl = "account/role";
-        private const string PermissionUrl = "account/permission";
+        
 
         public static WebApiTestHost RemoteApiTestHost
         {
