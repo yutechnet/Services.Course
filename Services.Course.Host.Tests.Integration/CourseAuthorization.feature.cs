@@ -181,7 +181,6 @@ this.ScenarioSetup(scenarioInfo);
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("I can not view a course unless I have permission to do so.")]
-        [NUnit.Framework.IgnoreAttribute()]
         [NUnit.Framework.TestCaseAttribute("QADept", "eng101", "OK", "#No org level, permission at object", null)]
         [NUnit.Framework.TestCaseAttribute("QADept", "math101", "Forbidden", "#No org level, permission at wrong object", null)]
         [NUnit.Framework.TestCaseAttribute("OrgMiddle", "", "OK", "#Org level permission, no object level", null)]
@@ -190,13 +189,7 @@ this.ScenarioSetup(scenarioInfo);
         [NUnit.Framework.TestCaseAttribute("QADept", "", "Forbidden", "#no permissions in right org or obj", null)]
         public virtual void ICanNotViewACourseUnlessIHavePermissionToDoSo_(string orgAssignedTo, string objectAssignedTo, string statusCode, string description, string[] exampleTags)
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not view a course unless I have permission to do so.", @__tags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not view a course unless I have permission to do so.", exampleTags);
 #line 49
 this.ScenarioSetup(scenarioInfo);
 #line 50
