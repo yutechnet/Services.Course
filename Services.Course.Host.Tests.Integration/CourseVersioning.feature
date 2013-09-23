@@ -11,7 +11,7 @@ Background:
 	| COB  | Bus School  |                    |
 	And I create the following roles
 	| Name  | Organization | Capabilities |
-	| Role1 | COB          | CourseCreate |
+	| Role1 | COB          | CourseCreate,CourseView |
 	And I give the user role "Role1" for organization COB 
 	Given I have the following courses
 #   | Name         | Code   | Description                   | OrganizationId                       | CourseType  | IsTemplate |
@@ -93,6 +93,24 @@ Scenario: Create a course version from a previously-published version
 	| Description   | Ranji's awesome English Class |
 	| VersionNumber | 2.0a                          |
 	| IsPublished   | false                         |
+
+Scenario: Create a course version from a previously-published version then publish it
+	When I publish the following courses
+	| Name         | Note      |
+	| English 1010 | Blah blah |
+	And I create a new version of 'English 1010' course named 'English 1010 v1.0.0.1' with the following info
+	| Field         | Value    |
+	| VersionNumber | 1.0.0.1  |
+	And I publish the following courses
+	| Name                  | Note            |
+	| English 1010 v1.0.0.1 | Blah blah DE396 |	
+	Then the course 'English 1010 v1.0.0.1' should have the following info
+	| Field         | Value                         |
+	| Name          | English 1010                  |
+	| Code          | ENG101                        |
+	| Description   | Ranji's awesome English Class |
+	| VersionNumber | 1.0.0.1                       |
+	| IsPublished   | true                          |
 
 Scenario: Create a course version from a previously-published version with prerequisites
 	When I publish the following courses

@@ -91,7 +91,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             table2.AddRow(new string[] {
                         "Role1",
                         "COB",
-                        "CourseCreate"});
+                        "CourseCreate,CourseView"});
 #line 12
  testRunner.And("I create the following roles", ((string)(null)), table2, "And ");
 #line 15
@@ -130,6 +130,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "PSY101",
                         "Psychology 101",
                         "COB"});
+            table4.AddRow(new string[] {
+                        "Econ 100",
+                        "E100",
+                        "Macroeconomics",
+                        "COB"});
+            table4.AddRow(new string[] {
+                        "Econ 400",
+                        "E400",
+                        "Microeconomics",
+                        "COB"});
 #line 20
  testRunner.And("I have the following courses", ((string)(null)), table4, "And ");
 #line hidden
@@ -144,13 +154,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void AssociateACourseWithAProgram(string courseName, string programName, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Associate a course with a program", exampleTags);
-#line 25
+#line 27
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 26
+#line 28
  testRunner.When(string.Format("I associate \'{0}\' course with \'{1}\' program", courseName, programName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 27
+#line 29
  testRunner.Then(string.Format("the course \'{0}\' includes \'{1}\' program association", courseName, programName), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -161,7 +171,7 @@ this.FeatureBackground();
         public virtual void AssociateACourseWithMultiplePrograms()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Associate a course with multiple programs", ((string[])(null)));
-#line 36
+#line 38
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -172,7 +182,7 @@ this.FeatureBackground();
                         "Bachelor of Art"});
             table5.AddRow(new string[] {
                         "Bachelor of Science"});
-#line 37
+#line 39
  testRunner.When("I associate \'English 101\' course with the following programs", ((string)(null)), table5, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -181,7 +191,7 @@ this.FeatureBackground();
                         "Bachelor of Art"});
             table6.AddRow(new string[] {
                         "Bachelor of Science"});
-#line 41
+#line 43
  testRunner.Then("the course \'English 101\' includes the following program information", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -192,7 +202,7 @@ this.FeatureBackground();
         public virtual void RemoveTheCourseFromTheProgram()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remove the course from the program", ((string[])(null)));
-#line 46
+#line 48
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -203,11 +213,11 @@ this.FeatureBackground();
                         "Bachelor of Art"});
             table7.AddRow(new string[] {
                         "Bachelor of Science"});
-#line 47
+#line 49
  testRunner.When("I associate \'English 101\' course with the following programs", ((string)(null)), table7, "When ");
-#line 51
+#line 53
  testRunner.And("I remove \'English 101\' course from \'Bachelor of Art\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
+#line 54
  testRunner.Then("the course \'English 101\' includes \'Bachelor of Science\' program association", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -218,7 +228,7 @@ this.FeatureBackground();
         public virtual void GetProgramWithAllCoursesThatBelongToIt()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get program with all courses that belong to it", ((string[])(null)));
-#line 54
+#line 56
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -227,14 +237,14 @@ this.FeatureBackground();
                         "Program Name"});
             table8.AddRow(new string[] {
                         "Bachelor of Art"});
-#line 55
+#line 57
  testRunner.When("I associate \'English 101\' course with the following programs", ((string)(null)), table8, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Program Name"});
             table9.AddRow(new string[] {
                         "Bachelor of Art"});
-#line 58
+#line 60
  testRunner.And("I associate \'Psychology 101\' course with the following programs", ((string)(null)), table9, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -249,8 +259,79 @@ this.FeatureBackground();
                         "Psychology 101",
                         "PSY101",
                         "Psychology 101"});
-#line 61
+#line 63
  testRunner.Then("the program \'Bachelor of Art\' include the following course information", ((string)(null)), table10, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Verify a course version can be created from a previously published version with p" +
+            "rerequisites")]
+        public virtual void VerifyACourseVersionCanBeCreatedFromAPreviouslyPublishedVersionWithPrerequisites()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify a course version can be created from a previously published version with p" +
+                    "rerequisites", ((string[])(null)));
+#line 68
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Program Name"});
+            table11.AddRow(new string[] {
+                        "Bachelor of Art"});
+#line 69
+ testRunner.When("I associate \'Econ 100\' course with the following programs", ((string)(null)), table11, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table12.AddRow(new string[] {
+                        "Econ 100",
+                        "a note"});
+#line 72
+ testRunner.And("I publish the following courses", ((string)(null)), table12, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Program Name"});
+            table13.AddRow(new string[] {
+                        "Bachelor of Art"});
+#line 75
+ testRunner.And("I associate \'Econ 400\' course with the following programs", ((string)(null)), table13, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table14.AddRow(new string[] {
+                        "Econ 100"});
+#line 78
+ testRunner.And("I add the following prerequisites to \'Econ 400\'", ((string)(null)), table14, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table15.AddRow(new string[] {
+                        "Econ 400",
+                        "a note"});
+#line 81
+ testRunner.And("I publish the following courses", ((string)(null)), table15, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table16.AddRow(new string[] {
+                        "VersionNumber",
+                        "1.0.0.1"});
+#line 84
+ testRunner.And("I create a new version of \'Econ 400\' course named \'Econ 400 v1.0.0.1\' with the fo" +
+                    "llowing info", ((string)(null)), table16, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name"});
+            table17.AddRow(new string[] {
+                        "Econ 100"});
+#line 87
+ testRunner.Then("the course \'Econ 400 v1.0.0.1\' should have the following prerequisites", ((string)(null)), table17, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

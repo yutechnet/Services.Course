@@ -72,7 +72,7 @@ namespace BpeProducts.Services.Course.Domain
 
         }
 
-		//[AuthByAcl(Capability = Capability.CourseView, ObjectIdArgument = "courseId", typeof(Course.Domain.Courses.Course))]
+		[AuthByAcl(Capability = Capability.CourseView, ObjectIdArgument = "courseId", ObjectType = typeof(Course.Domain.Courses.Course))]
         public CourseInfoResponse Get(Guid courseId)
         {
             var course = _courseRepository.Load(courseId);

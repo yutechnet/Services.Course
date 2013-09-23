@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
+using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
@@ -26,7 +27,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         // GET api/programs
-		//[ClaimsAuth("ViewCourses")]
         public IEnumerable<CourseInfoResponse> Get(ODataQueryOptions options)
         {
 			// get orgs/objs for which user has viewcourse capability (maybe a matrix later)
@@ -39,6 +39,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         // GET api/courses/5
+        [SetSamlTokenInBootstrapContext]
         public CourseInfoResponse Get(Guid id)
         {
             return _courseService.Get(id);
@@ -47,16 +48,11 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
+        [SetSamlTokenInBootstrapContext]
 		// POST api/courses
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
-			//TODO: move this to common.webapi
-			var user = User as ClaimsPrincipal;
-	        var identity = user.Identities.First();
-	        var authenticationHeadervalue = Request.Headers.Authorization;
-			identity.BootstrapContext =new BootstrapContext(authenticationHeadervalue.Parameter); 
-			
-            var courseInfoResponse = _courseService.Create(request);
+	        var courseInfoResponse = _courseService.Create(request);
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("DefaultApi", new {id = courseInfoResponse.Id});
@@ -67,7 +63,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return response;
         }
 
-        [Transaction]
+	    [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
         // PUT api/courses/5

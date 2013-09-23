@@ -9,8 +9,8 @@ And the following organizations exist
 	| Name | Description | ParentOrganization |
 	| COB  | Bus School  |                    |
 And I create the following roles
-	| Name  | Organization | Capabilities |
-	| Role1 | COB          | CourseCreate |
+	| Name  | Organization | Capabilities            |
+	| Role1 | COB          | CourseCreate,CourseView |
 And I give the user role "Role1" for organization COB
 
 Scenario: Create a course

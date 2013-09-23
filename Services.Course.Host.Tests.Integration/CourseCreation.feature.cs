@@ -91,7 +91,7 @@ testRunner.And("the following organizations exist", ((string)(null)), table1, "A
             table2.AddRow(new string[] {
                         "Role1",
                         "COB",
-                        "CourseCreate"});
+                        "CourseCreate,CourseView"});
 #line 11
 testRunner.And("I create the following roles", ((string)(null)), table2, "And ");
 #line 14

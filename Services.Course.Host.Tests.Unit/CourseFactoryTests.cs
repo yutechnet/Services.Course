@@ -7,6 +7,7 @@ using AutoMapper;
 using Autofac;
 using Autofac.Extras.Moq;
 using Autofac.Features.Indexed;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Courses;
@@ -156,7 +157,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
     class TestCourseFactory : CourseFactory
     {
-        public TestCourseFactory(IStoreEvents store, IIndex<string, IPlayEvent> index, ICourseRepository courseRepository) : base(store, index, courseRepository)
+        public TestCourseFactory(IStoreEvents store, IIndex<string, IPlayEvent> index, IRepository courseRepository) : base(store, index, courseRepository)
         {
         }
 

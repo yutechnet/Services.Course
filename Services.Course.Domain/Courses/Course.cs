@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-	
+
     public class Course : VersionableEntity, ISupportingEntity
     {
         #region Properties
@@ -23,8 +23,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
         private IList<Program> _programs = new List<Program>();
         private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();
         private IList<Course> _prerequisites = new List<Course>();
-
+        [JsonProperty]
         public virtual Course Template { get; protected internal set; }
+        [JsonProperty]
         public virtual bool IsTemplate { get; protected internal set; }
 
         [Required]
@@ -69,7 +70,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             }
         }
 
-		//[JsonProperty]
+        //[JsonProperty]
         public virtual IList<Program> Programs
         {
             get { return _programs; }
@@ -129,32 +130,32 @@ namespace BpeProducts.Services.Course.Domain.Courses
             Programs = programs;
         }
 
-		public virtual void AddPrerequisite(Course prerequisite)
-		{
-			CheckPublished();
+        public virtual void AddPrerequisite(Course prerequisite)
+        {
+            CheckPublished();
 
-			if (!prerequisite.IsPublished)
-			{
-				throw new ForbiddenException("Prerequisite item " + prerequisite.Id + " - " + prerequisite.Name + "is not yet published, and thus cannot be used as a prerequisite to this course.");
-			}
+            if (!prerequisite.IsPublished)
+            {
+                throw new ForbiddenException("Prerequisite item " + prerequisite.Id + " - " + prerequisite.Name + "is not yet published, and thus cannot be used as a prerequisite to this course.");
+            }
 
-			var prequisiteAlreadyExistsCheck = _prerequisites.FirstOrDefault(p => p.Id == prerequisite.Id);
-			if (prequisiteAlreadyExistsCheck == null)
-			{
-				_prerequisites.Add(prerequisite);
-			}
-		}
+            var prequisiteAlreadyExistsCheck = _prerequisites.FirstOrDefault(p => p.Id == prerequisite.Id);
+            if (prequisiteAlreadyExistsCheck == null)
+            {
+                _prerequisites.Add(prerequisite);
+            }
+        }
 
-		public virtual void RemovePrerequisite(Guid prerequisiteCourseId)
-		{
-			CheckPublished();
+        public virtual void RemovePrerequisite(Guid prerequisiteCourseId)
+        {
+            CheckPublished();
 
-			var prequisiteToRemove = _prerequisites.FirstOrDefault(p => p.Id == prerequisiteCourseId);
-			if (prequisiteToRemove != null)
-			{
-				_prerequisites.Remove(prequisiteToRemove);
-			}
-		}
+            var prequisiteToRemove = _prerequisites.FirstOrDefault(p => p.Id == prerequisiteCourseId);
+            if (prequisiteToRemove != null)
+            {
+                _prerequisites.Remove(prequisiteToRemove);
+            }
+        }
 
         public virtual CourseSegment AddSegment(Guid segmentId, Guid parentSegmentId, SaveCourseSegmentRequest request)
         {
@@ -240,16 +241,16 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             course.Programs = new List<Program>(this.Programs);
 
-			//var pgms = new List<Program>();
-			//foreach (var program in this.Programs)
-			//{
-			//	pgms.Add(program.DeepClone());
-			//}
-			//course.Programs = pgms;
-            
+            //var pgms = new List<Program>();
+            //foreach (var program in this.Programs)
+            //{
+            //	pgms.Add(program.DeepClone());
+            //}
+            //course.Programs = pgms;
+
             SupportedOutcomes = new List<LearningOutcome>(this.SupportedOutcomes);
             Prerequisites = new List<Course>(this.Prerequisites);
-			
+
             return course;
         }
 
@@ -258,7 +259,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             var segment = _segments.FirstOrDefault(s => s.Id == segmentId);
 
-            if(segment == null)
+            if (segment == null)
                 throw new NotFoundException(string.Format("Course {0} does not have segment with Id {1}", this.Id, segmentId));
 
             return segment;
@@ -275,8 +276,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.",
                                                           learningActivityId, segmentId));
             return learningActivity;
-        }        
-        
+        }
+
         public virtual CourseLearningActivity AddLearningActivity(Guid segmentId, SaveCourseLearningActivityRequest request, Guid learningActivityId)
         {
             CheckPublished();
@@ -331,7 +332,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             CourseSegment segment = GetSegmentOrThrow(segmentId);
 
-            return AutoMapper.Mapper.Map<IList<CourseLearningActivity>>(segment.CourseLearningActivities.Where(c=>c.ActiveFlag.Equals(true)));
+            return AutoMapper.Mapper.Map<IList<CourseLearningActivity>>(segment.CourseLearningActivities.Where(c => c.ActiveFlag.Equals(true)));
         }
 
         public virtual CourseLearningActivity DeleteLearningActivity(Guid segmentId, Guid learningActivityId)
@@ -341,7 +342,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             CourseLearningActivity learningActivity = GetCourseLearningActivityOrThrow(segmentId, learningActivityId);
 
-            learningActivity.ActiveFlag=false;
+            learningActivity.ActiveFlag = false;
 
             return learningActivity;
         }

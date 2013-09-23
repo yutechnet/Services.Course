@@ -73,5 +73,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
             
             return response;
         }
+
+	    public static HttpResponseMessage GrantPermission(Guid userGuid, RoleResource role, Guid objId)
+	    {
+			//"permission/object/{objectId}/user/{userId}"
+			var requestUri = string.Format("{0}/permission/object/{1}/user/{2}", ApiFeature.AccountLeadingPath == "/" ? "" : ApiFeature.AccountLeadingPath, objId, userGuid);
+			var savePermissionRequest = new SavePermissionRequest { Roles = new List<Guid> { role.Id } };
+
+			var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(requestUri, savePermissionRequest).Result;
+
+			Whens.ResponseMessages.Add(response);
+
+			return response;
+	    }
     }
 }
