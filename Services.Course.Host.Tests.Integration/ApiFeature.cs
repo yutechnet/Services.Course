@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Http;
 using TechTalk.SpecFlow;
+using BpeProducts.Common.WebApiTest.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration
 {
@@ -16,9 +17,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public static int TenantId = 999999;
         public static readonly string LeadingPath;
         public static readonly string AccountLeadingPath;
-        //private const string RoleUrl = "account/role";
-        //private const string PermissionUrl = "account/permission";
-		//private readonly string _leadingPath;
 
         public static WebApiTestHost ApiTestHost
         {
@@ -79,7 +77,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Id = Guid.Parse("E2DF063D-E2A1-4F83-9BE0-218EC676C05F")
                 };
 
-            StepSetups.Account.Givens.Organizations.Add("Default", defaultOrg);
+            Resources<OrganizationResource>.Add("Default", defaultOrg);
 
             //Some scenarios change the user, so make sure we set it to a know user for each scenario
             ApiTestHost.SetTestUser(DefaultTestUser);

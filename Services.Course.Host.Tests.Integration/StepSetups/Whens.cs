@@ -1,6 +1,7 @@
 ﻿using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using NHibernate.Linq;
 using NUnit.Framework;
 using System;
@@ -441,7 +442,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Description = row["Description"],
                     Name = row["Name"],
                     ProgramType = row["ProgramType"],
-                    OrganizationId = Account.Givens.Organizations[row["OrganizationName"]].Id
+                    OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id
                 };
 
                 PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);

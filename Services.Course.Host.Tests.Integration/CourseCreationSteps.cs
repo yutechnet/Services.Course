@@ -7,10 +7,12 @@ using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using BpeProducts.Common.WebApiTest.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration
 {
@@ -50,7 +52,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Description = table.Rows[0]["Description"],
                 TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
                 //OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
-				OrganizationId = StepSetups.Account.Givens.Organizations[table.Rows[0]["OrganizationName"]].Id,
+                OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id,
 				CourseType = ECourseType.Traditional,
                 IsTemplate = false
             };
@@ -92,7 +94,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
                 Description = table.Rows[0]["Description"],
                 TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
-                OrganizationId = Givens.Organizations[table.Rows[0]["OrganizationName"]].Id,
+                OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id,
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false
             };
@@ -212,7 +214,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
                     Description = row["Description"],
                     TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
-                    OrganizationId = Givens.Organizations[table.Rows[0]["OrganizationName"]].Id,
+                    OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id,
                     CourseType = ECourseType.Traditional,
                     IsTemplate = false
                 };
@@ -250,7 +252,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 Code = string.IsNullOrEmpty(code) ? code : ScenarioContext.Current.Get<long>("ticks") + code,
                 Description = description,
                 TenantId = 999999,
-                OrganizationId = Givens.Organizations[organizationName].Id,
+                OrganizationId = Resources<OrganizationResource>.Get(organizationName).Id,
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false
             };
@@ -364,7 +366,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
 		public static HttpResponseMessage CreateACourse(string courseName, string oranizationName)
 		{
-			var org = Givens.Organizations[oranizationName];
+			var org = Resources<OrganizationResource>.Get(oranizationName);
 
 			var saveCourseRequest = new SaveCourseRequest
 			{

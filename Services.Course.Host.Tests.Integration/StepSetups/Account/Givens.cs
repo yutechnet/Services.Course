@@ -15,22 +15,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
     [Binding]
     public class Givens
     {
-        public static IDictionary<string, OrganizationResource> Organizations
-        {
-            get
-            {
-                return ScenarioContext.Current.Get<IDictionary<string, OrganizationResource>>("Organizations");
-            }
-        }
-
-        public static IDictionary<string, RoleResource> Roles
-        {
-            get
-            {
-                return ScenarioContext.Current.Get<IDictionary<string, RoleResource>>("Roles");
-            }
-        }
-
         [Given(@"I am user ""(.*)""")]
         public void GivenIAmUser(TestUserName testUserName)
         {
@@ -71,7 +55,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
                 {
                     Name = row["Name"],
                     Description = row["Description"],
-                    Parent = string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Organizations[parentOrgName].Id
+                    Parent = string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Resources<OrganizationResource>.Get(parentOrgName).Id
                 };
 
                 PostOperations.CreateOrganization(request.Name, request);
@@ -88,7 +72,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
                 var request = new SaveRoleRequest
                     {
                         Name = row["Name"],
-                        OrganizationId = string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Organizations[parentOrgName].Id,
+                        OrganizationId = string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Resources<OrganizationResource>.Get(parentOrgName).Id,
                         TenantId = ApiFeature.TenantId
                     };
 
@@ -107,7 +91,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
         [Given(@"I add capability (.*) to role ""(.*)""")]
         public void GivenIGiveCapabilityToRole(string capability, string roleName)
         {
-            var resource = Roles[roleName];
+            var resource = Resources<RoleResource>.Get(roleName);
             
             if (capability == "")
             {
@@ -131,7 +115,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
         [Given(@"I update the role ""(.*)"" with capabilities ""(.*)""")]
         public void GivenIUpdateTheRoleWithCapabilities(string roleName, string capabilities)
         {
-            var resource = Roles[roleName];
+            var resource = Resources<RoleResource>.Get(roleName);
             var role = GetOperations.GetRole(resource.ResourceUri);
 
             var request = new UpdateRoleRequest
@@ -152,8 +136,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
         [Given(@"I give the user role ""(.*)"" for organization ""(.*)""")]
         public void GivenIGiveTheUserRoleForOrganization(string roleName, string organizatonName)
         {
-            var role = Roles[roleName];
-            var org = Organizations[organizatonName];
+            var role = Resources<RoleResource>.Get(roleName);
+            var org = Resources<OrganizationResource>.Get(organizatonName);
             var userGuid = TestUserFactory.GetGuid(ApiFeature.DefaultTestUser);
 
             PostOperations.GrantPermission(userGuid, role, org);
@@ -164,7 +148,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
 		{
 			if (String.IsNullOrWhiteSpace(objectName)==false)
 			{
-				var role = Roles[roleName];
+                var role = Resources<RoleResource>.Get(roleName);
 				var obj = Resources<CourseResource>.Get(objectName);
 				var userGuid = TestUserFactory.GetGuid(ApiFeature.DefaultTestUser);
 

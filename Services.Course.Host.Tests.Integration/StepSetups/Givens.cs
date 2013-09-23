@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using BpeProducts.Common.WebApiTest.Framework;
@@ -24,7 +25,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Description = row["Description"],
                     Name = row["Name"],
                     ProgramType = row["ProgramType"],
-                    OrganizationId = Account.Givens.Organizations[row["OrganizationName"]].Id,
+                    OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id,
                 };
 
                 var result = PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
@@ -46,7 +47,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Code = row["Code"],
                     Description = row["Description"],
                     Name = row["Name"],
-                    OrganizationId = Account.Givens.Organizations[row["OrganizationName"]].Id,
+                    OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id,
                     PrerequisiteCourseIds = new List<Guid>(),
                     CourseType = row.TryGetValue("CourseType", out type) ? (ECourseType)Enum.Parse(typeof(ECourseType), type) : ECourseType.Traditional,
                     IsTemplate = row.TryGetValue("IsTemplate", out isTemplate) && bool.Parse(isTemplate),
@@ -193,7 +194,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var template = Resources<CourseResource>.Get(templateName);
             var courseRequest = table.CreateInstance<SaveCourseRequest>();
-            courseRequest.OrganizationId = Account.Givens.Organizations[table.Rows[0]["OrganizationName"]].Id;
+            courseRequest.OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id;
             courseRequest.TemplateCourseId = template.Id;
 
             var result = PostOperations.CreateCourse(courseRequest.Name, courseRequest);

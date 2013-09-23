@@ -6,6 +6,7 @@ using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using NHibernate.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -31,7 +32,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var newRows = new Dictionary<string, string>
                     {
                         {"Field", "OrganizationId"},
-                        {"Value", Account.Givens.Organizations[orgName].Id.ToString()}
+                        {"Value", Resources<OrganizationResource>.Get(orgName).Id.ToString()}
                     };
                  table.ReplaceRow("Field","OrganizationName",newRows);
            }
@@ -410,7 +411,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var expectedId = Resources<ProgramResource>.Get(expectedProgram.Name).Id;
                 var actualProgram = actualPrograms.First(p => p.Id == expectedId);
                 var expectedOrgId = expectedProgram.OrganizationId == Guid.Empty
-                                        ? Account.Givens.Organizations["Default"].Id
+                                        ? Resources<OrganizationResource>.Get("Default").Id
                                         : expectedProgram.OrganizationId;
 
                 Assert.That(actualProgram.Description, Is.EqualTo(expectedProgram.Description));

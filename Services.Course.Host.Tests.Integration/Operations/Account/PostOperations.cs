@@ -5,6 +5,7 @@ using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
+using BpeProducts.Common.WebApiTest.Extensions;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
 {
@@ -15,27 +16,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
             request.TenantId = ApiFeature.TenantId;
 			var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath == "/" ? "/organization" : ApiFeature.AccountLeadingPath + "/organization", request).Result;
 
-            Responses.Add(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-
-                var resource = new OrganizationResource
-                {
-                    Id = Guid.Parse(id),
-                    ResourceUri = response.Headers.Location,
-                };
-
-				if (StepSetups.Account.Givens.Organizations.ContainsKey(name))
-				{
-					StepSetups.Account.Givens.Organizations[name] = resource;
-				}
-				else
-				{
-					StepSetups.Account.Givens.Organizations.Add(name, resource);
-				}
-            }
+            response.BuildResource<OrganizationResource>(name);
 
             return response;
         }
@@ -43,21 +24,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
         public static HttpResponseMessage CreateRole(string name, SaveRoleRequest request)
         {
 			var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath == "/" ? "/role" : ApiFeature.AccountLeadingPath + "/role", request).Result;
-
-            Responses.Add(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-
-                var resource = new RoleResource
-                {
-                    Id = Guid.Parse(id),
-                    ResourceUri = response.Headers.Location,
-                };
-
-                StepSetups.Account.Givens.Roles.Add(name, resource);
-            }
+            response.BuildResource<RoleResource>(name);
 
             return response;
         }
