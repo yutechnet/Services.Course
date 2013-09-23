@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
+using BpeProducts.Common.WebApiTest.Framework;
 using TechTalk.SpecFlow;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account

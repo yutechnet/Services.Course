@@ -82,7 +82,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
 
 			var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(requestUri, savePermissionRequest).Result;
 
-			Whens.ResponseMessages.Add(response);
+			Responses.Add(response);
 
 			return response;
 	    }
