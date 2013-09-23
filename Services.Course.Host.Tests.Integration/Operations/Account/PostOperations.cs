@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using BpeProducts.Common.WebApiTest.Framework;
-using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
-using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
 using BpeProducts.Common.WebApiTest.Extensions;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account

@@ -4,7 +4,7 @@ using System.Net.Http.Formatting;
 using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
-using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
+using BpeProducts.Common.WebApiTest.Extensions;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 {
@@ -15,7 +15,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             request.TenantId = ApiFeature.TenantId;
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course", request, new JsonMediaTypeFormatter()).Result;
 
-            BuildResource<CourseResource>(name, response);
+            response.BuildResource<CourseResource>(name);
             return response;
         }
 
@@ -23,7 +23,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         {
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course/version", request, new JsonMediaTypeFormatter()).Result;
 
-            BuildResource<CourseResource>(name, response);
+            response.BuildResource<CourseResource>(name);
             return response;
         }
 
@@ -32,7 +32,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             request.TenantId = ApiFeature.TenantId;
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/program", request, new JsonMediaTypeFormatter()).Result;
 
-            BuildResource<ProgramResource>(name, response);
+            response.BuildResource<ProgramResource>(name);
             return response;
         }
 
@@ -43,7 +43,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var uri = string.Format("{0}/course/{1}/segments", ApiFeature.LeadingPath, course.Id);
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
 
-            BuildResource<CourseSegmentResource>(name, response);
+            response.BuildResource<CourseSegmentResource>(name);
             return response;
         }
 
@@ -53,7 +53,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
             var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/outcome", request, new JsonMediaTypeFormatter()).Result;
 
-            BuildResource<LearningOutcomeResource>(name, response);
+            response.BuildResource<LearningOutcomeResource>(name);
             return response;
         }
 
@@ -62,7 +62,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var postUri = string.Format("{0}/outcome/version", ApiFeature.LeadingPath);
             var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, request, new JsonMediaTypeFormatter()).Result;
 
-            BuildResource<LearningOutcomeResource>(name, response);
+            response.BuildResource<LearningOutcomeResource>(name);
             return response;
         }
 
@@ -73,7 +73,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var uri = string.Format("{0}/supports", entityResource.ResourceUri);
             var response = ApiFeature.ApiTestHost.Client.PostAsync(uri, request, new JsonMediaTypeFormatter()).Result;
 
-            BuildResource<LearningOutcomeResource>(name, response);
+            response.BuildResource<LearningOutcomeResource>(name);
             return response;
         }
 
@@ -84,30 +84,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var uri = string.Format("{0}/learningactivity", segment.ResourceUri);
             var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
 
-            BuildResource<CourseLearningActivityResource>(name, response);
+            response.BuildResource<CourseLearningActivityResource>(name);
             return response;
-        }
-
-        private static IResource BuildResource<T>(string name, HttpResponseMessage response) where T : IResource, new()
-        {
-            Responses.Add(response);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var id = response.Headers.Location.Segments[response.Headers.Location.Segments.Length - 1];
-
-                var resource = new T
-                {
-                    Id = Guid.Parse(id),
-                    ResourceUri = response.Headers.Location
-                };
-
-                Resources<T>.Add(name, resource);
-
-                return resource;
-            }
-
-            return null;
         }
     }
 }
