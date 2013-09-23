@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
@@ -14,7 +15,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
             request.TenantId = ApiFeature.TenantId;
 			var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath == "/" ? "/organization" : ApiFeature.AccountLeadingPath + "/organization", request).Result;
 
-            Whens.ResponseMessages.Add(response);
+            Responses.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
@@ -43,7 +44,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
         {
 			var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(ApiFeature.AccountLeadingPath == "/" ? "/role" : ApiFeature.AccountLeadingPath + "/role", request).Result;
 
-            Whens.ResponseMessages.Add(response);
+            Responses.Add(response);
 
             if (response.IsSuccessStatusCode)
             {
@@ -68,7 +69,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
 
             var response = ApiFeature.AccountApiTestHost.Client.PostAsJsonAsync(requestUri, savePermissionRequest).Result;
 
-            Whens.ResponseMessages.Add(response);
+            Responses.Add(response);
             
             return response;
         }

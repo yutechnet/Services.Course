@@ -82,9 +82,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.73\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.29.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.56.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.29\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.56\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Acl.Client, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -253,13 +253,11 @@
     </Compile>
     <Compile Include="ProgramCreationSteps.cs" />
     <Compile Include="Resources\CourseResource.cs" />
-    <Compile Include="Resources\IResource.cs" />
     <Compile Include="Resources\LearningOutcomeResource.cs" />
     <Compile Include="Resources\CourseSegmentResource.cs" />
     <Compile Include="Resources\Account\OrganizationResource.cs" />
     <Compile Include="Resources\ProgramResource.cs" />
     <Compile Include="Operations\GetOperations.cs" />
-    <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\Account\RoleResource.cs" />
     <Compile Include="StepSetups\Account\Givens.cs" />
     <Compile Include="Operations\Account\PutOperations.cs" />

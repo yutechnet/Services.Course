@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using BpeProducts.Common.WebApiTest.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 {
@@ -45,7 +46,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Code = row["Code"],
                     Description = row["Description"],
                     Name = row["Name"],
-                    TenantId = ApiFeature.TenantId,
                     OrganizationId = Account.Givens.Organizations[row["OrganizationName"]].Id,
                     PrerequisiteCourseIds = new List<Guid>(),
                     CourseType = row.TryGetValue("CourseType", out type) ? (ECourseType)Enum.Parse(typeof(ECourseType), type) : ECourseType.Traditional,
@@ -68,7 +68,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Description = "TestDescription",
                     CourseType = ECourseType.Traditional,
                     IsTemplate = true,
-                    TenantId = ApiFeature.TenantId,
                     PrerequisiteCourseIds = new List<Guid>()
                 };
 
@@ -86,7 +85,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                         Description = row["Description"],
                         Name = row["Name"],
                         Type = row["Type"],
-                        TenantId = ApiFeature.TenantId,
                         DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0
                     };
 
@@ -112,7 +110,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var request = new OutcomeRequest
                 {
                     Description = row["Description"],
-                    TenantId = ApiFeature.TenantId,
                 };
 
                 var result = PostOperations.CreateLearningOutcome(request.Description, request);
@@ -128,8 +125,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var request in learningActivityRequests)
             {
-                request.TenantId = ApiFeature.TenantId;
-
                 var result = PostOperations.CreateCourseLearningActivity(request.Name, segment, request);
                 result.EnsureSuccessStatusCode();
             }
@@ -210,6 +205,5 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 		{
 			CourseCreationSteps.CreateACourse(courseName, orgName);
 		}
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
+﻿using BpeProducts.Common.WebApiTest.Framework;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
 using System.Net.Http;
 
@@ -10,7 +11,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
         {
             var response = ApiFeature.AccountApiTestHost.Client.PutAsJsonAsync(role.ResourceUri.ToString(), request).Result;
 
-            Whens.ResponseMessages.Add(response);
+            Responses.Add(response);
             return response;
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
@@ -100,7 +101,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"I get '(.*)' response")]
         public void ThenIGetResponse(string status)
         {
-            var response = Whens.ResponseMessages.Last();
+            var response = Responses.Last;
 
             var expectedStatusCode = (HttpStatusCode) Enum.Parse(typeof (HttpStatusCode), status);
 
@@ -112,7 +113,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             for (var i = 0; i < table.Rows.Count; i++)
             {
-                var result = Whens.ResponseMessages[Whens.ResponseMessages.Count - table.Rows.Count + i];
+                var result = Responses.All[Responses.All.Count - table.Rows.Count + i];
                 var statusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), table.Rows[i]["StatusCode"]); 
 
                 Assert.That(result.StatusCode, Is.EqualTo(statusCode));

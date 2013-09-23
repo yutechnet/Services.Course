@@ -4,8 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
-using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
+using BpeProducts.Common.WebApiTest.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 {
@@ -14,7 +13,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage DeleteResource(IResource resource)
         {
             var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resource.ResourceUri).Result;
-            Whens.ResponseMessages.Add(response);
+            Responses.Add(response);
             
             return response;
         }

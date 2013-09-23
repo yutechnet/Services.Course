@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
@@ -89,7 +90,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         private static IResource BuildResource<T>(string name, HttpResponseMessage response) where T : IResource, new()
         {
-            Whens.ResponseMessages.Add(response);
+            Responses.Add(response);
 
             if (response.IsSuccessStatusCode)
             {

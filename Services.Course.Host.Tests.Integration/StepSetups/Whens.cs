@@ -12,17 +12,13 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
+using BpeProducts.Common.WebApiTest.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 {
     [Binding]
     public class Whens
     {
-        public static IList<HttpResponseMessage> ResponseMessages
-        {
-            get { return ScenarioContext.Current.Get<IList<HttpResponseMessage>>("Responses"); }
-        }
-
         [When(@"I create a course from the template '(.*)' with the following")]
         public void WhenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
         {
@@ -145,7 +141,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var supportedOutcome = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
 
             var descriptions = (from o in table.Rows select o["Description"]).ToList();
-            var supportingOutcomes = (from o in Resources<LearningOutcomeResource>.Get()
+            var supportingOutcomes = (from o in Resources<LearningOutcomeResource>.All
                                       where descriptions.Contains(o.Key)
                                       select o.Value).ToList();
 
