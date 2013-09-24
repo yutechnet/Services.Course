@@ -1,4 +1,5 @@
-﻿using BpeProducts.Services.Course.Contract;
+﻿using BpeProducts.Common.WebApiTest.Framework;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
@@ -6,14 +7,9 @@ using NHibernate.Linq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
-using BpeProducts.Common.WebApiTest.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 {
@@ -162,7 +158,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var learningOutcomeName in learningOutcomeNames)
             {
                 var learningOutcome = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
-                PutOperations.ProgramDoesNotSupportLearningOutcome(programResource, learningOutcome);
+                DeleteOperations.ProgramDoesNotSupportLearningOutcome(programResource, learningOutcome);
             }
         }
 

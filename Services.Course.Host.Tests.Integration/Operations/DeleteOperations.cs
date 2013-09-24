@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using BpeProducts.Common.WebApiTest.Framework;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using BpeProducts.Common.WebApiTest.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 {
@@ -15,6 +11,33 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resource.ResourceUri).Result;
             Responses.Add(response);
             
+            return response;
+        }
+
+        public static HttpResponseMessage ProgramDoesNotSupportLearningOutcome(ProgramResource program, LearningOutcomeResource outcome)
+        {
+            var requestUri = string.Format("{0}/program/{1}/supports/{2}", ApiFeature.LeadingPath, program.Id, outcome.Id);
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(requestUri).Result;
+
+            Responses.Add(response);
+            return response;
+        }
+        
+        public static HttpResponseMessage CourseDoesNotSupportLearningOutcome(CourseResource course, LearningOutcomeResource outcome)
+        {
+            var requestUri = string.Format("{0}/course/{1}/supports/{2}", ApiFeature.LeadingPath, course.Id, outcome.Id);
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(requestUri).Result;
+
+            Responses.Add(response);
+            return response;
+        }
+        
+        public static HttpResponseMessage SegmentDoesNotSupportLearningOutcome(CourseSegmentResource segment, LearningOutcomeResource outcome)
+        {
+            var requestUri = string.Format("{0}/segment/{1}/supports/{2}", ApiFeature.LeadingPath, segment.Id, outcome.Id);
+            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(requestUri).Result;
+
+            Responses.Add(response);
             return response;
         }
     }

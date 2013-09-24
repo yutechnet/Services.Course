@@ -1,10 +1,9 @@
-﻿using System;
-using System.Net.Http;
-using System.Net.Http.Formatting;
+﻿using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
-using BpeProducts.Common.WebApiTest.Extensions;
+using System.Net.Http;
+using System.Net.Http.Formatting;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 {
