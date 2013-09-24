@@ -1,7 +1,4 @@
-﻿using BpeProducts.Common.WebApiTest.Framework;
-using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
-using System;
-using System.Net.Http;
+﻿using System;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
 {
@@ -9,12 +6,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account
     {
         public static RoleResponse GetRole(Uri resourceUri)
         {
-            var response = ApiFeature.AccountApiTestHost.Client.GetAsync(resourceUri).Result;
-            Responses.Add(response);
-
-            return response.IsSuccessStatusCode
-                       ? response.Content.ReadAsAsync<RoleResponse>().Result
-                       : null;
+            return ApiFeature.AccountApiTestHost.Get<RoleResponse>(resourceUri.ToString());
         }
     }
 }

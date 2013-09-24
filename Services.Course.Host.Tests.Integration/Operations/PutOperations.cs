@@ -97,8 +97,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage PublishCourse(CourseResource course, PublishRequest request)
         {
             var requestUri = string.Format("{0}/publish", course.ResourceUri);
-            var response = ApiFeature.ApiTestHost.Client.PutAsJsonAsync(requestUri, request).Result;
-            return response;
+            return ApiFeature.ApiTestHost.Put(requestUri, request);
         }
 
         public static HttpResponseMessage PublishLearningOutcome(LearningOutcomeResource learningOutcome, PublishRequest request)

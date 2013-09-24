@@ -10,20 +10,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage CreateCourse(string name, SaveCourseRequest request)
         {
             request.TenantId = ApiFeature.TenantId;
-            var requestUri = ApiFeature.LeadingPath + "/course";
+            var requestUri = string.Format("{0}/course", ApiFeature.LeadingPath);
             return ApiFeature.ApiTestHost.Post<CourseResource, SaveCourseRequest>(name, requestUri, request);
         }
 
         public static HttpResponseMessage CreateCourseVersion(string name, VersionRequest request)
         {
-            var requestUri = ApiFeature.LeadingPath + "/course/version";
+            var requestUri = string.Format("{0}/course/version", ApiFeature.LeadingPath);
             return ApiFeature.ApiTestHost.Post<CourseResource, VersionRequest>(name, requestUri, request);
         }
 
         public static HttpResponseMessage CreateProgram(string name, SaveProgramRequest request)
         {
             request.TenantId = ApiFeature.TenantId;
-            var requestUri = ApiFeature.LeadingPath + "/program";
+            var requestUri = string.Format("{0}/program", ApiFeature.LeadingPath);
             return ApiFeature.ApiTestHost.Post<ProgramResource, SaveProgramRequest>(name, requestUri, request);
         }
 
@@ -37,7 +37,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage CreateLearningOutcome(string name, OutcomeRequest request)
         {
             request.TenantId = ApiFeature.TenantId;
-            var requestUri = ApiFeature.LeadingPath + "/outcome";
+            var requestUri = string.Format("{0}/outcome", ApiFeature.LeadingPath);
             return ApiFeature.ApiTestHost.Post<LearningOutcomeResource, OutcomeRequest>(name, requestUri, request);
         }
 
