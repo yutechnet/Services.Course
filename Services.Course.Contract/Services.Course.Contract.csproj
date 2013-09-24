@@ -178,6 +178,7 @@
     <Compile Include="CourseLearningActivityResponse.cs" />
     <Compile Include="PublishRequest.cs" />
     <Compile Include="SaveCourseLearningActivityRequest.cs" />
+    <Compile Include="SimpleCourseInfoResponse.cs" />
     <Compile Include="UpdateCoursePrerequisites.cs" />
     <Compile Include="CourseSegmentInfo.cs" />
     <Compile Include="UpdateCourseRequest.cs" />

@@ -62,7 +62,8 @@ namespace BpeProducts.Services.Course.Host.App_Start
 		    Mapper.CreateMap<Domain.Courses.CourseLearningActivity, Domain.Courses.CourseLearningActivity>()
 		          .ForMember(dest => dest.Id, opt => opt.MapFrom(dest => Guid.NewGuid()));
 
-
+            //for simple course info
+		    Mapper.CreateMap<Domain.Courses.Course, SimpleCourseInfoResponse>();
 		}
 
         private static void OutcomeMappings()
