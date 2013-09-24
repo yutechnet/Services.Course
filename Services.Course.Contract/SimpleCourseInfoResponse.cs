@@ -10,6 +10,8 @@ namespace BpeProducts.Services.Course.Contract
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string Code { get; set; }
         public bool IsPublished { get; set; }
+        public string VersionNumber { get; set; }
     }
 }
