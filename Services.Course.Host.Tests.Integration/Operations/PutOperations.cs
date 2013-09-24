@@ -48,15 +48,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return response;
         }
 
-        public static HttpResponseMessage OutcomeDoesNotSupportLearningOutcome(LearningOutcomeResource supportingOutcome, LearningOutcomeResource supportedOutcome)
-        {
-            var uri = string.Format("{0}/outcome/{1}/supports/{2}", ApiFeature.LeadingPath, supportingOutcome.Id, supportedOutcome.Id);
-            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(uri).Result;
-
-            Responses.Add(response);
-            return response;
-        }
-
         public static HttpResponseMessage AssociateCourseWithPrograms(CourseResource course, IList<ProgramResource> programs)
         {
             var courseInfo = GetOperations.GetCourse(course.ResourceUri);

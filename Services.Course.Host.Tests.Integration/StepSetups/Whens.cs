@@ -144,7 +144,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var supportingOutcome in supportingOutcomes)
             {
-                PutOperations.OutcomeDoesNotSupportLearningOutcome(supportingOutcome, supportedOutcome);
+                DeleteOperations.OutcomeDoesNotSupportLearningOutcome(supportingOutcome, supportedOutcome);
             }
         }
 
@@ -388,23 +388,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             DeleteOperations.DeleteResource(resource);
         }
 
-        //[When(@"I create a course under organization (.*)")]
-        //public void WhenICreateACourseUnderOrganization(string orgObjectName)
-        //{
-        //    var orgObjectNameId = (Guid)ScenarioContext.Current[orgObjectName];
-        //    var saveCourseRequest = new SaveCourseRequest
-        //    {
-        //        Name = "English 101",
-        //        Description = "English",
-        //        Code = "ENG101",
-        //        CourseType = ECourseType.Traditional,
-        //        IsTemplate = false,
-        //        OrganizationId = orgObjectNameId
-        //    };
-
-        //    PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
-        //}
-
         [When(@"I modify the program '(.*)' info to reflect the following")]
         public void WhenIModifyTheProgramInfoToReflectTheFollowing(string programName, Table table)
         {
@@ -527,6 +510,5 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             return null;
         }
-
     }
 }
