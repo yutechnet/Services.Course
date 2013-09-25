@@ -294,7 +294,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 MaxPoint = request.MaxPoint,
                 Weight = request.Weight,
                 ObjectId = request.ObjectId,
-                TenantId = TenantId
+                TenantId = TenantId,
+                ActiveDate = request.ActiveDate,
+                InactiveDate = request.InactiveDate,
+                DueDate = request.DueDate
             };
 
             if (courseLearningActivity != null)

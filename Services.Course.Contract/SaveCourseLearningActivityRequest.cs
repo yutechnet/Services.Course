@@ -30,5 +30,12 @@ namespace BpeProducts.Services.Course.Contract
         [DataMember]   
         public Guid ObjectId { get; set; }
 
+        [DataMember]
+        public int ActiveDate { get; set; }
+        [DataMember]
+        public int InactiveDate { get; set; }
+        [DataMember]
+        public int DueDate { get; set; }
+
     }
 }
