@@ -50,16 +50,6 @@ Scenario: Get all programs
 	| Bachelor of Science | Economics   | MA          | Default          |
 	| Bachelor of Arts    | Philosophy  | AA          | Default          |
 
-Scenario: Get all programs 2
-	Given I have the following programs
-	| Name                | Description | ProgramType | OrganizationName |
-	| Bachelor of Science | Economics   | MA          | Default          |
-	| Bachelor of Arts    | Philosophy  | AA          | Default          |
-	Then I have the following programs
-	| Name                | Description | ProgramType | OrganizationName |
-	| Bachelor of Science | Economics   | MA          | Default          |
-	| Bachelor of Arts    | Philosophy  | AA          | Default          |
-
 Scenario: Unable to create program due to missing info
 	When I attempt to create the following programs
 	| Name                | Description | ProgramType | OrganizationName |
