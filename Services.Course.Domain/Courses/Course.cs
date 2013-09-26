@@ -7,6 +7,7 @@ using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using Newtonsoft.Json;
+using ServiceStack.Common.Extensions;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -250,6 +251,23 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             SupportedOutcomes = new List<LearningOutcome>(this.SupportedOutcomes);
             Prerequisites = new List<Course>(this.Prerequisites);
+
+            SupportedOutcomes.ForEach(r => r.SupportingEntities.Add(course));
+
+            foreach (var plo in SupportedOutcomes)
+            {
+                foreach (var clo in plo.SupportedOutcomes)
+                {
+                    foreach (var wlo in clo.SupportedOutcomes)
+                    {
+                        var segments = from segment in course.Segments
+                                       from outcome in segment.SupportedOutcomes
+                                       where outcome.Description.Equals(wlo.Description)
+                                       select segment;
+                        wlo.SupportingEntities.Add(segments.FirstOrDefault());
+                    }
+                }
+            }
 
             return course;
         }

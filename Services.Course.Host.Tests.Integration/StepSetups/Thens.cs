@@ -271,6 +271,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var expectedEntity in expectedEntityOutcomes)
             {
+                if (expectedEntity.Value.Count == 0) continue;
+
                 List<OutcomeInfo> outcomes;
 
                 if (actualEntityOutcomes.TryGetValue(expectedEntity.Key.Id, out outcomes))
@@ -280,7 +282,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 }
                 else
                 {
-                    Assert.That(!actualEntityOutcomes.Keys.Contains(expectedEntity.Key.Id));
+                    Assert.That(actualEntityOutcomes.Keys.Contains(expectedEntity.Key.Id));
                 }
             }
         }
