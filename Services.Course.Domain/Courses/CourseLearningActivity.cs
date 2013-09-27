@@ -24,6 +24,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         public virtual int Weight { get; set; }
 
         public virtual Guid ObjectId { get; set; }
+        public virtual string CustomAttribute { get; set; }
 
         public virtual int ActiveDate { get; set; }
         public virtual int InactiveDate { get; set; }
