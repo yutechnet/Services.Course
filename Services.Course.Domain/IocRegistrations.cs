@@ -46,11 +46,6 @@ namespace BpeProducts.Services.Course.Domain
                 .EnableInterfaceInterceptors().EnableValidation()
                 .InterceptedBy(typeof(PublicInterfaceLoggingInterceptor));
 
-	        containerBuilder.RegisterType<Repository>().As<IRepository>()
-	                        .EnableInterfaceInterceptors()
-	                        .EnableValidation()
-				.InterceptedBy(typeof(PublicInterfaceLoggingInterceptor)); ;
-
             containerBuilder.RegisterType<CourseEventStore>().As<IStoreCourseEvents>();
             containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
             containerBuilder.RegisterType<OutcomeFactory>().As<IOutcomeFactory>();
