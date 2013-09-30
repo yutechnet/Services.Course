@@ -29,6 +29,15 @@ namespace BpeProducts.Services.Course.Contract
         public int Weight { get; set; }
         [DataMember]   
         public Guid ObjectId { get; set; }
+        [DataMember]
+        public string CustomAttribute { get; set; }
+
+        [DataMember]
+        public int ActiveDate { get; set; }
+        [DataMember]
+        public int InactiveDate { get; set; }
+        [DataMember]
+        public int DueDate { get; set; }
 
     }
 }

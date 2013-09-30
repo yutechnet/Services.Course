@@ -89,3 +89,42 @@ Scenario: Can get entity learning outcomes for segments
 	| Program    | Program1    |                  |
 	| Program    | Program2    |                  |
 	| Program    | Program3    |                  |
+
+
+
+Scenario: Verify a course version can be created from a previously published version with the same PLO, CLO, WLO
+	Given I have the following learning outcomes
+	| Description |
+	| PLO1        |
+	| CLO1        |
+	| CLO2        |
+	| WLO1        |
+	And  I associate 'Course1' course with the following programs
+	| Program Name |
+	| Program1     |
+	When I associate the existing learning outcomes to 'Program1' program
+	| Description |
+	| PLO1        |
+	And I associate the existing learning outcomes to 'Course1' course
+	| Description |
+	| PLO1        |
+	And the outcome 'PLO1' is supported by the following outcomes
+	| Description |
+	| CLO1        |
+	| CLO2        |
+	And the outcome 'CLO1' is supported by the following outcomes
+	| Description |
+	| WLO1        |
+	And I associate the existing learning outcomes to 'Week1' segment
+	| Description |
+	| WLO1        |
+	And I publish the following courses
+	| Name    | Note   |
+	| Course1 | a note |
+	And I create a new version of 'Course1' course named 'Course1 v1.0.0.1' with the following info
+	| Field         | Value   |
+	| VersionNumber | 1.0.0.1 |
+	Then I get the entity learning outcomes as follows
+	| EntityType | EntityName       | LearningOutcomes |
+	| Course     | Course1 v1.0.0.1 | PLO1             |
+	| Segment    | Week1            | WLO1             |

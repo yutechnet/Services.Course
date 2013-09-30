@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using BpeProducts.Services.Course.Contract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using BpeProducts.Common.WebApiTest.Framework;
-using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Host.Tests.Integration.StepSetups;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 {
@@ -13,89 +9,46 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
     {
         public static Dictionary<Guid, List<OutcomeInfo>> GetEntityLearningOutcomes(IList<Guid> entityIds)
         {
-            var queryString =
-                entityIds.Aggregate("?entityIds=", (current, entityId) => current + (entityId + ",")).TrimEnd(',');
-
-            var response =
-                ApiFeature.CourseTestHost.Client.GetAsync(ApiFeature.LeadingPath + "/outcome/entityoutcomes" + queryString)
-                          .Result;
-            Responses.Add(response);
-
-            return response.IsSuccessStatusCode
-                       ? response.Content.ReadAsAsync<Dictionary<Guid, List<OutcomeInfo>>>().Result
-                       : null;
+            var queryString = entityIds.Aggregate("?entityIds=", (current, entityId) => current + (entityId + ",")).TrimEnd(',');
+            var requestUri = ApiFeature.LeadingPath + "/outcome/entityoutcomes" + queryString;
+            return ApiFeature.CourseTestHost.Get<Dictionary<Guid, List<OutcomeInfo>>>(requestUri);
         }
 
-        public static CourseInfoResponse GetCourse(Uri resourceUri)
+        public static CourseInfoResponse GetCourse(Uri requestUri)
         {
-            var response = ApiFeature.CourseTestHost.Client.GetAsync(resourceUri).Result;
-            Responses.Add(response);
-
-            return response.IsSuccessStatusCode
-                       ? response.Content.ReadAsAsync<CourseInfoResponse>().Result
-                       : null;
+            return ApiFeature.CourseTestHost.Get<CourseInfoResponse>(requestUri.ToString());
         }
 
-        public static ProgramResponse GetProgram(Uri resourceUri)
+        public static ProgramResponse GetProgram(Uri requestUri)
         {
-            var response = ApiFeature.CourseTestHost.Client.GetAsync(resourceUri).Result;
-            Responses.Add(response);
-
-            return response.IsSuccessStatusCode
-                       ? response.Content.ReadAsAsync<ProgramResponse>().Result
-                       : null;
+            return ApiFeature.CourseTestHost.Get<ProgramResponse>(requestUri.ToString());
         }
 
         public static CourseLearningActivityResponse GetCourseLearningActivity(Uri resourseUri)
         {
-            var response = ApiFeature.CourseTestHost.Client.GetAsync(resourseUri).Result;
-            Responses.Add(response);
-
-            return response.IsSuccessStatusCode
-                       ? response.Content.ReadAsAsync<CourseLearningActivityResponse>().Result
-                       : null;
+            return ApiFeature.CourseTestHost.Get<CourseLearningActivityResponse>(resourseUri.ToString());            
         }
 
         public static CourseSegmentInfo GetSegment(Uri resourseUri)
         {
-            var response = ApiFeature.CourseTestHost.Client.GetAsync(resourseUri).Result;
-            Responses.Add(response);
-
-            return response.IsSuccessStatusCode
-                       ? response.Content.ReadAsAsync<CourseSegmentInfo>().Result
-                       : null;
+            return ApiFeature.CourseTestHost.Get<CourseSegmentInfo>(resourseUri.ToString());
         }
 
-        public static OutcomeInfo GetLearningOutcome(Uri resourceUri)
+        public static OutcomeInfo GetLearningOutcome(Uri requestUri)
         {
-            var response = ApiFeature.CourseTestHost.Client.GetAsync(resourceUri).Result;
-            Responses.Add(response);
-
-            return response.IsSuccessStatusCode
-                       ? response.Content.ReadAsAsync<OutcomeInfo>().Result
-                       : null;
+            return ApiFeature.CourseTestHost.Get<OutcomeInfo>(requestUri.ToString());
         }
 
-        public static List<OutcomeInfo> GetSupportedOutcomes(Uri resourceUri)
+        public static List<OutcomeInfo> GetSupportedOutcomes(Uri requestUri)
         {
-            var uri = string.Format("{0}/supports", resourceUri);
-            var response = ApiFeature.CourseTestHost.Client.GetAsync(uri).Result;
-            Responses.Add(response);
-
-            return response.IsSuccessStatusCode
-                       ? response.Content.ReadAsAsync<List<OutcomeInfo>>().Result
-                       : null;
+            var uri = string.Format("{0}/supports", requestUri);
+            return ApiFeature.CourseTestHost.Get<List<OutcomeInfo>>(uri);
         }
 
         public static List<ProgramResponse> GetAllPrograms()
         {
             var uri = string.Format("{0}/program", ApiFeature.LeadingPath);
-            var response = ApiFeature.CourseTestHost.Client.GetAsync(uri).Result;
-            Responses.Add(response);
-
-            return response.IsSuccessStatusCode
-                       ? response.Content.ReadAsAsync<List<ProgramResponse>>().Result
-                       : null;
+            return ApiFeature.CourseTestHost.Get<List<ProgramResponse>>(uri);
         }
 
         public static List<Guid> GetCourseTemplateIds(Guid organizationId)

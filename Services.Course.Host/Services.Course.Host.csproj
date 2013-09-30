@@ -77,13 +77,13 @@
     <Reference Include="BpeProducts.Common.Log">
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.11\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.58.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.62.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.58\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.62\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Redis, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Redis, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Redis.1.0.14\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Redis.1.0.15\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.WebApi, Version=1.0.76.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -148,9 +148,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.Common.3.9.62\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Redis, Version=3.9.62.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ServiceStack.Redis, Version=3.9.63.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ServiceStack.Redis.3.9.62\lib\net35\ServiceStack.Redis.dll</HintPath>
+      <HintPath>..\packages\ServiceStack.Redis.3.9.63\lib\net35\ServiceStack.Redis.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Text, Version=3.9.59.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -247,10 +247,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Get all programs 2")]
-        public virtual void GetAllPrograms2()
+        [NUnit.Framework.DescriptionAttribute("Unable to create program due to missing info")]
+        public virtual void UnableToCreateProgramDueToMissingInfo()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get all programs 2", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unable to create program due to missing info", ((string[])(null)));
 #line 53
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -261,72 +261,25 @@ this.ScenarioSetup(scenarioInfo);
                         "OrganizationName"});
             table9.AddRow(new string[] {
                         "Bachelor of Science",
-                        "Economics",
+                        "",
                         "MA",
                         "Default"});
             table9.AddRow(new string[] {
-                        "Bachelor of Arts",
-                        "Philosophy",
-                        "AA",
+                        "",
+                        "Economics",
+                        "MA",
                         "Default"});
 #line 54
- testRunner.Given("I have the following programs", ((string)(null)), table9, "Given ");
+ testRunner.When("I attempt to create the following programs", ((string)(null)), table9, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "ProgramType",
-                        "OrganizationName"});
-            table10.AddRow(new string[] {
-                        "Bachelor of Science",
-                        "Economics",
-                        "MA",
-                        "Default"});
-            table10.AddRow(new string[] {
-                        "Bachelor of Arts",
-                        "Philosophy",
-                        "AA",
-                        "Default"});
-#line 58
- testRunner.Then("I have the following programs", ((string)(null)), table10, "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Unable to create program due to missing info")]
-        public virtual void UnableToCreateProgramDueToMissingInfo()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unable to create program due to missing info", ((string[])(null)));
-#line 63
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "ProgramType",
-                        "OrganizationName"});
-            table11.AddRow(new string[] {
-                        "Bachelor of Science",
-                        "",
-                        "MA",
-                        "Default"});
-            table11.AddRow(new string[] {
-                        "",
-                        "Economics",
-                        "MA",
-                        "Default"});
-#line 64
- testRunner.When("I attempt to create the following programs", ((string)(null)), table11, "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "StatusCode"});
-            table12.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "BadRequest"});
-            table12.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "BadRequest"});
-#line 68
- testRunner.Then("I get the following responses", ((string)(null)), table12, "Then ");
+#line 58
+ testRunner.Then("I get the following responses", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

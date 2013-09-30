@@ -40,6 +40,32 @@ Scenario: Add a learning activity
 	| MaxPoint      | 20                                   |
 	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 
+Scenario: Add a learning activity with acitve, inactive, duedate
+	When I add the following learning activity to 'Week 1' course segment
+	| Field         | Value                                |
+	| Name          | Discussion 1                         |
+	| Type          | Discussion                           |
+	| IsGradeable   | True                                 |
+	| IsExtraCredit | False                                |
+	| Weight        | 100                                  |
+	| MaxPoint      | 20                                   |
+	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| ActiveDate    | 15                                   |
+	| InactiveDate  | 30                                   |
+	| DueDate       | 60                                   |
+	Then my course learning activity 'Discussion 1' contains the following
+	| Field         | Value                                |
+	| Name          | Discussion 1                         |
+	| Type          | Discussion                           |
+	| IsGradeable   | True                                 |
+	| IsExtraCredit | False                                |
+	| Weight        | 100                                  |
+	| MaxPoint      | 20                                   |
+	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| ActiveDate    | 15                                   |
+	| InactiveDate  | 30                                   |
+	| DueDate       | 60                                   |
+
 
 Scenario: Get a list of all learning activities
 	Given I add the following course learning activities to 'Week 1' course segment
@@ -100,3 +126,25 @@ Scenario: Cannot add a learning activity to a course that is already published
 	| MaxPoint      | 20                                   |
 	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	Then I get 'Forbidden' response
+
+Scenario: Add a new learning activity with a custom type
+	When I add the following learning activity to 'Week 1' course segment
+	| Field           | Value                                |
+	| Name            | Custom 1                             |
+	| Type            | Custom                               |
+	| IsGradeable     | True                                 |
+	| IsExtraCredit   | False                                |
+	| Weight          | 100                                  |
+	| MaxPoint        | 20                                   |
+	| ObjectId        | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| CustomAttribute | some string value                    |
+	Then my course learning activity 'Custom 1' contains the following
+	| Field           | Value                                |
+	| Name            | Custom 1                             |
+	| Type            | Custom                               |
+	| IsGradeable     | True                                 |
+	| IsExtraCredit   | False                                |
+	| Weight          | 100                                  |
+	| MaxPoint        | 20                                   |
+	| ObjectId        | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| CustomAttribute | some string value                    |

@@ -365,6 +365,112 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Verify a course version can be created from a previously published version with t" +
+            "he same PLO, CLO, WLO")]
+        public virtual void VerifyACourseVersionCanBeCreatedFromAPreviouslyPublishedVersionWithTheSamePLOCLOWLO()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify a course version can be created from a previously published version with t" +
+                    "he same PLO, CLO, WLO", ((string[])(null)));
+#line 95
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table16.AddRow(new string[] {
+                        "PLO1"});
+            table16.AddRow(new string[] {
+                        "CLO1"});
+            table16.AddRow(new string[] {
+                        "CLO2"});
+            table16.AddRow(new string[] {
+                        "WLO1"});
+#line 96
+ testRunner.Given("I have the following learning outcomes", ((string)(null)), table16, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Program Name"});
+            table17.AddRow(new string[] {
+                        "Program1"});
+#line 102
+ testRunner.And("I associate \'Course1\' course with the following programs", ((string)(null)), table17, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table18.AddRow(new string[] {
+                        "PLO1"});
+#line 105
+ testRunner.When("I associate the existing learning outcomes to \'Program1\' program", ((string)(null)), table18, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table19.AddRow(new string[] {
+                        "PLO1"});
+#line 108
+ testRunner.And("I associate the existing learning outcomes to \'Course1\' course", ((string)(null)), table19, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table20.AddRow(new string[] {
+                        "CLO1"});
+            table20.AddRow(new string[] {
+                        "CLO2"});
+#line 111
+ testRunner.And("the outcome \'PLO1\' is supported by the following outcomes", ((string)(null)), table20, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table21.AddRow(new string[] {
+                        "WLO1"});
+#line 115
+ testRunner.And("the outcome \'CLO1\' is supported by the following outcomes", ((string)(null)), table21, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table22.AddRow(new string[] {
+                        "WLO1"});
+#line 118
+ testRunner.And("I associate the existing learning outcomes to \'Week1\' segment", ((string)(null)), table22, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table23.AddRow(new string[] {
+                        "Course1",
+                        "a note"});
+#line 121
+ testRunner.And("I publish the following courses", ((string)(null)), table23, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table24.AddRow(new string[] {
+                        "VersionNumber",
+                        "1.0.0.1"});
+#line 124
+ testRunner.And("I create a new version of \'Course1\' course named \'Course1 v1.0.0.1\' with the foll" +
+                    "owing info", ((string)(null)), table24, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+                        "EntityType",
+                        "EntityName",
+                        "LearningOutcomes"});
+            table25.AddRow(new string[] {
+                        "Course",
+                        "Course1 v1.0.0.1",
+                        "PLO1"});
+            table25.AddRow(new string[] {
+                        "Segment",
+                        "Week1",
+                        "WLO1"});
+#line 127
+ testRunner.Then("I get the entity learning outcomes as follows", ((string)(null)), table25, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

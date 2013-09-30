@@ -81,7 +81,10 @@ namespace BpeProducts.Services.Course.Domain
                     IsExtraCredit = request.IsExtraCredit,
                     Weight = request.Weight,
                     MaxPoint = request.MaxPoint,
-                    ObjectId = request.ObjectId
+                    ObjectId = request.ObjectId,
+                    ActiveDate = request.ActiveDate,
+                    InactiveDate = request.InactiveDate,
+                    DueDate = request.DueDate
                 };
             return response;
         }

@@ -11,7 +11,8 @@ namespace BpeProducts.Services.Course.Contract
         Discussion = 1,
         Assignment = 2,
         Quiz = 3,
-        Assessment = 4
+        Assessment = 4,
+        Custom = 5
     }
 
     public class CourseLearningActivityResponse
@@ -25,5 +26,9 @@ namespace BpeProducts.Services.Course.Contract
         public int MaxPoint { get; set; }
         public int Weight { get; set; }
         public Guid ObjectId { get; set; }
+        public string CustomAttribute { get; set; }
+        public int ActiveDate { get; set; }
+        public int InactiveDate { get; set; }
+        public int DueDate { get; set; }
     }
 }

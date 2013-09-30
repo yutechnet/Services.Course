@@ -22,7 +22,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
         public static int TenantId = 999999;
         public static readonly string LeadingPath;
-        public static readonly string AccountLeadingPath;
 
         public static WebApiTestHost CourseTestHost
         {
