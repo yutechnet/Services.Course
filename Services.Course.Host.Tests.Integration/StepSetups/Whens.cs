@@ -1,4 +1,5 @@
-﻿using BpeProducts.Services.Course.Contract;
+﻿using BpeProducts.Common.WebApiTest.Extensions;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
@@ -477,11 +478,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             // Get Math 101 request from dictionary
             var course = Resources<CourseResource>.Get(courseName);
             var courseInfo = GetOperations.GetCourse(course.ResourceUri);
+            var allSegments = courseInfo.Segments.FlattenTree(c => c.ChildSegments).ToList();
 
             var requestDictionary = new Dictionary<Guid, UpdateCourseSegmentRequest>();
             foreach (var row in table.Rows)
             {
-                var courseSegmentInfo = FindInCourseSegmentTree(courseInfo.Segments, row["Name"]);
+                var courseSegmentInfo = allSegments.First(s => s.Name == row["Name"]);
 
                 var request = new UpdateCourseSegmentRequest
                     {
@@ -495,7 +497,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
                 if (!string.IsNullOrEmpty(row["ParentSegment"]))
                 {
-                    var parentSegmentInfo = FindInCourseSegmentTree(courseInfo.Segments, row["ParentSegment"]);
+                    var parentSegmentInfo = allSegments.First(s => s.Name == row["ParentSegment"]);
                     var parentSegmentInTheDictionary = requestDictionary[parentSegmentInfo.Id];
 
                     request.ParentSegmentId = parentSegmentInfo.Id;
@@ -510,27 +512,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             PutOperations.UpdateBulkCourseSegments(course, topSegments);
         }
 
-        private CourseSegmentInfo FindInCourseSegmentTree(IEnumerable<CourseSegmentInfo> segments, string segmentName)
+        [When(@"I create the course")]
+        public void WhenICreateTheCourse(Table table)
         {
-            foreach (var segmentInfo in segments)
-            {
-                if (segmentInfo.Name == segmentName)
-                {
-                    return segmentInfo;
-                }
+            var request = table.CreateInstance<SaveCourseRequest>();
+            var organization = Resources<OrganizationResource>.Get(table.GetValue("OrganizationName", null));
+            request.OrganizationId = organization.Id;
 
-                if (segmentInfo.ChildSegments.Count > 0)
-                {
-                    var result = FindInCourseSegmentTree(segmentInfo.ChildSegments, segmentName);
-                    if (result != null)
-                    {
-                        return result;
-                    }
-                }
-            }
-
-            return null;
+            PostOperations.CreateCourse(request.Name, request);
         }
 
+        [When(@"I get the course '(.*)'")]
+        public void WhenIGetTheCourse(string courseName)
+        {
+            var resource = Resources<CourseResource>.Get(courseName);
+            GetOperations.GetCourse(resource.ResourceUri);
+        }
     }
 }

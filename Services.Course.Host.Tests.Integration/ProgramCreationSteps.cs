@@ -65,7 +65,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I submit a request to create a program")]
         public void WhenISubmitARequestToCreateAProgram()
         {
-            _responseMessageToValidate = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, _programRequest, new JsonMediaTypeFormatter()).Result;
+            _responseMessageToValidate = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, _programRequest, new JsonMediaTypeFormatter()).Result;
             _responseMessageToValidate.EnsureSuccessStatusCode();
 
             _programResponse = _responseMessageToValidate.Content.ReadAsAsync<ProgramResponse>().Result;
@@ -84,14 +84,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     ProgramType = "BA"
                 };
 
-            _responseMessageToValidate = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, _programRequest, new JsonMediaTypeFormatter()).Result;
+            _responseMessageToValidate = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, _programRequest, new JsonMediaTypeFormatter()).Result;
         }
 
         [When(@"I request a program id that does not exist")]
         public void WhenIRequestAProgramIdThatDoesNotExist()
         {
             _nonExistentId = Guid.NewGuid();
-            _responseMessageToValidate = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + _nonExistentId).Result;
+            _responseMessageToValidate = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + _nonExistentId).Result;
         }
 
         [When(@"I submit another request to create another program")]
@@ -106,7 +106,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     ProgramType = table.Rows[0]["ProgramType"]
                 };
 
-            _responseMessageToValidate = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, _anotherProgramRequest, new JsonMediaTypeFormatter()).Result;
+            _responseMessageToValidate = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, _anotherProgramRequest, new JsonMediaTypeFormatter()).Result;
             _responseMessageToValidate.EnsureSuccessStatusCode();
             _secondProgramResponse = _responseMessageToValidate.Content.ReadAsAsync<ProgramResponse>().Result;
         }
@@ -115,7 +115,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [When(@"I request to get all programs")]
         public void WhenIRequestToGetAllPrograms()
         {
-            var getAll = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath).Result;
+            var getAll = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath).Result;
             getAll.EnsureSuccessStatusCode();
 
             _programs = getAll.Content.ReadAsAsync<List<ProgramResponse>>().Result;
@@ -132,7 +132,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"my program information is changed")]
         public void ThenMyProgramInformationIsChanged()
         {
-            _responseMessageToValidate = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + _programResponse.Id).Result;
+            _responseMessageToValidate = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + _programResponse.Id).Result;
             _responseMessageToValidate.EnsureSuccessStatusCode();
             _programResponse = _responseMessageToValidate.Content.ReadAsAsync<ProgramResponse>().Result;
 
@@ -143,7 +143,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [Then(@"the program no longer exists")]
         public void ThenTheProgramNoLongerExists()
         {
-            _responseMessageToValidate = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + _programResponse.Id).Result;
+            _responseMessageToValidate = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + _programResponse.Id).Result;
             Assert.That(_responseMessageToValidate.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 

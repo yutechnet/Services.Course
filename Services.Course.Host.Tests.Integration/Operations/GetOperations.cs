@@ -17,7 +17,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 entityIds.Aggregate("?entityIds=", (current, entityId) => current + (entityId + ",")).TrimEnd(',');
 
             var response =
-                ApiFeature.ApiTestHost.Client.GetAsync(ApiFeature.LeadingPath + "/outcome/entityoutcomes" + queryString)
+                ApiFeature.CourseTestHost.Client.GetAsync(ApiFeature.LeadingPath + "/outcome/entityoutcomes" + queryString)
                           .Result;
             Responses.Add(response);
 
@@ -28,7 +28,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static CourseInfoResponse GetCourse(Uri resourceUri)
         {
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri).Result;
+            var response = ApiFeature.CourseTestHost.Client.GetAsync(resourceUri).Result;
             Responses.Add(response);
 
             return response.IsSuccessStatusCode
@@ -38,7 +38,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static ProgramResponse GetProgram(Uri resourceUri)
         {
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri).Result;
+            var response = ApiFeature.CourseTestHost.Client.GetAsync(resourceUri).Result;
             Responses.Add(response);
 
             return response.IsSuccessStatusCode
@@ -48,7 +48,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static CourseLearningActivityResponse GetCourseLearningActivity(Uri resourseUri)
         {
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourseUri).Result;
+            var response = ApiFeature.CourseTestHost.Client.GetAsync(resourseUri).Result;
             Responses.Add(response);
 
             return response.IsSuccessStatusCode
@@ -58,7 +58,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static CourseSegmentInfo GetSegment(Uri resourseUri)
         {
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourseUri).Result;
+            var response = ApiFeature.CourseTestHost.Client.GetAsync(resourseUri).Result;
             Responses.Add(response);
 
             return response.IsSuccessStatusCode
@@ -68,7 +68,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static OutcomeInfo GetLearningOutcome(Uri resourceUri)
         {
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(resourceUri).Result;
+            var response = ApiFeature.CourseTestHost.Client.GetAsync(resourceUri).Result;
             Responses.Add(response);
 
             return response.IsSuccessStatusCode
@@ -79,7 +79,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static List<OutcomeInfo> GetSupportedOutcomes(Uri resourceUri)
         {
             var uri = string.Format("{0}/supports", resourceUri);
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(uri).Result;
+            var response = ApiFeature.CourseTestHost.Client.GetAsync(uri).Result;
             Responses.Add(response);
 
             return response.IsSuccessStatusCode
@@ -90,7 +90,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static List<ProgramResponse> GetAllPrograms()
         {
             var uri = string.Format("{0}/program", ApiFeature.LeadingPath);
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(uri).Result;
+            var response = ApiFeature.CourseTestHost.Client.GetAsync(uri).Result;
             Responses.Add(response);
 
             return response.IsSuccessStatusCode

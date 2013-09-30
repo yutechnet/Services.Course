@@ -70,32 +70,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureBackground()
         {
 #line 7
-#line 8
-testRunner.Given("I am user \"TestUser3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "ParentOrganization"});
+                        "Name"});
             table1.AddRow(new string[] {
-                        "COB",
-                        "Bus School",
-                        ""});
-#line 9
-testRunner.And("the following organizations exist", ((string)(null)), table1, "And ");
+                        "COB"});
+#line 8
+ testRunner.And("the following organizations exist", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Organization",
-                        "Capabilities"});
+                        "Capability"});
             table2.AddRow(new string[] {
-                        "Role1",
-                        "COB",
-                        "CourseCreate,CourseView"});
-#line 12
-testRunner.And("I create the following roles", ((string)(null)), table2, "And ");
-#line 15
-testRunner.And("I give the user role \"Role1\" for organization COB", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "CourseCreate"});
+            table2.AddRow(new string[] {
+                        "CoursePublish"});
+            table2.AddRow(new string[] {
+                        "CourseView"});
+#line 11
+ testRunner.And("I have the following capabilities", ((string)(null)), table2, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -113,7 +105,7 @@ testRunner.And("I give the user role \"Role1\" for organization COB", ((string)(
                         "BS",
                         "COB"});
 #line 16
-testRunner.And("I have the following programs", ((string)(null)), table3, "And ");
+ testRunner.And("I have the following programs", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -130,7 +122,7 @@ testRunner.And("I have the following programs", ((string)(null)), table3, "And "
                         "Traditional",
                         "true"});
 #line 20
-testRunner.And("I have the following course templates", ((string)(null)), table4, "And ");
+ testRunner.And("I have the following course templates", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -158,7 +150,7 @@ testRunner.And("I have the following course templates", ((string)(null)), table4
                         "Topic",
                         "Discussion"});
 #line 23
-testRunner.And("I have the following course segments for \'Template 1\'", ((string)(null)), table5, "And ");
+ testRunner.And("I have the following course segments for \'Template 1\'", ((string)(null)), table5, "And ");
 #line hidden
         }
         

@@ -5,14 +5,14 @@ Feature: CourseSegment
 	I want to add segments to the course
 
 Background: 
-	Given I am user "TestUser3"
-	And the following organizations exist
-	| Name | Description | ParentOrganization |
-	| COB  | Bus School  |                    |
-	And I create the following roles
-	| Name  | Organization | Capabilities |
-	| Role1 | COB          | CourseCreate,CourseView |
-	And I give the user role "Role1" for organization COB
+	And I have the following capabilities
+	| Capability   |
+	| CourseCreate  |
+	| CoursePublish |
+	| CourseView    |
+ 	And the following organizations exist
+	| Name |
+	| COB  |
 	And I have the following courses
 	| Name     | Code | Description       | OrganizationName |
 	| Math 101 | M101 | Basic mathematics | COB              |

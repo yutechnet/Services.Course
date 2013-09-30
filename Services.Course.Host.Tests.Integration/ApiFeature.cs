@@ -1,9 +1,15 @@
-﻿using BpeProducts.Common.WebApiTest;
+﻿using System.Linq;
+using Autofac;
+using BpeProducts.Common.Capabilities;
+using BpeProducts.Common.WebApiTest;
+using BpeProducts.Services.Acl.Client;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Http;
+using Moq;
+using NUnit.Framework;
 using TechTalk.SpecFlow;
 using BpeProducts.Common.WebApiTest.Framework;
 
@@ -18,23 +24,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public static readonly string LeadingPath;
         public static readonly string AccountLeadingPath;
 
-        public static WebApiTestHost ApiTestHost
+        public static WebApiTestHost CourseTestHost
         {
-            get { return (WebApiTestHost)FeatureContext.Current["ApiTestHost"]; }
+            get { return (WebApiTestHost)FeatureContext.Current["CourseTestHost"]; }
         }
 
-        public static WebApiTestHost AccountApiTestHost
-        {
-            get { return (WebApiTestHost)FeatureContext.Current["AccountApiTestHost"]; }
-        }
+        public static Mock<IAclHttpClient> MockAclClient { get; private set; }
 
         static ApiFeature()
         {
             var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
             LeadingPath = targetUri.Host.Equals("localhost") ? "" : targetUri.PathAndQuery;
-
-            var remoteTargetUri = new Uri(ConfigurationManager.AppSettings["AccountTestHostBaseAddress"]);
-            AccountLeadingPath = remoteTargetUri.Host.Equals("localhost") ? "" : remoteTargetUri.PathAndQuery;
         }
 
         [BeforeFeature("Api")]
@@ -42,10 +42,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             var featureContext = FeatureContext.Current;
            
-            var apiTestHost = new WebApiTestHost(WebApiApplication.ConfigureWebApi, new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]));
-            var accountApiTestHost = new WebApiTestHost(WebApiApplication.ConfigureWebApi, new Uri(ConfigurationManager.AppSettings["AccountTestHostBaseAddress"]));
-            featureContext.Add("ApiTestHost", apiTestHost);
-            featureContext.Add("AccountApiTestHost", accountApiTestHost);
+            var courseApiTestHost = new WebApiTestHost(WebApiApplication.ConfigureWebApi, new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]));
+            featureContext.Add("CourseTestHost", courseApiTestHost);
             featureContext.Add("TenantId", TenantId);
 
             var courseLeadingPath = string.Format("{0}/{1}", LeadingPath, "course");
@@ -62,16 +60,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         [AfterFeature("Api")]
         public static void AfterFeature()
         {
-            ApiTestHost.Dispose();
+            CourseTestHost.Dispose();
         }
         
         [BeforeScenario("Api")]
         public static void BeforeScenario()
         {
-            ScenarioContext.Current.Add("Responses", new List<HttpResponseMessage>());
-            ScenarioContext.Current.Add("Organizations", new Dictionary<string, OrganizationResource>());
-            ScenarioContext.Current.Add("Roles", new Dictionary<string, RoleResource>());
-
             var defaultOrg = new OrganizationResource
                 {
                     Id = Guid.Parse("E2DF063D-E2A1-4F83-9BE0-218EC676C05F")
@@ -80,8 +74,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Resources<OrganizationResource>.Add("Default", defaultOrg);
 
             //Some scenarios change the user, so make sure we set it to a know user for each scenario
-            ApiTestHost.SetTestUser(DefaultTestUser);
-            AccountApiTestHost.SetTestUser(TestUserName.SuperSaml);
+            CourseTestHost.SetTestUser(DefaultTestUser);
+
+            MockAclClient = new Mock<IAclHttpClient>();
+            var updater = new ContainerBuilder();
+            updater.RegisterInstance(MockAclClient.Object).As<IAclHttpClient>();
+            updater.Update(CourseTestHost.Container);
         }
 
         public static string GetDefaultConnectionString()
@@ -93,6 +91,5 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             return ConfigurationManager.ConnectionStrings[connectionName].ConnectionString;
         }
-
     }
 }

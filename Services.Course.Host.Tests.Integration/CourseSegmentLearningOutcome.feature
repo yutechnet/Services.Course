@@ -5,17 +5,17 @@ Feature: CourseSegmentLearningOutcome
 	I want to specify learning outcomes for course segments
 
 Background:
-	Given I am user "TestUser3"
 	And the following organizations exist
-	| Name | Description | ParentOrganization |
-	| COB  | Bus School  |                    |
-	And I create the following roles
-	| Name  | Organization | Capabilities |
-	| Role1 | COB          | CourseCreate,CourseView |
-	And I give the user role "Role1" for organization COB 
+	| Name |
+	| COB  |
+	And I have the following capabilities
+	| Capability   |
+	| CourseCreate  |
+	| CoursePublish |
+	| CourseView    |
 	And I have the following courses
 	| Name     | Code | Description       | OrganizationName |
-	| Math 101 | M101 | Basic mathematics | COB          |
+	| Math 101 | M101 | Basic mathematics | COB              |
 	And I associate the newly created learning outcomes to 'Math 101' course
 	| Description |
 	| CLO1        |

@@ -1,47 +1,62 @@
 ﻿using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.WebApiTest;
-using BpeProducts.Services.Course.Host.Tests.Integration.Operations.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
-using BpeProducts.Common.WebApiTest.Framework;
+using Moq;
 using TechTalk.SpecFlow;
+using BpeProducts.Common.WebApiTest.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
 {
     [Binding]
     public class Givens
     {
-        [Given(@"I am user ""(.*)""")]
-        public void GivenIAmUser(TestUserName testUserName)
+        [Given(@"I have the following capabilities")]
+        public void GivenIHaveTheFollowingCapabilities(Table table)
         {
-            //TODO: replace this with an api call when we can create a user and get saml token on the fly
-            //Code was copied from Services.Account
-            var futureUserId = TestUserFactory.GetGuid(testUserName);
-            const string query = "Insert into [User] (UserId, DateAdded, DateUpdated) Values (@uuid,@dateAdded,@dateUpdated) ";
+            var assigned = from row
+                           in table.Rows
+                           select row["Capability"]
+                               into value
+                               where !string.IsNullOrWhiteSpace(value)
+                               select (Capability)Enum.Parse(typeof(Capability), value);
 
-            using (var connection = new SqlConnection(ApiFeature.GetDefaultConnectionString("AccountConnection")))
+            foreach (var capability in assigned)
             {
-                try
-                {
-                    var command = new SqlCommand(query, connection);
-                    command.Parameters.Add(new SqlParameter("uuid", futureUserId));
-                    command.Parameters.Add(new SqlParameter("dateAdded", DateTime.UtcNow));
-                    command.Parameters.Add(new SqlParameter("dateUpdated", DateTime.UtcNow));
-                    command.Connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                }
-                catch (SqlException exception)
-                {
-                    //2627 is a primary key constraint violation that assures us that the record is already in db and life is good
-                    if (exception.Number != 2627) throw;
-                }
+                var closureCopy = capability;
+                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>(), (int)closureCopy)).Returns(true);
+                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), (int)closureCopy)).Returns(true);
             }
-            ScenarioContext.Current[testUserName.ToString()] = futureUserId;
+        }
+
+        [Given(@"I have the '(.*)' capability")]
+        public void GivenIHaveTheCapability(string capabilityName)
+        {
+            if (!string.IsNullOrWhiteSpace(capabilityName))
+            {
+                var capability = (Capability)Enum.Parse(typeof(Capability), capabilityName);
+                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>(), (int)capability)).Returns(true);
+            }
+        }
+
+        [Given(@"I have the following object capabilities")]
+        public void GivenIHaveTheFollowingObjectCapabilities(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var capabilityName = row["Capability"];
+                var objectType = row["ObjectType"];
+                var objectName = row["ObjectName"];
+
+                var capability = (Capability)Enum.Parse(typeof(Capability), capabilityName);
+                var resource = ResourceFactory.Get(objectType, objectName);
+
+                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>(), resource.Id, (int)capability)).Returns(true);
+            }
         }
 
         [Given(@"the following organizations exist")]
@@ -49,112 +64,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
         {
             foreach (var row in table.Rows)
             {
-                var parentOrgName = row["ParentOrganization"];
-
-                var request = new SaveOrganizationRequest
-                {
-                    Name = row["Name"],
-                    Description = row["Description"],
-                    Parent = string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Resources<OrganizationResource>.Get(parentOrgName).Id
-                };
-
-                PostOperations.CreateOrganization(request.Name, request);
+                var orgName = row["Name"];
+                Resources<OrganizationResource>.Add(orgName, new OrganizationResource { Id = Guid.NewGuid() });
             }
         }
-
-        [Given(@"I create the following roles")]
-        public void GivenICreateTheFollowingRoles(Table table)
-        {
-            foreach (var row in table.Rows)
-            {
-                var parentOrgName = row["Organization"];
-
-                var request = new SaveRoleRequest
-                    {
-                        Name = row["Name"],
-                        OrganizationId = string.IsNullOrEmpty(parentOrgName) ? Guid.Empty : Resources<OrganizationResource>.Get(parentOrgName).Id,
-                        TenantId = ApiFeature.TenantId
-                    };
-
-                var capabilities = row["Capabilities"];
-                if (capabilities != "")
-                {
-                    var capabilityList = capabilities.Split(',').Select(c => (Capability)Enum.Parse(typeof(Capability), c)).ToList();
-                    request.Capabilities = capabilityList;
-                }
-
-                PostOperations.CreateRole(request.Name, request);
-            }
-        }
-
-        [Given(@"I add capability ""(.*)"" to role ""(.*)""")]
-        [Given(@"I add capability (.*) to role ""(.*)""")]
-        public void GivenIGiveCapabilityToRole(string capability, string roleName)
-        {
-            var resource = Resources<RoleResource>.Get(roleName);
-            
-            if (capability == "")
-            {
-                return;
-            }
-
-            var role = GetOperations.GetRole(resource.ResourceUri);
-
-            var request = new UpdateRoleRequest
-                {
-                    Name = role.Name,
-                    Capabilities = role.Capabilities
-                };
-
-            var capabilityEnum = (Capability)Enum.Parse(typeof(Capability), capability);
-            request.Capabilities.Add(capabilityEnum);
-
-            PutOperations.UpdateRoleWithCapability(resource, request);
-        }
-
-        [Given(@"I update the role ""(.*)"" with capabilities ""(.*)""")]
-        public void GivenIUpdateTheRoleWithCapabilities(string roleName, string capabilities)
-        {
-            var resource = Resources<RoleResource>.Get(roleName);
-            var role = GetOperations.GetRole(resource.ResourceUri);
-
-            var request = new UpdateRoleRequest
-                {
-                    Name = role.Name
-                };
-
-            if (capabilities!="")
-            {
-                var capabilityList = capabilities.Split(',').Select(c=> (Capability)Enum.Parse(typeof(Capability), c)).ToList();
-                request.Capabilities = capabilityList;
-            }
-
-            PutOperations.UpdateRoleWithCapability(resource, request);
-        }
-
-        [Given(@"I give the user role ""(.*)"" for organization (.*)")]
-        [Given(@"I give the user role ""(.*)"" for organization ""(.*)""")]
-        public void GivenIGiveTheUserRoleForOrganization(string roleName, string organizatonName)
-        {
-            var role = Resources<RoleResource>.Get(roleName);
-            var org = Resources<OrganizationResource>.Get(organizatonName);
-            var userGuid = TestUserFactory.GetGuid(ApiFeature.DefaultTestUser);
-
-            PostOperations.GrantPermission(userGuid, role, org);
-        }
-
-		[Given(@"I give the user role ""(.*)"" for object (.*)")]
-		public void GivenIGiveTheUserRoleForObject(string roleName, string objectName)
-		{
-			if (String.IsNullOrWhiteSpace(objectName)==false)
-			{
-                var role = Resources<RoleResource>.Get(roleName);
-				var obj = Resources<CourseResource>.Get(objectName);
-				var userGuid = TestUserFactory.GetGuid(ApiFeature.DefaultTestUser);
-
-				PostOperations.GrantPermission(userGuid, role, obj.Id);
-			}
-		}
-
     }
 }

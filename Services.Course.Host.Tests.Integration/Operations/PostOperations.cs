@@ -13,7 +13,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage CreateCourse(string name, SaveCourseRequest request)
         {
             request.TenantId = ApiFeature.TenantId;
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course", request, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.CourseTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course", request, new JsonMediaTypeFormatter()).Result;
 
             response.BuildResource<CourseResource>(name);
             return response;
@@ -21,7 +21,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static HttpResponseMessage CreateCourseVersion(string name, VersionRequest request)
         {
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course/version", request, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.CourseTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/course/version", request, new JsonMediaTypeFormatter()).Result;
 
             response.BuildResource<CourseResource>(name);
             return response;
@@ -30,7 +30,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage CreateProgram(string name, SaveProgramRequest request)
         {
             request.TenantId = ApiFeature.TenantId;
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/program", request, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.CourseTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/program", request, new JsonMediaTypeFormatter()).Result;
 
             response.BuildResource<ProgramResource>(name);
             return response;
@@ -41,7 +41,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             request.TenantId = ApiFeature.TenantId;
 
             var uri = string.Format("{0}/course/{1}/segments", ApiFeature.LeadingPath, course.Id);
-            var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
+            var response = ApiFeature.CourseTestHost.Client.PostAsJsonAsync(uri, request).Result;
 
             response.BuildResource<CourseSegmentResource>(name);
             return response;
@@ -51,7 +51,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         {
             request.TenantId = ApiFeature.TenantId;
 
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/outcome", request, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.CourseTestHost.Client.PostAsync(ApiFeature.LeadingPath + "/outcome", request, new JsonMediaTypeFormatter()).Result;
 
             response.BuildResource<LearningOutcomeResource>(name);
             return response;
@@ -60,7 +60,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage CreateLearningOutcomeVersion(string name, LearningOutcomeResource learningOutcome, VersionRequest request)
         {
             var postUri = string.Format("{0}/outcome/version", ApiFeature.LeadingPath);
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(postUri, request, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.CourseTestHost.Client.PostAsync(postUri, request, new JsonMediaTypeFormatter()).Result;
 
             response.BuildResource<LearningOutcomeResource>(name);
             return response;
@@ -71,7 +71,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             request.TenantId = ApiFeature.TenantId;
 
             var uri = string.Format("{0}/supports", entityResource.ResourceUri);
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(uri, request, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.CourseTestHost.Client.PostAsync(uri, request, new JsonMediaTypeFormatter()).Result;
 
             response.BuildResource<LearningOutcomeResource>(name);
             return response;
@@ -82,7 +82,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             request.TenantId = ApiFeature.TenantId;
 
             var uri = string.Format("{0}/learningactivity", segment.ResourceUri);
-            var response = ApiFeature.ApiTestHost.Client.PostAsJsonAsync(uri, request).Result;
+            var response = ApiFeature.CourseTestHost.Client.PostAsJsonAsync(uri, request).Result;
 
             response.BuildResource<CourseLearningActivityResource>(name);
             return response;

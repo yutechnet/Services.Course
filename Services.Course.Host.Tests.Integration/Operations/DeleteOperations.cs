@@ -12,7 +12,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
     {
         public static HttpResponseMessage DeleteResource(IResource resource)
         {
-            var response = ApiFeature.ApiTestHost.Client.DeleteAsync(resource.ResourceUri).Result;
+            var response = ApiFeature.CourseTestHost.Client.DeleteAsync(resource.ResourceUri).Result;
             Responses.Add(response);
             
             return response;

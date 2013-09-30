@@ -4,14 +4,14 @@ Feature: Course Management
 	As a course builder
 	I want to create, edit and delete a course
 Background: 
-Given I am user "TestUser3"
-And the following organizations exist
-	| Name | Description | ParentOrganization |
-	| COB  | Bus School  |                    |
-And I create the following roles
-	| Name  | Organization | Capabilities            |
-	| Role1 | COB          | CourseCreate,CourseView |
-And I give the user role "Role1" for organization COB
+	And the following organizations exist
+	| Name |
+	| COB  |
+	And I have the following capabilities
+	| Capability    |
+	| CourseCreate  |
+	| CoursePublish |
+	| CourseView    |
 
 Scenario: Create a course
 	Given I have a course with following info:

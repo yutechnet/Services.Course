@@ -1,4 +1,5 @@
-﻿using BpeProducts.Services.Course.Contract;
+﻿using BpeProducts.Common.Capabilities;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
+using Moq;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using BpeProducts.Common.WebApiTest.Framework;
@@ -199,12 +201,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             var result = PostOperations.CreateCourse(courseRequest.Name, courseRequest);
             return result;
-        }
-
-		[Given(@"I create a course '(.*)' under organization '(.*)'")]
-		public void GivenICreateACourseUnderOrganization(string courseName, string orgName)
-		{
-			CourseCreationSteps.CreateACourse(courseName, orgName);
-		}
+        }        
     }
 }

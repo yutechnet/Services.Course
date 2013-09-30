@@ -5,19 +5,15 @@ Feature: CourseVersioning
 	I want to version the course
 
 Background:
-	Given I am user "TestUser3"
 	And the following organizations exist
-	| Name | Description | ParentOrganization |
-	| COB  | Bus School  |                    |
-	And I create the following roles
-	| Name  | Organization | Capabilities |
-	| Role1 | COB          | CourseCreate,CourseView |
-	And I give the user role "Role1" for organization COB 
-	Given I have the following courses
-#   | Name         | Code   | Description                   | OrganizationId                       | CourseType  | IsTemplate |
-#	| English 1010 | ENG101 | Ranji's awesome English Class | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | false      |
-#	| English 101011	 | E10011   | Macroeconomics        | C3885307-BDAD-480F-8E7C-51DFE5D80387 | Traditional | False      |
-    
+	| Name |
+	| COB  |
+	And I have the following capabilities
+	| Capability   |
+	| CourseCreate  |
+	| CoursePublish |
+	| CourseView    |
+	Given I have the following courses   
 	| Name           | Code   | Description                   | OrganizationName | CourseType  | IsTemplate |
 	| English 1010   | ENG101 | Ranji's awesome English Class | COB              | Traditional | false      |
 	| English 101011 | E10011 | Macroeconomics                | COB              | Traditional | false      |

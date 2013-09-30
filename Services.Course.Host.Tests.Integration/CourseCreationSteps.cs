@@ -69,7 +69,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void WhenISubmitACreationRequest()
         {
             var saveCourseRequest = ScenarioContext.Current.Get<SaveCourseRequest>("createCourseRequest");
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
 
             if (ScenarioContext.Current.ContainsKey("createCourseResponse"))
             {
@@ -103,7 +103,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
             var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
 
-            var result = ApiFeature.ApiTestHost.Client.PutAsync(_leadingPath + "/" + courseInfoResponse.Id, editCourseRequest, new JsonMediaTypeFormatter()).Result;
+            var result = ApiFeature.CourseTestHost.Client.PutAsync(_leadingPath + "/" + courseInfoResponse.Id, editCourseRequest, new JsonMediaTypeFormatter()).Result;
             ScenarioContext.Current.Add("editCourseResponse", result);
             ScenarioContext.Current.Add("courseId", courseInfoResponse.Id);
 
@@ -119,7 +119,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void WhenIRequestACourseNameThatDoesNotExist()
         {
             var courseName = "someCoureName";
-            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?name=" + ScenarioContext.Current.Get<long>("ticks") + courseName).Result;
+            var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "?name=" + ScenarioContext.Current.Get<long>("ticks") + courseName).Result;
 
             ScenarioContext.Current.Add("getCourseName", result);
         }
@@ -135,7 +135,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenICanRetrieveTheCourseByCourseName()
         {
             var courseName = ScenarioContext.Current.Get<string>("courseName");
-            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?name=" + ScenarioContext.Current.Get<long>("ticks") + courseName).Result;
+            var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "?name=" + ScenarioContext.Current.Get<long>("ticks") + courseName).Result;
             result.EnsureSuccessStatusCode();
         }
 
@@ -143,7 +143,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenICanRetrieveTheCourseByCourseCode()
         {
             var courseCode = ScenarioContext.Current.Get<string>("courseCode");
-            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "?code=" + ScenarioContext.Current.Get<long>("ticks") + courseCode).Result;
+            var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "?code=" + ScenarioContext.Current.Get<long>("ticks") + courseCode).Result;
             result.EnsureSuccessStatusCode();
         }
 
@@ -152,7 +152,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenMyCourseInfoIsChanged()
         {
             var courseId = ScenarioContext.Current.Get<Guid>("courseId");
-            var response = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + courseId).Result;
+            var response = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + courseId).Result;
             response.EnsureSuccessStatusCode();
 
             var courseInfo = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
@@ -219,7 +219,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                     IsTemplate = false
                 };
 
-                var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+                var response = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
                 response.EnsureSuccessStatusCode();
 
             }
@@ -231,7 +231,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
             var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
             ScenarioContext.Current.Add("courseId", courseInfoResponse.Id);
-            var delSuccess = ApiFeature.ApiTestHost.Client.DeleteAsync(_leadingPath + "/" + courseInfoResponse.Id).Result;
+            var delSuccess = ApiFeature.CourseTestHost.Client.DeleteAsync(_leadingPath + "/" + courseInfoResponse.Id).Result;
             delSuccess.EnsureSuccessStatusCode();
         }
 
@@ -239,7 +239,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenMyCourseNoLongerExists()
         {
             var courseId = ScenarioContext.Current.Get<Guid>("courseId");
-            var getResponse = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + "/" + courseId).Result;
+            var getResponse = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + courseId).Result;
             Assert.That(getResponse.StatusCode.Equals(HttpStatusCode.NotFound));
         }
 
@@ -282,7 +282,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 var operation = row["Operation"];
                 var argument = row["Argument"];
                 var count = int.Parse(row["Count"]);
-                var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + ConstructODataQueryString(operation, argument)).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
+                var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + ConstructODataQueryString(operation, argument)).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
                 var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
                 var responseList = new List<CourseInfoResponse>(getResponse);
                 Assert.That(responseList.Count, Is.EqualTo(count));
@@ -320,7 +320,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public void ThenTheCourseCountIsAtleastWhenSearchTermIs(int count, string searchPhrase)
         {
             var startsWithQuery = String.IsNullOrWhiteSpace(searchPhrase) ? "" : String.Format("?$filter=startswith(Name, '{0}')", ScenarioContext.Current.Get<long>("ticks") + searchPhrase);
-            var result = ApiFeature.ApiTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
+            var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;//+ ScenarioContext.Current.Get<long>("ticks")).Result;
             var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
             var responseList = new List<CourseInfoResponse>(getResponse);
             Assert.That(responseList.Count, Is.AtLeast(count));
@@ -342,7 +342,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             ScenarioContext.Current.Add("courseTemplate", courseWithTemplateId);
 
-            var response = ApiFeature.ApiTestHost.Client.PostAsync(_leadingPath, courseWithTemplateId, new JsonMediaTypeFormatter()).Result;
+            var response = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, courseWithTemplateId, new JsonMediaTypeFormatter()).Result;
             response.EnsureSuccessStatusCode();
 
             ScenarioContext.Current.Add("ResponseToValidate", response);
@@ -380,7 +380,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
 			var response = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
 			return response;
-
 		} 
     }
 }

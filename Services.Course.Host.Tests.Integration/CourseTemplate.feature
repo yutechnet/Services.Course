@@ -5,22 +5,22 @@ As a course builder
 I want to create courses from a template
 
 Background: 
-Given I am user "TestUser3"
-And the following organizations exist
-	| Name | Description | ParentOrganization |
-	| COB  | Bus School  |                    |
-And I create the following roles
-	| Name  | Organization | Capabilities |
-	| Role1 | COB          | CourseCreate,CourseView |
-And I give the user role "Role1" for organization COB
-And I have the following programs
+	And the following organizations exist
+	| Name |
+	| COB  |
+	And I have the following capabilities
+	| Capability   |
+	| CourseCreate  |
+	| CoursePublish |
+	| CourseView    |
+	And I have the following programs
 	| Name                | Description | ProgramType | OrganizationName |
 	| Bachelor of Art     | BA Program  | BA          | COB              |
 	| Bachelor of Science | BS program  | BS          | COB              |
-And I have the following course templates
+	And I have the following course templates
 	| Name       | Code          | Description              | OrganizationName | CourseType  | IsTemplate |
 	| Template 1 | TemplateCode1 | My First Course Template | COB              | Traditional | true       |
-And I have the following course segments for 'Template 1'
+	And I have the following course segments for 'Template 1'
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
 	| Discussion  | Discussion for the first week  | Discussion | Week1         |

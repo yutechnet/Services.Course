@@ -13,17 +13,17 @@ namespace BpeProducts.Services.Course.Host
     // visit http://go.microsoft.com/?LinkId=9394801
     public class WebApiApplication : System.Web.HttpApplication
     {
-        public static void ConfigureWebApi(HttpConfiguration configuration)
+        public static void ConfigureWebApi(HttpConfiguration configuration, IContainer container)
         {
-	        var container = ContainerInstanceProvider.GetContainerInstance();
 			WebApiConfig.Register(configuration);
             Configuration.Configure(configuration,container);		
             MapperConfig.ConfigureMappers();
         }
 
         protected void Application_Start()
-        {			
-            ConfigureWebApi(GlobalConfiguration.Configuration);
+        {
+            var container = ContainerInstanceProvider.GetContainerInstance();
+            ConfigureWebApi(GlobalConfiguration.Configuration, container);
         }
     }
 }
