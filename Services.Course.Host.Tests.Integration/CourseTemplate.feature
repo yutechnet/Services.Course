@@ -141,37 +141,6 @@ Scenario: Version a course, which was created from a template
 	| Bachelor of Art     |
 	| Bachelor of Science |
 
-@ignore
-Scenario: I can see course templates for an organization I have CreateCourse capability on.
-    Given I am user "TestUser3"
-	And I create an organization "Org1" with no parent
-	And I create an organization "Org2" with no parent
-	And I create a course template "FindMe1" for organization "Org1"
-	And I create a course template "FindMe2" for organization "Org1"
-	And I create a course template "DontFindMe" for organization "Org2"
-	And I create a role "CurriculumCoordinator"
-	And I add capability CourseCreate to role "CurriculumCoordinator"
-	And I give role "CurriculumCoordinator" to user "TestUser3" for object "Org1" of type "organization"
-	When I get the course templates for organization "Org1" to scenario context name "templateIds"
-	Then the course template Ids in "templateIds" are:
-	| OrgName |
-	| FindMe1 |
-	| FindMe2 |
-
-@ignore
-Scenario: I can not see course templates for an organization I do have CreateCourse capability on.
-    Given I am user "TestUser3"
-	And I create an organization "Org1" with no parent
-	And I create an organization "Org2" with no parent
-	And I create a course template "FindMe1" for organization "Org1"
-	And I create a course template "DontFindMe" for organization "Org2"
-	And I create a role "CurriculumCoordinator"
-	And I add capability CourseCreate to role "CurriculumCoordinator"
-	And I give role "CurriculumCoordinator" to user "TestUser3" for object "Org1" of type "organization"
-	When I get the course templates for organization "Org2" to scenario context name "templateIds"
-	Then the course template Ids in "templateIds" are:
-	| OrgName |
-
 Scenario: Cannot get the template after create a course version from a previously-published version（DE395）
 	When I create a course from the template 'Template 1' with the following
     | Name         | Code        | Description              | OrganizationName | CourseType  | IsTemplate |

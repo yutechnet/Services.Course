@@ -1,4 +1,5 @@
-﻿using BpeProducts.Services.Course.Contract;
+﻿using BpeProducts.Common.WebApiTest.Framework;
+using BpeProducts.Services.Course.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,34 +15,34 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return ApiFeature.CourseTestHost.Get<Dictionary<Guid, List<OutcomeInfo>>>(requestUri);
         }
 
-        public static CourseInfoResponse GetCourse(Uri requestUri)
+        public static CourseInfoResponse GetCourse(IResource resource)
         {
-            return ApiFeature.CourseTestHost.Get<CourseInfoResponse>(requestUri.ToString());
+            return ApiFeature.CourseTestHost.Get<CourseInfoResponse>(resource.ResourceUri.ToString());
         }
 
-        public static ProgramResponse GetProgram(Uri requestUri)
+        public static ProgramResponse GetProgram(IResource resource)
         {
-            return ApiFeature.CourseTestHost.Get<ProgramResponse>(requestUri.ToString());
+            return ApiFeature.CourseTestHost.Get<ProgramResponse>(resource.ResourceUri.ToString());
         }
 
-        public static CourseLearningActivityResponse GetCourseLearningActivity(Uri resourseUri)
+        public static CourseLearningActivityResponse GetCourseLearningActivity(IResource resource)
         {
-            return ApiFeature.CourseTestHost.Get<CourseLearningActivityResponse>(resourseUri.ToString());            
+            return ApiFeature.CourseTestHost.Get<CourseLearningActivityResponse>(resource.ResourceUri.ToString());            
         }
 
-        public static CourseSegmentInfo GetSegment(Uri resourseUri)
+        public static CourseSegmentInfo GetSegment(IResource resource)
         {
-            return ApiFeature.CourseTestHost.Get<CourseSegmentInfo>(resourseUri.ToString());
+            return ApiFeature.CourseTestHost.Get<CourseSegmentInfo>(resource.ResourceUri.ToString());
         }
 
-        public static OutcomeInfo GetLearningOutcome(Uri requestUri)
+        public static OutcomeInfo GetLearningOutcome(IResource resource)
         {
-            return ApiFeature.CourseTestHost.Get<OutcomeInfo>(requestUri.ToString());
+            return ApiFeature.CourseTestHost.Get<OutcomeInfo>(resource.ResourceUri.ToString());
         }
 
-        public static List<OutcomeInfo> GetSupportedOutcomes(Uri requestUri)
+        public static List<OutcomeInfo> GetSupportedOutcomes(IResource resource)
         {
-            var uri = string.Format("{0}/supports", requestUri);
+            var uri = string.Format("{0}/supports", resource.ResourceUri);
             return ApiFeature.CourseTestHost.Get<List<OutcomeInfo>>(uri);
         }
 
@@ -49,12 +50,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         {
             var uri = string.Format("{0}/program", ApiFeature.LeadingPath);
             return ApiFeature.CourseTestHost.Get<List<ProgramResponse>>(uri);
-        }
-
-        public static List<Guid> GetCourseTemplateIds(Guid organizationId)
-        {
-            //TODO: Replace with we implement the service.
-            return new List<Guid> {Guid.NewGuid()};
         }
     }
 }

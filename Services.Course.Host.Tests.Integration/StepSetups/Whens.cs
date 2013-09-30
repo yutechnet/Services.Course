@@ -227,7 +227,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIRetrieveTheCourseLearningActivity(string activityName)
         {
             var resource = Resources<CourseLearningActivityResource>.Get(activityName);
-            GetOperations.GetCourseLearningActivity(resource.ResourceUri);
+            GetOperations.GetCourseLearningActivity(resource);
         }
 
         [When(@"I remove ""(.*)"" learning activity")]
@@ -273,7 +273,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIGetTheLearningOutcome(string learningOutcomeName)
         {
             var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
-            GetOperations.GetLearningOutcome(resource.ResourceUri);
+            GetOperations.GetLearningOutcome(resource);
         }
 
         [When(@"I delete the '(.*)' learning outcome")]
@@ -289,7 +289,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIRetrieveCourse(string courseName)
         {
             var resource = Resources<CourseResource>.Get(courseName);
-            GetOperations.GetCourse(resource.ResourceUri);
+            GetOperations.GetCourse(resource);
         }
 
         [When(@"I update '(.*)' course with the following info")]
@@ -336,7 +336,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIAddTheFollowingContentToSegment(string segmentName, Table table)
         {
             var resource = Resources<CourseSegmentResource>.Get(segmentName);
-            var courseSegment = GetOperations.GetSegment(resource.ResourceUri);
+            var courseSegment = GetOperations.GetSegment(resource);
 
             var request = new SaveCourseSegmentRequest
             {
@@ -413,7 +413,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIGetTheProgram(string programName)
         {
             var resource = Resources<ProgramResource>.Get(programName);
-            GetOperations.GetProgram(resource.ResourceUri);
+            GetOperations.GetProgram(resource);
         }
 
         [When(@"I attempt to create the following programs")]
@@ -431,14 +431,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
                 PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
             }
-        }
-
-	    [When(@"I get the course templates for organization ""(.*)"" to scenario context name ""(.*)""")]
-        public void WhenIGetTheCourseTemplatesForOrganizationToScenarioContextName(string organizationName, string scenarioContextName)
-        {
-            var organizationId = ScenarioContext.Current[organizationName].As<Guid>();
-            List<Guid> courseTemplateIds = GetOperations.GetCourseTemplateIds(organizationId);
-            ScenarioContext.Current[scenarioContextName] = courseTemplateIds;
         }
 
         [When(@"the outcome '(.*)' supports the following learning outcomes asynchronously")]
@@ -460,7 +452,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             // Get Math 101 request from dictionary
             var course = Resources<CourseResource>.Get(courseName);
-            var courseInfo = GetOperations.GetCourse(course.ResourceUri);
+            var courseInfo = GetOperations.GetCourse(course);
             var allSegments = courseInfo.Segments.FlattenTree(c => c.ChildSegments).ToList();
 
             var requestDictionary = new Dictionary<Guid, UpdateCourseSegmentRequest>();
@@ -509,7 +501,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIGetTheCourse(string courseName)
         {
             var resource = Resources<CourseResource>.Get(courseName);
-            GetOperations.GetCourse(resource.ResourceUri);
+            GetOperations.GetCourse(resource);
         }
     }
 }

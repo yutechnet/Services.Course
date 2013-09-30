@@ -50,7 +50,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static HttpResponseMessage AssociateCourseWithPrograms(CourseResource course, IList<ProgramResource> programs)
         {
-            var courseInfo = GetOperations.GetCourse(course.ResourceUri);
+            var courseInfo = GetOperations.GetCourse(course);
 
             var request = new SaveCourseRequest
             {
@@ -73,7 +73,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static HttpResponseMessage DisassociateCourseWithPrograms(CourseResource course, List<ProgramResource> programs)
         {
-            var courseInfo = GetOperations.GetCourse(course.ResourceUri);
+            var courseInfo = GetOperations.GetCourse(course);
 
             var request = new SaveCourseRequest
             {
