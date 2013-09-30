@@ -24,7 +24,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
         public CourseCreationSteps()
         {
-            var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
+            var targetUri = new Uri(ApiFeature.BaseAddress);
             if (!targetUri.Host.Equals("localhost"))
             {
                 _leadingPath = targetUri.PathAndQuery + "/course";

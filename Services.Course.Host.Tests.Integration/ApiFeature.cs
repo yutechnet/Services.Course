@@ -23,6 +23,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public static int TenantId = 999999;
         public static readonly string LeadingPath;
 
+        public const string BaseAddress = "https://localhost"; //ConfigurationManager.AppSettings["TestHostBaseAddress"]
+
         public static WebApiTestHost CourseTestHost
         {
             get { return (WebApiTestHost)FeatureContext.Current["CourseTestHost"]; }
@@ -32,7 +34,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
         static ApiFeature()
         {
-            var targetUri = new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]);
+            var targetUri = new Uri(BaseAddress);
             LeadingPath = targetUri.Host.Equals("localhost") ? "" : targetUri.PathAndQuery;
         }
 
@@ -40,8 +42,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public static void BeforeFeature()
         {
             var featureContext = FeatureContext.Current;
-           
-            var courseApiTestHost = new WebApiTestHost(WebApiApplication.ConfigureWebApi, new Uri(ConfigurationManager.AppSettings["TestHostBaseAddress"]));
+
+            var courseApiTestHost = new WebApiTestHost(WebApiApplication.ConfigureWebApi, new Uri(BaseAddress));
             featureContext.Add("CourseTestHost", courseApiTestHost);
             featureContext.Add("TenantId", TenantId);
 
