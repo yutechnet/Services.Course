@@ -4,6 +4,7 @@ using System.Linq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.Entities;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
@@ -49,8 +50,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             return courses;
         }
 
-	
-
         public Courses.Course Load(Guid courseId)
         {
             var course = Get(courseId);
@@ -92,6 +91,16 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             var courses = criteria.List<Courses.Course>();
 
             return courses;
+        }
+
+        public IList<Courses.Course> GetByProgramIdAndPublishedOnly(Guid programId, bool publishedOnly)
+        {
+            var program = _session.Get<Program>(programId);
+            if (program == null || !program.ActiveFlag)
+            {
+                throw new NotFoundException(string.Format("Program {0} not found.", programId));
+            }
+            return program.Courses.Where(r => ((publishedOnly && r.IsPublished) || !publishedOnly) && r.ActiveFlag).ToList();
         }
     }
 }

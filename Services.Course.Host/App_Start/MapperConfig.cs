@@ -18,7 +18,8 @@ namespace BpeProducts.Services.Course.Host.App_Start
 
 		private static void ProgramMappings()
 		{
-		    Mapper.CreateMap<Program, ProgramResponse>();
+            Mapper.CreateMap<Program, ProgramResponse>()
+                .ForMember(dest => dest.CourseIds, opt => opt.MapFrom(program => program.Courses.Select(p => p.Id).ToList()));
                 //.ForMember(dest => dest.Courses, opt => opt.MapFrom(program => program.Courses.Select(c => new CourseInfoResponse
                 //    {
                 //        Id = c.Id,

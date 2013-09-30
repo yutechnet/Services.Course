@@ -5,7 +5,9 @@ using AutoMapper;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 
@@ -83,6 +85,14 @@ namespace BpeProducts.Services.Course.Domain
                                    where s.ParentSegmentId == Guid.Empty 
                                    select s).ToList();
             return courseInfo;
+        }
+
+        public IEnumerable<CourseInfoResponse> GetByProgramIdAndPublishedOnly(Guid programId, bool publishedOnly)
+        {
+            var courses = _courseRepository.GetByProgramIdAndPublishedOnly(programId, publishedOnly);
+            var courseResponses = new List<CourseInfoResponse>();
+            Mapper.Map(courses, courseResponses);
+            return courseResponses;
         }
 
         public IEnumerable<CourseInfoResponse> Search(string queryString)

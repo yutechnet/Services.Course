@@ -150,7 +150,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             var courseIds = (from r in table.Rows select Resources<CourseResource>.Get(r["Course Name"]).Id).ToList();
 
-            CollectionAssert.AreEquivalent(program.Courses.Select(c => c.Id).ToList(), courseIds);
+            CollectionAssert.AreEquivalent(program.CourseIds, courseIds);
         }
 
         [Then(@"the segment '(.*)' should have the following learning activities")]

@@ -45,6 +45,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return _courseService.Get(id);
         }
 
+        [HttpGet]
+        public IEnumerable<CourseInfoResponse> GetByProgramIdAndPublishedOnly(Guid programId, Boolean publishedOnly)
+        {
+            return _courseService.GetByProgramIdAndPublishedOnly(programId, publishedOnly);
+        }
+
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
