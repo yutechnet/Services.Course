@@ -246,6 +246,10 @@
     <Compile Include="Handlers\UpdateModelOnCourseVersionCreatedTests.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionPublishTests.cs" />
     <Compile Include="Handlers\UpdateModelOnRemovingCoursePrerequisiteTests.cs" />
+    <Compile Include="Outcome\OutcomeFactoryTests.cs" />
+    <Compile Include="Outcome\PlayOutcomeCreatedTests.cs" />
+    <Compile Include="Outcome\PlayOutcomeDeletedTests.cs" />
+    <Compile Include="Outcome\PlayOutcomeUpdatedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VersionableEntityFactoryTests.cs" />
   </ItemGroup>

@@ -5,12 +5,12 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
 {
 	public class PlayOutcomeCreated:IPlayEvent<OutcomeCreated, Entities.LearningOutcome>
 	{
-		public Entities.LearningOutcome Apply(OutcomeCreated msg, Entities.LearningOutcome course)
+		public Entities.LearningOutcome Apply(OutcomeCreated msg, Entities.LearningOutcome learningOutcome)
 		{
-			course.Id = msg.AggregateId;
-			course.Description = msg.Description;
-			course.ActiveFlag = msg.ActiveFlag;
-			return course;
+            learningOutcome.Id = msg.AggregateId;
+            learningOutcome.Description = msg.Description;
+            learningOutcome.ActiveFlag = msg.ActiveFlag;
+            return learningOutcome;
 		}
 
         public TE Apply<T, TE>(T msg, TE entity)
