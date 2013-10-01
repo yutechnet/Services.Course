@@ -176,6 +176,7 @@
     <Compile Include="Content.cs" />
     <Compile Include="CourseInfoResponse.cs" />
     <Compile Include="CourseLearningActivityResponse.cs" />
+    <Compile Include="CreateSectionRequest.cs" />
     <Compile Include="PublishRequest.cs" />
     <Compile Include="SaveCourseLearningActivityRequest.cs" />
     <Compile Include="SimpleCourseInfoResponse.cs" />

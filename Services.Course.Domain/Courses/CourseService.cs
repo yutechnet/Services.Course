@@ -120,47 +120,38 @@ namespace BpeProducts.Services.Course.Domain
         public void UpdatePrerequisiteList(Guid courseId, List<Guid> newPrerequisiteIds)
         {
             var course = _courseFactory.Reconstitute(courseId);
-            var prerequisites = _courseRepository.Get(newPrerequisiteIds);
-			// Can't work directly off of course below since NHB will update the prereq list with any additions
-	        var beforeStateOfPrerequisites = new List<Guid>();
-			course.Prerequisites.Each(p => beforeStateOfPrerequisites.Add(p.Id));
-
             if (course == null || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
 
+            var existing = (from prereq in course.Prerequisites
+                            select prereq.Id).ToList();
 
-            // Determine prerequisites added
-            foreach (var incomingPrereqId in newPrerequisiteIds)
+            var removed = (from e in existing
+                           where !newPrerequisiteIds.Contains(e)
+                           select e).ToList();
+
+            var added = (from n in newPrerequisiteIds
+                         where !existing.Contains(n)
+                         select n).ToList();
+
+            foreach (var toAdd in added)
             {
-                // If all of the current prerequisite courses do not equal this incoming prerequisiteId, it's new
-                if (course.Prerequisites.Any(existingPrereq => existingPrereq.Id == incomingPrereqId)==false)
-                {
-                    var prereq = prerequisites.Single(p => p.Id == incomingPrereqId);
-                   
-                    _domainEvents.Raise<CoursePrerequisiteAdded>(new CoursePrerequisiteAdded
+                _domainEvents.Raise<CoursePrerequisiteAdded>(new CoursePrerequisiteAdded
                     {
                         AggregateId = courseId,
-                        PrerequisiteCourseId = incomingPrereqId,
-                        //PrerequisiteCourse = prereq
+                        PrerequisiteCourseId = toAdd,
                     });
-                }
             }
 
-            // Determine prerequisites removed
-			foreach (var existingPrerequisiteId in beforeStateOfPrerequisites)
+            foreach (var toRemove in removed)
             {
-                // If all of the incoming prerequisite Ids do not equal this existing prerequisiteId, it's been removed
-                if (newPrerequisiteIds.Contains(existingPrerequisiteId)==false)
+                _domainEvents.Raise<CoursePrerequisiteRemoved>(new CoursePrerequisiteRemoved
                 {
-                    _domainEvents.Raise<CoursePrerequisiteRemoved>(new CoursePrerequisiteRemoved
-                    {
-                        AggregateId = courseId,
-                        PrerequisiteCourseId = existingPrerequisiteId
-                        //PrerequisiteCourse = prerequisites.Single(p => p.Id == existingPrerequisiteId)
-                    });
-                }
+                    AggregateId = courseId,
+                    PrerequisiteCourseId = toRemove,
+                });
             }
         }
     }
