@@ -20,8 +20,8 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-			var course = _outcomeRepository.Get(e.AggregateId);
-			_outcomeRepository.Delete(course);
+			var outcome = _outcomeRepository.Get(e.AggregateId);
+			_outcomeRepository.Delete(outcome);
 		}
 	}
 }
