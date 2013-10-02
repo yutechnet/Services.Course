@@ -7,15 +7,16 @@ namespace BpeProducts.Services.Course.Domain
 	{
 		public Courses.Course Apply(Events.CourseAssociatedWithProgram msg, Courses.Course course)
 		{
-			course.Programs.Add(new Program
-				{
-					Id = msg.ProgramId,
-                    Name = msg.Name,
-                    Description = msg.Description,
-                    ProgramType = msg.ProgramType,
-                    TenantId = course.TenantId,
-                    OrganizationId = course.OrganizationId
-				});
+		    var program = new Program
+		        {
+		            Id = msg.ProgramId,
+		            Name = msg.Name,
+		            Description = msg.Description,
+		            ProgramType = msg.ProgramType,
+		            TenantId = course.TenantId,
+		            OrganizationId = course.OrganizationId
+		        };
+		    course.AddProgram(program);
 			return course;
 		}
 

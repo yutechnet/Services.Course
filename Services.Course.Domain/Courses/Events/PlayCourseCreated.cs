@@ -7,7 +7,6 @@ namespace BpeProducts.Services.Course.Domain
 		public Courses.Course Apply(CourseCreated msg, Courses.Course course)
 		{
 		    return msg.Course;
-		    course.TenantId = msg.Course.TenantId;
 		}
 
         public TE Apply<T, TE>(T msg, TE entity)

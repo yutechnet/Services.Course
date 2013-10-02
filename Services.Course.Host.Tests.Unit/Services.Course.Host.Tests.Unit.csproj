@@ -256,6 +256,14 @@
     <Compile Include="Outcome\UpdateModelOnOutcomeDeletionTests.cs" />
     <Compile Include="Outcome\UpdateModelOnOutcomeUpdateTests.cs" />
     <Compile Include="Outcome\UpdateModelOnOutcomeVersionCreationTests.cs" />
+    <Compile Include="PlayCourseAssociatedWithProgramTests.cs" />
+    <Compile Include="PlayCourseCreatedTests.cs" />
+    <Compile Include="PlayCourseDeletedTests.cs" />
+    <Compile Include="PlayCourseDisassociatedWithProgramTests.cs" />
+    <Compile Include="PlayCourseInfoUpatedTests.cs" />
+    <Compile Include="PlayCourseSegmentDeletedTests.cs" />
+    <Compile Include="PlayCourseSegmentReorderedTests.cs" />
+    <Compile Include="PlayCourseSegmentUpdatedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VersionableEntityFactoryTests.cs" />
   </ItemGroup>

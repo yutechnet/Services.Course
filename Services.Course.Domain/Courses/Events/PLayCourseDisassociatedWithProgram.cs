@@ -7,12 +7,7 @@ namespace BpeProducts.Services.Course.Domain
 	{
 		public Courses.Course Apply(Events.CourseDisassociatedWithProgram msg, Courses.Course course)
 		{
-			var program = course.Programs.FirstOrDefault(p => p.Id.Equals(msg.ProgramId));
-			if (program != null)
-			{
-				course.Programs.RemoveAt(course.Programs.IndexOf(program));
-			}
-
+            course.RemoveProgram(msg.ProgramId);
 			return course;
 		}
 

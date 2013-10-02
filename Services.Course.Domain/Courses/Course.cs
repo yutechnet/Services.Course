@@ -183,7 +183,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     DisplayOrder = request.DisplayOrder,
                     Type = request.Type,
                     //Content = request.Content ?? new List<Content>(),
-                    TenantId = TenantId
+                    TenantId = TenantId,
+                    ActiveFlag = true
                 };
 
             if (parentSegment != null)
@@ -231,8 +232,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
         public virtual void DeleteSegment(Guid segmentId)
         {
             var segment = _segments.FirstOrDefault(s => s.Id == segmentId);
-
-            segment.Delete();
+            if (segment != null)
+            {
+                segment.Delete();
+            }
         }
 
         protected override VersionableEntity Clone()
@@ -294,6 +297,31 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.",
                                                           learningActivityId, segmentId));
             return learningActivity;
+        }
+
+        public virtual Program AddProgram(Program program)
+        {
+            CheckPublished();
+            
+            if (_programs.FirstOrDefault(x => x.Id == program.Id) == null)
+            {
+                program.Courses.Add(this);
+                _programs.Add(program);
+            }
+
+            return program;
+        }
+
+        public virtual void RemoveProgram(Guid programId)
+        {
+            CheckPublished();
+
+            var program = _programs.FirstOrDefault(x => x.Id == programId);
+            if (program != null)
+            {
+                program.Courses.Remove(this);
+                _programs.Remove(program);
+            }
         }
 
         public virtual CourseLearningActivity AddLearningActivity(Guid segmentId, SaveCourseLearningActivityRequest request, Guid learningActivityId)
