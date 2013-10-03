@@ -129,17 +129,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.That(_programs.Any(p => p.Id == _secondProgramResponse.Id));
         }
 
-        [Then(@"my program information is changed")]
-        public void ThenMyProgramInformationIsChanged()
-        {
-            _responseMessageToValidate = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + _programResponse.Id).Result;
-            _responseMessageToValidate.EnsureSuccessStatusCode();
-            _programResponse = _responseMessageToValidate.Content.ReadAsAsync<ProgramResponse>().Result;
-
-            Assert.AreEqual(_programResponse.Name, _editProgramRequest.Name);
-            Assert.AreEqual(_programResponse.Description, _editProgramRequest.Description);
-        }
-
         [Then(@"the program no longer exists")]
         public void ThenTheProgramNoLongerExists()
         {

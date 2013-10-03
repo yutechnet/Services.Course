@@ -27,9 +27,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
     [TestFixture]
     public class CourseFactoryTests
     {
-
-        private ICourseFactory _factory;
-            
         [SetUp]
         public void Setup()
         {
@@ -160,6 +157,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         public TestCourseFactory(IStoreEvents store, IIndex<string, IPlayEvent> index, IRepository courseRepository) : base(store, index, courseRepository)
         {
         }
+
+
 
         public new Domain.Courses.Course BuildFromTemplate(Domain.Courses.Course template, SaveCourseRequest request)
         {

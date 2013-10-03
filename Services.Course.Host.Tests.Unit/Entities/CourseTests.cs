@@ -302,6 +302,93 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         }
 
         [Test]
+        public void Can_get_learning_activity_from_course()
+        {
+            var course = new Domain.Courses.Course
+            {
+                OrganizationId = Guid.NewGuid(),
+                TenantId = 999999
+            };
+
+            var segmentId = Guid.NewGuid();
+            var request = new SaveCourseSegmentRequest
+            {
+                Name = "Week 1",
+                Description = "Week 1 Description",
+                Type = "Weekly"
+            };
+
+            course.AddSegment(segmentId, Guid.Empty, request);
+            var segment = course.Segments.First(s => s.Name == request.Name);
+
+            var learningActivityId = Guid.NewGuid();
+            var learningActivityRequest = new SaveCourseLearningActivityRequest
+            {
+                Name = "Discussion 1",
+                //Type = "Discussion",
+                Type = CourseLearningActivityType.Discussion,
+                IsGradeable = true,
+                IsExtraCredit = false,
+                MaxPoint = 100
+
+            };
+            course.AddLearningActivity(segmentId, learningActivityRequest, learningActivityId);
+
+            var learningActivity =
+                course.GetLearningActivity(segmentId, learningActivityId);
+
+            Assert.That(learningActivity.Id, Is.EqualTo(learningActivityId));
+            Assert.That(learningActivity.Name, Is.EqualTo(learningActivityRequest.Name));
+            Assert.That(learningActivity.Type, Is.EqualTo(learningActivityRequest.Type));
+            Assert.That(learningActivity.IsGradeable, Is.EqualTo(learningActivityRequest.IsGradeable));
+            Assert.That(learningActivity.IsExtraCredit, Is.EqualTo(learningActivityRequest.IsExtraCredit));
+            Assert.That(learningActivity.MaxPoint, Is.EqualTo(learningActivityRequest.MaxPoint));
+            Assert.That(learningActivity.TenantId, Is.EqualTo(course.TenantId));
+        }
+
+        [Test]
+        public void Can_check_for_missing_segment_or_learningActivity()
+        {
+            var course = new Domain.Courses.Course
+            {
+                OrganizationId = Guid.NewGuid(),
+                TenantId = 999999
+            };
+
+            var segmentId = Guid.NewGuid();
+            var request = new SaveCourseSegmentRequest
+            {
+                Name = "Week 1",
+                Description = "Week 1 Description",
+                Type = "Weekly"
+            };
+
+            course.AddSegment(segmentId, Guid.Empty, request);
+            var segment = course.Segments.First(s => s.Name == request.Name);
+
+            var learningActivityId = Guid.NewGuid();
+            var learningActivityRequest = new SaveCourseLearningActivityRequest
+            {
+                Name = "Discussion 1",
+                //Type = "Discussion",
+                Type = CourseLearningActivityType.Discussion,
+                IsGradeable = true,
+                IsExtraCredit = false,
+                MaxPoint = 100
+
+            };
+            course.AddLearningActivity(segmentId, learningActivityRequest, learningActivityId);
+
+            Assert.Throws<NotFoundException>(() => course.GetLearningActivity(segmentId, Guid.NewGuid()));
+            Assert.Throws<NotFoundException>(() => course.GetLearningActivity(Guid.NewGuid(), learningActivityId));
+
+            course.DeleteLearningActivity(segmentId, learningActivityId);
+            Assert.Throws<NotFoundException>(() => course.GetLearningActivity(segmentId, learningActivityId));
+            
+
+        }
+
+        [Test]
         public void Can_remove_learningoutcome_from_supporting_outcome()
         {
             var course = new Domain.Courses.Course
