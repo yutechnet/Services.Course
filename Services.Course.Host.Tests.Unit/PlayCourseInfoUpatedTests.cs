@@ -34,7 +34,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Name = "course name"
                 };
 
-            var course = new Course.Domain.Courses.Course
+            var course = new Domain.Courses.Course
                 {
                     Code = string.Empty,
                     CourseType = ECourseType.Competency,

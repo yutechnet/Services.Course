@@ -301,5 +301,57 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(learningActivity.TenantId, Is.EqualTo(course.TenantId));
         }
 
+        [Test]
+        public void Can_remove_learningoutcome_from_supporting_outcome()
+        {
+            var course = new Domain.Courses.Course
+            {
+                OrganizationId = Guid.NewGuid(),
+                TenantId = 999999
+            };
+
+            var learningOutcome1 = new LearningOutcome {Id = Guid.NewGuid()};
+            course.SupportOutcome(learningOutcome1);
+            var learningOutcome2 = new LearningOutcome { Id = Guid.NewGuid() };
+            course.SupportOutcome(learningOutcome2);
+            var learningOutcome3 = new LearningOutcome { Id = Guid.NewGuid() };
+            course.SupportOutcome(learningOutcome3);
+
+            Assert.That(course.SupportedOutcomes.Count, Is.EqualTo(3));
+
+            course.UnsupportOutcome(learningOutcome1);
+
+            Assert.That(course.SupportedOutcomes.Count, Is.EqualTo(2));
+            Assert.That(course.SupportedOutcomes.FirstOrDefault(x => x.Id == learningOutcome1.Id), Is.Null);
+        }
+
+        [Test]
+        public void Can_check_for_missing_parent_segment_during_adding_segment()
+        {
+            var course = new Domain.Courses.Course
+            {
+                OrganizationId = Guid.NewGuid(),
+                TenantId = 999999
+            };
+
+            Assert.Throws<BadRequestException>(
+                () => course.AddSegment(Guid.NewGuid(), Guid.NewGuid(), new SaveCourseSegmentRequest()));
+        }
+
+        [Test]
+        public void Can_check_for_missing_segment_during_update()
+        {
+            var course = new Domain.Courses.Course
+            {
+                OrganizationId = Guid.NewGuid(),
+                TenantId = 999999
+            };
+
+            Assert.Throws<NotFoundException>(() => course.UpdateSegment(Guid.NewGuid(), new SaveCourseSegmentRequest()));
+            Assert.Throws<NotFoundException>(
+                () => course.ReorderSegment(Guid.NewGuid(), new UpdateCourseSegmentRequest(), 1));
+
+        }
+
     }
 }

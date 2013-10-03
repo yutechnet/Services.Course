@@ -24,7 +24,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Can_disassociate_program_from_course_upon_event()
         {
-            var course = new Course.Domain.Courses.Course();
+            var course = new Domain.Courses.Course();
 
             var program1 = new Program {Id = Guid.NewGuid()};
             course.AddProgram(program1);

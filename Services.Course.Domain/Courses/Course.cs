@@ -344,7 +344,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 TenantId = TenantId,
                 ActiveDate = request.ActiveDate,
                 InactiveDate = request.InactiveDate,
-                DueDate = request.DueDate
+                DueDate = request.DueDate,
+                ActiveFlag = true
             };
 
             if (courseLearningActivity != null)

@@ -25,7 +25,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Can_delete_segment_upon_event()
         {
-            var course = new Course.Domain.Courses.Course();
+            var course = new Domain.Courses.Course();
             var segmentId = Guid.NewGuid();
 
             course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest { Description = "segment 1" });

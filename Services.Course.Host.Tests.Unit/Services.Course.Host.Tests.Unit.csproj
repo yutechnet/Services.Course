@@ -235,6 +235,12 @@
   <ItemGroup>
     <Compile Include="CourseFactoryTests.cs" />
     <Compile Include="CourseServiceTests.cs" />
+    <Compile Include="Course\Events\PlayCourseLearningActivityAddedTests.cs" />
+    <Compile Include="Course\Events\PlayCourseLearningActivityDeletedTests.cs" />
+    <Compile Include="Course\Events\PlayCourseLearningActivityUpdatedTests.cs" />
+    <Compile Include="Course\Events\PlayCoursePrerequisiteAddedTests.cs" />
+    <Compile Include="Course\Events\PlayCoursePrerequisiteRemovedTests.cs" />
+    <Compile Include="Course\Events\PlayCourseSegmentAddedTests.cs" />
     <Compile Include="Entities\CourseTests.cs" />
     <Compile Include="Handlers\CourseEventPersisterHandlerTests.cs" />
     <Compile Include="Handlers\CourseUpdatedHandlerTests.cs" />

@@ -24,7 +24,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Can_update_cours_segment_upon_event()
         {
-            var course = new Course.Domain.Courses.Course();
+            var course = new Domain.Courses.Course();
             var segmentId = Guid.NewGuid();
             course.AddSegment(segmentId, Guid.Empty, new SaveCourseSegmentRequest
                 {
