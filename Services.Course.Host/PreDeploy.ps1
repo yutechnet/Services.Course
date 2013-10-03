@@ -127,3 +127,9 @@ if($EventLogSource -ne $null)
 {
 	Deployment-SetEventLogSource -EventLogName "Application" -EventSource "$EventLogSource"
 }
+
+# create logging directory
+if($Log4netLogFile -ne $null)
+{
+	Deployment-CreateParentDirectory -File "$Log4netLogFile"
+}

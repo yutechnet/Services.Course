@@ -1,4 +1,4 @@
-# Deployment Module v0.1.42
+# Deployment Module v0.1.49
 
 $script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -241,6 +241,71 @@ function Deployment-SetupAppPool
 		# app pool was not found, create the app pool
 		Write-Host "Creating new app pool `"$appPoolName`""
 		New-WebAppPool -Name $appPoolName -Force | Out-Null
+	}
+}
+
+function Deployment-SetupIISLogDirectory
+{
+	param(
+		[string]$websiteName = $(throw 'website name is required'),
+		[string]$iisLogDirectory = $(throw 'iis log directory is required')
+	)
+	
+	if (-not (ConfigureIIS)) {return}
+	
+	Import-Module WebAdministration
+	
+	Write-Host "Checking IIS log path"
+	# get existing log directory
+	$existingLogDir = (Get-ItemProperty "IIS:\Sites\$websiteName").logFile.directory
+	if ($existingLogDir -ne $iisLogDirectory)
+	{
+		# check to see if the log directory exists
+		if (-not (Test-Path $iisLogDirectory))
+		{
+			Write-Host "Creating directory $iisLogDirectory"
+			New-Item -ItemType directory -Path $iisLogDirectory | Out-Null
+		}
+		
+		# app pool was not found, create the app pool
+		Write-Host "Updating IIS log path to `"$iisLogDirectory`""
+		$loggingProperty = Get-ItemProperty "IIS:\Sites\$websiteName"
+		$loggingProperty.logFile.directory = "$iisLogDirectory"
+		$loggingProperty | set-item
+	}
+}
+
+function Deployment-SetupIISLoggingFields
+{
+	param(
+		[string]$websiteName = $(throw 'website name is required'),
+		[array]$iisLoggingFields = $(throw 'array of iis log fields is required')
+	)
+	
+	if (-not (ConfigureIIS)) {return}
+	
+	Import-Module WebAdministration
+	
+	Write-Host "Checking IIS logging fields"
+	
+	# build compare string
+	$compareFields = ""
+	foreach($field in $iisLoggingFields)
+	{
+		$compareFields += ",$field"
+	}
+	$compareFields = $compareFields.Substring(1)
+	
+	# get existing fields
+	$existingFields = (Get-ItemProperty "IIS:\Sites\$websiteName").logFile.logExtFileFlags
+	
+	$testCompare = [string]::Compare($existingFields, $compareFields, $True)
+	if ($testCompare -ne 0)
+	{
+		Write-Host "Updating IIS logging fields"
+		$loggingProperty = Get-ItemProperty "IIS:\Sites\$websiteName"
+		$loggingProperty.logFile.logExtFileFlags = $compareFields
+		$loggingProperty | Set-Item
 	}
 }
 
@@ -866,6 +931,14 @@ function Deployment-StopWindowsService
 		{
 			Write-Host "Stopping Windows service `"$name`""
 			Stop-Service "$name" -ErrorAction SilentlyContinue
+			
+			# check to make sure service is stopped
+			$existingService = Get-Service | Where-Object {$_.Name -eq "$name"}
+			do {
+				Start-Sleep -s 5
+				$existingService = Get-Service | Where-Object {$_.Name -eq "$name"}
+			}
+			while ($existingService.Status -ine "stopped")
 		}
 		else
 		{
@@ -1218,11 +1291,11 @@ function Deployment-UninstallNServiceBusService
 	$pinfo = New-Object System.Diagnostics.ProcessStartInfo
 	$pinfo.CreateNoWindow = $true
 	$pinfo.UseShellExecute = $false
-	$pinfo.FileName = "./NServiceBus.Host.exe"
+	$pinfo.FileName = ".\NServiceBus.Host.exe"
 	$pinfo.Arguments = "-uninstall -serviceName=`"$serviceName`""
 	$pinfo.RedirectStandardOutput = $true
 	$pinfo.RedirectStandardError = $true
-	Write-Host "./NServiceBus.Host.exe $($($pinfo.Arguments).Replace("$password", "XXXXXXXX"))"
+	Write-Host "$($pinfo.FileName) $($($pinfo.Arguments).Replace("$password", "********"))"
 	$p = New-Object System.Diagnostics.Process
 	$p.StartInfo = $pinfo
 	$p.Start() | Out-Null
@@ -1257,7 +1330,7 @@ function Deployment-InstallNServiceBusService
 	$pinfo = New-Object System.Diagnostics.ProcessStartInfo
 	$pinfo.CreateNoWindow = $true
 	$pinfo.UseShellExecute = $false
-	$pinfo.FileName = "./NServiceBus.Host.exe"
+	$pinfo.FileName = ".\NServiceBus.Host.exe"
 	$pinfo.Arguments = "-install"
 	$pinfo.Arguments += " -serviceName=`"$serviceName`""
 	if ($displayName) { $pinfo.Arguments += " -displayName=`"$displayName`"" }
@@ -1266,7 +1339,7 @@ function Deployment-InstallNServiceBusService
 	if ($startMode) { if ($startMode -ine "auto") { $pinfo.Arguments += " -startManually" } }
 	$pinfo.RedirectStandardOutput = $true
 	$pinfo.RedirectStandardError = $true
-	Write-Host "./NServiceBus.Host.exe $($($pinfo.Arguments).Replace("$password", "XXXXXXXX"))"
+	Write-Host "$($pinfo.FileName) $($($pinfo.Arguments).Replace("$password", "********"))"
 	$p = New-Object System.Diagnostics.Process
 	$p.StartInfo = $pinfo
 	$p.Start() | Out-Null
@@ -1284,6 +1357,136 @@ function Deployment-InstallNServiceBusService
 		Write-Host $stdErr
 		Write-Host "----- End Install Error -----"
 	}
+}
+
+#endregion
+
+#region Generic Functions
+function Deployment-CreateParentDirectory
+{
+	param(
+		[string]$file
+	)
+	$fileInfo = ([System.IO.FileInfo]$file)
+	$folderPath =  Split-Path $fileInfo.fullname -Parent
+	if (-not (Test-Path $folderPath))
+	{
+		Write-Host "Creating directory $folderPath"
+		New-Item -ItemType directory -Path $folderPath | Out-Null
+	}
+}
+
+function Deployment-BackupFile
+{
+	param(
+		[string]$file,
+		[string]$backupExtension
+	)
+	
+	# set the default backup extension
+	if(-not $backupExtension){$backupExtension = "backup"}
+	
+	# get the full path to the file
+	if (-not ([System.IO.Path]::IsPathRooted($file)))
+	{
+		$file = Resolve-Path $file
+	}
+	
+	# set the backed up file name
+	$backedUpFile = "$file.$backupExtension"
+	
+	# delete the target file if it exists
+	if (Test-Path $backedUpFile)
+	{
+		Write-Host "Deleting file $backedUpFile"
+		Remove-Item $backedUpFile -Force | Out-Null
+ 	}
+	
+	# backup the file
+	Write-Host "Backing up file $file to $backedUpFile" 
+	Copy-Item -Path $file -Destination $backedUpFile | Out-Null
+}
+
+function Deployment-RestoreFile
+{
+	param(
+		[string]$file,
+		[string]$backupExtension,
+		[switch]$deleteBackup
+	)
+	
+	# set the default backup extension
+	if(-not $backupExtension){$backupExtension = "backup"}
+	
+	# get the full path to the file
+	if (-not ([System.IO.Path]::IsPathRooted($file)))
+	{
+		$file = Resolve-Path $file
+	}
+	
+	# set the backed up file name
+	$backedUpFile = "$file.$backupExtension"
+	
+	if (-not (Test-Path $backedUpFile))
+	{
+		# we cant find the backed up file to restore
+		#error
+ 	}
+	else
+	{
+		# delete the target file if it exists
+		if (Test-Path $file)
+		{
+			Remove-Item $file -Force | Out-Null
+		}
+	}
+	
+	# restore file
+	Write-Host "Restoring file $file from $backedUpFile" 
+	Copy-Item -Path $backedUpFile -Destination $file | Out-Null
+	
+	# delete backup
+	if ($deleteBackup)
+	{
+		if (Test-Path $backedUpFile)
+		{
+			Write-Host "Deleting file $backedUpFile"
+			Remove-Item $backedUpFile -Force | Out-Null
+		}
+	}
+}
+
+function Deployment-UpdateFile
+{
+	param(
+		[string]$file,
+		[string]$regex,
+		[string]$value,
+		[string]$message,
+		[switch]$htmlEncode
+	)
+	
+	# we might need to encode the value to make it xml safe
+	# encode the value if the htmlEncode switch has been set
+	if ($htmlEncode)
+	{
+		Add-Type -AssemblyName System.Web
+		$value = [System.Web.HttpUtility]::HtmlEncode($value)
+	}
+	
+	if (-not $message)
+	{
+		Write-Host "Updating file $file"
+	}
+	else
+	{
+		Write-Host "Updating file $file - $message"
+	}
+	
+	# update the file using the regex
+	(Get-Content $file) | 
+		Foreach-Object {$_ -replace $regex, $value} | 
+		Set-Content $file
 }
 
 #endregion
