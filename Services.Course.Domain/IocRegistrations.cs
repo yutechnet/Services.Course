@@ -32,7 +32,7 @@ namespace BpeProducts.Services.Course.Domain
             bool.TryParse(ConfigurationManager.AppSettings["UpdateSchema"], out updateSchema);
 
             Common.NHibernate.IocRegistrations.RegisterSessionFactory(containerBuilder, connectionString, dropSchema: false, updateSchema: updateSchema);
-			containerBuilder.Register<ILog>(c => LogManager.GetLogger("CourseBuilder"));
+			
             containerBuilder
                 .RegisterType<CourseRepository>().As<ICourseRepository>()
                 .EnableInterfaceInterceptors().EnableValidation()
