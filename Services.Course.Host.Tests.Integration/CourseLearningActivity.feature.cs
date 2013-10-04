@@ -395,6 +395,9 @@ this.FeatureBackground();
             table12.AddRow(new string[] {
                         "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+            table12.AddRow(new string[] {
+                        "CustomAttribute",
+                        "{\"id\":\"49\",\"summary\":\"asdf\",\"type\":\"Parabola.Web.Contract.Discussion.Forum\"}"});
 #line 88
  testRunner.When("I update \'Discussion 1\' learning activity with the following info", ((string)(null)), table12, "When ");
 #line hidden
@@ -422,7 +425,10 @@ this.FeatureBackground();
             table13.AddRow(new string[] {
                         "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 97
+            table13.AddRow(new string[] {
+                        "CustomAttribute",
+                        "{\"id\":\"49\",\"summary\":\"asdf\",\"type\":\"Parabola.Web.Contract.Discussion.Forum\"}"});
+#line 98
  testRunner.Then("my course learning activity \'Discussion 1\' contains the following", ((string)(null)), table13, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -433,7 +439,7 @@ this.FeatureBackground();
         public virtual void DeleteALearningActivity()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a learning activity", ((string[])(null)));
-#line 107
+#line 109
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -454,13 +460,13 @@ this.FeatureBackground();
                         "100",
                         "20",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 108
+#line 110
  testRunner.Given("I add the following course learning activities to \'Week 1\' course segment", ((string)(null)), table14, "Given ");
-#line 111
- testRunner.When("I remove \"Discussion 1\" learning activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 112
- testRunner.And("I retrieve the course learning activity \'Discussion 1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
+ testRunner.When("I remove \"Discussion 1\" learning activity", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 114
+ testRunner.And("I retrieve the course learning activity \'Discussion 1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 115
  testRunner.Then("I get \'NotFound\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -471,7 +477,7 @@ this.FeatureBackground();
         public virtual void CannotAddALearningActivityToACourseThatIsAlreadyPublished()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add a learning activity to a course that is already published", ((string[])(null)));
-#line 115
+#line 117
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -482,7 +488,7 @@ this.FeatureBackground();
             table15.AddRow(new string[] {
                         "Econ 100",
                         "Blah blah"});
-#line 116
+#line 118
  testRunner.When("I publish the following courses", ((string)(null)), table15, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -509,9 +515,9 @@ this.FeatureBackground();
             table16.AddRow(new string[] {
                         "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 119
+#line 121
  testRunner.And("I add the following learning activity to \'Week 1\' course segment", ((string)(null)), table16, "And ");
-#line 128
+#line 130
  testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -522,7 +528,7 @@ this.FeatureBackground();
         public virtual void AddANewLearningActivityWithACustomType()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add a new learning activity with a custom type", ((string[])(null)));
-#line 130
+#line 132
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
@@ -553,8 +559,8 @@ this.FeatureBackground();
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
             table17.AddRow(new string[] {
                         "CustomAttribute",
-                        "some string value"});
-#line 131
+                        "{\"id\":\"49\",\"summary\":\"asdf\",\"type\":\"Parabola.Web.Contract.Discussion.Forum\"}"});
+#line 133
  testRunner.When("I add the following learning activity to \'Week 1\' course segment", ((string)(null)), table17, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -583,8 +589,8 @@ this.FeatureBackground();
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
             table18.AddRow(new string[] {
                         "CustomAttribute",
-                        "some string value"});
-#line 141
+                        "{\"id\":\"49\",\"summary\":\"asdf\",\"type\":\"Parabola.Web.Contract.Discussion.Forum\"}"});
+#line 143
  testRunner.Then("my course learning activity \'Custom 1\' contains the following", ((string)(null)), table18, "Then ");
 #line hidden
             this.ScenarioCleanup();

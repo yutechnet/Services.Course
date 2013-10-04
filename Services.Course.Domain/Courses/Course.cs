@@ -370,6 +370,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             learningActivity.MaxPoint = request.MaxPoint;
             learningActivity.Weight = request.Weight;
             learningActivity.ObjectId = request.ObjectId;
+            learningActivity.CustomAttribute = request.CustomAttribute;
 
             return learningActivity;
         }
