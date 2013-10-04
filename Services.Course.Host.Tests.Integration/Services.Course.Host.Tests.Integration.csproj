@@ -86,9 +86,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.61\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Services.Acl.Client, Version=1.0.19.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Services.Acl.Client, Version=1.0.23.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Acl.Client.1.0.19\lib\net40\BpeProducts.Services.Acl.Client.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Acl.Client.1.0.23\lib\net40\BpeProducts.Services.Acl.Client.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
