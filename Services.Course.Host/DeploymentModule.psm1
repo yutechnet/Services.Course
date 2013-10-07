@@ -1,4 +1,4 @@
-# Deployment Module v0.1.49
+# Deployment Module v0.1.52
 
 $script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -1489,4 +1489,39 @@ function Deployment-UpdateFile
 		Set-Content $file
 }
 
+function Is64Bit  
+{
+	[IntPtr]::Size -eq 8
+}
+
+function Deployment-InstallIISRewriteModule
+{
+	Write-Host "Checking to see if URL Rewrite has been installed"
+	if (-not (Test-Path "$env:programfiles\Reference Assemblies\Microsoft\IIS\Microsoft.Web.Iis.Rewrite.dll"))
+	{
+		Write-Host "Installing URL Rewrite"
+		$webClient = New-Object System.Net.WebClient
+		$msi = "C:\Temp\IISRewrite.msi"
+		if (-not (Test-Path "C:\Temp"))
+		{
+			New-Item -ItemType directory -Path "C:\Temp" | Out-Null
+		}
+		if (Test-Path $msi)
+		{
+			Remove-Item $msi -Force | Out-Null
+		}
+		$url = ""
+		if (Is64Bit)
+		{
+			$url = "http://go.microsoft.com/?linkid=9722532"
+		}
+		else
+		{
+			$url = "http://go.microsoft.com/?linkid=9722533"
+		}
+		$webClient.DownloadFile($url, $msi)
+		msiexec.exe /i $msi /passive
+		Start-Sleep -s 30
+	}
+ }
 #endregion
