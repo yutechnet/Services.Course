@@ -51,7 +51,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 
 	
 
-        public Courses.Course Load(Guid courseId)
+        public Courses.Course GetOrThrow(Guid courseId)
         {
             var course = Get(courseId);
 

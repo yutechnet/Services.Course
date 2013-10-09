@@ -50,7 +50,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     Description = "Description"
                 };
 
-            _mockRepository.Setup(c => c.Load(It.IsAny<Guid>())).Returns(course);
+            _mockRepository.Setup(c => c.GetOrThrow(It.IsAny<Guid>())).Returns(course);
 
             var courseSegementId = Guid.NewGuid();
             var courseSegmentAddedEvent = new CourseSegmentAdded
@@ -68,7 +68,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             _updateModelOnAddingCourseSegment.Handle(courseSegmentAddedEvent);
 
-            _mockRepository.Verify(c => c.Load(courseId), Times.Once());
+            _mockRepository.Verify(c => c.GetOrThrow(courseId), Times.Once());
             _mockRepository.Verify(c => c.Save(It.Is<Domain.Courses.Course>(d => d.Segments.Count == 1 && d.Segments[0].Id == courseSegementId)), 
                 Times.Once());
         }
@@ -89,7 +89,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             course.AddSegment(parentSegmentId, Guid.Empty, new SaveCourseSegmentRequest());
 
-            _mockRepository.Setup(c => c.Load(It.IsAny<Guid>())).Returns(course);
+            _mockRepository.Setup(c => c.GetOrThrow(It.IsAny<Guid>())).Returns(course);
 
             var courseSegmentId = Guid.NewGuid();
             var courseSegmentAddedEvent = new CourseSegmentAdded
@@ -107,7 +107,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 
             _updateModelOnAddingCourseSegment.Handle(courseSegmentAddedEvent);
 
-            _mockRepository.Verify(c => c.Load(courseId), Times.Once());
+            _mockRepository.Verify(c => c.GetOrThrow(courseId), Times.Once());
             _mockRepository.Verify(c => c.Save(It.Is<Domain.Courses.Course>(d => d.Segments.Count == 2 
                 && d.Segments[0].ChildSegments.Count == 1
                 && d.Segments[0].ChildSegments[0].Id == courseSegmentId)),
