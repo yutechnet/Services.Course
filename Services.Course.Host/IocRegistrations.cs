@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Autofac;
 using Autofac.Extras.DynamicProxy2;
+using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Log;
 using BpeProducts.Services.Course.Domain;
@@ -21,6 +22,8 @@ namespace BpeProducts.Services.Course.Host
             containerBuilder.RegisterType<SectionClient>().As<ISectionClient>()
                 .EnableInterfaceInterceptors().EnableValidation()
                 .InterceptedBy(typeof(PublicInterfaceLoggingInterceptor));
+
+            containerBuilder.RegisterType<BootstrapContextSamlTokenExtractor>().As<ISamlTokenExtractor>();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using BpeProducts.Common.Authorization;
 
 namespace BpeProducts.Services.Course.Host.TempSectionContracts
 {
@@ -11,10 +13,17 @@ namespace BpeProducts.Services.Course.Host.TempSectionContracts
 
     public class SectionClient : ISectionClient
     {
+        private readonly ISamlTokenExtractor _tokenExtractor;
         public Uri BaseAddress { get; private set; }
 
-        public SectionClient(Uri baseAddress)
+        public SectionClient(ISamlTokenExtractor tokenExtractor)
         {
+            _tokenExtractor = tokenExtractor;
+        }
+
+        public SectionClient(ISamlTokenExtractor tokenExtractor, Uri baseAddress)
+        {
+            _tokenExtractor = tokenExtractor;
             BaseAddress = baseAddress;
         }
 
@@ -25,7 +34,11 @@ namespace BpeProducts.Services.Course.Host.TempSectionContracts
 
         public HttpResponseMessage CreateSection(Uri sectionServiceAddress, CreateSectionRequest request)
         {
+            var samlToken = _tokenExtractor.GetSamlToken();
+
             var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("SAML", samlToken);
+
             var uri = new Uri(sectionServiceAddress, "/section");
             var response = client.PostAsJsonAsync(uri.ToString(), request);
 

@@ -5,10 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BpeProducts.Common.WebApi.Attributes;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Host.TempSectionContracts;
-using CreateSectionRequest = BpeProducts.Services.Course.Contract.CreateSectionRequest;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
@@ -29,7 +29,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [ValidateModelState]
         [SetSamlTokenInBootstrapContext]
 		// POST api/courses
-        public HttpResponseMessage Post(Guid id, CreateSectionRequest request)
+        public HttpResponseMessage Post(Guid id, CourseSectionRequest request)
         {
             var course = _courseRepository.GetOrThrow(id);
             var sectionRequest = course.GetSectionRequest(request);

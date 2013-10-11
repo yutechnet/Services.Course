@@ -62,10 +62,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return ApiFeature.CourseTestHost.Post<CourseLearningActivityResource, SaveCourseLearningActivityRequest>(name, requestUri, request);
         }
 
-        public static HttpResponseMessage CreateSection(string name, CourseResource course, CreateSectionRequest request)
+        public static HttpResponseMessage CreateSection(string name, CourseResource course, CourseSectionRequest request)
         {           
             var requestUri = string.Format("{0}/section", course.ResourceUri);
-            return ApiFeature.CourseTestHost.Post<SectionResource, CreateSectionRequest>(name, requestUri, request);
+            return ApiFeature.CourseTestHost.Post<SectionResource, CourseSectionRequest>(name, requestUri, request);
         }
     }
 }

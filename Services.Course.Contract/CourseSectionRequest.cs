@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace BpeProducts.Services.Course.Contract
 {
     [DataContract]
-    public class CreateSectionRequest
+    public class CourseSectionRequest
     {
         [DataMember(IsRequired = true)]
         public Uri SectionServiceUri { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -440,5 +441,226 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
         }
 
+        [Test]
+        public void Can_build_section_request()
+        {
+            var sectionRequest = new CourseSectionRequest
+                {
+                    Name = "SectionName",
+                    Code = "SectionCode",
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now.AddMonths(1)
+                };
+
+            var course = new Domain.Courses.Course
+            {
+                TenantId = 999999,
+                OrganizationId = Guid.NewGuid(),
+            };
+
+            course.Publish("It's published");
+
+            var request = course.GetSectionRequest(sectionRequest);
+
+            Assert.That(request.Name, Is.EqualTo(sectionRequest.Name));
+            Assert.That(request.Code, Is.EqualTo(sectionRequest.Code));
+            Assert.That(request.StartDate, Is.EqualTo(sectionRequest.StartDate));
+            Assert.That(request.EndDate, Is.EqualTo(sectionRequest.EndDate));
+            Assert.That(request.CourseId, Is.EqualTo(course.Id));
+            Assert.That(request.TenantId, Is.EqualTo(course.TenantId));
+        }
+
+        [Test]
+        public void Can_not_build_section_request_from_unpublished_course()
+        {
+            var course = new Domain.Courses.Course
+            {
+                TenantId = 999999,
+                OrganizationId = Guid.NewGuid(),
+            };
+
+            Assert.Throws<BadRequestException>(() => course.GetSectionRequest(new CourseSectionRequest()));
+        }
+
+        [Test]
+        public void Can_build_section_request_with_subsections()
+        {
+            var sectionRequest = new CourseSectionRequest
+            {
+                Name = "SectionName",
+                Code = "SectionCode",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddMonths(1)
+            };
+
+            var course = new Domain.Courses.Course
+            {
+                TenantId = 999999,
+                OrganizationId = Guid.NewGuid(),
+            };
+
+            var seg1Id = Guid.NewGuid();
+            var seg11Id = Guid.NewGuid();
+            var seg2Id = Guid.NewGuid();
+            var seg21Id = Guid.NewGuid();
+            var seg22Id = Guid.NewGuid();
+            var seg221Id = Guid.NewGuid();
+
+            var seg1 = course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "1"});
+            var seg11 = course.AddSegment(seg11Id, seg1Id, new SaveCourseSegmentRequest { Name = "11" });
+            var seg2 = course.AddSegment(seg2Id, new SaveCourseSegmentRequest { Name = "2" });
+            var seg21 = course.AddSegment(seg21Id, seg2Id, new SaveCourseSegmentRequest { Name = "21" });
+            var seg22 = course.AddSegment(seg22Id, seg2Id, new SaveCourseSegmentRequest { Name = "22" });
+            var seg221 = course.AddSegment(seg221Id, seg22Id, new SaveCourseSegmentRequest { Name = "221" });
+
+            course.Publish("It's published");
+
+            var request = course.GetSectionRequest(sectionRequest);
+
+            Assert.That(request.Segments.Count, Is.EqualTo(2));
+
+            Assert.That(request.Segments.ElementAt(0).Name, Is.EqualTo(seg1.Name));
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.Count, Is.EqualTo(1));
+
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).Name, Is.EqualTo(seg11.Name));
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).ChildSegments.Count, Is.EqualTo(0));
+
+            Assert.That(request.Segments.ElementAt(1).Name, Is.EqualTo(seg2.Name));
+            Assert.That(request.Segments.ElementAt(1).ChildSegments.Count, Is.EqualTo(2));
+
+            Assert.That(request.Segments.ElementAt(1).ChildSegments.ElementAt(0).Name, Is.EqualTo(seg21.Name));
+            Assert.That(request.Segments.ElementAt(1).ChildSegments.ElementAt(0).ChildSegments.Count, Is.EqualTo(0));
+
+            Assert.That(request.Segments.ElementAt(1).ChildSegments.ElementAt(1).Name, Is.EqualTo(seg22.Name));
+            Assert.That(request.Segments.ElementAt(1).ChildSegments.ElementAt(1).ChildSegments.Count, Is.EqualTo(1));
+
+            Assert.That(request.Segments.ElementAt(1).ChildSegments.ElementAt(1).ChildSegments.ElementAt(0).Name, Is.EqualTo(seg221.Name));
+            Assert.That(request.Segments.ElementAt(1).ChildSegments.ElementAt(1).ChildSegments.ElementAt(0).ChildSegments.Count, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Can_build_section_request_with_subsection_and_learning_activity()
+        {
+            var sectionRequest = new CourseSectionRequest
+            {
+                Name = "SectionName",
+                Code = "SectionCode",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddMonths(1)
+            };
+
+            var course = new Domain.Courses.Course
+            {
+                TenantId = 999999,
+                OrganizationId = Guid.NewGuid(),
+            };
+
+            var seg1Id = Guid.NewGuid();
+            var la1Id = Guid.NewGuid();
+
+            var cs = new SaveCourseSegmentRequest
+                {
+                    Name = "S1",
+                    Description = "SegmentDescription",
+                    Type = "SomeType",
+                    DisplayOrder = 5,
+                };
+
+            course.AddSegment(seg1Id, cs);
+
+            var weight = Random.Next(1000);
+            var points = Random.Next(weight);
+
+            var cla = new SaveCourseLearningActivityRequest
+                {
+                    Name = "LA1",
+                    Type = RandomEnumValue<CourseLearningActivityType>(),
+                    Weight = weight,
+                    MaxPoint = points,
+                    ActiveDate = Random.Next(50000),
+                    InactiveDate = Random.Next(50000),
+                    DueDate = Random.Next(50000),
+                    IsGradeable = Random.Next(1) == 1,
+                    IsExtraCredit = Random.Next(1) == 1,
+                    CustomAttribute = Random.Next().ToString(CultureInfo.InvariantCulture)
+                };
+
+            course.AddLearningActivity(seg1Id, cla, la1Id);
+
+            course.Publish("It's published");
+
+            var request = course.GetSectionRequest(sectionRequest);
+
+            var segment = request.Segments.First();
+            var learningActivity = request.Segments.First().LearningActivities.First();
+
+            Assert.That(segment.Name, Is.EqualTo(cs.Name));
+            Assert.That(segment.Description, Is.EqualTo(cs.Description));
+            Assert.That(segment.Type, Is.EqualTo(cs.Type));
+            Assert.That(segment.DisplayOrder, Is.EqualTo(cs.DisplayOrder));
+
+            Assert.That(learningActivity.Name, Is.EqualTo(cla.Name));
+            Assert.That((int)learningActivity.Type, Is.EqualTo((int)cla.Type));
+            Assert.That(learningActivity.Weight, Is.EqualTo(cla.Weight));
+            Assert.That(learningActivity.MaxPoint, Is.EqualTo(cla.MaxPoint));
+            Assert.That(learningActivity.ActiveDate, Is.EqualTo(cla.ActiveDate));
+            Assert.That(learningActivity.InactiveDate, Is.EqualTo(cla.InactiveDate));
+            Assert.That(learningActivity.DueDate, Is.EqualTo(cla.DueDate));
+            Assert.That(learningActivity.IsGradeable, Is.EqualTo(cla.IsGradeable));
+            Assert.That(learningActivity.IsExtraCredit, Is.EqualTo(cla.IsExtraCredit));
+            Assert.That(learningActivity.CustomAttribute, Is.EqualTo(cla.CustomAttribute));
+        }
+
+        [Test]
+        public void Can_build_section_request_with_subsections_and_learning_activities()
+        {
+            var sectionRequest = new CourseSectionRequest
+            {
+                Name = "SectionName",
+                Code = "SectionCode",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddMonths(1)
+            };
+
+            var course = new Domain.Courses.Course
+            {
+                TenantId = 999999,
+                OrganizationId = Guid.NewGuid(),
+            };
+
+            var seg1Id = Guid.NewGuid();
+            var seg2Id = Guid.NewGuid();
+            var la1Id = Guid.NewGuid();
+            var la2Id = Guid.NewGuid();
+            var la3Id = Guid.NewGuid();
+
+            course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
+            course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
+            var la1 = course.AddLearningActivity(seg1Id, new SaveCourseLearningActivityRequest { Name = "LA1"}, la1Id);
+            var la2 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la2Id);
+            var la3 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la3Id);
+
+            course.Publish("It's published");
+
+            var request = course.GetSectionRequest(sectionRequest);
+
+            Assert.That(request.Segments.ElementAt(0).LearningActivities.Count, Is.EqualTo(1));
+            Assert.That(request.Segments.ElementAt(0).LearningActivities.ElementAt(0).Name, Is.EqualTo(la1.Name));
+
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningActivities.Count, Is.EqualTo(2));
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningActivities.ElementAt(0).Name, Is.EqualTo(la2.Name));
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningActivities.ElementAt(1).Name, Is.EqualTo(la3.Name));
+        }
+
+        
+        static readonly Random Random = new Random();
+        static T RandomEnumValue<T>()
+        {
+            return Enum
+                .GetValues(typeof(T))
+                .Cast<T>()
+                .OrderBy(x => Random.Next())
+                .FirstOrDefault();
+        }
     }
 }

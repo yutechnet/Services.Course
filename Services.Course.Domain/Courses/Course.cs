@@ -9,7 +9,6 @@ using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Host.TempSectionContracts;
 using Newtonsoft.Json;
 using ServiceStack.Common.Extensions;
-using CreateSectionRequest = BpeProducts.Services.Course.Contract.CreateSectionRequest;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -151,6 +150,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
             }
         }
 
+        public virtual CourseSegment AddSegment(Guid segmentId, SaveCourseSegmentRequest request)
+        {
+            return AddSegment(segmentId, Guid.Empty, request);
+        }
+
         public virtual CourseSegment AddSegment(Guid segmentId, Guid parentSegmentId, SaveCourseSegmentRequest request)
         {
             CheckPublished();
@@ -270,12 +274,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         #region Create Section Request
 
-        public virtual Host.TempSectionContracts.CreateSectionRequest GetSectionRequest(CreateSectionRequest request)
+        public virtual CreateSectionRequest GetSectionRequest(CourseSectionRequest request)
         {
             if(!IsPublished)
-                throw new BadRequestException("Cannot create a section from course {0}. Course is not published.");
+                throw new BadRequestException(string.Format("Cannot create a section from course {0}. Course is not published.", Id));
 
-            var translatedRequest = new Host.TempSectionContracts.CreateSectionRequest
+            var translatedRequest = new CreateSectionRequest
             {
                 Name = request.Name,
                 Code = request.Code,
@@ -283,7 +287,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 EndDate = request.EndDate,
                 TenantId = TenantId,
                 CourseId = Id,
-                Segments = BuildSectionSegments(Segments)
+                Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null))
             };
 
             return translatedRequest;

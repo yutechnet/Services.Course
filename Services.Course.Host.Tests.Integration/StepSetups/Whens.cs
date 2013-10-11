@@ -513,7 +513,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var course = Resources<CourseResource>.Get(row["CourseName"]);
                 var uri = new Uri("http://mockedlocation/");
 
-                var request = new CreateSectionRequest
+                var request = new CourseSectionRequest
                 {
                     SectionServiceUri = uri,
                     Name = row["Name"],
