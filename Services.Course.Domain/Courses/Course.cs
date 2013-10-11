@@ -6,8 +6,10 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Host.TempSectionContracts;
 using Newtonsoft.Json;
 using ServiceStack.Common.Extensions;
+using CreateSectionRequest = BpeProducts.Services.Course.Contract.CreateSectionRequest;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -112,15 +114,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             _supportedOutcomes.Remove(outcome);
             outcome.SupportingEntities.Remove(this);
-        }
-
-        public virtual void BuildIndex(IList<CourseSegment> segments, ref Dictionary<Guid, CourseSegment> index)
-        {
-            foreach (var courseSegment in segments)
-            {
-                index.Add(courseSegment.Id, courseSegment);
-                if (courseSegment.ChildSegments.Count > 0) BuildIndex(courseSegment.ChildSegments, ref index);
-            }
         }
 
         public virtual void SetPrograms(IList<Program> programs)
@@ -275,6 +268,65 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return course;
         }
 
+        #region Create Section Request
+
+        public virtual Host.TempSectionContracts.CreateSectionRequest GetSectionRequest(CreateSectionRequest request)
+        {
+            if(!IsPublished)
+                throw new BadRequestException("Cannot create a section from course {0}. Course is not published.");
+
+            var translatedRequest = new Host.TempSectionContracts.CreateSectionRequest
+            {
+                Name = request.Name,
+                Code = request.Code,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+                TenantId = TenantId,
+                CourseId = Id,
+                Segments = BuildSectionSegments(Segments)
+            };
+
+            return translatedRequest;
+        }
+
+        private List<SectionSegmentRequest> BuildSectionSegments(IEnumerable<CourseSegment> segments)
+        {
+            var sectionSegments = segments.Select(courseSegment => new SectionSegmentRequest
+            {
+                Name = courseSegment.Name,
+                Description = courseSegment.Description,
+                DisplayOrder = courseSegment.DisplayOrder,
+                Type = courseSegment.Type,
+                CourseSegmentId = courseSegment.Id,
+                ChildSegments = BuildSectionSegments(courseSegment.ChildSegments),
+                LearningActivities = BuildLearningActivities(courseSegment.CourseLearningActivities)
+            }).ToList();
+
+            return sectionSegments;
+        }
+
+        private IList<SectionLearningActivityRequest> BuildLearningActivities(IEnumerable<CourseLearningActivity> courseLearningActivities)
+        {
+            var sectionLearningActivities = courseLearningActivities.Select(courseLearningActivity => new SectionLearningActivityRequest
+            {
+                Name = courseLearningActivity.Name,
+                Type = (SectionLearningActivityType)courseLearningActivity.Type,
+                ActiveDate = courseLearningActivity.ActiveDate,
+                InactiveDate = courseLearningActivity.InactiveDate,
+                DueDate = courseLearningActivity.DueDate,
+                IsExtraCredit = courseLearningActivity.IsExtraCredit,
+                IsGradeable = courseLearningActivity.IsGradeable,
+                MaxPoint = courseLearningActivity.MaxPoint,
+                Weight = courseLearningActivity.Weight,
+                ObjectId = courseLearningActivity.ObjectId,
+                CustomAttribute = courseLearningActivity.CustomAttribute
+            }).ToList();
+
+            return sectionLearningActivities;
+        }
+
+        #endregion
+
         #region CourseLearningActivity
         private CourseSegment GetSegmentOrThrow(Guid segmentId)
         {
@@ -399,6 +451,5 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity;
         }
         #endregion
-
     }
 }

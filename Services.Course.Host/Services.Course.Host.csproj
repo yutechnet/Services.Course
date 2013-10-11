@@ -230,31 +230,6 @@
     </Compile>
     <Compile Include="IocRegistrations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TempSectionContracts\AnnouncementResponse.cs" />
-    <Compile Include="TempSectionContracts\CourseInfoResponse.cs" />
-    <Compile Include="TempSectionContracts\CourseLearningActivityResponse.cs" />
-    <Compile Include="TempSectionContracts\CourseSegmentInfo.cs" />
-    <Compile Include="TempSectionContracts\CreateAnnouncementRequest.cs" />
-    <Compile Include="TempSectionContracts\CreateEnrollmentRequest.cs" />
-    <Compile Include="TempSectionContracts\CreateSectionRequest.cs" />
-    <Compile Include="TempSectionContracts\EnrollmentResponse.cs" />
-    <Compile Include="TempSectionContracts\GradeRequest.cs" />
-    <Compile Include="TempSectionContracts\GradeResponse.cs" />
-    <Compile Include="TempSectionContracts\ResponseBase.cs" />
-    <Compile Include="TempSectionContracts\SectionClient.cs" />
-    <Compile Include="TempSectionContracts\SectionLearningActivityInfo.cs" />
-    <Compile Include="TempSectionContracts\SectionLearningActivityRequest.cs" />
-    <Compile Include="TempSectionContracts\SectionResponse.cs" />
-    <Compile Include="TempSectionContracts\SectionSegmentInfo.cs" />
-    <Compile Include="TempSectionContracts\SectionSegmentRequest.cs" />
-    <Compile Include="TempSectionContracts\SubmissionRequest.cs" />
-    <Compile Include="TempSectionContracts\TenantRequestBase.cs" />
-    <Compile Include="TempSectionContracts\TenantResponseBase.cs" />
-    <Compile Include="TempSectionContracts\UpdateAnnouncementRequest.cs" />
-    <Compile Include="TempSectionContracts\UpdateEnrollmentRequest.cs" />
-    <Compile Include="TempSectionContracts\UpdateSectionLearningActivityRequest.cs" />
-    <Compile Include="TempSectionContracts\UpdateSectionRequest.cs" />
-    <Compile Include="TempSectionContracts\UpdateSectionSegmentRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />

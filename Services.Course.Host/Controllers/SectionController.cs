@@ -16,10 +16,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
     public class SectionController : ApiController
     {
         private readonly ICourseRepository _courseRepository;
+        private readonly ISectionClient _sectionClient;
 
-        public SectionController(ICourseRepository courseRepository)
+        public SectionController(ICourseRepository courseRepository, ISectionClient sectionClient)
         {
             _courseRepository = courseRepository;
+            _sectionClient = sectionClient;
         }
 
         [Transaction]
@@ -30,57 +32,10 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public HttpResponseMessage Post(Guid id, CreateSectionRequest request)
         {
             var course = _courseRepository.GetOrThrow(id);
-            var translatedRequest = new TempSectionContracts.CreateSectionRequest
-                {
-                    Name = request.Name,
-                    Code = request.Code,
-                    StartDate = request.StartDate,
-                    EndDate = request.EndDate,
-                    TenantId = course.TenantId,
-                    CourseId = course.Id,
-                    Segments = BuildSectionSegments(course.Segments)
-                };
+            var sectionRequest = course.GetSectionRequest(request);
 
-            var client = new SectionClient(request.SectionServiceUri);
-
-            var response = client.CreateSection(translatedRequest);
+            var response = _sectionClient.CreateSection(request.SectionServiceUri, sectionRequest);
             return response;
-        }
-
-        private List<SectionSegmentRequest> BuildSectionSegments(IEnumerable<CourseSegment> segments)
-        {
-            var sectionSegments = segments.Select(courseSegment => new SectionSegmentRequest
-                {
-                    Name = courseSegment.Name, 
-                    Description = courseSegment.Description, 
-                    DisplayOrder = courseSegment.DisplayOrder, 
-                    Type = courseSegment.Type, 
-                    CourseSegmentId = courseSegment.Id, 
-                    ChildSegments = BuildSectionSegments(courseSegment.ChildSegments), 
-                    LearningActivities = BuildLearningActivities(courseSegment.CourseLearningActivities)
-                }).ToList();
-
-            return sectionSegments;
-        }
-
-        private IList<SectionLearningActivityRequest> BuildLearningActivities(IEnumerable<CourseLearningActivity> courseLearningActivities)
-        {
-            var sectionLearningActivities = courseLearningActivities.Select(courseLearningActivity => new SectionLearningActivityRequest
-                {
-                    Name = courseLearningActivity.Name,
-                    Type = (SectionLearningActivityType) courseLearningActivity.Type,
-                    ActiveDate = courseLearningActivity.ActiveDate,
-                    InactiveDate = courseLearningActivity.InactiveDate,
-                    DueDate = courseLearningActivity.DueDate,
-                    IsExtraCredit = courseLearningActivity.IsExtraCredit,
-                    IsGradeable = courseLearningActivity.IsGradeable,
-                    MaxPoint = courseLearningActivity.MaxPoint,
-                    Weight = courseLearningActivity.Weight,
-                    ObjectId = courseLearningActivity.ObjectId,
-                    CustomAttribute = courseLearningActivity.CustomAttribute
-                }).ToList();
-
-            return sectionLearningActivities;
         }
     }
 }

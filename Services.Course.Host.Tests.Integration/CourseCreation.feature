@@ -4,7 +4,7 @@ Feature: Course Management
 	As a course builder
 	I want to create, edit and delete a course
 Background: 
-	And the following organizations exist
+	Given the following organizations exist
 	| Name |
 	| COB  |
 	And I have the following capabilities

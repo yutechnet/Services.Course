@@ -1,4 +1,5 @@
-﻿using BpeProducts.Common.WebApiTest.Framework;
+﻿using System;
+using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System.Net.Http;
@@ -59,6 +60,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             request.TenantId = ApiFeature.TenantId;
             var requestUri = string.Format("{0}/learningactivity", segment.ResourceUri);
             return ApiFeature.CourseTestHost.Post<CourseLearningActivityResource, SaveCourseLearningActivityRequest>(name, requestUri, request);
+        }
+
+        public static HttpResponseMessage CreateSection(string name, CourseResource course, CreateSectionRequest request)
+        {           
+            var requestUri = string.Format("{0}/section", course.ResourceUri);
+            return ApiFeature.CourseTestHost.Post<SectionResource, CreateSectionRequest>(name, requestUri, request);
         }
     }
 }

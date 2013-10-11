@@ -80,7 +80,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             table1.AddRow(new string[] {
                         "CourseView"});
 #line 8
- testRunner.And("I have the following capabilities", ((string)(null)), table1, "And ");
+ testRunner.Given("I have the following capabilities", ((string)(null)), table1, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});

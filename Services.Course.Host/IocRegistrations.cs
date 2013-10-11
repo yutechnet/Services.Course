@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Autofac;
+using Autofac.Extras.DynamicProxy2;
 using BpeProducts.Common.Ioc;
+using BpeProducts.Common.Log;
 using BpeProducts.Services.Course.Domain;
+using BpeProducts.Services.Course.Domain.Repositories;
+using BpeProducts.Services.Course.Host.TempSectionContracts;
 
 namespace BpeProducts.Services.Course.Host
 {
@@ -14,6 +18,9 @@ namespace BpeProducts.Services.Course.Host
         {
             Common.WebApi.IocRegistrations.RegisterWebApi(containerBuilder);
 			
+            containerBuilder.RegisterType<SectionClient>().As<ISectionClient>()
+                .EnableInterfaceInterceptors().EnableValidation()
+                .InterceptedBy(typeof(PublicInterfaceLoggingInterceptor));
         }
     }
 }

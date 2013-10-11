@@ -3,6 +3,7 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
+using Moq;
 using NHibernate.Linq;
 using NUnit.Framework;
 using System;
@@ -502,6 +503,39 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var resource = Resources<CourseResource>.Get(courseName);
             GetOperations.GetCourse(resource);
+        }
+
+        [When(@"I create the following sections")]
+        public void WhenICreateTheFollowingSections(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var course = Resources<CourseResource>.Get(row["CourseName"]);
+                var uri = new Uri("http://mockedlocation/");
+
+                var request = new CreateSectionRequest
+                {
+                    SectionServiceUri = uri,
+                    Name = row["Name"],
+                    Code = row["Code"],
+                    StartDate = row.GetValue("StartDate", DateTime.MinValue),
+                    EndDate = row.GetValue<DateTime?>("EndDate", null),
+                };
+
+                PostOperations.CreateSection(request.Name, course, request);
+            }
+        }
+
+        [When(@"the section service returns '(.*)'")]
+        public void WhenTheSectionServiceReturns(string statusCode)
+        {
+            var uri = new Uri("http://mockedlocation/");
+            var code = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), statusCode, true);
+
+            var response = new HttpResponseMessage(code);
+            response.Headers.Location = new Uri(uri, Guid.NewGuid().ToString());
+            ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<Uri>(), It.IsAny<TempSectionContracts.CreateSectionRequest>())).Returns(response);
+            ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<TempSectionContracts.CreateSectionRequest>())).Returns(response);
         }
     }
 }

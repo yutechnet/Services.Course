@@ -5,8 +5,8 @@ Feature: CourseSegment
 	I want to add segments to the course
 
 Background: 
-	And I have the following capabilities
-	| Capability   |
+	Given I have the following capabilities
+	| Capability    |
 	| CourseCreate  |
 	| CoursePublish |
 	| CourseView    |

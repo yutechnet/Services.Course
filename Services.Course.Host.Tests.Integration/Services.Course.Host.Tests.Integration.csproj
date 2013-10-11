@@ -255,6 +255,12 @@
     <Compile Include="Resources\ProgramResource.cs" />
     <Compile Include="Operations\GetOperations.cs" />
     <Compile Include="Resources\ResourceFactory.cs" />
+    <Compile Include="Resources\SectionResource.cs" />
+    <Compile Include="SectionCreation.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SectionCreation.feature</DependentUpon>
+    </Compile>
     <Compile Include="StepSetups\Account\Givens.cs" />
     <Compile Include="StepSetups\Givens.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -320,6 +326,10 @@
     <None Include="ProgramCreation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ProgramCreation.feature.cs</LastGenOutput>
+    </None>
+    <None Include="SectionCreation.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SectionCreation.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -76,7 +76,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             table1.AddRow(new string[] {
                         "COB"});
 #line 7
- testRunner.And("the following organizations exist", ((string)(null)), table1, "And ");
+ testRunner.Given("the following organizations exist", ((string)(null)), table1, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Capability"});
