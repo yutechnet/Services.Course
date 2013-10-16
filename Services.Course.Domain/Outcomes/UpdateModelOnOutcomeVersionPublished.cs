@@ -14,12 +14,10 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
     public class UpdateModelOnOutcomeVersionPublished : IHandle<OutcomeVersionPublished>
     {
         private readonly IRepository _repository;
-        private readonly IOutcomeFactory _outcomeFactory;
-
-        public UpdateModelOnOutcomeVersionPublished(IRepository repository, IOutcomeFactory outcomeFactory)
+        
+        public UpdateModelOnOutcomeVersionPublished(IRepository repository)
         {
             _repository = repository;
-            _outcomeFactory = outcomeFactory;
         }
 
         public void Handle(IDomainEvent domainEvent)

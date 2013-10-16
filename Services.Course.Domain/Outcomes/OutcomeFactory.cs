@@ -7,12 +7,11 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
 {
 	public class OutcomeFactory : VersionFactory<LearningOutcome>, IOutcomeFactory
 	{
-		private readonly IRepository _learningOutcomeRepository;
+		
 
 		public OutcomeFactory(IRepository learningOutcomeRepository)
 			: base(learningOutcomeRepository)
 		{
-			_learningOutcomeRepository = learningOutcomeRepository;
 		}
 
 		public LearningOutcome Build(OutcomeRequest request)

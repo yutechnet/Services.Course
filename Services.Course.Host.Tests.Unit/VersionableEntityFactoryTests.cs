@@ -20,21 +20,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 	public class VersionableEntityFactoryTests
 	{
 		private Mock<IRepository> _mockRepository;
-		private Mock<ICourseFactory> _mockCourseFactory;
 		private VersionableEntityFactory _factory;
 
 		[SetUp]
 		public void SetUp()
 		{
 			_mockRepository = new Mock<IRepository>();
-			_mockCourseFactory = new Mock<ICourseFactory>();
-			_factory = new VersionableEntityFactory(_mockRepository.Object, _mockCourseFactory.Object);
+			_factory = new VersionableEntityFactory(_mockRepository.Object);
 		}
 
 		[Test]
 		public void Can_locate_type_from_entity_assembly()
 		{
-			_mockCourseFactory.Setup(c => c.Reconstitute(It.IsAny<Guid>())).Returns(new Domain.Courses.Course());
 			_mockRepository.Setup(r => r.Get(It.IsAny<Type>(), It.IsAny<Guid>())).Returns(new LearningOutcome());
 
 			var entityType = "course";

@@ -1,66 +1,53 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Version;
-using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain
 {
-    public class VersionableEntityFactory : IVersionableEntityFactory
-    {
-        private readonly IRepository _repository;
-        private readonly ICourseFactory _courseFactory;
+	public class VersionableEntityFactory : IVersionableEntityFactory
+	{
+		private readonly IRepository _repository;
 
-        public VersionableEntityFactory(IRepository repository, ICourseFactory courseFactory)
-        {
-            _repository = repository;
-            _courseFactory = courseFactory;
-        }
 
-        public VersionableEntity Get(string entityType, Guid id)
-        {
-            var entityAssembly = Assembly.Load("BpeProducts.Services.Course.Domain");
+		public VersionableEntityFactory(IRepository repository)
+		{
+			_repository = repository;
+		}
 
-            var type = (from t in entityAssembly.GetTypes()
-                        where t.Name.ToLower() == entityType
-                        select t).FirstOrDefault();
+		public VersionableEntity Get(string entityType, Guid id)
+		{
+			Assembly entityAssembly = Assembly.Load("BpeProducts.Services.Course.Domain");
 
-            if (type == null)
-            {
-                throw new BadRequestException(string.Format("Type {0} is not found.", entityType));
-            }
+			Type type = (from t in entityAssembly.GetTypes()
+			             where t.Name.ToLower() == entityType
+			             select t).FirstOrDefault();
 
-            return Get(type, id);
-        }
+			if (type == null)
+			{
+				throw new BadRequestException(string.Format("Type {0} is not found.", entityType));
+			}
 
-        public VersionableEntity Get(Type type, Guid id)
-        {
-            VersionableEntity versionable;
+			return Get(type, id);
+		}
 
-            //if (type.Name == typeof(Courses.Course).Name)
-            //{
-            //    versionable = _courseFactory.Reconstitute(id);
-            //}
-            //else
-            //{
-            //    versionable = _repository.Get(type, id) as VersionableEntity;
-            //}
-            // use repository for course for now
-            versionable = _repository.Get(type, id) as VersionableEntity;
+		public VersionableEntity Get(Type type, Guid id)
+		{
+			VersionableEntity versionable;
+			versionable = _repository.Get(type, id) as VersionableEntity;
 
-            if (versionable == null)
-                throw new NotFoundException(string.Format("{0} {1} is not found.", type.Name, id));
+			if (versionable == null)
+				throw new NotFoundException(string.Format("{0} {1} is not found.", type.Name, id));
 
-            return versionable;
-        }
+			return versionable;
+		}
 
-        public VersionableEntity Get(Type type, Guid originalEntityId, string versionNumber)
-        {
-            return _repository.Query<VersionableEntity>()
-                           .FirstOrDefault(r => r.OriginalEntity.Id == originalEntityId && r.VersionNumber == versionNumber);
-        }
-    }
+		public VersionableEntity Get(Type type, Guid originalEntityId, string versionNumber)
+		{
+			return _repository.Query<VersionableEntity>()
+			                  .FirstOrDefault(r => r.OriginalEntity.Id == originalEntityId && r.VersionNumber == versionNumber);
+		}
+	}
 }

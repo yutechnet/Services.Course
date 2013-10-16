@@ -1,52 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Outcomes;
-using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Outcome
 {
-    [TestFixture]
-    public class UpdateModelOnOutcomeVersionCreationTests
-    {
-        private UpdateModelOnOutcomeVersionCreation _handler;
-        private Mock<IRepository> _mockRepository;
-        private Mock<IOutcomeFactory> _mockOutcomeFactory;
+	[TestFixture]
+	public class UpdateModelOnOutcomeVersionCreationTests
+	{
+		[SetUp]
+		public void SetUp()
+		{
+			_mockRepository = new Mock<IRepository>();
 
-        [SetUp]
-        public void SetUp()
-        {
-            _mockRepository = new Mock<IRepository>();
-            _mockOutcomeFactory = new Mock<IOutcomeFactory>();
+			_handler = new UpdateModelOnOutcomeVersionCreation(_mockRepository.Object);
+		}
 
-            _handler = new UpdateModelOnOutcomeVersionCreation(_mockRepository.Object, _mockOutcomeFactory.Object);
-        }
+		private UpdateModelOnOutcomeVersionCreation _handler;
+		private Mock<IRepository> _mockRepository;
 
-        [Test]
-        public void Can_update_model_on_outcome_version_created()
-        {
-            var @event = new OutcomeVersionCreated
-                {
-                    AggregateId = Guid.NewGuid(),
-                    NewVersion = new LearningOutcome()
-                };
+		[Test]
+		public void Can_check_for_correct_domain_event()
+		{
+			var @event = new OutcomeDeleted();
+			Assert.Throws<InvalidOperationException>(() => _handler.Handle(@event));
+		}
 
-            _handler.Handle(@event);
+		[Test]
+		public void Can_update_model_on_outcome_version_created()
+		{
+			var @event = new OutcomeVersionCreated
+				{
+					AggregateId = Guid.NewGuid(),
+					NewVersion = new LearningOutcome()
+				};
 
-            _mockRepository.Verify(x => x.Save(@event.NewVersion));
-        }
+			_handler.Handle(@event);
 
-        [Test]
-        public void Can_check_for_correct_domain_event()
-        {
-            var @event = new OutcomeDeleted();
-            Assert.Throws<InvalidOperationException>(() => _handler.Handle(@event));
-        }
-    }
+			_mockRepository.Verify(x => x.Save(@event.NewVersion));
+		}
+	}
 }

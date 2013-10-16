@@ -23,7 +23,6 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             var @event = domainEvent as CourseUpdated;
             if (@event != null)
             {
-                var events = new List<IDomainEvent>();
                 foreach (var programId in @event.Request.ProgramIds)
                     if (@event.Old.Programs.All(x => x.Id != programId))
                     {
