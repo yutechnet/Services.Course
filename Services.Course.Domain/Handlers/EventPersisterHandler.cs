@@ -1,34 +1,34 @@
-﻿using BpeProducts.Services.Course.Domain.Events;
-using BpeProducts.Services.Course.Domain.Outcomes;
-using BpeProducts.Services.Course.Domain.Repositories;
-using EventStore;
+﻿//using BpeProducts.Services.Course.Domain.Events;
+//using BpeProducts.Services.Course.Domain.Outcomes;
+//using BpeProducts.Services.Course.Domain.Repositories;
+//using EventStore;
 
-namespace BpeProducts.Services.Course.Domain.Handlers
-{
-    public class EventPersisterHandler : IHandle<CourseAssociatedWithProgram>,
-                                               IHandle<CourseDisassociatedWithProgram>,
-                                               IHandle<CourseCreated>, IHandle<CourseInfoUpdated>,
-                                               IHandle<CourseDeleted>, IHandle<CourseSegmentAdded>,
-                                               IHandle<CourseSegmentUpdated>, IHandle<CourseSegmentDeleted>,
-                                               IHandle<CourseLearningActivityAdded>,
-                                               IHandle<CourseLearningActivityUpdated>, IHandle<CourseLearningActivityDeleted>, 
-                                               IHandle<VersionCreated>,
-                                               IHandle<VersionPublished>, IHandle<OutcomeVersionCreated>,
-                                               IHandle<OutcomeVersionPublished>, IHandle<OutcomeCreated>, 
-                                               IHandle<OutcomeDeleted>, IHandle<OutcomeUpdated>,
-											   IHandle<CoursePrerequisiteAdded>, IHandle<CoursePrerequisiteRemoved>,
-                                               IHandle<CourseSegmentReordered>
-    {
-        private readonly IStoreCourseEvents _eventStore;
+//namespace BpeProducts.Services.Course.Domain.Handlers
+//{
+//	public class EventPersisterHandler : IHandle<CourseAssociatedWithProgram>,
+//											   IHandle<CourseDisassociatedWithProgram>,
+//											   IHandle<CourseCreated>, IHandle<CourseInfoUpdated>,
+//											   IHandle<CourseDeleted>, IHandle<CourseSegmentAdded>,
+//											   IHandle<CourseSegmentUpdated>, IHandle<CourseSegmentDeleted>,
+//											   IHandle<CourseLearningActivityAdded>,
+//											   IHandle<CourseLearningActivityUpdated>, IHandle<CourseLearningActivityDeleted>, 
+//											   IHandle<VersionCreated>,
+//											   IHandle<VersionPublished>, IHandle<OutcomeVersionCreated>,
+//											   IHandle<OutcomeVersionPublished>, IHandle<OutcomeCreated>, 
+//											   IHandle<OutcomeDeleted>, IHandle<OutcomeUpdated>,
+//											   IHandle<CoursePrerequisiteAdded>, IHandle<CoursePrerequisiteRemoved>,
+//											   IHandle<CourseSegmentReordered>
+//	{
+//		private readonly IStoreCourseEvents _eventStore;
 
-        public EventPersisterHandler(IStoreCourseEvents eventStore)
-        {
-            _eventStore = eventStore;
-        }
+//		public EventPersisterHandler(IStoreCourseEvents eventStore)
+//		{
+//			_eventStore = eventStore;
+//		}
 
-        public void Handle(IDomainEvent domainEvent)
-        {
-            _eventStore.Store(domainEvent);
-        }
-    }
-}
+//		public void Handle(IDomainEvent domainEvent)
+//		{
+//			_eventStore.Store(domainEvent);
+//		}
+//	}
+//}
