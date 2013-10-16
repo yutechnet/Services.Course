@@ -89,60 +89,35 @@ namespace BpeProducts.Services.Course.Domain
 
 			containerBuilder.Register<IStoreEvents>(x => new CourseEventStore());
 
-            //there must be an easier way using register generics
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseAssociatedWithProgram>>();
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseDisassociatedWithProgram>>();
-
-            containerBuilder.RegisterType<UpdateModelOnCourseCreation>().As<IHandle<CourseCreated>>();
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseCreated>>();
             
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseInfoUpdated>>();
-
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentAdded>>();
+            containerBuilder.RegisterType<UpdateModelOnCourseCreation>().As<IHandle<CourseCreated>>();
             containerBuilder.RegisterType<UpdateModelOnAddingCourseSegment>().As<IHandle<CourseSegmentAdded>>();
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentUpdated>>();
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentDeleted>>();
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseSegmentReordered>>();
             containerBuilder.RegisterType<UpdateModelOnUpdatingCourseSegment>().As<IHandle<CourseSegmentUpdated>>();
             containerBuilder.RegisterType<UpdateModelOnDeletingCourseSegment>().As<IHandle<CourseSegmentDeleted>>();
             containerBuilder.RegisterType<UpdateModelOnReorderingCourseSegment>().As<IHandle<CourseSegmentReordered>>();
 
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseLearningActivityAdded>>();
             containerBuilder.RegisterType<UpdateModelOnAddingCourseLearningActivity>().As<IHandle<CourseLearningActivityAdded>>();
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseLearningActivityUpdated>>();
             containerBuilder.RegisterType<UpdateModelOnUpdatingCourseLearningActivity>().As<IHandle<CourseLearningActivityUpdated>>();
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseLearningActivityDeleted>>();
             containerBuilder.RegisterType<UpdateModelOnDeletingCourseLearningActivity>().As<IHandle<CourseLearningActivityDeleted>>();
             
             containerBuilder.RegisterType<UpdateModelOnCourseUpdating>().As<IHandle<CourseUpdated>>();
 			containerBuilder.RegisterType<CourseUpdatedHandler>().As<IHandle<CourseUpdated>>();
 
 			containerBuilder.RegisterType<UpdateModelOnAddingCoursePrerequisite>().As<IHandle<CoursePrerequisiteAdded>>();
-			//containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CoursePrerequisiteAdded>>();
-
+			
 			containerBuilder.RegisterType<UpdateModelOnRemovingCoursePrerequisite>().As<IHandle<CoursePrerequisiteRemoved>>();
-			//containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CoursePrerequisiteRemoved>>();
-
+			
 			containerBuilder.RegisterType<UpdateModelOnCourseDeletion>().As<IHandle<CourseDeleted>>();
-			//containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<CourseDeleted>>();
+			containerBuilder.RegisterType<UpdateModelOnCourseVersionCreation>().As<IHandle<VersionCreated>>();
 
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<VersionCreated>>();
-            containerBuilder.RegisterType<UpdateModelOnCourseVersionCreation>().As<IHandle<VersionCreated>>();
-
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<VersionPublished>>();
             containerBuilder.RegisterType<UpdateModelOnCourseVersionPublish>().As<IHandle<VersionPublished>>();
             containerBuilder.RegisterType<UpdateModelOnOutcomeCreation>().As<IHandle<OutcomeCreated>>();
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeCreated>>();
             containerBuilder.RegisterType<UpdateModelOnOutcomeUpdate>().As<IHandle<OutcomeUpdated>>();
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeUpdated>>();
-
+            
             containerBuilder.RegisterType<UpdateModelOnOutcomeDeletion>().As<IHandle<OutcomeDeleted>>();
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeDeleted>>();
-
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeVersionCreated>>();
+            
             containerBuilder.RegisterType<UpdateModelOnOutcomeVersionCreation>().As<IHandle<OutcomeVersionCreated>>();
 
-            //containerBuilder.RegisterType<EventPersisterHandler>().As<IHandle<OutcomeVersionPublished>>();
             containerBuilder.RegisterType<UpdateModelOnOutcomeVersionPublished>().As<IHandle<OutcomeVersionPublished>>();
 
         }
