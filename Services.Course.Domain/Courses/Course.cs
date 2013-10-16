@@ -179,7 +179,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     Description = request.Description,
                     DisplayOrder = request.DisplayOrder,
                     Type = request.Type,
-                    //Content = request.Content ?? new List<Content>(),
                     TenantId = TenantId,
                     ActiveFlag = true
                 };
@@ -242,12 +241,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             course.Programs = new List<Program>(this.Programs);
 
-            //var pgms = new List<Program>();
-            //foreach (var program in this.Programs)
-            //{
-            //	pgms.Add(program.DeepClone());
-            //}
-            //course.Programs = pgms;
 
             SupportedOutcomes = new List<LearningOutcome>(this.SupportedOutcomes);
             Prerequisites = new List<Course>(this.Prerequisites);
