@@ -9,6 +9,5 @@ namespace BpeProducts.Services.Course.Domain.Outcomes
 	{
 		Entities.LearningOutcome Build(OutcomeRequest request);
         Entities.LearningOutcome Reconstitute(Guid aggregateId);
-        Entities.LearningOutcome Reconstitute(ICollection<EventMessage> stream, Entities.LearningOutcome outcome = null);
-	}
+    }
 }

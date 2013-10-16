@@ -34,24 +34,7 @@ namespace BpeProducts.Services.Course.Domain
                 Course = course
             });
 
-			//if (request.TemplateCourseId.HasValue)
-			//{
-			//	// This is a workaround for CourseCreated event, when reconstituted, fails to correctly serialize Program collection
-			//	foreach (var program in course.Programs)
-			//	{
-			//		_domainEvents.Raise<CourseAssociatedWithProgram>(new CourseAssociatedWithProgram
-			//		{
-			//			AggregateId = course.Id,
-			//			Description = program.Description,
-			//			Name = program.Name,
-			//			ProgramId = program.Id,
-			//			ProgramType = program.ProgramType
-			//		});
-			//	}
-
-			//}
-
-            return Mapper.Map<CourseInfoResponse>(course);
+			return Mapper.Map<CourseInfoResponse>(course);
         }
 
         public void Update(Guid courseId, UpdateCourseRequest request)

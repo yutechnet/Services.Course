@@ -9,6 +9,5 @@ namespace BpeProducts.Services.Course.Domain
 	{
 		Courses.Course Create(SaveCourseRequest request);
 		Courses.Course Reconstitute(Guid aggregateId);
-		Courses.Course Reconstitute(ICollection<EventMessage> stream, Courses.Course course = null);
 	}
 }
