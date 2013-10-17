@@ -6,9 +6,9 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
-using BpeProducts.Services.Course.Host.TempSectionContracts;
 using Newtonsoft.Json;
 using ServiceStack.Common.Extensions;
+using Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {

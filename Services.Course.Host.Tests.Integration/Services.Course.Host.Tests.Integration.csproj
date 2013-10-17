@@ -127,6 +127,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Services.Section.Contracts">
+      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.138\lib\net40\Services.Section.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.60.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.Common.3.9.62\lib\net35\ServiceStack.Common.dll</HintPath>

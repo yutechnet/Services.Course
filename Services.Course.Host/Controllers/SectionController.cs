@@ -6,9 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Repositories;
-using BpeProducts.Services.Course.Host.TempSectionContracts;
+using Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
