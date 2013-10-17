@@ -64,13 +64,6 @@ namespace BpeProducts.Services.Course.Host
 		                               defaults: new {id = RouteParameter.Optional});
 
             config.EnableSystemDiagnosticsTracing();
-
-			//id this works move to common.webapi to let serializer handle self referencing objects
-			var jsonSerializerSettings = new JsonSerializerSettings
-				{
-					PreserveReferencesHandling = PreserveReferencesHandling.Objects
-				};
-			config.Formatters.JsonFormatter.SerializerSettings = jsonSerializerSettings;
 		}
 	}
 }
