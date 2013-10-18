@@ -7,9 +7,7 @@ using Autofac.Extras.DynamicProxy2;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Log;
-using BpeProducts.Services.Course.Domain;
-using BpeProducts.Services.Course.Domain.Repositories;
-using BpeProducts.Services.Course.Host.TempSectionContracts;
+using Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Host
 {

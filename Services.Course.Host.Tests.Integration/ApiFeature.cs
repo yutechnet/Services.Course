@@ -1,16 +1,13 @@
 ﻿using System.Linq;
 using Autofac;
-using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.WebApiTest;
 using BpeProducts.Services.Acl.Client;
-using BpeProducts.Services.Course.Host.TempSectionContracts;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Net.Http;
 using Moq;
-using NUnit.Framework;
+using Services.Section.Contracts;
 using TechTalk.SpecFlow;
 using BpeProducts.Common.WebApiTest.Framework;
 

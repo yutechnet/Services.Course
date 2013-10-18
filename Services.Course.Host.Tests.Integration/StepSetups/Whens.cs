@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using Services.Section.Contracts;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using BpeProducts.Common.WebApiTest.Framework;
@@ -534,8 +535,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             var response = new HttpResponseMessage(code);
             response.Headers.Location = new Uri(uri, Guid.NewGuid().ToString());
-            ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<Uri>(), It.IsAny<TempSectionContracts.CreateSectionRequest>())).Returns(response);
-            ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<TempSectionContracts.CreateSectionRequest>())).Returns(response);
+            ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<Uri>(), It.IsAny<CreateSectionRequest>())).Returns(response);
+            ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<CreateSectionRequest>())).Returns(response);
         }
     }
 }

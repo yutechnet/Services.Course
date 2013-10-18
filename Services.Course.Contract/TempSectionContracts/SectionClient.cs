@@ -39,7 +39,7 @@ namespace BpeProducts.Services.Course.Host.TempSectionContracts
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("SAML", samlToken);
 
-            var uri = new Uri(sectionServiceAddress, "/section");
+            var uri = new Uri(sectionServiceAddress.ToString().TrimEnd('/') + "/section");
             var response = client.PostAsJsonAsync(uri.ToString(), request);
 
             return response.Result;
