@@ -449,7 +449,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     Name = "SectionName",
                     Code = "SectionCode",
                     StartDate = DateTime.Now,
-                    EndDate = DateTime.Now.AddMonths(1)
+                    EndDate = DateTime.Now.AddMonths(1),
+                    OrganizationId = Guid.NewGuid(),
                 };
 
             var course = new Domain.Courses.Course
@@ -464,6 +465,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             Assert.That(request.Name, Is.EqualTo(sectionRequest.Name));
             Assert.That(request.Code, Is.EqualTo(sectionRequest.Code));
+            Assert.That(request.OrganizationId, Is.EqualTo(sectionRequest.OrganizationId));
             Assert.That(request.StartDate, Is.EqualTo(sectionRequest.StartDate));
             Assert.That(request.EndDate, Is.EqualTo(sectionRequest.EndDate));
             Assert.That(request.CourseId, Is.EqualTo(course.Id));

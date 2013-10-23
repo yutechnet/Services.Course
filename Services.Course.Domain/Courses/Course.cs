@@ -276,6 +276,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             {
                 Name = request.Name,
                 Code = request.Code,
+                OrganizationId = request.OrganizationId,
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
                 TenantId = TenantId,

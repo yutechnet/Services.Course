@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace BpeProducts.Services.Course.Contract
@@ -15,6 +14,9 @@ namespace BpeProducts.Services.Course.Contract
 
         [DataMember(IsRequired = true)]
         public string Code { get; set; }
+
+        [DataMember(IsRequired = true)]
+        public Guid OrganizationId { get; set; }
 
         [DataMember(IsRequired = true)]
         public DateTime StartDate { get; set; }
