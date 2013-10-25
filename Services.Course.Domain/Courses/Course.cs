@@ -408,7 +408,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual CourseLearningActivity UpdateLearningActivity(Guid segmentId, Guid learningActivityId, SaveCourseLearningActivityRequest request)
         {
-
             CheckPublished();
 
             var learningActivity = GetCourseLearningActivityOrThrow(segmentId, learningActivityId);
@@ -421,6 +420,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             learningActivity.Weight = request.Weight;
             learningActivity.ObjectId = request.ObjectId;
             learningActivity.CustomAttribute = request.CustomAttribute;
+            learningActivity.ActiveDate = request.ActiveDate == 0 ? learningActivity.ActiveDate : request.ActiveDate;
+            learningActivity.InactiveDate = request.InactiveDate == 0 ? learningActivity.InactiveDate : request.InactiveDate;
+            learningActivity.DueDate = request.DueDate == 0 ? learningActivity.DueDate : request.DueDate;
 
             return learningActivity;
         }
