@@ -278,6 +278,9 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="BpeProducts.Services.Course.Host.Tests.Integration.dll.Release.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="CourseAuthorization.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseAuthorization.feature.cs</LastGenOutput>
