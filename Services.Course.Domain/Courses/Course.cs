@@ -269,7 +269,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual CreateSectionRequest GetSectionRequest(CourseSectionRequest request)
         {
-            if(!IsPublished)
+            if (!IsPublished)
                 throw new BadRequestException(string.Format("Cannot create a section from course {0}. Course is not published.", Id));
 
             var translatedRequest = new CreateSectionRequest
@@ -352,7 +352,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         public virtual Program AddProgram(Program program)
         {
             CheckPublished();
-            
+
             if (_programs.FirstOrDefault(x => x.Id == program.Id) == null)
             {
                 program.Courses.Add(this);
@@ -420,9 +420,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             learningActivity.Weight = request.Weight;
             learningActivity.ObjectId = request.ObjectId;
             learningActivity.CustomAttribute = request.CustomAttribute;
-            learningActivity.ActiveDate = request.ActiveDate == 0 ? learningActivity.ActiveDate : request.ActiveDate;
-            learningActivity.InactiveDate = request.InactiveDate == 0 ? learningActivity.InactiveDate : request.InactiveDate;
-            learningActivity.DueDate = request.DueDate == 0 ? learningActivity.DueDate : request.DueDate;
+            learningActivity.ActiveDate = request.ActiveDate;
+            learningActivity.InactiveDate = request.InactiveDate;
+            learningActivity.DueDate = request.DueDate;
 
             return learningActivity;
         }

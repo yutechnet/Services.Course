@@ -33,11 +33,11 @@ namespace BpeProducts.Services.Course.Contract
         public string CustomAttribute { get; set; }
 
         [DataMember]
-        public int ActiveDate { get; set; }
+        public int? ActiveDate { get; set; }
         [DataMember]
-        public int InactiveDate { get; set; }
+        public int? InactiveDate { get; set; }
         [DataMember]
-        public int DueDate { get; set; }
+        public int? DueDate { get; set; }
 
     }
 }
