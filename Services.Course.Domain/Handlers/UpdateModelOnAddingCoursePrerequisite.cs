@@ -25,9 +25,6 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 			var course = _repository.Get<Courses.Course>(e.AggregateId);
 			var prerequisiteCourse = _repository.Get<Courses.Course>(e.PrerequisiteCourseId);
 
-			//TODO: Ensure that the courses loaded from NHB are valid? This isn't done in 'UpdateModelOnCourseUpdating'..
-			// Or do this in the domain?
-
 			course.AddPrerequisite(prerequisiteCourse);
 
 			_repository.Save(course);

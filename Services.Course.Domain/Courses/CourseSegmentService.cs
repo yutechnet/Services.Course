@@ -45,7 +45,6 @@ namespace BpeProducts.Services.Course.Domain
         public CourseSegmentInfo Create(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             var course = _courseFactory.Reconstitute(courseId);
-            // TODO Need to validate this. Does the Event Store return a null object or SegmentId with Guid.Empty?
             if (course.Id == Guid.Empty || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
@@ -54,7 +53,6 @@ namespace BpeProducts.Services.Course.Domain
             var parentSegmentId = saveCourseSegmentRequest.ParentSegmentId ?? Guid.Empty;
 
             var newSegmentId = Guid.NewGuid();
-            // TODO: Embed the object in the message
             _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
             {
                 AggregateId = courseId,
@@ -76,8 +74,9 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Update(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
+			// TODO: Rename Reconstitute to something else since we aren't using the event store anymore
             var course = _courseFactory.Reconstitute(courseId);
-            // TODO Need to validate this. Does the Event Store return a null object or SegmentId with Guid.Empty?
+            // TODO Check for CourseId no longer needed once an appropriate factory.load is used
             if (course.Id == Guid.Empty || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
