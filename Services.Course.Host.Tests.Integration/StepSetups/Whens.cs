@@ -521,6 +521,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Code = row["Code"],
                     StartDate = row.GetValue("StartDate", DateTime.MinValue),
                     EndDate = row.GetValue<DateTime?>("EndDate", null),
+                    Credit = row.GetValue<decimal>("Credit", 0)
                 };
 
                 PostOperations.CreateSection(request.Name, course, request);

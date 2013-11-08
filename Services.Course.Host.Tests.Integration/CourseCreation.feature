@@ -15,19 +15,19 @@ Background:
 
 Scenario: Create a course
 	Given I have a course with following info:
-	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate |
-	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      |
+	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit |
+	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | 5      |
 	When I submit a creation request
 	Then I should get a success confirmation message
 
 Scenario: Edit a course
 	Given I have a course with following info:
-	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate |
-	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      |
+	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate |Credit |
+	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      |5      |
 	When I submit a creation request
 	And I change the info to reflect the following:
-	| Name        | Code   | Description                  | Tenant Id | OrganizationName | CourseType  | IsTemplate |
-	| English 101 | ENG101 | John's awesome English Class | 999999    | COB              | Traditional | false      |
+	| Name        | Code   | Description                  | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit |
+	| English 101 | ENG101 | John's awesome English Class | 999999    | COB              | Traditional | false      | 10     |
 	Then I should get a success confirmation message
 	And my course info is changed
 
