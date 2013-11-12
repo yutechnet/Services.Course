@@ -26,12 +26,6 @@ namespace BpeProducts.Services.Course.Domain.Overrides
                 .OrderBy("DisplayOrder")
                 .KeyColumn("ParentSegmentId");
            
-            //mapping.IgnoreProperty(segment => segment.Name);
-            //mapping.IgnoreProperty(segment => segment.Description);
-            //mapping.IgnoreProperty(segment => segment.Type);
-            //mapping.IgnoreProperty(segment => segment.DisplayOrder);
-            mapping.IgnoreProperty(segment => segment.Content);
-
             mapping.Map(segment => segment.SerializedData).CustomSqlType("nvarchar(max)");
 
             mapping

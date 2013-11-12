@@ -188,6 +188,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseAuthorization.feature</DependentUpon>
     </Compile>
+    <Compile Include="CourseContent.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CourseContent.feature</DependentUpon>
+    </Compile>
     <Compile Include="CourseCreation.feature.cs">
       <DependentUpon>CourseCreation.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -284,6 +289,10 @@
     <None Include="CourseAuthorization.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseAuthorization.feature.cs</LastGenOutput>
+    </None>
+    <None Include="CourseContent.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CourseContent.feature.cs</LastGenOutput>
     </None>
     <None Include="CourseCreation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -334,24 +334,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [When(@"I add the following content to '(.*)' segment")]
-        public void WhenIAddTheFollowingContentToSegment(string segmentName, Table table)
-        {
-            var resource = Resources<CourseSegmentResource>.Get(segmentName);
-            var courseSegment = GetOperations.GetSegment(resource);
-
-            var request = new SaveCourseSegmentRequest
-            {
-                Name = courseSegment.Name,
-                Type = courseSegment.Type,
-                Description = courseSegment.Description,
-                TenantId = ApiFeature.TenantId,
-                Content = table.Rows.Select(row => new Content { Id = Guid.Parse(row["Id"]), Type = row["Type"] }).ToList()
-            };
-
-            PutOperations.UpdateCourseSegmentRequest(resource, request);
-        }
-
         [When(@"I delete the following segments")]
         public void WhenIDeleteTheFollowingSegments(Table table)
         {

@@ -65,7 +65,6 @@ namespace BpeProducts.Services.Course.Domain
                 {
                     Name = saveCourseSegmentRequest.Name,
                     Description = saveCourseSegmentRequest.Description,
-                    Content = saveCourseSegmentRequest.Content,
                     ParentSegmentId = parentSegmentId,
                     Type = saveCourseSegmentRequest.Type,
                     Id = newSegmentId

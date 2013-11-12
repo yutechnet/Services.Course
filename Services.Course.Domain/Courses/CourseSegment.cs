@@ -13,7 +13,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
     public class CourseSegment : TenantEntity, ISupportingEntity
     {
         private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();
-        private IList<Content> _content = new List<Content>();
         private IList<CourseSegment> _childSegments = new List<CourseSegment>();
         private CourseSegment _parentSegment;
 
@@ -36,12 +35,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             get { return _parentSegment; }
             set { _parentSegment = value; }
-        }
-
-        public virtual IList<Content> Content
-        {
-            get { return _content; }
-            protected internal set { _content = value; }
         }
 
         public virtual IList<CourseLearningActivity> CourseLearningActivities
@@ -78,7 +71,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
                         Description,
                         Type,
                         DisplayOrder,
-                        Content
                     };
 
                 var json = JsonConvert.SerializeObject(toSerialize, settings);
@@ -94,7 +86,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
                         Description,
                         Type,
                         DisplayOrder,
-                        Content
                     };
 
                 serializedData = JsonConvert.DeserializeAnonymousType(value, serializedData);
@@ -103,7 +94,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 Description = serializedData.Description;
                 Type = serializedData.Type;
                 DisplayOrder = serializedData.DisplayOrder;
-                Content = serializedData.Content;
             }
         }
 

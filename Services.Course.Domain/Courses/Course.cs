@@ -203,7 +203,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
             segment.Name = request.Name;
             segment.Description = request.Description;
             segment.Type = request.Type;
-            segment.Content = request.Content ?? new List<Content>();
             segment.DisplayOrder = request.DisplayOrder;
 
             return segment;

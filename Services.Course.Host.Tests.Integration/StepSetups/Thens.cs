@@ -357,22 +357,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [Then(@"the course segment '(.*)' should have this content")]
-        public void ThenTheCourseSegmentShouldHaveThisContent(string courseSegmentName, Table table)
-        {
-            var resource = Resources<CourseSegmentResource>.Get(courseSegmentName);
-            var courseSegment = GetOperations.GetSegment(resource);
-
-            var expectedContent = table.CreateSet<Content>().ToList();
-
-            Assert.That(courseSegment.Content.Count, Is.EqualTo(expectedContent.Count));
-            foreach (var expected in expectedContent)
-            {
-                var actual = courseSegment.Content.First(c => c.Id == expected.Id);
-                Assert.That(actual.Type, Is.EqualTo(expected.Type));
-            }
-        }
-
         [Then(@"the course '(.*)' should have the following learning outcomes")]
         public void ThenTheCourseShouldHaveTheFollowingLearningOutcomes(string courseName, Table table)
         {

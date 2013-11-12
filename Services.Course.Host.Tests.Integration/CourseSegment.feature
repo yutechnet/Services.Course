@@ -95,20 +95,6 @@ Scenario: Retrieve the course segment tree from anywhere in the structure
 	| Name        | Description                    | Type       |
 	| Topic       | Topic for a discussion         | Topic      |
 
-Scenario: Add multiple content to a segment
-	Given I have the following course segments for 'Math 101'
-	| Name       | Description                   | Type       | ParentSegment |
-	| Week1      | First week is slack time      | TimeSpan   |               |
-	| Discussion | Discussion for the first week | Discussion | Week1         |
-	When I add the following content to 'Discussion' segment
-	| Id                                   | Type       |
-	| 10257797-ab74-4796-a2f7-4722f8f96abe | Discussion |
-	| 806f8cc4-ed16-4a1b-b8f2-1df373b7631a | Assignment |
-	Then the course segment 'Discussion' should have this content
-	| Id                                   | Type       |
-	| 10257797-ab74-4796-a2f7-4722f8f96abe | Discussion |
-	| 806f8cc4-ed16-4a1b-b8f2-1df373b7631a | Assignment |
-
 Scenario: Add another parent segment to a course
 	Given I have the following course segments for 'Math 101'
 	| Name       | Description                   | Type       | ParentSegment |
