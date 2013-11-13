@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
@@ -292,8 +293,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var resource = Resources<CourseResource>.Get(courseName);
             var courseInfo = GetOperations.GetCourse(resource);
 
-            var index = new Dictionary<string, CourseSegmentInfo>();
-            IndexNodes(Guid.Empty, courseInfo.Segments, index);
+            var index = courseInfo.Segments.FlattenTree(c => c.ChildSegments).ToList();
 
             var traversed = new List<string>();
             foreach (var row in table.Rows)
@@ -305,7 +305,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 else 
                     traversed.Add(segmentName);
                 
-                var actualSegment = index[segmentName];
+                var actualSegment = index.First(x => x.Name == segmentName);
 
                 var parentSegmentName = row["ParentSegment"];
                 if (String.IsNullOrEmpty(parentSegmentName))
@@ -314,7 +314,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 }
                 else
                 {
-                    var parentSegment = index[parentSegmentName];
+                    var parentSegment = index.First(x => x.Name == parentSegmentName);
 
                     Assert.That(actualSegment.ParentSegmentId, Is.EqualTo(parentSegment.Id));
                     Assert.That(parentSegment.ChildSegments.Count(cs => cs.Id == actualSegment.Id), Is.EqualTo(1));
@@ -330,14 +330,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"The course '(.*)' segments retrieved match the display order entered")]
         public void ThenTheCourseSegmentsRetrievedMatchTheDisplayOrderEntered(string courseName, Table table)
         {
-            var courseInfoResponse = GetOperations.GetCourse(Resources<CourseResource>.Get(courseName));
-            var index = new Dictionary<string, CourseSegmentInfo>();
+            var courseInfo = GetOperations.GetCourse(Resources<CourseResource>.Get(courseName));
 
-            IndexNodes(Guid.Empty, courseInfoResponse.Segments, index);
+            var index = courseInfo.Segments.FlattenTree(c => c.ChildSegments).ToList();
 
             foreach (var row in table.Rows)
             {
-                var courseSegment = index[row["Name"]];
+                var courseSegment = index.First(x => x.Name == row["Name"]);
 
                 Assert.That(courseSegment.DisplayOrder, Is.EqualTo(Convert.ToInt32(row["DisplayOrder"])));
             }
@@ -430,8 +429,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var courseSegments = courseInfo.Segments;
             var uncollapsedSegments = new List<CourseSegmentInfo>();
 
-            var index = new Dictionary<Guid, CourseSegmentInfo>();
-            IndexNodes(Guid.Empty, courseInfo.Segments, index);
+            var index = courseInfo.Segments.FlattenTree(c => c.ChildSegments).ToList();
 
             foreach (var segment in courseSegments)
             {
@@ -457,37 +455,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 if (table.Rows[i]["ParentSegment"] != string.Empty)
                 {
                     Assert.That(uncollapsedSegments[i].ParentSegmentId, Is.Not.Null);
-                    Assert.That(index[uncollapsedSegments[i].ParentSegmentId].Name, Is.EqualTo(table.Rows[i]["ParentSegment"]));
-                }
-            }
-
-        }
-
-        private static void IndexNodes(Guid parentSegmentId, IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<string, CourseSegmentInfo> index)
-        {
-            foreach (var courseSegmentInfo in segmentInfos)
-            {
-                Assert.That(courseSegmentInfo.ParentSegmentId, Is.EqualTo(parentSegmentId));
-
-                index.Add(courseSegmentInfo.Name, courseSegmentInfo);
-                if (courseSegmentInfo.ChildSegments.Count > 0)
-                {
-                    IndexNodes(courseSegmentInfo.Id, courseSegmentInfo.ChildSegments, index);
+                    Assert.That(index.First(x => x.Id == uncollapsedSegments[i].ParentSegmentId).Name, Is.EqualTo(table.Rows[i]["ParentSegment"]));
                 }
             }
         }
 
-        private static void IndexNodes(Guid parentSegmentId, IEnumerable<CourseSegmentInfo> segmentInfos, IDictionary<Guid, CourseSegmentInfo> index)
+        [Then(@"'(.*)' learning activity has the following content")]
+        public void ThenLearningActivityHasTheFollowingContent(string learningActivityName, Table table)
         {
-            foreach (var courseSegmentInfo in segmentInfos)
-            {
-                Assert.That(courseSegmentInfo.ParentSegmentId, Is.EqualTo(parentSegmentId));
+            var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
 
-                index.Add(courseSegmentInfo.Id, courseSegmentInfo);
-                if (courseSegmentInfo.ChildSegments.Count > 0)
-                {
-                    IndexNodes(courseSegmentInfo.Id, courseSegmentInfo.ChildSegments, index);
-                }
+            var actual = GetOperations.GetCourseLearningActivity(resource);
+
+            foreach (var row in table.Rows)
+            {
+                var name = row["Name"];
+
+                Assert.That(actual.Content.Any(x => x.Name == name));
             }
         }
     }

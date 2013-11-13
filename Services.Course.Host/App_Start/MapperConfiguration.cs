@@ -7,9 +7,9 @@ using BpeProducts.Services.Course.Domain.Events;
 
 namespace BpeProducts.Services.Course.Host.App_Start
 {
-	public static class MapperConfig
+	public static class MapperConfiguration
 	{
-		public static void ConfigureMappers()
+		public static void Configure()
 		{
 			CourseMappings();
 			ProgramMappings();

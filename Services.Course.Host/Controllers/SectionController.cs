@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using AttributeRouting.Web.Http;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -28,9 +29,11 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [ValidateModelState]
         [SetSamlTokenInBootstrapContext]
 		// POST api/courses
-        public HttpResponseMessage Post(Guid id, CourseSectionRequest request)
+        [HttpPost]
+        [POST("course/{courseId:guid}/section")]
+        public HttpResponseMessage Post(Guid courseId, CourseSectionRequest request)
         {
-            var course = _courseRepository.GetOrThrow(id);
+            var course = _courseRepository.GetOrThrow(courseId);
             var sectionRequest = course.GetSectionRequest(request);
 
             var response = _sectionClient.CreateSection(request.SectionServiceUri, sectionRequest);

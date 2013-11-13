@@ -520,5 +520,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<Uri>(), It.IsAny<CreateSectionRequest>())).Returns(response);
             ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<CreateSectionRequest>())).Returns(response);
         }
+
+        [When(@"I add the following assets as content to '(.*)' learning activity")]
+        public void WhenIAddTheFollowingAssetsAsContentToLearningActivity(string learningActivityName, Table table)
+        {
+            var learningActivity = Resources<CourseLearningActivityResource>.Get(learningActivityName);
+
+            foreach (var row in table.Rows)
+            {
+                var name = row["Name"];
+                var asset = Resources<AssetResource>.Get(name);
+
+                PostOperations.AddLearningActivityContent(learningActivity, asset);
+            }
+        }
     }
 }

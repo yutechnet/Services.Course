@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using AttributeRouting.Web.Http;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Common.WebApi.Authorization;
@@ -22,29 +23,15 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        public OutcomeInfo Get(Guid id)
-        {
-            return _learningOutcomeService.Get(id);
-        }
-
-        [Transaction]
-        public OutcomeInfo Get(string entityType, Guid entityId, Guid outcomeId)
-        {
-            return _learningOutcomeService.Get(entityType, entityId, outcomeId);
-        }
-
-        [Transaction]
+        [HttpGet]
+        [GET("{entityType}/{entityId:guid}/supports", RouteName = "GetEntityOutcomes")]
         public List<OutcomeInfo> Get(string entityType, Guid entityId)
         {
             return _learningOutcomeService.GetEntityOutcomes(entityId).ToList();
         }
 
         [HttpGet]
-        public List<OutcomeInfo> CourseSegmentOutcome(Guid courseId, Guid segmentId)
-        {
-            return _learningOutcomeService.GetEntityOutcomes(segmentId).ToList();
-        }
-
+        [GET("outcome/entityoutcomes?{entityIds}")]
         public Dictionary<Guid, List<OutcomeInfo>> GetEntityOutcomes(string entityIds)
         {
             var ids = entityIds.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -60,22 +47,26 @@ namespace BpeProducts.Services.Course.Host.Controllers
             }
         }
 
+        [Transaction]
         [HttpGet]
-        public List<OutcomeInfo> GetSupportingOutcomes(Guid supportingOutcomeId)
+        [GET("outcome/{outcomeId:guid}", RouteName = "GetOutcome")]
+        public OutcomeInfo Get(Guid outcomeId)
         {
-            return _learningOutcomeService.GetSupportingOutcomes(supportingOutcomeId);
+            return _learningOutcomeService.Get(outcomeId);
         }
-            
+
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
-        [ClaimsAuthorize()]
+        [ClaimsAuthorize]
+        [HttpPost]
+        [POST("outcome")]
         public HttpResponseMessage Post(OutcomeRequest request)
         {
             var outcomeResponse = _learningOutcomeService.Create(request);
             var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
 
-            string uri = Url.Link("DefaultApi", new {id = outcomeResponse.Id});
+            var uri = Url.Link("GetOutcome", new { outcomeId = outcomeResponse.Id });
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
@@ -85,23 +76,26 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
+        [HttpGet]
+        [GET("{entityType}/{entityId:guid}/supports/{outcomeId:guid}", RouteName = "GetEntityOutcome")]
+        public OutcomeInfo Get(string entityType, Guid entityId, Guid outcomeId)
+        {
+            return _learningOutcomeService.Get(entityType, entityId, outcomeId);
+        }
+
+        [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
-        [ClaimsAuthorize()]
+        [ClaimsAuthorize]
+        [HttpPost]
+        [POST("{entityType}/{entityId:guid}/supports")]
         public HttpResponseMessage Post(string entityType, Guid entityId, OutcomeRequest request)
         {
             var outcomeResponse = _learningOutcomeService.Create(entityType, entityId, request);
 
             var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
 
-            // /<entityType>/<entityId>/supports/<outcomeId>
-            string uri = Url.Link("OutcomeApi", new
-                {
-                    controller = "outcome",
-                    entityType = entityType,
-                    entityId = entityId,
-                    outcomeId = outcomeResponse.Id
-                });
+            var uri = Url.Link("GetEntityOutcome", new {entityType = entityType, entityId = entityId, outcomeId = outcomeResponse.Id});
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
@@ -112,44 +106,56 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
-        public void Put(Guid id, OutcomeRequest request)
+        [HttpPut]
+        [PUT("outcome/{outcomeId:guid}")]
+        public void Put(Guid outcomeId, OutcomeRequest request)
         {
-            _learningOutcomeService.Update(id, request);
+            _learningOutcomeService.Update(outcomeId, request);
         }
 
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
+        [HttpPut]
+        [PUT("{entityType}/{entityId:guid}/supports/{outcomeId:guid}")]
         public void Put(string entityType, Guid entityId, Guid outcomeId, OutcomeRequest request)
         {
             _learningOutcomeService.Update(entityType, entityId, outcomeId, request);
         }
 
         [Transaction]
-        public void Delete(Guid id)
+        [HttpDelete]
+        [DELETE("outcome/{outcomeId:guid}")]
+        public void Delete(Guid outcomeId)
         {
-            _learningOutcomeService.Delete(id);
+            _learningOutcomeService.Delete(outcomeId);
         }
 
         [Transaction]
+        [HttpDelete]
+        [DELETE("{entityType}/{entityId:guid}/supports/{outcomeId:guid}")]
         public void Delete(string entityType, Guid entityId, Guid outcomeId)
         {
             _learningOutcomeService.Delete(entityType, entityId, outcomeId);
         }
 
+        [HttpGet]
+        [GET("course/{courseId:guid}/segments/{segmentId:guid}/supports", RouteName = "GetSegmentOutcomes")]
+        public List<OutcomeInfo> CourseSegmentOutcome(Guid courseId, Guid segmentId)
+        {
+            return _learningOutcomeService.GetEntityOutcomes(segmentId).ToList();
+        }
+
         [Transaction]
         [HttpPost]
+        [POST("course/{courseId:guid}/segments/{segmentId:guid}/supports")]
         public HttpResponseMessage CourseSegmentOutcome(Guid courseId, Guid segmentId, OutcomeRequest request)
         {
             var outcomeResponse = _learningOutcomeService.Create("segments", segmentId, request);
 
-            var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
+            var response = Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
 
-            string uri = Url.Link("DefaultApi", new
-                {
-                    controller = "outcome",
-                    id = outcomeResponse.Id
-                });
+            var uri = Url.Link("GetOutcome", new {outcomeId = outcomeResponse.Id});
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
@@ -157,8 +163,16 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return response;
         }
 
+        [HttpGet]
+        [GET("outcome/{supportingOutcomeId:guid}/supports", RouteName = "GetSupportingOutcomes", ControllerPrecedence = 1)]
+        public List<OutcomeInfo> GetSupportingOutcomes(Guid supportingOutcomeId)
+        {
+            return _learningOutcomeService.GetSupportingOutcomes(supportingOutcomeId);
+        }
+
         [Transaction]
         [HttpPut]
+        [PUT("outcome/{supportingOutcomeId:guid}/supports/{supportedOutcomeId:guid}", ControllerPrecedence = 2)]
         public void AddSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId)
         {
             _learningOutcomeService.AddSupportingOutcome(supportingOutcomeId, supportedOutcomeId);
@@ -166,6 +180,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         [Transaction]
         [HttpDelete]
+        [DELETE("outcome/{supportingOutcomeId:guid}/supports/{supportedOutcomeId:guid}", ControllerPrecedence = 3)]
         public void RemoveSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId)
         {
             _learningOutcomeService.RemoveSupportingOutcome(supportingOutcomeId, supportedOutcomeId);

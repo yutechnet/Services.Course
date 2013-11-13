@@ -246,6 +246,7 @@
     </Compile>
     <Compile Include="Operations\DeleteOperations.cs" />
     <Compile Include="Resources\Account\OrganizationResource.cs" />
+    <Compile Include="Resources\AssetResource.cs" />
     <Compile Include="Resources\CourseLearningActivityResource.cs" />
     <Compile Include="ProgramAssociation.feature.cs">
       <AutoGen>True</AutoGen>

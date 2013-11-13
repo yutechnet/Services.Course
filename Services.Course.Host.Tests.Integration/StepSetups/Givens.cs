@@ -192,6 +192,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             result.EnsureSuccessStatusCode();
         }
 
+        [Given(@"I have the following assets")]
+        public void GivenIHaveTheFollowingAssets(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var name = row["Name"];
+                var resource = new AssetResource
+                    {
+                        Id = Guid.NewGuid(),
+                    };
+
+                Resources<AssetResource>.Add(name, resource);
+            }
+        }
+
         public static HttpResponseMessage CreateCourseTemplate(string templateName, Table table)
         {
             var template = Resources<CourseResource>.Get(templateName);

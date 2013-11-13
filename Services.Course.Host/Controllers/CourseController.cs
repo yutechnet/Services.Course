@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
+using AttributeRouting.Web.Http;
 using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Services.Course.Contract;
@@ -27,6 +28,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         // GET api/programs
+        [HttpGet]
+        [GET("course?{$filter}")]
         public IEnumerable<CourseInfoResponse> Get(ODataQueryOptions options)
         {
 			// get orgs/objs for which user has viewcourse capability (maybe a matrix later)
@@ -38,24 +41,26 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return _courseService.Search(Request.RequestUri.Query);
         }
 
-        // GET api/courses/5
         [SetSamlTokenInBootstrapContext]
-        public CourseInfoResponse Get(Guid id)
+        [HttpGet]
+        [GET("course/{courseId:guid}", RouteName = "GetCourse")]
+        public CourseInfoResponse Get(Guid courseId)
         {
-            return _courseService.Get(id);
+            return _courseService.Get(courseId);
         }
 
         [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
         [SetSamlTokenInBootstrapContext]
-		// POST api/courses
+        [HttpPost]
+        [POST("course")]
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
 	        var courseInfoResponse = _courseService.Create(request);
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
-            string uri = Url.Link("DefaultApi", new {id = courseInfoResponse.Id});
+            string uri = Url.Link("GetCourse", new { courseId = courseInfoResponse.Id });
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
@@ -66,17 +71,20 @@ namespace BpeProducts.Services.Course.Host.Controllers
 	    [Transaction]
         [CheckModelForNull]
         [ValidateModelState]
+        [HttpPut]
+        [PUT("course/{courseId:guid}")]
         // PUT api/courses/5
-        public void Put(Guid id, UpdateCourseRequest request)
+        public void Put(Guid courseId, UpdateCourseRequest request)
         {
-            _courseService.Update(id, request);
+            _courseService.Update(courseId, request);
         }
 
         [Transaction]
-        // DELETE api/courses/5
-        public void Delete(Guid id)
+        [HttpDelete]
+        [DELETE("course/{courseId:guid}")]
+        public void Delete(Guid courseId)
         {
-            _courseService.Delete(id);
+            _courseService.Delete(courseId);
         }
     }
 }

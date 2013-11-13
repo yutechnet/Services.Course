@@ -21,7 +21,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         [TestFixtureSetUp]
         public static void SetUpFixture()
         {
-            MapperConfig.ConfigureMappers();
+            MapperConfiguration.Configure();
         }
         [Test]
         public void Throw_Exception_When_DomainEvent_Is_Not_CourseVersionCreated()

@@ -67,5 +67,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var requestUri = string.Format("{0}/section", course.ResourceUri);
             return ApiFeature.CourseTestHost.Post<SectionResource, CourseSectionRequest>(name, requestUri, request);
         }
+
+        public static HttpResponseMessage AddLearningActivityContent(CourseLearningActivityResource learningActivity, AssetResource asset)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

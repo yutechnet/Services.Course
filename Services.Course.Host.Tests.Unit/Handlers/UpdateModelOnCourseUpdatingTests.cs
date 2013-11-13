@@ -25,7 +25,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         [TestFixtureSetUp]
         public static void SetUpFixture()
         {
-            MapperConfig.ConfigureMappers();
+            MapperConfiguration.Configure();
         }
 
         [SetUp]

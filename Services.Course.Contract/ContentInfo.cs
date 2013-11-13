@@ -2,9 +2,9 @@
 
 namespace BpeProducts.Services.Course.Contract
 {
-    public class Content
+    public class ContentInfo
     {
         public Guid Id { get; set; }
-        public string Type { get; set; }
+        public string Name { get; set; }
     }
 }

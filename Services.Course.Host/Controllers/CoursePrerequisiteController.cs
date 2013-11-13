@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using AttributeRouting.Web.Http;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
@@ -21,10 +22,10 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		[CheckModelForNull]
 		[ValidateModelState]
         [HttpPut]
-		// PUT api/courses/5/prerequisites
-		public void Put(Guid id, UpdateCoursePrerequisites prerequisites)
+        [PUT("course/{courseId:guid}/prerequisites")]
+		public void Put(Guid courseId, UpdateCoursePrerequisites prerequisites)
 		{
-			_courseService.UpdatePrerequisiteList(id, prerequisites.PrerequisiteIds);
+            _courseService.UpdatePrerequisiteList(courseId, prerequisites.PrerequisiteIds);
 		}
     }
 }

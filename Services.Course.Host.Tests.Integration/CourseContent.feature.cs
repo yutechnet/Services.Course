@@ -146,14 +146,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
  testRunner.Given("I add the following course learning activities to \'Week 1\' course segment", ((string)(null)), table5, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "IsPublished"});
+                        "Name"});
             table6.AddRow(new string[] {
-                        "file1",
-                        "false"});
+                        "file1"});
             table6.AddRow(new string[] {
-                        "file2",
-                        "true"});
+                        "file2"});
 #line 23
  testRunner.And("I have the following assets", ((string)(null)), table6, "And ");
 #line hidden
@@ -173,6 +170,8 @@ this.FeatureBackground();
                         "Name"});
             table7.AddRow(new string[] {
                         "file1"});
+            table7.AddRow(new string[] {
+                        "file2"});
 #line 29
  testRunner.When("I add the following assets as content to \'Discussion 1\' learning activity", ((string)(null)), table7, "When ");
 #line hidden
@@ -180,7 +179,9 @@ this.FeatureBackground();
                         "Name"});
             table8.AddRow(new string[] {
                         "file1"});
-#line 32
+            table8.AddRow(new string[] {
+                        "file2"});
+#line 33
  testRunner.Then("\'Discussion 1\' learning activity has the following content", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
