@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
@@ -53,8 +54,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
                 //OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
                 OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id,
-				CourseType = ECourseType.Traditional,
-                IsTemplate = false
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false,
+                Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0"))
             };
 
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
@@ -96,7 +98,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
                 OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id,
                 CourseType = ECourseType.Traditional,
-                IsTemplate = false
+                IsTemplate = false,
+                Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0"))
             };
 
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);
@@ -243,8 +246,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.That(getResponse.StatusCode.Equals(HttpStatusCode.NotFound));
         }
 
-		[When(@"I create a new course with (.*), (.*), (.*), (.*)")]
-        public void WhenICreateANewCourseWith(string name, string code, string description,string organizationName)
+        [When(@"I create a new course with (.*), (.*), (.*), (.*)")]
+        public void WhenICreateANewCourseWith(string name, string code, string description, string organizationName)
         {
             var saveCourseRequest = new SaveCourseRequest
             {
@@ -364,22 +367,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Assert.That(info.IsTemplate, Is.EqualTo(originalRequest.IsTemplate));
         }
 
-		public static HttpResponseMessage CreateACourse(string courseName, string oranizationName)
-		{
-			var org = Resources<OrganizationResource>.Get(oranizationName);
+        public static HttpResponseMessage CreateACourse(string courseName, string oranizationName)
+        {
+            var org = Resources<OrganizationResource>.Get(oranizationName);
 
-			var saveCourseRequest = new SaveCourseRequest
-			{
-				Name = courseName,
-				Description = "RandomCourse",
-				Code = "RandomCourse",
-				CourseType = ECourseType.Traditional,
-				IsTemplate = false,
-				OrganizationId = org.Id
-			};
+            var saveCourseRequest = new SaveCourseRequest
+            {
+                Name = courseName,
+                Description = "RandomCourse",
+                Code = "RandomCourse",
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false,
+                OrganizationId = org.Id
+            };
 
-			var response = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
-			return response;
-		} 
+            var response = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
+            return response;
+        }
     }
 }

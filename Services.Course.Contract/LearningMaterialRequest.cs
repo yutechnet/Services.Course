@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BpeProducts.Services.Course.Contract
 {
-    public class ContentRequest
+    public class LearningMaterialRequest
     {
         public Guid AssetId { get; set; }
         public string Name { get; set; }

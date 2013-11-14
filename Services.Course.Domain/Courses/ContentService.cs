@@ -9,33 +9,33 @@ using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-    public interface IContentService
+    public interface ILearningMaterialService
     {
-        LearningMaterialInfo AddContent(Guid courseId, Guid segmentId, Guid learningActivityId, ContentRequest request);
-        LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid contentId);
+        LearningMaterialInfo AddLearningMaterial(Guid courseId, Guid segmentId, Guid learningActivityId, LearningMaterialRequest request);
+        LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId);
     }
 
-    public class ContentService : IContentService
+    public class LearningMaterialService : ILearningMaterialService
     {
         private readonly ICourseRepository _courseRepository;
 
-        public ContentService(ICourseRepository courseRepository)
+        public LearningMaterialService(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
         }
 
-        public LearningMaterialInfo AddContent(Guid courseId, Guid segmentId, Guid learningActivityId, ContentRequest request)
+        public LearningMaterialInfo AddLearningMaterial(Guid courseId, Guid segmentId, Guid learningActivityId, LearningMaterialRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);
 
-            var content = course.AddLearningMaterial(segmentId, learningActivityId, request);
-            return Mapper.Map<LearningMaterialInfo>(content);
+            var learningMaterial = course.AddLearningMaterial(segmentId, learningActivityId, request);
+            return Mapper.Map<LearningMaterialInfo>(learningMaterial);
         }
 
-        public LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid contentId)
+        public LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId)
         {
-            var content = _courseRepository.GetContent(contentId);
-            return Mapper.Map<LearningMaterialInfo>(content);
+            var learningMaterial = _courseRepository.GetLearningMaterial(learningMaterialId);
+            return Mapper.Map<LearningMaterialInfo>(learningMaterial);
         }
     }
 }

@@ -4,7 +4,7 @@ using FluentNHibernate.Automapping.Alterations;
 
 namespace BpeProducts.Services.Course.Domain.Mappings
 {
-    public class ContentMappingOverride : IAutoMappingOverride<LearningMaterial>
+    public class LearningMaterialMappingOverride : IAutoMappingOverride<LearningMaterial>
     {
         public void Override(AutoMapping<LearningMaterial> mapping)
         {

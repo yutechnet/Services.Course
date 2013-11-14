@@ -11,8 +11,8 @@ Background:
 		| Name |
 		| COB  |
 	And I have the following courses
-		| Name     | Code | Description       | OrganizationName |
-		| Math 101 | M101 | Basic mathematics | COB              |
+		| Name     | Code | Description       | OrganizationName | Credit |
+		| Math 101 | M101 | Basic mathematics | COB              | 12     |
 
 Scenario: Cannot create a section from a course that is not published
 	When I create the following sections

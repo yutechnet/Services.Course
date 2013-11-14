@@ -33,5 +33,8 @@ namespace BpeProducts.Services.Course.Contract
 
         [DataMember]
         public bool IsTemplate { get; set; }
+
+        [DataMember]
+        public decimal Credit { get; set; }
     }
 }

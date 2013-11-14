@@ -503,6 +503,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Code = row["Code"],
                     StartDate = row.GetValue("StartDate", DateTime.MinValue),
                     EndDate = row.GetValue<DateTime?>("EndDate", null),
+					OrganizationId = Guid.NewGuid()
                 };
 
                 PostOperations.CreateSection(request.Name, course, request);
@@ -521,8 +522,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<CreateSectionRequest>())).Returns(response);
         }
 
-        [When(@"I add the following assets as content to '(.*)' learning activity")]
-        public void WhenIAddTheFollowingAssetsAsContentToLearningActivity(string learningActivityName, Table table)
+        [When(@"I add the following assets as learning material to '(.*)' learning activity")]
+        public void WhenIAddTheFollowingAssetsAsLearningMaterialToLearningActivity(string learningActivityName, Table table)
         {
             var learningActivity = Resources<CourseLearningActivityResource>.Get(learningActivityName);
 
@@ -531,13 +532,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var name = row["Name"];
                 var asset = Resources<AssetResource>.Get(name);
 
-                var request = new ContentRequest
+                var request = new LearningMaterialRequest
                     {
                         AssetId = asset.Id,
                         Name = name
                     };
 
-                PostOperations.AddLearningActivityContent(name, learningActivity, request);
+                PostOperations.AddLearningMaterial(name, learningActivity, request);
             }
         }
     }

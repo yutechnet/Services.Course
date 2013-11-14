@@ -19,9 +19,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [NUnit.Framework.TestFixtureAttribute()]
-    [NUnit.Framework.DescriptionAttribute("CourseContent")]
+    [NUnit.Framework.DescriptionAttribute("Course Learning Material")]
     [NUnit.Framework.CategoryAttribute("Api")]
-    public partial class CourseContentFeature
+    public partial class CourseLearningMaterialFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -33,7 +33,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CourseContent", "", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Course Learning Material", "", ProgrammingLanguage.CSharp, new string[] {
                         "Api"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -157,10 +157,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Add course content")]
-        public virtual void AddCourseContent()
+        [NUnit.Framework.DescriptionAttribute("Add course learning material")]
+        public virtual void AddCourseLearningMaterial()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add course content", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add course learning material", ((string[])(null)));
 #line 28
 this.ScenarioSetup(scenarioInfo);
 #line 4
@@ -173,7 +173,8 @@ this.FeatureBackground();
             table7.AddRow(new string[] {
                         "file2"});
 #line 29
- testRunner.When("I add the following assets as content to \'Discussion 1\' learning activity", ((string)(null)), table7, "When ");
+ testRunner.When("I add the following assets as learning material to \'Discussion 1\' learning activi" +
+                    "ty", ((string)(null)), table7, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
@@ -182,7 +183,7 @@ this.FeatureBackground();
             table8.AddRow(new string[] {
                         "file2"});
 #line 33
- testRunner.Then("\'Discussion 1\' learning activity has the following content", ((string)(null)), table8, "Then ");
+ testRunner.Then("\'Discussion 1\' learning activity has the following learning material", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

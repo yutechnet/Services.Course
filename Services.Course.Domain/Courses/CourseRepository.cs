@@ -33,10 +33,10 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 			return segment;
 		}
 
-        public LearningMaterial GetContent(Guid contentId)
+        public LearningMaterial GetLearningMaterial(Guid learningMaterialId)
         {
-            var content = _repository.Query<LearningMaterial>().Single(c => c.Id == contentId);
-            return content;
+            var learningMaterial = _repository.Query<LearningMaterial>().Single(c => c.Id == learningMaterialId);
+            return learningMaterial;
         }
 
         public IList<Courses.Course> Get(List<Guid> ids)

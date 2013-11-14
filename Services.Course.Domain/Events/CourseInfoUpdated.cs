@@ -13,5 +13,6 @@ namespace BpeProducts.Services.Course.Domain.Events
         public bool IsTemplate { get; set; }
         public Guid AggregateId { get; set; }
 		public List<Guid> PrerequisiteCourseIds { get; set; }
+        public decimal Credit { get; set; }
     }
 }

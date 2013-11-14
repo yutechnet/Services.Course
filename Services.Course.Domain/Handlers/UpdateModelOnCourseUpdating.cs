@@ -35,6 +35,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
 	        course.Code = e.Request.Code;
 	        course.IsTemplate = e.Request.IsTemplate;
 	        course.CourseType = e.Request.CourseType;
+            course.Credit = e.Request.Credit;
 
             var programs = _programRepository.Get(e.Request.ProgramIds);
             course.SetPrograms(programs.ToList());

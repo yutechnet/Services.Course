@@ -1,5 +1,5 @@
 ﻿@Api
-Feature: CourseContent
+Feature: Course Learning Material
 
 Background: 
 	And the following organizations exist
@@ -25,12 +25,12 @@ Background:
 	| file1 |
 	| file2 |
 
-Scenario: Add course content
-	When I add the following assets as content to 'Discussion 1' learning activity
+Scenario: Add course learning material
+	When I add the following assets as learning material to 'Discussion 1' learning activity
 	| Name  |
 	| file1 |
 	| file2 |
-	Then 'Discussion 1' learning activity has the following content
+	Then 'Discussion 1' learning activity has the following learning material
 	| Name  |
 	| file1 |
 	| file2 |

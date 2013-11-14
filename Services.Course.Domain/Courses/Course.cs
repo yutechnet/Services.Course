@@ -20,6 +20,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         private string _name;
         private string _code;
         private string _description;
+        private decimal _credit;
         private ECourseType _courseType;
         private IList<CourseSegment> _segments = new List<CourseSegment>();
         private IList<Program> _programs = new List<Program>();
@@ -59,6 +60,16 @@ namespace BpeProducts.Services.Course.Domain.Courses
             {
                 CheckPublished();
                 _description = value;
+            }
+        }
+
+        public virtual decimal Credit
+        {
+            get { return _credit; }
+            set
+            {
+                CheckPublished();
+                _credit = value;
             }
         }
 
@@ -280,7 +291,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 EndDate = request.EndDate,
                 TenantId = TenantId,
                 CourseId = Id,
-                Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null))
+                Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null)),
+                Credit = Credit
             };
 
             return translatedRequest;
@@ -451,7 +463,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         }
         #endregion
 
-        public virtual LearningMaterial AddLearningMaterial(Guid segmentId, Guid learningActivityId, ContentRequest request)
+        public virtual LearningMaterial AddLearningMaterial(Guid segmentId, Guid learningActivityId, LearningMaterialRequest request)
         {
             CheckPublished();
 

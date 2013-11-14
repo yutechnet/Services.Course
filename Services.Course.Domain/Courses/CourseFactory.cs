@@ -52,6 +52,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 					Code = request.Code,
 					Description = request.Description,
 					OrganizationId = request.OrganizationId,
+                    Credit = request.Credit
 				};
 
 			var newSegments = Mapper.Map<List<CourseSegment>>(template.Segments);
@@ -89,6 +90,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 					TenantId = request.TenantId,
 					ActiveFlag = true,
 					CourseType = request.CourseType,
+                    Credit = request.Credit
 				};
 
 			return course;

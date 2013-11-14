@@ -41,12 +41,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
             set { _learningMaterials = value; }
         }
 
-        public virtual LearningMaterial AddLearningMaterial(ContentRequest request)
+        public virtual LearningMaterial AddLearningMaterial(LearningMaterialRequest request)
         {
-            var content = new LearningMaterial {Id = Guid.NewGuid(), TenantId = TenantId, Name = request.Name};
+            var learningMaterial = new LearningMaterial {Id = Guid.NewGuid(), TenantId = TenantId, Name = request.Name};
 
-            _learningMaterials.Add(content);
-            return content;
+            _learningMaterials.Add(learningMaterial);
+            return learningMaterial;
         }
     }
 }

@@ -135,7 +135,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity;
         }
 
-        public virtual LearningMaterial AddLearningMaterial(Guid learningActivityId, ContentRequest request)
+        public virtual LearningMaterial AddLearningMaterial(Guid learningActivityId, LearningMaterialRequest request)
         {
             var learningActivity = GetLearningActivityOrThrow(learningActivityId);
             return learningActivity.AddLearningMaterial(request);

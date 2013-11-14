@@ -460,8 +460,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [Then(@"'(.*)' learning activity has the following content")]
-        public void ThenLearningActivityHasTheFollowingContent(string learningActivityName, Table table)
+        [Then(@"'(.*)' learning activity has the following learning material")]
+        public void ThenLearningActivityHasTheFollowingLearningMaterial(string learningActivityName, Table table)
         {
             var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
 

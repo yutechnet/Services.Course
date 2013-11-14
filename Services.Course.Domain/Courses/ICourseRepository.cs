@@ -16,6 +16,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         IList<Courses.Course> Get(List<Guid> ids);
         Courses.Course GetOrThrow(Guid courseId);
 	    CourseSegment GetSegment(Guid courseId,Guid segmentId);
-        LearningMaterial GetContent(Guid contentId);
+        LearningMaterial GetLearningMaterial(Guid learningMaterialId);
     }
 }

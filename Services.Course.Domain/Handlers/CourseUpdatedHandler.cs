@@ -54,7 +54,8 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                     @event.Request.Code != @event.Old.Code ||
                     @event.Request.Description != @event.Old.Description ||
                     @event.Request.CourseType != @event.Old.CourseType ||
-                    @event.Request.IsTemplate != @event.Old.IsTemplate
+                    @event.Request.IsTemplate != @event.Old.IsTemplate ||
+                    @event.Request.Credit != @event.Old.Credit    
 					)
                 {
                     _domainEvents.Raise<CourseInfoUpdated>(new CourseInfoUpdated
@@ -64,7 +65,8 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                             Code = @event.Request.Code,
                             Description = @event.Request.Description,
                             CourseType = @event.Request.CourseType,
-                            IsTemplate = @event.Request.IsTemplate
+                            IsTemplate = @event.Request.IsTemplate,
+                            Credit = @event.Request.Credit
                         });
                 }
             }
