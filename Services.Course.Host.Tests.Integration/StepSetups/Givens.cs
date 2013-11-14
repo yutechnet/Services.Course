@@ -1,4 +1,5 @@
 ﻿using BpeProducts.Common.Capabilities;
+using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
@@ -53,6 +54,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     PrerequisiteCourseIds = new List<Guid>(),
                     CourseType = row.TryGetValue("CourseType", out type) ? (ECourseType)Enum.Parse(typeof(ECourseType), type) : ECourseType.Traditional,
                     IsTemplate = row.TryGetValue("IsTemplate", out isTemplate) && bool.Parse(isTemplate),
+                    Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0"))
                 };
 
                 var result = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);

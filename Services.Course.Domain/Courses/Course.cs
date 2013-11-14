@@ -293,7 +293,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 TenantId = TenantId,
                 CourseId = Id,
                 Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null)),
-                Credit =request.Credit  
+                Credit = Credit
             };
 
             return translatedRequest;

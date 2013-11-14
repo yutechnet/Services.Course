@@ -98,7 +98,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                 TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
                 OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id,
                 CourseType = ECourseType.Traditional,
-                IsTemplate = false
+                IsTemplate = false,
+                Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0"))
             };
 
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);

@@ -11,8 +11,8 @@ Background:
 		| Name |
 		| COB  |
 	And I have the following courses
-		| Name     | Code | Description       | OrganizationName |
-		| Math 101 | M101 | Basic mathematics | COB              |
+		| Name     | Code | Description       | OrganizationName | Credit |
+		| Math 101 | M101 | Basic mathematics | COB              | 12     |
 
 Scenario: Cannot create a section from a course that is not published
 	When I create the following sections
@@ -26,8 +26,8 @@ Scenario: Can create a section from a course that is published
          | Math 101 | published |
 	And the section service returns 'Created'
 	And I create the following sections
-		| CourseName | Name     | Code        | StartDate | EndDate   | Credit |
-		| Math 101   | Math 334 | MATH334.ABC | 2/15/2014 | 6/15/2014 | 8      |
+		| CourseName | Name     | Code        | StartDate | EndDate   |
+		| Math 101   | Math 334 | MATH334.ABC | 2/15/2014 | 6/15/2014 |
 	Then I get 'Created' response
 
 Scenario: Create a section from a course returns status of section service
