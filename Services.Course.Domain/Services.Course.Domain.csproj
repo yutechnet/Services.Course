@@ -61,17 +61,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Exceptions.1.0.18\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Ioc, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.37\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
+    <Reference Include="BpeProducts.Common.Ioc">
+      <HintPath>..\packages\BpeProducts.Common.Ioc.1.0.38\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Log, Version=1.0.17.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.17\lib\net40\BpeProducts.Common.Log.dll</HintPath>
-    </Reference>
-    <Reference Include="BpeProducts.Common.Log, Version=1.0.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Log.1.0.16\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.72.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -110,8 +105,7 @@
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.12.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.2\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
