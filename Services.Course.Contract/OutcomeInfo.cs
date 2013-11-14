@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BpeProducts.Common.WebApi;
 
 namespace BpeProducts.Services.Course.Contract
 {
