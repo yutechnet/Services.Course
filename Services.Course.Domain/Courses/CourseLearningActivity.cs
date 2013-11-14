@@ -9,6 +9,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
 {
     public class CourseLearningActivity : TenantEntity
     {
+        private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
+
         [Required]
         public virtual string Name { get; set; }
 
@@ -32,5 +34,19 @@ namespace BpeProducts.Services.Course.Domain.Courses
         public virtual int? InactiveDate { get; set; }
 
         public virtual int? DueDate { get; set; }
+
+        public virtual IList<LearningMaterial> LearningMaterials
+        {
+            get { return _learningMaterials; }
+            set { _learningMaterials = value; }
+        }
+
+        public virtual LearningMaterial AddLearningMaterial(ContentRequest request)
+        {
+            var content = new LearningMaterial {Id = Guid.NewGuid(), TenantId = TenantId, Name = request.Name};
+
+            _learningMaterials.Add(content);
+            return content;
+        }
     }
 }

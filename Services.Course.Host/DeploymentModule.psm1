@@ -1,4 +1,4 @@
-# Deployment Module v0.1.52
+# Deployment Module v0.1.55
 
 $script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -90,6 +90,56 @@ function Deployment-SetAppPoolProperty
 	else
 	{
 		$(Throw "An existing app pool with name `"$appPoolName`" was not found")
+	}
+}
+
+function Deployment-SetWebConfigurationProperty
+{
+	param(
+		[string]$webConfiguration,
+		[string]$webConfigurationProperty,
+		[object]$webConfigurationPropertyValue,
+		[object]$compareValue,
+		[switch]$hide
+	)
+	
+	if (-not (ConfigureIIS)) {return}
+	
+	Import-Module WebAdministration
+
+	Write-Host "Checking existing web configuration `"$webConfiguration`" property `"$webConfigurationProperty`""
+	# get the existing property value
+	$existingValue = Get-WebConfigurationProperty -Filter "$webConfiguration" -Name "$webConfigurationProperty" -ErrorAction SilentlyContinue
+	if ($existingValue)
+	{
+		$updateValue = $False
+		# compare values
+		if ($compareValue -and $compareValue -ne ($existingValue.Value)) { $updateValue = $True }
+		if (-not $compareValue -and ($existingValue.Value) -ne $webConfigurationPropertyValue) { $updateValue = $True }
+		if ($updateValue)
+		{
+			if ($hide)
+			{
+				Write-Host "Updating web configuration `"$webConfiguration`" property `"$webConfigurationProperty`""
+			}
+			else
+			{
+				if ($compareValue)
+				{
+					Write-Host "Updating web configuration `"$webConfiguration`" property `"$webConfigurationProperty`" from `"$($existingValue.Value)`" to `"$compareValue`""
+				}
+				else
+				{
+					Write-Host "Updating web configuration `"$webConfiguration`" property `"$webConfigurationProperty`" from `"$($existingValue.Value)`" to `"$webConfigurationPropertyValue`""
+				}
+			}
+			# update property value
+			Set-WebConfigurationProperty -Filter "$webConfiguration" -Name "$webConfigurationProperty" -Value $webConfigurationPropertyValue
+		}
+	}
+	else
+	{
+		$(Throw "An existing web configuration with filter `"$webConfiguration`" was not found")
 	}
 }
 
@@ -1518,6 +1568,68 @@ function Deployment-InstallIISRewriteModule
 		else
 		{
 			$url = "http://go.microsoft.com/?linkid=9722533"
+		}
+		$webClient.DownloadFile($url, $msi)
+		msiexec.exe /i $msi /passive
+		Start-Sleep -s 30
+	}
+ }
+ 
+function Deployment-InstallIISWebFarm
+{
+	Write-Host "Checking to see if Web Farm has been installed"
+	if (-not (Test-Path "$env:programfiles\IIS\Webfarm framework"))
+	{
+		Write-Host "Installing Web Farm"
+		$webClient = New-Object System.Net.WebClient
+		$msi = "C:\Temp\WebFarm.msi"
+		if (-not (Test-Path "C:\Temp"))
+		{
+			New-Item -ItemType directory -Path "C:\Temp" | Out-Null
+		}
+		if (Test-Path $msi)
+		{
+			Remove-Item $msi -Force | Out-Null
+		}
+		$url = ""
+		if (Is64Bit)
+		{
+			$url = "http://download.microsoft.com/download/3/4/1/3415F3F9-5698-44FE-A072-D4AF09728390/webfarm_amd64_en-US.msi"
+		}
+		else
+		{
+			$url = "http://download.microsoft.com/download/4/D/F/4DFDA851-515F-474E-BA7A-5802B3C95101/webfarm_x86_en-US.msi"
+		}
+		$webClient.DownloadFile($url, $msi)
+		msiexec.exe /i $msi /passive
+		Start-Sleep -s 30
+	}
+ }
+ 
+function Deployment-InstallIISApplicationRequesrRouting
+{
+	Write-Host "Checking to see if Application Request Routing has been installed"
+	if (-not (Test-Path "$env:programfiles\IIS\Application Request Routing"))
+	{
+		Write-Host "Installing Application Request Routing"
+		$webClient = New-Object System.Net.WebClient
+		$msi = "C:\Temp\ApplicationRequestRouting.msi"
+		if (-not (Test-Path "C:\Temp"))
+		{
+			New-Item -ItemType directory -Path "C:\Temp" | Out-Null
+		}
+		if (Test-Path $msi)
+		{
+			Remove-Item $msi -Force | Out-Null
+		}
+		$url = ""
+		if (Is64Bit)
+		{
+			$url = "http://download.microsoft.com/download/6/3/D/63D67918-483E-4507-939D-7F8C077F889E/requestRouter_x64.msi"
+		}
+		else
+		{
+			$url = "http://download.microsoft.com/download/6/3/D/63D67918-483E-4507-939D-7F8C077F889E/requestRouter_x86.msi"
 		}
 		$webClient.DownloadFile($url, $msi)
 		msiexec.exe /i $msi /passive

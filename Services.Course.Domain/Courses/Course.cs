@@ -450,5 +450,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity;
         }
         #endregion
+
+        public virtual LearningMaterial AddLearningMaterial(Guid segmentId, Guid learningActivityId, ContentRequest request)
+        {
+            CheckPublished();
+
+            var segment = GetSegmentOrThrow(segmentId);
+            return segment.AddLearningMaterial(learningActivityId, request);
+        }
     }
 }

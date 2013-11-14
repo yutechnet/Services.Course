@@ -124,5 +124,21 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 childSegment.Delete();
             }
         }
+
+        public virtual CourseLearningActivity GetLearningActivityOrThrow(Guid learningActivityId)
+        {
+            var learningActivity = _courseLearningActivities.FirstOrDefault();
+            
+            if (learningActivity == null)
+                throw new NotFoundException(string.Format("Learning Activity {0} for Course {1} is not found.", learningActivityId, Id));
+
+            return learningActivity;
+        }
+
+        public virtual LearningMaterial AddLearningMaterial(Guid learningActivityId, ContentRequest request)
+        {
+            var learningActivity = GetLearningActivityOrThrow(learningActivityId);
+            return learningActivity.AddLearningMaterial(request);
+        }
     }
 }

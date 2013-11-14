@@ -1,9 +1,11 @@
 ﻿using System.Configuration;
+using AutoMapper;
 using Autofac;
 using Autofac.Extras.DynamicProxy2;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Log;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
@@ -40,9 +42,9 @@ namespace BpeProducts.Services.Course.Domain
 
 			containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
 			containerBuilder.RegisterType<OutcomeFactory>().As<IOutcomeFactory>();
-			containerBuilder.RegisterType<CourseService>().As<ICourseService>()
-			                .EnableInterfaceInterceptors()
-			                .EnableAuthorization();
+			containerBuilder.RegisterType<CourseService>().As<ICourseService>().EnableInterfaceInterceptors().EnableAuthorization();
+            containerBuilder.RegisterType<ContentService>().As<IContentService>().EnableInterfaceInterceptors().EnableAuthorization();
+
 			containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
 			containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>();
 			containerBuilder.RegisterType<LearningOutcomeService>().As<ILearningOutcomeService>();
@@ -86,6 +88,13 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<UpdateModelOnOutcomeVersionCreation>().As<IHandle<OutcomeVersionCreated>>();
 
 			containerBuilder.RegisterType<UpdateModelOnOutcomeVersionPublished>().As<IHandle<OutcomeVersionPublished>>();
+
+		    RegisterMappings();
 		}
+
+	    private void RegisterMappings()
+	    {
+	        Mapper.CreateMap<LearningMaterial, LearningMaterialInfo>();
+	    }
 	}
 }

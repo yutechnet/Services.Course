@@ -25,7 +25,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [GET("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{id:guid}", RouteName = "GetCourseLearningActivity")]
 		public CourseLearningActivityResponse Get(Guid courseId, Guid segmentId, Guid id)
 		{
-            return _courseLearningActivityService.Get(courseId, segmentId, id);
+            var learningActivity = _courseLearningActivityService.Get(courseId, segmentId, id);
+            return learningActivity;
 		}
 
         [HttpGet]

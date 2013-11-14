@@ -471,7 +471,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             {
                 var name = row["Name"];
 
-                Assert.That(actual.Content.Any(x => x.Name == name));
+                Assert.That(actual.LearningMaterials.Any(x => x.Name == name));
             }
         }
     }

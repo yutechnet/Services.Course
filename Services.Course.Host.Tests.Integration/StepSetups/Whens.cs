@@ -531,7 +531,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var name = row["Name"];
                 var asset = Resources<AssetResource>.Get(name);
 
-                PostOperations.AddLearningActivityContent(learningActivity, asset);
+                var request = new ContentRequest
+                    {
+                        AssetId = asset.Id,
+                        Name = name
+                    };
+
+                PostOperations.AddLearningActivityContent(name, learningActivity, request);
             }
         }
     }

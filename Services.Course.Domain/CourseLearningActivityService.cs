@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
 using System.Collections.Generic;
 using BpeProducts.Common.Exceptions;
@@ -26,6 +27,7 @@ namespace BpeProducts.Services.Course.Domain
 
             var learningActivity = course.GetLearningActivity(segmentId, learningActivityId);
 
+            var c = learningActivity.LearningMaterials.ToList();
             return Mapper.Map<CourseLearningActivityResponse>(learningActivity);
         }
 

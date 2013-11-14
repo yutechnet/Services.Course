@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BpeProducts.Common.NHibernate.Version;
+using BpeProducts.Services.Course.Domain.Courses;
 using NHibernate;
 
 namespace BpeProducts.Services.Course.Domain.Repositories
@@ -14,6 +15,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         IList<Courses.Course> ODataQuery(string queryString);
         IList<Courses.Course> Get(List<Guid> ids);
         Courses.Course GetOrThrow(Guid courseId);
-	    Courses.CourseSegment GetSegment(Guid courseId,Guid segmentId);
-	}
+	    CourseSegment GetSegment(Guid courseId,Guid segmentId);
+        LearningMaterial GetContent(Guid contentId);
+    }
 }
