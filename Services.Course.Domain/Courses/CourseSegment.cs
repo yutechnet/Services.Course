@@ -127,7 +127,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual CourseLearningActivity GetLearningActivityOrThrow(Guid learningActivityId)
         {
-            var learningActivity = _courseLearningActivities.FirstOrDefault();
+            var learningActivity = _courseLearningActivities.SingleOrDefault(l=>l.Id==learningActivityId);
             
             if (learningActivity == null)
                 throw new NotFoundException(string.Format("Learning Activity {0} for Course {1} is not found.", learningActivityId, Id));

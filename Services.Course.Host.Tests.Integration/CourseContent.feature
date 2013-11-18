@@ -2,7 +2,7 @@
 Feature: Course Learning Material
 
 Background: 
-	And the following organizations exist
+	Given the following organizations exist
 	| Name |
 	| COB  |
 	And I have the following capabilities
