@@ -10,6 +10,7 @@ using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using BpeProducts.Common.WebApiTest.Framework;
+using Moq;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 {
