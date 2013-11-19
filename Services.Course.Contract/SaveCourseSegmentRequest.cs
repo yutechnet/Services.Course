@@ -17,9 +17,9 @@ namespace BpeProducts.Services.Course.Contract
 		public String Type { get; set; }
 	    public long DiscussionId { get; set; }
         public int TenantId { get; set; }
-
         public int DisplayOrder { get; set; }
-
+        public int? ActiveDate { get; set; }
+        public int? InactiveDate { get; set; }
         public IList<SaveCourseSegmentRequest> ChildrenSegments { get; set; }
 	}
 }

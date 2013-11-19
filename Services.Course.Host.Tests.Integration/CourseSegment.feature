@@ -27,6 +27,15 @@ Scenario: Add course segment
 	| Week1 | First week is slack time       | TimeSpan |               |
 	| Week2 | Second week is more slack time | TimeSpan |               |
 
+Scenario: Add a course segment with acitve, inactive
+	Given I have the following course segments for 'Math 101'
+	| Name  | Description              | Type     | ParentSegment | ActiveDate | InactiveDate |
+	| Week1 | First week is slack time | TimeSpan |               | 15         | 30           |
+	Then the course 'Math 101' should have these course segments
+	| Name  | Description              | Type     | ParentSegment | ActiveDate | InactiveDate |
+	| Week1 | First week is slack time | TimeSpan |               | 15         | 30           |
+	
+
 Scenario: Add a nested course segment
 	Given I have the following course segments for 'Math 101'
 	| Name        | Description                    | Type       | ParentSegment |

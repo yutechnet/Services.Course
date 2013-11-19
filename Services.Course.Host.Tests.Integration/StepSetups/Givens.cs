@@ -1,5 +1,4 @@
-﻿using BpeProducts.Common.Capabilities;
-using BpeProducts.Common.WebApiTest.Extensions;
+﻿using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
-using Moq;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using BpeProducts.Common.WebApiTest.Framework;
@@ -68,7 +66,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var saveCourseRequest = new SaveCourseRequest
                 {
                     Name = courseName,
-                    OrganizationId = (Guid) ScenarioContext.Current[organizationName],
+                    OrganizationId = (Guid)ScenarioContext.Current[organizationName],
                     Code = "TestCode",
                     Description = "TestDescription",
                     CourseType = ECourseType.Traditional,
@@ -79,7 +77,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var result = PostOperations.CreateCourse(courseName, saveCourseRequest);
             result.EnsureSuccessStatusCode();
         }
-        
+
         [Given(@"I have the following course segments for '(.*)'")]
         public void GivenIHaveTheFollowingCourseSegmentsFor(string courseName, Table table)
         {
@@ -90,9 +88,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                         Description = row["Description"],
                         Name = row["Name"],
                         Type = row["Type"],
-                        DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0
-                    };
+                        DisplayOrder = row.ContainsKey("DisplayOrder") ? int.Parse(row["DisplayOrder"]) : 0,
 
+                    };
+                var activeDate = int.Parse(table.Rows[0].GetValue("ActiveDate", "0"));
+                var inactiveDate = int.Parse(table.Rows[0].GetValue("InactiveDate", "0"));
+                if (activeDate != 0) { request.ActiveDate = activeDate; }
+                if (inactiveDate != 0) { request.InactiveDate = inactiveDate; }
                 var course = Resources<CourseResource>.Get(courseName);
                 var parentSegmentName = row["ParentSegment"];
 
@@ -218,6 +220,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             var result = PostOperations.CreateCourse(courseRequest.Name, courseRequest);
             return result;
-        }        
+        }
     }
 }

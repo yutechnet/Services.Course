@@ -191,7 +191,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     DisplayOrder = request.DisplayOrder,
                     Type = request.Type,
                     TenantId = TenantId,
-                    ActiveFlag = true
+                    ActiveFlag = true,
+                    ActiveDate=request.ActiveDate,
+                    InactiveDate=request.InactiveDate
                 };
 
             if (parentSegment != null)

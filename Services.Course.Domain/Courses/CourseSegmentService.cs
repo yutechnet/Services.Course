@@ -67,7 +67,9 @@ namespace BpeProducts.Services.Course.Domain
                     Description = saveCourseSegmentRequest.Description,
                     ParentSegmentId = parentSegmentId,
                     Type = saveCourseSegmentRequest.Type,
-                    Id = newSegmentId
+                    Id = newSegmentId,
+                    ActiveDate = saveCourseSegmentRequest.ActiveDate,
+                    InactiveDate = saveCourseSegmentRequest.InactiveDate,
                 };
         }
 
