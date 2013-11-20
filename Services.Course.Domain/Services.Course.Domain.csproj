@@ -207,6 +207,7 @@
     <Compile Include="Courses\CourseService.cs" />
     <Compile Include="Courses\ExtensionMethods.cs" />
     <Compile Include="Courses\LearningMaterial.cs" />
+    <Compile Include="Courses\RubricAssociation.cs" />
     <Compile Include="Courses\RubricAssociationService.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
     <Compile Include="Courses\CourseSegment.cs" />

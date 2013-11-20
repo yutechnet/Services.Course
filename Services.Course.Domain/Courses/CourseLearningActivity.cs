@@ -10,6 +10,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
     public class CourseLearningActivity : TenantEntity
     {
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
+		private IList<RubricAssociation> _rubricAssociations = new List<RubricAssociation>();
 
         [Required]
         public virtual string Name { get; set; }
@@ -41,6 +42,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
             set { _learningMaterials = value; }
         }
 
+		public virtual IList<RubricAssociation> RubricAssociations
+		{
+			get { return _rubricAssociations; }
+			set { _rubricAssociations = value; }
+		}
+
         public virtual LearningMaterial AddLearningMaterial(LearningMaterialRequest request)
         {
             var learningMaterial = new LearningMaterial {Id = Guid.NewGuid(), TenantId = TenantId, Name = request.Name};
@@ -48,5 +55,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
             _learningMaterials.Add(learningMaterial);
             return learningMaterial;
         }
+
+		public virtual RubricAssociation AddRubricAssociation(RubricAssociationRequest request)
+		{
+			var rubricAssociation = new RubricAssociation { Id = Guid.NewGuid(), TenantId = TenantId };
+
+			_rubricAssociations.Add(rubricAssociation);
+			return rubricAssociation;
+		}
     }
 }

@@ -472,5 +472,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var segment = GetSegmentOrThrow(segmentId);
             return segment.AddLearningMaterial(learningActivityId, request);
         }
+
+		public virtual RubricAssociation AddRubricAssociation(Guid segmentId, Guid learningActivityId, RubricAssociationRequest request)
+		{
+			CheckPublished();
+
+			var segment = GetSegmentOrThrow(segmentId);
+			return segment.AddRubricAssociation(learningActivityId, request);
+		}
     }
 }

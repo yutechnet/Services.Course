@@ -1,5 +1,7 @@
 ﻿using System;
+using AutoMapper;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -9,8 +11,26 @@ namespace BpeProducts.Services.Course.Domain.Courses
 		RubricAssociationInfo AddRubric(Guid courseId, Guid segmentId, Guid learningActivityId, RubricAssociationRequest request);
 	}
 
-	public class RubricAssociationService
+	public class RubricAssociationService : IRubricAssociationService
 	{
+		private readonly ICourseRepository _courseRepository;
 
+		public RubricAssociationService(ICourseRepository courseRepository)
+		{
+			_courseRepository = courseRepository;
+		}
+
+		public RubricAssociationInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid rubricassociationId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public RubricAssociationInfo AddRubric(Guid courseId, Guid segmentId, Guid learningActivityId, RubricAssociationRequest request)
+		{
+			var course = _courseRepository.GetOrThrow(courseId);
+
+			var learningMaterial = course.AddRubricAssociation(segmentId, learningActivityId, request);
+			return Mapper.Map<RubricAssociationInfo>(learningMaterial);
+		}
 	}
 }

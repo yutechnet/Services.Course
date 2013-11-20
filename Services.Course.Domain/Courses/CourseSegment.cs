@@ -143,5 +143,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var learningActivity = GetLearningActivityOrThrow(learningActivityId);
             return learningActivity.AddLearningMaterial(request);
         }
+
+		public virtual RubricAssociation AddRubricAssociation(Guid learningActivityId, RubricAssociationRequest request)
+		{
+			var learningActivity = GetLearningActivityOrThrow(learningActivityId);
+			return learningActivity.AddRubricAssociation(request);
+		}
     }
 }
