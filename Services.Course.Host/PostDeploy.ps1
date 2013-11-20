@@ -36,7 +36,14 @@ Import-Module -Name $PSScriptRoot\DeploymentModule.psm1 -Force
 
 # set ACL permissions
 # Read
-Deployment-SetCustomACLPermissions -Account "$IISAppPoolIdentity" -Path "$OctopusPackageDirectoryPath" -FileSystemRights "ReadAndExecute, Synchronize" -AccessControlType "Allow" -InheritanceFlags "ContainerInherit, ObjectInherit" -PropagationFlags "None"
+if ($IISAppPoolIdentity -ne $null)
+{
+	Deployment-SetCustomACLPermissions -Account "$IISAppPoolIdentity" -Path "$OctopusPackageDirectoryPath" -FileSystemRights "ReadAndExecute, Synchronize" -AccessControlType "Allow" -InheritanceFlags "ContainerInherit, ObjectInherit" -PropagationFlags "None"
+}
+else
+{
+	Deployment-SetCustomACLPermissions -Account "IIS APPPOOL\$IISAppPoolName" -Path "$OctopusPackageDirectoryPath" -FileSystemRights "ReadAndExecute, Synchronize" -AccessControlType "Allow" -InheritanceFlags "ContainerInherit, ObjectInherit" -PropagationFlags "None"
+}
 
 # cleanup
 Deployment-PurgeOldOctopusVersions 5

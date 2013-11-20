@@ -1,7 +1,10 @@
-# Deployment Module v0.1.55
+# Deployment Module v0.1.56
 
-$script:ErrorActionPreference = 'Stop'
+$Script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+
+$Script:BaseSoftwareDownloadUri = "https://scmsoftware.parabolasolutions.com"
+$Script:AuthToken = "c2Ntc29mdHdhcmVpbnN0YWxsOmpFaGF0NGYmU3c="
 
 #region IIS Functions
 
@@ -189,17 +192,21 @@ function Deployment-SetWebsiteBinding
 		{
 			Write-Host "Checking existing website `"$websiteName`" binding"
 			# get the existing binding
-			$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $bindingString}
-			if (-not $existingBinding )
+			$existingBindings = Get-WebBinding -Name $websiteName -Protocol $protocol -ErrorAction SilentlyContinue 
+			if ($existingBindings -ne $null)
 			{
-				Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
-				if ($IPAddress)
+				$existingBinding = $existingBindings | Where {$_.BindingInformation -eq $bindingString}
+				if (-not $existingBinding )
 				{
-					New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
-				}
-				else
-				{
-					New-WebBinding -Name $websiteName -Protocol $protocol -Port $port -HostHeader $hostheader
+					Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
+					if ($IPAddress)
+					{
+						New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
+					}
+					else
+					{
+						New-WebBinding -Name $websiteName -Protocol $protocol -Port $port -HostHeader $hostheader
+					}
 				}
 			}
 		}
@@ -511,27 +518,37 @@ function Deployment-ImportCertificateFromPFX
 		[string]$pfxPath,
 		[string]$pfxPassword,
 		[string]$certThumbprint,
-		[string]$certStoreScope,
+		[string]$certStoreLocation,
 		[string]$certStoreName
 	)
 	
 	if (-not (ConfigureIIS)) {return}
-			
-	$cert = Get-ChildItem cert:\$certStoreScope\$certStoreName | Where-Object {$_.Thumbprint -eq $certThumbprint}
-	if (-not $cert)
+	
+	$importCert = $true
+	$cert = $null
+	if ($certThumbprint -ne $null)
 	{
-		$pfxCert = new-object system.security.cryptography.x509certificates.x509certificate2
-		$pfxCert.Import($pfxPath,$pfxPassword,"Exportable,PersistKeySet")
-		$store = New-Object system.security.cryptography.X509Certificates.X509Store $certStoreName, $certStoreScope
+		$cert = Get-ChildItem cert:\$certStoreLocation\$certStoreName\* | Where-Object { $_.Thumbprint -eq $certThumbprint}
+		if ($cert -ne $null)
+		{
+			$importCert = $false
+		}
+	}
+	
+	if ($importCert)
+	{
+		$pfxCert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
+		$pfxCert.Import($pfxPath,$pfxPassword,"Exportable,PersistKeySet,MachineKeySet")
+		$store = New-Object System.Security.Cryptography.X509Certificates.X509Store $certStoreName, $certStoreLocation
 		$store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]::ReadWrite)
 		$store.Add($pfxCert)
 		$store.Close()
-		Write-Host "Certificate imported from `"$pfxPath`" into certificate store `"$certStoreScope\$certStoreName`""
+		Write-Host "Certificate imported from `"$pfxPath`" into certificate store `"$certStoreLocation\$certStoreName`""
 		Write-Host "Certificate will expire on $($pfxCert.NotAfter)"
 		}
 	else
 	{
-		Write-Host "Existing certificate found in `"$certStoreScope\$certStoreName`" with subject `"$($cert.Subject)`" and thumbprint `"$certThumbprint`""
+		Write-Host "Existing certificate found in `"$certStoreLocation\$certStoreName`" with subject `"$($cert.Subject)`" and thumbprint `"$certThumbprint`""
 		Write-Host "Certificate will expire on $($cert.NotAfter)"
 	}
 }
@@ -542,12 +559,14 @@ function Deployment-LocateCertificate
 		[string]$certSubject,
 		[string]$certThumbprint,
 		[string]$certStoreName,
-		[string]$certStoreLocation
+		[string]$certStoreLocation,
+		[string]$certPfx,
+		[string]$certPfxPassword
 	)
 	
 	if ($certSubject)
 	{
-		$cert = Deployment-GetCertificate -CertSubject $certSubject -CertStoreName $certStoreName -CertStoreLocation $certStoreLocation
+		$cert = Deployment-GetCertificate -CertSubject $certSubject -CertStoreName $certStoreName -CertStoreLocation $certStoreLocation -CertPfx $certPfx -CertPfxPassword $certPfxPassword
 		if (-not $cert)
 		{
 			Throw "Unable to locate valid certificate"
@@ -556,7 +575,7 @@ function Deployment-LocateCertificate
 	
 	if ($certThumbprint)
 	{
-		$cert = Deployment-GetCertificate -CertThumbprint $certThumbprint -CertStoreName $certStoreName -CertStoreLocation $certStoreLocation
+		$cert = Deployment-GetCertificate -CertThumbprint $certThumbprint -CertStoreName $certStoreName -CertStoreLocation $certStoreLocation -CertPfx $certPfx -CertPfxPassword $certPfxPassword
 		if (-not $cert)
 		{
 			Throw "Unable to locate valid certificate"
@@ -570,7 +589,9 @@ function Deployment-GetCertificate
 		[string]$certSubject,
 		[string]$certThumbprint,
 		[string]$certStoreName,
-		[string]$certStoreLocation
+		[string]$certStoreLocation,
+		[string]$certPfx,
+		[string]$certPfxPassword
 	)
 	
 	# default unset store to *
@@ -645,9 +666,54 @@ function Deployment-GetCertificate
 	}
 	else
 	{
-		$errorMsg = "Unable to locate valid non-expired certificate in Store:$certStoreName at Store Location:$certStoreLocation"
-		Throw $errorMsg
+		if ($certPfx -ne $null)
+		{
+			$pfxFile = Deployment-DownloadCertificate -CertPfx "$certPfx" -DownloadDirectory "C:\Temp\Certificates"
+			Deployment-ImportCertificateFromPFX -PfxPath "$pfxFile" -PfxPassword "$certPfxPassword" -CertStoreLocation "$certStoreLocation" -CertStoreName "$certStoreName"
+			Remove-Item $pfxFile -Force -ErrorAction SilentlyContinue
+			return Deployment-GetCertificate -CertSubject $certSubject -CertThumbprint $CertThumbprint -CertStoreName $certStoreName -certStoreLocation $certStoreLocation
+		}
+		else
+		{
+			$errorMsg = "Unable to locate valid non-expired certificate in Store:$certStoreName at Store Location:$certStoreLocation"
+			Throw $errorMsg
+		}
 	}
+}
+
+
+function Deployment-DownloadCertificate
+{
+	param(
+		[string]$certPfx,
+		[string]$downloadDirectory
+	)
+	
+	if (-not (Test-Path "$downloadDirectory"))
+	{
+		New-Item -ItemType directory -Path "$downloadDirectory" | Out-Null
+	}
+	
+	# certificate uir
+	$uri = new-Object System.Uri "$($Script:BaseSoftwareDownloadUri)/Certificates/$certPfx"
+	Write-Host "Downloading certificate ($uri)"
+	
+	# get the full download path
+	$fileName = $uri.Segments[-1] 
+	$downloadFile = Join-Path $downloadDirectory $fileName
+	
+	# delete the old downloaded file if it exists
+	if (Test-Path $downloadFile)
+	{
+		Remove-Item $downloadFile -Force | Out-Null
+	}
+	
+	# get the content from the software server
+	$webClient = New-Object System.Net.WebClient
+	$webClient.Headers.Add("Authorization","Basic $($Script:AuthToken)")
+	$webClient.DownloadFile($uri, $downloadFile)
+	
+	return $downloadFile
 }
 
 function Deployment-SetupCertificatePermissions
@@ -676,8 +742,8 @@ function Deployment-SetupCertificatePermissions
 	$cert = Deployment-GetCertificate -CertSubject $certSubject -CertThumbprint $certThumbprint -CertStoreName $certStoreName -CertStoreLocation $certStoreLocation
 	
 	# get the private key
-	$certPrivKey = $cert.PrivateKey 
-	
+	$certPrivKey = $cert.PrivateKey
+
 	# get the private key file
 	$privKeyCertFile = Get-Item -path "$ENV:ProgramData\Microsoft\Crypto\RSA\MachineKeys\*"  | Where {$_.Name -eq $certPrivKey.CspKeyContainerInfo.UniqueKeyContainerName} 
 	
@@ -1026,7 +1092,7 @@ function Deployment-InstallWindowsFeatures
 	$serverManagerAvailable = Get-Module -ListAvailable | Where {$_.Name -eq "ServerManager"}
 	if (-not $serverManagerAvailable)
 	{
-		Write-Host "Skip checking Windows feature [$index/$total] $featureName ($description) for installation (module ServerManager not supported)"
+		Write-Host "Skip checking Windows features for installation (module ServerManager not supported)"
 		return
 	}
 	Import-Module ServerManager
@@ -1053,7 +1119,7 @@ function Deployment-RemoveWindowsFeatures
 	$serverManagerAvailable = Get-Module -ListAvailable | Where {$_.Name -eq "ServerManager"}
 	if (-not $serverManagerAvailable)
 	{
-		Write-Host "Skip checking Windows feature [$index/$total] $featureName ($description) for installation (module ServerManager not supported)"
+		Write-Host "Skip checking Windows features for removal (module ServerManager not supported)"
 		return
 	}
 	Import-Module ServerManager
@@ -1543,97 +1609,196 @@ function Is64Bit
 {
 	[IntPtr]::Size -eq 8
 }
-
-function Deployment-InstallIISRewriteModule
-{
-	Write-Host "Checking to see if URL Rewrite has been installed"
-	if (-not (Test-Path "$env:programfiles\Reference Assemblies\Microsoft\IIS\Microsoft.Web.Iis.Rewrite.dll"))
-	{
-		Write-Host "Installing URL Rewrite"
-		$webClient = New-Object System.Net.WebClient
-		$msi = "C:\Temp\IISRewrite.msi"
-		if (-not (Test-Path "C:\Temp"))
-		{
-			New-Item -ItemType directory -Path "C:\Temp" | Out-Null
-		}
-		if (Test-Path $msi)
-		{
-			Remove-Item $msi -Force | Out-Null
-		}
-		$url = ""
-		if (Is64Bit)
-		{
-			$url = "http://go.microsoft.com/?linkid=9722532"
-		}
-		else
-		{
-			$url = "http://go.microsoft.com/?linkid=9722533"
-		}
-		$webClient.DownloadFile($url, $msi)
-		msiexec.exe /i $msi /passive
-		Start-Sleep -s 30
-	}
- }
  
-function Deployment-InstallIISWebFarm
+function Deployment-InstallMsi
 {
-	Write-Host "Checking to see if Web Farm has been installed"
-	if (-not (Test-Path "$env:programfiles\IIS\Webfarm framework"))
+	param(
+		$productList,
+		[string]$applicationProductName,
+		[string]$applicationDownloadUri,
+		[string]$downloadDirectory
+	)
+	
+	Write-Host "Checking to see if $applicationProductName has been installed"
+	
+	# if the product list is empty populate it (this can be slow)
+	if ($productList -eq $null)
 	{
-		Write-Host "Installing Web Farm"
-		$webClient = New-Object System.Net.WebClient
-		$msi = "C:\Temp\WebFarm.msi"
-		if (-not (Test-Path "C:\Temp"))
+		$productList = Get-WmiObject -Class Win32_Product
+	}
+	
+	# search the product list for the application
+	$product = $productList | Where-Object {$_.Name -like "*$applicationProductName*"}
+	if ($product -eq $null)
+	{
+		if (-not (Test-Path "$downloadDirectory"))
 		{
-			New-Item -ItemType directory -Path "C:\Temp" | Out-Null
+			New-Item -ItemType directory -Path "$downloadDirectory" | Out-Null
 		}
-		if (Test-Path $msi)
-		{
-			Remove-Item $msi -Force | Out-Null
-		}
-		$url = ""
+		
+		# get the 32 or 64 bit url
+		$uri = $null
 		if (Is64Bit)
 		{
-			$url = "http://download.microsoft.com/download/3/4/1/3415F3F9-5698-44FE-A072-D4AF09728390/webfarm_amd64_en-US.msi"
+			$uri = new-Object System.Uri "$($Script:BaseSoftwareDownloadUri)/$($applicationDownloadUri)_x64.msi"
 		}
 		else
 		{
-			$url = "http://download.microsoft.com/download/4/D/F/4DFDA851-515F-474E-BA7A-5802B3C95101/webfarm_x86_en-US.msi"
+			$uri = new-Object System.Uri "$($Script:BaseSoftwareDownloadUri)/$($applicationDownloadUri)_x86.msi"
 		}
-		$webClient.DownloadFile($url, $msi)
-		msiexec.exe /i $msi /passive
+		
+		Write-Host "Downloading $applicationProductName ($uri)"
+		
+		# get the full download path
+		$fileName = $uri.Segments[-1] 
+		$downloadFile = Join-Path $downloadDirectory $fileName
+		
+		# delete the old downloaded file if it exists
+		if (Test-Path $downloadFile)
+		{
+			Remove-Item $downloadFile -Force | Out-Null
+		}
+		
+		# get the content from the GitHub
+		$webClient = New-Object System.Net.WebClient
+		$webClient.Headers.Add("Authorization","Basic $($Script:AuthToken)")
+		$webClient.DownloadFile($uri, $downloadFile)
+		
+		# install the application
+		Write-Host "Installing $applicationProductName (msiexec.exe /i `"$downloadFile`" /passive)"
+		$args = @()
+		$args += "/i"
+		$args += "`"$downloadFile`""
+		$args += "/passive"
+		$process = (Start-Process -FilePath "msiexec.exe" -ArgumentList $args -PassThru -Wait)
+		Write-Host "Install $applicationProductName Exit Code: $($process.ExitCode)"
+		
 		Start-Sleep -s 30
 	}
- }
+}
  
-function Deployment-InstallIISApplicationRequesrRouting
+function Deployment-InstallPhalanger
 {
-	Write-Host "Checking to see if Application Request Routing has been installed"
-	if (-not (Test-Path "$env:programfiles\IIS\Application Request Routing"))
+	param(
+		$productList,
+		[string]$downloadDirectory
+	)
+	
+	Write-Host "Checking to see if Phalanger 3.0 has been installed"
+	
+	# if the product list is empty populate it (this can be slow)
+	if ($productList -eq $null)
 	{
-		Write-Host "Installing Application Request Routing"
+		$productList = Get-WmiObject -Class Win32_Product
+	}
+	
+	if (-not (Test-Path "$downloadDirectory"))
+	{
+		New-Item -ItemType directory -Path "$downloadDirectory" | Out-Null
+	}
+	
+	# MS VC++ Redistributable
+	$product = $productList | Where-Object {$_.Name -like "*Microsoft Visual C++ 2010  x86 Redistributable*"}
+	if ($product -eq $null)
+	{
+		# get the MS VC++ 2010 x86 Redistributable file
+		$uri = new-Object System.Uri "$($Script:BaseSoftwareDownloadUri)/Phalanger-3.0.0.4072/en_visual_c++_2010_sp1_redistributable_package_x86_651767.exe"
+		Write-Host "Downloading Microsoft Visual C++ 2010 x86 Redistributable ($uri)"
+		
+		# get the full download path
+		$fileName = $uri.Segments[-1] 
+		$downloadFile = Join-Path $downloadDirectory $fileName
+		
+		# delete the old downloaded file if it exists
+		if (Test-Path $downloadFile)
+		{
+			Remove-Item $downloadFile -Force | Out-Null
+		}
+		
+		# get the content from the GitHub
 		$webClient = New-Object System.Net.WebClient
-		$msi = "C:\Temp\ApplicationRequestRouting.msi"
-		if (-not (Test-Path "C:\Temp"))
-		{
-			New-Item -ItemType directory -Path "C:\Temp" | Out-Null
-		}
-		if (Test-Path $msi)
-		{
-			Remove-Item $msi -Force | Out-Null
-		}
-		$url = ""
-		if (Is64Bit)
-		{
-			$url = "http://download.microsoft.com/download/6/3/D/63D67918-483E-4507-939D-7F8C077F889E/requestRouter_x64.msi"
-		}
-		else
-		{
-			$url = "http://download.microsoft.com/download/6/3/D/63D67918-483E-4507-939D-7F8C077F889E/requestRouter_x86.msi"
-		}
-		$webClient.DownloadFile($url, $msi)
-		msiexec.exe /i $msi /passive
+		$webClient.Headers.Add("Authorization","Basic $($Script:AuthToken)")
+		$webClient.DownloadFile($uri, $downloadFile)
+		
+		Write-Host "Installing Microsoft Visual C++ 2010 x86 Redistributable (`"$downloadFile`" /q /norestart)"
+		$args = @()
+		$args += "/q"
+		$args += "/norestart"
+		$process = (Start-Process -FilePath "$downloadFile" -ArgumentList $args -PassThru -Wait)
+		Write-Host "Install Microsoft Visual C++ 2010 x86 Redistributable Exit Code: $($process.ExitCode)"
 		Start-Sleep -s 30
 	}
- }
+	
+	# MS SDK files
+	if (-not (Test-Path -Path "C:\Program Files (x86)\Microsoft SDKs"))
+	{
+		# get the MS SDK files
+		$uri = new-Object System.Uri "$($Script:BaseSoftwareDownloadUri)/Phalanger-3.0.0.4072/MicrosoftSDKs.zip"
+		Write-Host "Downloading MS SDK files ($uri)"
+		
+		# get the full download path
+		$fileName = $uri.Segments[-1] 
+		$downloadFile = Join-Path $downloadDirectory $fileName
+		
+		# delete the old downloaded file if it exists
+		if (Test-Path $downloadFile)
+		{
+			Remove-Item $downloadFile -Force | Out-Null
+		}
+		$copySdkDir = Join-Path $downloadDirectory "MicrosoftSDKs"
+		if (Test-Path $copySdkDir)
+		{
+			Remove-Item $copySdkDir -Recurse -Force | Out-Null
+		}
+		
+		# get the content from the GitHub
+		$webClient = New-Object System.Net.WebClient
+		$webClient.Headers.Add("Authorization","Basic $($Script:AuthToken)")
+		$webClient.DownloadFile($uri, $downloadFile)
+		
+		# unzip the file
+		Write-Host "Unzipping MS SDK files ($downloadFile -> $copySdkDir)"
+		[System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null 
+		[System.IO.Compression.ZipFile]::ExtractToDirectory("$downloadFile", "$copySdkDir")
+		
+		# copy files
+		Write-Host "Copying MS SDK files ($copySdkDir -> C:\Program Files (x86)\Microsoft SDKs)"
+		Copy-Item "$copySdkDir" "C:\Program Files (x86)\Microsoft SDKs" -Recurse | Out-Null
+	}
+	
+	# Phalanger
+	$product = $productList | Where-Object {$_.Name -like "*Phalanger 3.0*"}
+	if ($product -eq $null)
+	{
+		# get the Phalanger file
+		$uri = new-Object System.Uri "$($Script:BaseSoftwareDownloadUri)/Phalanger-3.0.0.4072/Phalanger.msi"
+		Write-Host "Downloading Phalanger ($uri)"
+		
+		# get the full download path
+		$fileName = $uri.Segments[-1] 
+		$downloadFile = Join-Path $downloadDirectory $fileName
+		
+		# delete the old downloaded file if it exists
+		if (Test-Path $downloadFile)
+		{
+			Remove-Item $downloadFile -Force | Out-Null
+		}
+		
+		# get the content from the GitHub
+		$webClient = New-Object System.Net.WebClient
+		$webClient.Headers.Add("Authorization","Basic $($Script:AuthToken)")
+		$webClient.DownloadFile($uri, $downloadFile)
+		
+		Write-Host "Installing Phalanger (msiexec.exe ALLUSERS=1 /i `"$downloadFile`" /passive)"
+		$args = @()
+		$args += "ALLUSERS=1"
+		$args += "/i"
+		$args += "`"$downloadFile`""
+		$args += "/passive"
+		$process = (Start-Process -FilePath "msiexec.exe" -ArgumentList $args -PassThru -Wait)
+		Write-Host "Install Phalanger Exit Code: $($process.ExitCode)"
+		Start-Sleep -s 30
+	}
+}
+  
 #endregion

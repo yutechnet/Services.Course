@@ -97,14 +97,20 @@ Add-Type -Path C:\Windows\System32\inetsrv\Microsoft.Web.Administration.dll
 Deployment-RemoveDefaultWebSite
 Deployment-SetupWebsite -WebsiteName "$IISWebsiteName" -WebsiteDirectoryPath "$IISWebsitePath" -AppPoolName "$IISWebsiteAppPoolName"
 Deployment-SetWebsiteBinding -WebsiteName "$IISWebsiteName" -Protocol "http" -IPAddress "*" -Port "80" -HostHeader "$IISHostHeaders"
-Deployment-RemoveWebsiteBinding -WebsiteName "$IISWebsiteName" -Protocol "http" -IPAddress "*" -Port "80" -HostHeader ""
+if ($IISHostHeaders -ne $null)
+{
+	Deployment-RemoveWebsiteBinding -WebsiteName "$IISWebsiteName" -Protocol "http" -IPAddress "*" -Port "80" -HostHeader ""
+}
 
 # setup app pool
 Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'managedRuntimeVersion'     -AppPoolPropertyValue 'v4.0'
 Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'managedPipelineMode'       -AppPoolPropertyValue ([int] [Microsoft.Web.Administration.ManagedPipelineMode]::Identity)          -CompareValue 'Integrated'   #Integrated = 0, Classic = 1
-Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'processModel.identityType' -AppPoolPropertyValue ([int] [Microsoft.Web.Administration.ProcessModelIdentityType]::SpecificUser) -CompareValue 'SpecificUser' #LocalSystem = 0, LocalService = 1, NetworkService = 2, SpecificUser = 3, ApplicationPoolIdentity = 4
-Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'processModel.userName'     -AppPoolPropertyValue $IISWebsiteAppPoolIdentity
-Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'processModel.password'     -AppPoolPropertyValue $IISWebsiteAppPoolIdentityPassword -Hide
+if ($IISAppPoolIdentity -ne $null)
+{
+	Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'processModel.identityType' -AppPoolPropertyValue ([int] [Microsoft.Web.Administration.ProcessModelIdentityType]::SpecificUser) -CompareValue 'SpecificUser' #LocalSystem = 0, LocalService = 1, NetworkService = 2, SpecificUser = 3, ApplicationPoolIdentity = 4
+	Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'processModel.userName'     -AppPoolPropertyValue $IISWebsiteAppPoolIdentity
+	Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'processModel.password'     -AppPoolPropertyValue $IISWebsiteAppPoolIdentityPassword -Hide
+}
 
 # Removing default IIS setting OPTIONVebHandler
 Deployment-RemoveHandlerMapping -HandlerName "OPTIONSVerbHandler" -WebsiteName "$IISWebsiteName"
@@ -115,12 +121,15 @@ Deployment-SetupWebApplication -WebsiteName "$IISWebsiteName" -WebApplicationNam
 # setup app pool
 Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'managedRuntimeVersion'     -AppPoolPropertyValue 'v4.0'
 Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'managedPipelineMode'       -AppPoolPropertyValue ([int] [Microsoft.Web.Administration.ManagedPipelineMode]::Identity)          -CompareValue 'Integrated'   #Integrated = 0, Classic = 1
-Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'processModel.identityType' -AppPoolPropertyValue ([int] [Microsoft.Web.Administration.ProcessModelIdentityType]::SpecificUser) -CompareValue 'SpecificUser' #LocalSystem = 0, LocalService = 1, NetworkService = 2, SpecificUser = 3, ApplicationPoolIdentity = 4
-Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'processModel.userName'     -AppPoolPropertyValue $IISAppPoolIdentity
-Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'processModel.password'     -AppPoolPropertyValue $IISAppPoolIdentityPassword -Hide
+if ($IISAppPoolIdentity -ne $null)
+{
+	Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'processModel.identityType' -AppPoolPropertyValue ([int] [Microsoft.Web.Administration.ProcessModelIdentityType]::SpecificUser) -CompareValue 'SpecificUser' #LocalSystem = 0, LocalService = 1, NetworkService = 2, SpecificUser = 3, ApplicationPoolIdentity = 4
+	Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'processModel.userName'     -AppPoolPropertyValue $IISAppPoolIdentity
+	Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'processModel.password'     -AppPoolPropertyValue $IISAppPoolIdentityPassword -Hide
+}
 
 # verify identity signing certificate is installed
-Deployment-LocateCertificate -CertThumbprint "$IdentityIssuerCertThumbprint" -CertStoreName "My" -CertStoreLocation "LocalMachine"
+Deployment-LocateCertificate -CertThumbprint "$IdentityIssuerCertThumbprint" -CertStoreName "My" -CertStoreLocation "LocalMachine"  -CertPfx $IdentityIssuerCertPfx -CertPfxPassword $IdentityIssuerCertPfxPassword 
 
 # set eventlog source
 if($EventLogSource -ne $null)
