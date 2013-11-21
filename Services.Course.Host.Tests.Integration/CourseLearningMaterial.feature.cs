@@ -232,27 +232,35 @@ this.FeatureBackground();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Add learning material from unpublished asset")]
-        public virtual void AddLearningMaterialFromUnpublishedAsset()
+        [NUnit.Framework.DescriptionAttribute("Add course learning material to published course fails")]
+        public virtual void AddCourseLearningMaterialToPublishedCourseFails()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add learning material from unpublished asset", ((string[])(null)));
-#line 55
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add course learning material to published course fails", ((string[])(null)));
+#line 53
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Add learning material from published asset")]
-        public virtual void AddLearningMaterialFromPublishedAsset()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add learning material from published asset", ((string[])(null)));
-#line 56
-this.ScenarioSetup(scenarioInfo);
-#line 4
-this.FeatureBackground();
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table12.AddRow(new string[] {
+                        "Econ 100",
+                        "Published"});
+#line 54
+ testRunner.When("I publish the following courses", ((string)(null)), table12, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Description"});
+            table13.AddRow(new string[] {
+                        "file1"});
+            table13.AddRow(new string[] {
+                        "file2"});
+#line 57
+ testRunner.And("I add the following assets as learning material to \'Discussion 1\' learning activi" +
+                    "ty", ((string)(null)), table13, "And ");
+#line 61
+ testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -262,7 +270,7 @@ this.FeatureBackground();
         public virtual void PublishCoursePublishesLibraryAndAssociatedAssets()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Publish course publishes library and associated assets", ((string[])(null)));
-#line 58
+#line 63
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -275,7 +283,7 @@ this.FeatureBackground();
         public virtual void UpdateLearningMaterialWithUnpublishedCourseAndUnpublishedAsset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update learning material with unpublished course and unpublished asset", ((string[])(null)));
-#line 59
+#line 64
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -288,7 +296,7 @@ this.FeatureBackground();
         public virtual void UpdateLearningMaterialWithUnpublishedCourseAndPublishedAsset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update learning material with unpublished course and published asset", ((string[])(null)));
-#line 60
+#line 65
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -301,7 +309,7 @@ this.FeatureBackground();
         public virtual void UpdateLearningMaterialWithPublishedCourseNotAllowed()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update learning material with published course not allowed", ((string[])(null)));
-#line 61
+#line 66
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -314,7 +322,7 @@ this.FeatureBackground();
         public virtual void UpdateLibraryItemDirectlyChangesLearningMaterial()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update library item directly changes learning material", ((string[])(null)));
-#line 62
+#line 67
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -327,7 +335,7 @@ this.FeatureBackground();
         public virtual void UpdateLibraryItemFailsIfLibraryIsPublished()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update library item fails if library is published", ((string[])(null)));
-#line 63
+#line 68
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();

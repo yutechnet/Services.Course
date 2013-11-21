@@ -6,7 +6,7 @@ Background:
 	| Name |
 	| COB  |
 	And I have the following capabilities
-	| Capability   |
+	| Capability    |
 	| CourseCreate  |
 	| CoursePublish |
 	| CourseView    |
@@ -50,10 +50,15 @@ Scenario: Delete course learning material
 	| file1       |
 	| file3       |
 
-
-
-Scenario: Add learning material from unpublished asset
-Scenario: Add learning material from published asset
+Scenario: Add course learning material to published course fails
+	When I publish the following courses
+    | Name     | Note      |
+    | Econ 100 | Published |
+	And I add the following assets as learning material to 'Discussion 1' learning activity
+	| Description |
+	| file1       |
+	| file2       |
+	Then I get 'Forbidden' response 
 
 Scenario: Publish course publishes library and associated assets
 Scenario: Update learning material with unpublished course and unpublished asset
