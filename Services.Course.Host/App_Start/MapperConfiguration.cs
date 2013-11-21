@@ -39,6 +39,7 @@ namespace BpeProducts.Services.Course.Host.App_Start
 				  .ForMember(dest => dest.PrerequisiteCourseIds, opt => opt.MapFrom(course => course.Prerequisites.Select(p => p.Id).ToList()));
 		    Mapper.CreateMap<Domain.Courses.CourseSegment, CourseSegmentInfo>();
 		    Mapper.CreateMap<Domain.Courses.CourseLearningActivity, CourseLearningActivityResponse>();
+			Mapper.CreateMap<Domain.Courses.RubricAssociation, RubricAssociationInfo>();
 
 
 			// From DTOs to Domain Entities

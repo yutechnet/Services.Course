@@ -22,7 +22,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
 		public RubricAssociationInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid rubricassociationId)
 		{
-			throw new NotImplementedException();
+			var rubricAssociation = _courseRepository.GetRubricAssociation(rubricassociationId);
+			return Mapper.Map<RubricAssociationInfo>(rubricAssociation);
 		}
 
 		public RubricAssociationInfo AddRubric(Guid courseId, Guid segmentId, Guid learningActivityId, RubricAssociationRequest request)

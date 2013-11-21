@@ -9,5 +9,6 @@ namespace BpeProducts.Services.Course.Contract
 	public class RubricAssociationInfo
 	{
 		public Guid Id { get; set; }
+		public Guid RubricId { get; set; }
 	}
 }
