@@ -39,5 +39,43 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 			var learningActivity = new CourseLearningActivity {Type = CourseLearningActivityType.Assessment};
 			Assert.Throws(typeof(BadRequestException), () => learningActivity.AddRubricAssociation(rubricAssociationRequest));
 		}
+
+		[Test]
+		public void Rubric_cannot_be_added_more_than_once()
+		{
+			var rubricId = Guid.NewGuid();
+			var rubricAssociationRequest = new RubricAssociationRequest { RubricId = rubricId };
+
+			var learningActivity = new CourseLearningActivity { Type = CourseLearningActivityType.Custom };
+			learningActivity.AddRubricAssociation(rubricAssociationRequest);
+			Assert.Throws(typeof(BadRequestException), () => learningActivity.AddRubricAssociation(rubricAssociationRequest));
+		}
+
+		[Test]
+		public void Can_delete_rubricAssociation()
+		{
+			var rubricId = Guid.NewGuid();
+			var rubricAssociationRequest = new RubricAssociationRequest { RubricId = rubricId };
+
+			var learningActivity = new CourseLearningActivity { Type = CourseLearningActivityType.Custom };
+			learningActivity.AddRubricAssociation(rubricAssociationRequest);
+
+			Assert.That(learningActivity.RubricAssociations.Count, Is.EqualTo(1));
+
+			learningActivity.DeleteRubricAssociation(rubricId);
+
+			Assert.That(learningActivity.RubricAssociations.Count, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void Attempt_to_remove_rubricAssociation_that_doesnt_exist_throws_notFoundException()
+		{
+			var rubricId = Guid.NewGuid();
+			var learningActivity = new CourseLearningActivity { Type = CourseLearningActivityType.Custom };
+
+			Assert.That(learningActivity.RubricAssociations.Count, Is.EqualTo(0));
+
+			Assert.Throws(typeof(NotFoundException), () => learningActivity.DeleteRubricAssociation(rubricId));
+		}
 	}
 }

@@ -9,6 +9,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 	{
 		RubricAssociationInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid rubricassociationId);
 		RubricAssociationInfo AddRubric(Guid courseId, Guid segmentId, Guid learningActivityId, RubricAssociationRequest request);
+		void DeleteRubric(Guid courseId, Guid segmentId, Guid learningActivityId, Guid rubricId);
 	}
 
 	public class RubricAssociationService : IRubricAssociationService
@@ -32,6 +33,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
 			var learningMaterial = course.AddRubricAssociation(segmentId, learningActivityId, request);
 			return Mapper.Map<RubricAssociationInfo>(learningMaterial);
+		}
+
+		public void DeleteRubric(Guid courseId, Guid segmentId, Guid learningActivityId, Guid rubricId)
+		{
+			var course = _courseRepository.GetOrThrow(courseId);
+			course.DeleteRubricAssociation(segmentId, learningActivityId, rubricId);
 		}
 	}
 }
