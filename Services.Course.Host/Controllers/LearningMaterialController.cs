@@ -47,5 +47,13 @@ namespace BpeProducts.Services.Course.Host.Controllers
         {
             return _learningMaterialService.Get(courseId, segmentId, learningActivityId, learningMaterialId);
         }
+
+        [Transaction]
+        [HttpDelete]
+        [DELETE("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/learningmaterial/{learningMaterialId:guid}")]
+        public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId,Guid learningMaterialId)
+        {
+            _learningMaterialService.Delete(courseId, segmentId, learningActivityId, learningMaterialId);
+        }
     }
 }

@@ -488,5 +488,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			var segment = GetSegmentOrThrow(segmentId);
 			segment.DeleteRubricAssociation(learningActivityId, rubricId);
 		}
+
+	public virtual void DeleteLearningMaterial(Guid segmentId, Guid learningActivityId, Guid learningMaterialId)
+        {
+            CheckPublished();
+
+            var segment = GetSegmentOrThrow(segmentId);
+            segment.DeleteLearningMaterial(learningActivityId, learningMaterialId);
+        }
     }
 }

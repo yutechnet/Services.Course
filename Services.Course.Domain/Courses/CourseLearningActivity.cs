@@ -12,7 +12,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
     public class CourseLearningActivity : TenantEntity
     {
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
-		private IList<RubricAssociation> _rubricAssociations = new List<RubricAssociation>();
+        private IList<RubricAssociation> _rubricAssociations = new List<RubricAssociation>();
 
         [Required]
         public virtual string Name { get; set; }
@@ -44,28 +44,28 @@ namespace BpeProducts.Services.Course.Domain.Courses
             set { _learningMaterials = value; }
         }
 
-		public virtual IList<RubricAssociation> RubricAssociations
-		{
-			get { return _rubricAssociations; }
-			set { _rubricAssociations = value; }
-		}
-
-	public virtual LearningMaterial AddLearningMaterial(Guid libraryItemId, string description)
+        public virtual IList<RubricAssociation> RubricAssociations
         {
-            var learningMaterial = new LearningMaterial {Id = Guid.NewGuid(), LibraryItemId = libraryItemId, TenantId = TenantId, Description = description};
+            get { return _rubricAssociations; }
+            set { _rubricAssociations = value; }
+        }
+
+        public virtual LearningMaterial AddLearningMaterial(Guid libraryItemId, string description)
+        {
+            var learningMaterial = new LearningMaterial { Id = Guid.NewGuid(), LibraryItemId = libraryItemId, TenantId = TenantId, Description = description };
 
             _learningMaterials.Add(learningMaterial);
             return learningMaterial;
         }
 
-		public virtual RubricAssociation AddRubricAssociation(RubricAssociationRequest request)
-		{
-			var rubricAssociation = new RubricAssociation { Id = Guid.NewGuid(), RubricId = request.RubricId, TenantId = TenantId };
+        public virtual RubricAssociation AddRubricAssociation(RubricAssociationRequest request)
+        {
+            var rubricAssociation = new RubricAssociation { Id = Guid.NewGuid(), RubricId = request.RubricId, TenantId = TenantId };
 
-			if (Type != CourseLearningActivityType.Custom)
-			{
-				throw new BadRequestException("Rubrics may only be associated with LearningActivities of type CUSTOM. To associate rubrics to non-custom types supported by the platform, please consult the documentation.");
-			}
+            if (Type != CourseLearningActivityType.Custom)
+            {
+                throw new BadRequestException("Rubrics may only be associated with LearningActivities of type CUSTOM. To associate rubrics to non-custom types supported by the platform, please consult the documentation.");
+            }
 
 			var associationCheck = _rubricAssociations.SingleOrDefault(r => r.RubricId == request.RubricId);
 			if (associationCheck != null)
@@ -90,5 +90,21 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
 			_rubricAssociations.Remove(rubricAssociation);
 		}
+
+public virtual void DeleteLearningMaterial(Guid learningMaterialId)
+        {
+            var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
+            learningMaterial.ActiveFlag = false;
+        }
+
+        private LearningMaterial GetLearningMaterialOrThrow(Guid learningMaterialId)
+        {
+            var learningMaterial = _learningMaterials.SingleOrDefault(l => l.Id == learningMaterialId);
+
+            if (learningMaterial == null)
+                throw new NotFoundException(string.Format("Learning Material {0} for Course Learning Activity {1} is not found.", learningMaterialId, Id));
+
+            return learningMaterial;
+        }
     }
 }

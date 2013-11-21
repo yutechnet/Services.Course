@@ -14,6 +14,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
     {
         LearningMaterialInfo AddLearningMaterial(Guid courseId, Guid segmentId, Guid learningActivityId, LearningMaterialRequest request);
         LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId);
+        void Delete(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId);
     }
 
     public class LearningMaterialService : ILearningMaterialService
@@ -34,6 +35,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var libraryInfo = _assetService.AddAssetToLibrary("course", course.Id, request.AssetId);
             
             var learningMaterial = course.AddLearningMaterial(segmentId, learningActivityId, libraryInfo.Id, request.Description);
+
             return Mapper.Map<LearningMaterialInfo>(learningMaterial);
         }
 
@@ -41,6 +43,14 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             var learningMaterial = _courseRepository.GetLearningMaterial(learningMaterialId);
             return Mapper.Map<LearningMaterialInfo>(learningMaterial);
+        }
+
+        public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId)
+        {
+            var course = _courseRepository.GetOrThrow(courseId);
+            course.DeleteLearningMaterial(segmentId, learningActivityId, learningMaterialId);
+
+            _courseRepository.Save(course);
         }
     }
 }

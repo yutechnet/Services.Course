@@ -464,13 +464,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void ThenLearningActivityHasTheFollowingLearningMaterial(string learningActivityName, Table table)
         {
             var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
-
             var actual = GetOperations.GetCourseLearningActivity(resource);
 
             foreach (var row in table.Rows)
             {
                 var description = row["Description"];
-
                 Assert.That(actual.LearningMaterials.Any(x => x.Description == description));
             }
         }
