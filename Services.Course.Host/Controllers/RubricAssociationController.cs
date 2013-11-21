@@ -45,8 +45,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
 			return _rubricAssociationService.Get(courseId, segmentId, learningActivityId, rubricassociationId);
 		}
 
-		[HttpGet]
-		[GET("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/rubricassociation/{rubricId:guid}", RouteName = "GetRubricAssociation")]
+		[HttpDelete]
+		[DELETE("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/rubricassociation/{rubricId:guid}", RouteName = "DeleteRubricAssociation")]
 		public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId, Guid rubricId)
 		{
 			_rubricAssociationService.DeleteRubric(courseId, segmentId, learningActivityId, rubricId);
