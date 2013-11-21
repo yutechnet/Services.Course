@@ -233,6 +233,7 @@
   <ItemGroup>
     <Compile Include="CourseFactoryTests.cs" />
     <Compile Include="CourseServiceTests.cs" />
+    <Compile Include="Entities\CourseLearningActivityTests.cs" />
     <Compile Include="Entities\CourseTests.cs" />
     <Compile Include="Handlers\FakeDomainEvent.cs" />
     <Compile Include="Handlers\CourseUpdatedHandlerTests.cs" />

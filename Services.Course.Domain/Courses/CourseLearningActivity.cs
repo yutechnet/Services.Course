@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
@@ -58,7 +59,14 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
 		public virtual RubricAssociation AddRubricAssociation(RubricAssociationRequest request)
 		{
-			var rubricAssociation = new RubricAssociation { Id = Guid.NewGuid(), TenantId = TenantId };
+			var rubricAssociation = new RubricAssociation { Id = Guid.NewGuid(), RubricId = request.RubricId, TenantId = TenantId };
+
+			if (Type != CourseLearningActivityType.Custom)
+			{
+				throw new BadRequestException("Rubrics may only be associated with LearningActivities of type CUSTOM. To associate rubrics to non-custom types supported by the platform, please consult the documentation.");
+			}
+
+			//TODO: Add validation of rubric here (necessitates GET on assessmentSvc)
 
 			_rubricAssociations.Add(rubricAssociation);
 			return rubricAssociation;
