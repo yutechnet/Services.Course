@@ -465,12 +465,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
         }
         #endregion
 
-        public virtual LearningMaterial AddLearningMaterial(Guid segmentId, Guid learningActivityId, LearningMaterialRequest request)
+        public virtual LearningMaterial AddLearningMaterial(Guid segmentId, Guid learningActivityId, Guid libraryItemId, string description)
         {
             CheckPublished();
 
             var segment = GetSegmentOrThrow(segmentId);
-            return segment.AddLearningMaterial(learningActivityId, request);
+            return segment.AddLearningMaterial(learningActivityId, libraryItemId, description);
         }
 
 		public virtual RubricAssociation AddRubricAssociation(Guid segmentId, Guid learningActivityId, RubricAssociationRequest request)

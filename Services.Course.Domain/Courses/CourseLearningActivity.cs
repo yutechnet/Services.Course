@@ -49,9 +49,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			set { _rubricAssociations = value; }
 		}
 
-        public virtual LearningMaterial AddLearningMaterial(LearningMaterialRequest request)
+	public virtual LearningMaterial AddLearningMaterial(Guid libraryItemId, string description)
         {
-            var learningMaterial = new LearningMaterial {Id = Guid.NewGuid(), TenantId = TenantId, Name = request.Name};
+            var learningMaterial = new LearningMaterial {Id = Guid.NewGuid(), LibraryItemId = libraryItemId, TenantId = TenantId, Description = description};
 
             _learningMaterials.Add(learningMaterial);
             return learningMaterial;

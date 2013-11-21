@@ -2,6 +2,7 @@
 using Autofac;
 using BpeProducts.Common.WebApiTest;
 using BpeProducts.Services.Acl.Client;
+using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
         public static Mock<IAclHttpClient> MockAclClient { get; private set; }
         public static Mock<ISectionClient> MockSectionClient { get; private set; }
+        public static Mock<IAssetServiceClient> MockAssetClient { get; private set; }
 
         static ApiFeature()
         {
@@ -78,9 +80,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             MockAclClient = new Mock<IAclHttpClient>();
             MockSectionClient = new Mock<ISectionClient>();
+            MockAssetClient = new Mock<IAssetServiceClient>();
+            
             var updater = new ContainerBuilder();
             updater.RegisterInstance(MockAclClient.Object).As<IAclHttpClient>();
             updater.RegisterInstance(MockSectionClient.Object).As<ISectionClient>();
+            updater.RegisterInstance(MockAssetClient.Object).As<IAssetServiceClient>();
             updater.Update(CourseTestHost.Container);
         }
 

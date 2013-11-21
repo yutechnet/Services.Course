@@ -469,9 +469,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var row in table.Rows)
             {
-                var name = row["Name"];
+                var description = row["Description"];
 
-                Assert.That(actual.LearningMaterials.Any(x => x.Name == name));
+                Assert.That(actual.LearningMaterials.Any(x => x.Description == description));
             }
         }
     }

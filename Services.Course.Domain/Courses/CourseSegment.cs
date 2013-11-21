@@ -138,10 +138,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity;
         }
 
-        public virtual LearningMaterial AddLearningMaterial(Guid learningActivityId, LearningMaterialRequest request)
+        public virtual LearningMaterial AddLearningMaterial(Guid learningActivityId, Guid libraryItemId, string description)
         {
             var learningActivity = GetLearningActivityOrThrow(learningActivityId);
-            return learningActivity.AddLearningMaterial(request);
+            return learningActivity.AddLearningMaterial(libraryItemId, description);
         }
 
 		public virtual RubricAssociation AddRubricAssociation(Guid learningActivityId, RubricAssociationRequest request)

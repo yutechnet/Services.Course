@@ -5,6 +5,7 @@ using Autofac.Extras.DynamicProxy2;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Log;
+using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
@@ -43,7 +44,9 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
 			containerBuilder.RegisterType<OutcomeFactory>().As<IOutcomeFactory>();
 			containerBuilder.RegisterType<CourseService>().As<ICourseService>().EnableInterfaceInterceptors().EnableAuthorization();
+
             containerBuilder.RegisterType<LearningMaterialService>().As<ILearningMaterialService>().EnableInterfaceInterceptors().EnableAuthorization();
+            containerBuilder.RegisterType<AssetServiceClient>().As<IAssetServiceClient>();
 
 			containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
 			containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>();
@@ -64,10 +67,8 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<UpdateModelOnReorderingCourseSegment>().As<IHandle<CourseSegmentReordered>>();
 
 			containerBuilder.RegisterType<UpdateModelOnAddingCourseLearningActivity>().As<IHandle<CourseLearningActivityAdded>>();
-			containerBuilder.RegisterType<UpdateModelOnUpdatingCourseLearningActivity>()
-			                .As<IHandle<CourseLearningActivityUpdated>>();
-			containerBuilder.RegisterType<UpdateModelOnDeletingCourseLearningActivity>()
-			                .As<IHandle<CourseLearningActivityDeleted>>();
+			containerBuilder.RegisterType<UpdateModelOnUpdatingCourseLearningActivity>().As<IHandle<CourseLearningActivityUpdated>>();
+			containerBuilder.RegisterType<UpdateModelOnDeletingCourseLearningActivity>().As<IHandle<CourseLearningActivityDeleted>>();
 
 			containerBuilder.RegisterType<UpdateModelOnCourseUpdating>().As<IHandle<CourseUpdated>>();
 			containerBuilder.RegisterType<CourseUpdatedHandler>().As<IHandle<CourseUpdated>>();

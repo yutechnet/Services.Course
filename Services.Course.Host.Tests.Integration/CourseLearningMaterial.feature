@@ -27,11 +27,23 @@ Background:
 
 Scenario: Add course learning material
 	When I add the following assets as learning material to 'Discussion 1' learning activity
-	| Name  |
-	| file1 |
-	| file2 |
+	| Description |
+	| file1       |
+	| file2       |
 	Then 'Discussion 1' learning activity has the following learning material
-	| Name  |
-	| file1 |
-	| file2 |
+	| Description |
+	| file1       |
+	| file2       |
+
+
+
+Scenario: Add learning material from unpublished asset
+Scenario: Add learning material from published asset
+
+Scenario: Publish course publishes library and associated assets
+Scenario: Update learning material with unpublished course and unpublished asset
+Scenario: Update learning material with unpublished course and published asset
+Scenario: Update learning material with published course not allowed
+Scenario: Update library item directly changes learning material
+Scenario: Update library item fails if library is published
 

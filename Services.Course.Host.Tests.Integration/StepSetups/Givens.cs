@@ -1,4 +1,5 @@
 ﻿using BpeProducts.Common.WebApiTest.Extensions;
+using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
@@ -209,6 +210,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     };
 
                 Resources<AssetResource>.Add(name, resource);
+                ApiFeature.MockAssetClient.Setup(x => x.AddAssetToLibrary("course", It.IsAny<Guid>(), resource.Id))
+                          .Returns(new LibraryInfo {Id = Guid.NewGuid()});
             }
         }
 

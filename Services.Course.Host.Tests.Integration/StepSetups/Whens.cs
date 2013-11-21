@@ -529,16 +529,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             foreach (var row in table.Rows)
             {
-                var name = row["Name"];
-                var asset = Resources<AssetResource>.Get(name);
+                var description = row["Description"];
+                var asset = Resources<AssetResource>.Get(description);
 
                 var request = new LearningMaterialRequest
                     {
                         AssetId = asset.Id,
-                        Name = name
+                        Description = description
                     };
 
-                PostOperations.AddLearningMaterial(name, learningActivity, request);
+                PostOperations.AddLearningMaterial(description, learningActivity, request);
             }
         }
     }
