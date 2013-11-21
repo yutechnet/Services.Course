@@ -64,17 +64,17 @@ namespace BpeProducts.Services.Course.Domain.Courses
             get
             {
                 var settings = new JsonSerializerSettings
-                    {
-                        ReferenceLoopHandling = ReferenceLoopHandling.Serialize
-                    };
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Serialize
+                };
 
                 var toSerialize = new
-                    {
-                        Name,
-                        Description,
-                        Type,
-                        DisplayOrder,
-                    };
+                {
+                    Name,
+                    Description,
+                    Type,
+                    DisplayOrder,
+                };
 
                 var json = JsonConvert.SerializeObject(toSerialize, settings);
                 return json;
@@ -84,12 +84,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 if (string.IsNullOrWhiteSpace(value)) return;
 
                 var serializedData = new
-                    {
-                        Name,
-                        Description,
-                        Type,
-                        DisplayOrder,
-                    };
+                {
+                    Name,
+                    Description,
+                    Type,
+                    DisplayOrder,
+                };
 
                 serializedData = JsonConvert.DeserializeAnonymousType(value, serializedData);
 
@@ -130,8 +130,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual CourseLearningActivity GetLearningActivityOrThrow(Guid learningActivityId)
         {
-            var learningActivity = _courseLearningActivities.SingleOrDefault(l=>l.Id==learningActivityId);
-            
+            var learningActivity = _courseLearningActivities.SingleOrDefault(l => l.Id == learningActivityId);
+
             if (learningActivity == null)
                 throw new NotFoundException(string.Format("Learning Activity {0} for Course {1} is not found.", learningActivityId, Id));
 
@@ -144,17 +144,17 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity.AddLearningMaterial(libraryItemId, description);
         }
 
-		public virtual RubricAssociation AddRubricAssociation(Guid learningActivityId, RubricAssociationRequest request)
-		{
-			var learningActivity = GetLearningActivityOrThrow(learningActivityId);
-			return learningActivity.AddRubricAssociation(request);
-		}
+        public virtual RubricAssociation AddRubricAssociation(Guid learningActivityId, RubricAssociationRequest request)
+        {
+            var learningActivity = GetLearningActivityOrThrow(learningActivityId);
+            return learningActivity.AddRubricAssociation(request);
+        }
 
-		public virtual void DeleteRubricAssociation(Guid learningActivityId, Guid rubricId)
-		{
-			var learningActivity = GetLearningActivityOrThrow(learningActivityId);
-			learningActivity.DeleteRubricAssociation(rubricId);
-		}
+        public virtual void DeleteRubricAssociation(Guid learningActivityId, Guid rubricId)
+        {
+            var learningActivity = GetLearningActivityOrThrow(learningActivityId);
+            learningActivity.DeleteRubricAssociation(rubricId);
+        }
 
         public virtual void DeleteLearningMaterial(Guid learningActivityId, Guid learningMaterialId)
         {

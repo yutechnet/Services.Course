@@ -183,18 +183,18 @@ namespace BpeProducts.Services.Course.Domain.Courses
             }
 
             var newSegment = new CourseSegment
-                {
-                    Course = this,
-                    Id = segmentId,
-                    Name = request.Name,
-                    Description = request.Description,
-                    DisplayOrder = request.DisplayOrder,
-                    Type = request.Type,
-                    TenantId = TenantId,
-                    ActiveFlag = true,
-                    ActiveDate=request.ActiveDate,
-                    InactiveDate=request.InactiveDate
-                };
+            {
+                Course = this,
+                Id = segmentId,
+                Name = request.Name,
+                Description = request.Description,
+                DisplayOrder = request.DisplayOrder,
+                Type = request.Type,
+                TenantId = TenantId,
+                ActiveFlag = true,
+                ActiveDate = request.ActiveDate,
+                InactiveDate = request.InactiveDate
+            };
 
             if (parentSegment != null)
             {
@@ -473,23 +473,23 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return segment.AddLearningMaterial(learningActivityId, libraryItemId, description);
         }
 
-		public virtual RubricAssociation AddRubricAssociation(Guid segmentId, Guid learningActivityId, RubricAssociationRequest request)
-		{
-			CheckPublished();
+        public virtual RubricAssociation AddRubricAssociation(Guid segmentId, Guid learningActivityId, RubricAssociationRequest request)
+        {
+            CheckPublished();
 
-			var segment = GetSegmentOrThrow(segmentId);
-			return segment.AddRubricAssociation(learningActivityId, request);
-		}
+            var segment = GetSegmentOrThrow(segmentId);
+            return segment.AddRubricAssociation(learningActivityId, request);
+        }
 
-		public virtual void DeleteRubricAssociation(Guid segmentId, Guid learningActivityId, Guid rubricId)
-		{
-			CheckPublished();
+        public virtual void DeleteRubricAssociation(Guid segmentId, Guid learningActivityId, Guid rubricId)
+        {
+            CheckPublished();
 
-			var segment = GetSegmentOrThrow(segmentId);
-			segment.DeleteRubricAssociation(learningActivityId, rubricId);
-		}
+            var segment = GetSegmentOrThrow(segmentId);
+            segment.DeleteRubricAssociation(learningActivityId, rubricId);
+        }
 
-	public virtual void DeleteLearningMaterial(Guid segmentId, Guid learningActivityId, Guid learningMaterialId)
+        public virtual void DeleteLearningMaterial(Guid segmentId, Guid learningActivityId, Guid learningMaterialId)
         {
             CheckPublished();
 

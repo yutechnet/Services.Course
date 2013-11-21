@@ -67,31 +67,31 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 throw new BadRequestException("Rubrics may only be associated with LearningActivities of type CUSTOM. To associate rubrics to non-custom types supported by the platform, please consult the documentation.");
             }
 
-			var associationCheck = _rubricAssociations.SingleOrDefault(r => r.RubricId == request.RubricId);
-			if (associationCheck != null)
-			{
-				throw new BadRequestException(string.Format("RubricId {0} is already associated with learningActivity {1} and thus cannot be added again.", request.RubricId, Id));
-			}
+            var associationCheck = _rubricAssociations.SingleOrDefault(r => r.RubricId == request.RubricId);
+            if (associationCheck != null)
+            {
+                throw new BadRequestException(string.Format("RubricId {0} is already associated with learningActivity {1} and thus cannot be added again.", request.RubricId, Id));
+            }
 
-			//TODO: Add validation of rubric here (necessitates GET on assessmentSvc)
+            //TODO: Add validation of rubric here (necessitates GET on assessmentSvc)
 
-			_rubricAssociations.Add(rubricAssociation);
-			return rubricAssociation;
-		}
+            _rubricAssociations.Add(rubricAssociation);
+            return rubricAssociation;
+        }
 
-		public virtual void DeleteRubricAssociation(Guid rubricId)
-		{
-			var rubricAssociation = _rubricAssociations.SingleOrDefault(r => r.RubricId == rubricId);
+        public virtual void DeleteRubricAssociation(Guid rubricId)
+        {
+            var rubricAssociation = _rubricAssociations.SingleOrDefault(r => r.RubricId == rubricId);
 
-			if (rubricAssociation == null)
-			{
-				throw new NotFoundException(string.Format("RubricId {0} is not associated with learningActivity {1} and thus cannot be deleted.", rubricId, Id));
-			}
+            if (rubricAssociation == null)
+            {
+                throw new NotFoundException(string.Format("RubricId {0} is not associated with learningActivity {1} and thus cannot be deleted.", rubricId, Id));
+            }
 
-			_rubricAssociations.Remove(rubricAssociation);
-		}
+            _rubricAssociations.Remove(rubricAssociation);
+        }
 
-public virtual void DeleteLearningMaterial(Guid learningMaterialId)
+        public virtual void DeleteLearningMaterial(Guid learningMaterialId)
         {
             var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
             learningMaterial.ActiveFlag = false;
