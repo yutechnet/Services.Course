@@ -105,7 +105,7 @@ if ($IISHostHeaders -ne $null)
 # setup app pool
 Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'managedRuntimeVersion'     -AppPoolPropertyValue 'v4.0'
 Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'managedPipelineMode'       -AppPoolPropertyValue ([int] [Microsoft.Web.Administration.ManagedPipelineMode]::Identity)          -CompareValue 'Integrated'   #Integrated = 0, Classic = 1
-if ($IISAppPoolIdentity -ne $null)
+if ($IISWebsiteAppPoolIdentity -ne $null)
 {
 	Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'processModel.identityType' -AppPoolPropertyValue ([int] [Microsoft.Web.Administration.ProcessModelIdentityType]::SpecificUser) -CompareValue 'SpecificUser' #LocalSystem = 0, LocalService = 1, NetworkService = 2, SpecificUser = 3, ApplicationPoolIdentity = 4
 	Deployment-SetAppPoolProperty -AppPoolName "$IISWebsiteAppPoolName" -AppPoolProperty 'processModel.userName'     -AppPoolPropertyValue $IISWebsiteAppPoolIdentity
