@@ -541,5 +541,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 PostOperations.AddLearningMaterial(description, learningActivity, request);
             }
         }
+
+        [When(@"I delete the following learning meterial")]
+        public void WhenIDeleteTheFollowingLearningMeterial(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var description = row["Description"];
+                var resourse = Resources<LearningMaterialResource>.Get(description);
+                DeleteOperations.DeleteResource(resourse);
+            }
+        }
     }
 }

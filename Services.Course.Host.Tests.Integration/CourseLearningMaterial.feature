@@ -24,6 +24,7 @@ Background:
 	| Name  |
 	| file1 |
 	| file2 |
+	| file3 |
 
 Scenario: Add course learning material
 	When I add the following assets as learning material to 'Discussion 1' learning activity
@@ -34,6 +35,20 @@ Scenario: Add course learning material
 	| Description |
 	| file1       |
 	| file2       |
+
+Scenario: Delete course learning material
+	When I add the following assets as learning material to 'Discussion 1' learning activity
+	| Description |
+	| file1       |
+	| file2       |
+	| file3       |
+	And I delete the following learning meterial
+	| Description |
+	| file2       |
+	Then 'Discussion 1' learning activity has the following learning material
+	| Description |
+	| file1       |
+	| file3       |
 
 
 

@@ -466,6 +466,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
             var actual = GetOperations.GetCourseLearningActivity(resource);
 
+            Assert.That(actual.LearningMaterials.Count, Is.EqualTo(table.Rows.Count));
             foreach (var row in table.Rows)
             {
                 var description = row["Description"];
