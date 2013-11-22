@@ -43,8 +43,7 @@ namespace BpeProducts.Services.Course.Domain
 				.RegisterType<LearningOutcomeRepository>().As<ILearningOutcomeRepository>()
 				.EnableInterfaceInterceptors().EnableValidation()
 				.InterceptedBy(typeof (PublicInterfaceLoggingInterceptor));
-
-
+            
 			containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
 			containerBuilder.RegisterType<OutcomeFactory>().As<IOutcomeFactory>();
 			containerBuilder.RegisterType<CourseService>().As<ICourseService>().EnableInterfaceInterceptors().EnableAuthorization();
