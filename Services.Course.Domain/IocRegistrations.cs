@@ -1,12 +1,8 @@
-﻿using System;
-using System.Configuration;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Configuration;
 using AutoMapper;
 using Autofac;
 using Autofac.Extras.DynamicProxy2;
 using BpeProducts.Common.Authorization;
-using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Log;
 using BpeProducts.Services.Asset.Contracts;
@@ -43,19 +39,14 @@ namespace BpeProducts.Services.Course.Domain
 				.RegisterType<LearningOutcomeRepository>().As<ILearningOutcomeRepository>()
 				.EnableInterfaceInterceptors().EnableValidation()
 				.InterceptedBy(typeof (PublicInterfaceLoggingInterceptor));
-            
+
+
 			containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
 			containerBuilder.RegisterType<OutcomeFactory>().As<IOutcomeFactory>();
 			containerBuilder.RegisterType<CourseService>().As<ICourseService>().EnableInterfaceInterceptors().EnableAuthorization();
 
             containerBuilder.RegisterType<LearningMaterialService>().As<ILearningMaterialService>().EnableInterfaceInterceptors().EnableAuthorization();
-
-		    containerBuilder.Register(context =>
-		        {
-		            var uriBaseAddress = new Uri(ConfigurationManager.AppSettings["AssetServiceBaseUrl"]);
-		            var tokenExtractor = context.Resolve<ISamlTokenExtractor>();
-		            return new AssetServiceClient(tokenExtractor, uriBaseAddress);
-		        }).As<IAssetServiceClient>();
+            containerBuilder.RegisterType<AssetServiceClient>().As<IAssetServiceClient>();
 
 			containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
 			containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>();
@@ -107,66 +98,4 @@ namespace BpeProducts.Services.Course.Domain
 	        Mapper.CreateMap<LearningMaterial, LearningMaterialInfo>();
 	    }
 	}
-
-    public interface IAssetServiceClient
-    {
-        LibraryInfo AddAssetToLibrary(string ownerType, Guid ownerId, Guid assetId);
-    }
-
-    public class AssetServiceClient : IAssetServiceClient
-    {
-        private readonly ISamlTokenExtractor _tokenExtractor;
-        public Uri BaseAddress { get; private set; }
-
-        public AssetServiceClient(ISamlTokenExtractor tokenExtractor)
-        {
-            _tokenExtractor = tokenExtractor;
-        }
-
-        public AssetServiceClient(ISamlTokenExtractor tokenExtractor, Uri baseAddress)
-        {
-            _tokenExtractor = tokenExtractor;
-            BaseAddress = baseAddress;
-        }
-
-        public LibraryInfo AddAssetToLibrary(string ownerType, Guid ownerId, Guid assetId)
-        {
-            var samlToken = _tokenExtractor.GetSamlToken();
-
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("SAML", samlToken);
-
-            var uri = string.Format("{0}/library/{1}/{2}/asset/{3}", BaseAddress, ownerType, ownerId, assetId);
-            var result = client.PutAsJsonAsync(uri, new { }).Result;
-
-            CheckForErrors(result);
-
-            return result.Content.ReadAsAsync<LibraryInfo>().Result;
-        }
-
-        private void CheckForErrors(HttpResponseMessage response)
-        {
-            if (response.IsSuccessStatusCode)
-                return;
-
-            var message = string.Format("Unexpected StatusCode {0} resluted from {1} call to {2}", response.StatusCode,
-                                        response.RequestMessage.Method, response.RequestMessage.RequestUri);
-
-            if ((int)response.StatusCode <= 199)
-            {
-                throw new InternalServerErrorException(message);
-            }
-            if ((int)response.StatusCode <= 399)
-            {
-                throw new InternalServerErrorException(message);
-            }
-            if ((int)response.StatusCode <= 499)
-            {
-                var content = response.Content.ReadAsStringAsync().Result;
-                throw new BadRequestException(content);
-            }
-
-            throw new InternalServerErrorException(message);
-        }
-    }
 }
