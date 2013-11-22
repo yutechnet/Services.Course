@@ -46,6 +46,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		}
 
 		[Test]
+		public void Add_rubric_fails_if_rubric_does_not_exist()
+		{
+			
+		}
+
+		[Test]
+		public void Add_rubric_fails_if_rubric_is_not_published()
+		{
+			
+		}
+
+		[Test]
 		public void Can_get_rubric()
 		{
 			var rubricAssociationId = Guid.NewGuid();

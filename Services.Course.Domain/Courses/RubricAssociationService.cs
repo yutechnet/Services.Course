@@ -31,6 +31,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
 		{
 			var course = _courseRepository.GetOrThrow(courseId);
 
+			// TODO: Get rubric and ensure viability
+
 			var learningMaterial = course.AddRubricAssociation(segmentId, learningActivityId, request);
 			return Mapper.Map<RubricAssociationInfo>(learningMaterial);
 		}
