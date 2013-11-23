@@ -473,6 +473,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 Assert.That(actual.LearningMaterials.Any(x => x.Description == description));
             }
         }
+
+        [Then(@"the learning activity '(.*)' should have the following rubrics")]
+        public void ThenTheLearningActivityShouldHaveTheFollowingRubrics(string learningActivityName, Table table)
+        {
+            var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
+            var actual = GetOperations.GetCourseLearningActivity(resource);
+
+            //Assert that learning activity contains rubrics
+            //Cannot complete until learning activity response is updated with rubric info
+           // Assert.That(actual.Rubric.Count, Is.EqualTo(table.RowCount));
+        }
     }
 }
 

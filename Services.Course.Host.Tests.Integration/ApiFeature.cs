@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using Moq;
+using Services.Assessment.Contract;
 using Services.Section.Contracts;
 using TechTalk.SpecFlow;
 using BpeProducts.Common.WebApiTest.Framework;
@@ -32,6 +33,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public static Mock<IAclHttpClient> MockAclClient { get; private set; }
         public static Mock<ISectionClient> MockSectionClient { get; private set; }
         public static Mock<IAssetServiceClient> MockAssetClient { get; private set; }
+        public static Mock<IAssessmentClient> MockAssessmentClient { get; private set; }
 
         static ApiFeature()
         {
@@ -81,6 +83,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             MockAclClient = new Mock<IAclHttpClient>();
             MockSectionClient = new Mock<ISectionClient>();
             MockAssetClient = new Mock<IAssetServiceClient>();
+            MockAssessmentClient = new Mock<IAssessmentClient>();
             
             var updater = new ContainerBuilder();
             updater.RegisterInstance(MockAclClient.Object).As<IAclHttpClient>();

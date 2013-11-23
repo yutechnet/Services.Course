@@ -13,10 +13,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using Services.Assessment.Contract;
 using Services.Section.Contracts;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using BpeProducts.Common.WebApiTest.Framework;
+using OutcomeRequest = BpeProducts.Services.Course.Contract.OutcomeRequest;
+using PublishRequest = BpeProducts.Services.Course.Contract.PublishRequest;
+using VersionRequest = BpeProducts.Services.Course.Contract.VersionRequest;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 {
@@ -214,6 +218,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 };
 
             PutOperations.SetCoursePrerequisites(course, request);
+        }
+
+        [When(@"I associate the following rubrics to '(.*)' learning activity")]
+        public void WhenIAssociateTheFollowingRubricsToLearningActivity(string learningActivityName, Table table)
+        {
+            var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
+            
+            foreach (var row in table.Rows)
+            {
+                var title = row["Title"];
+                var rubric = Resources<RubricResource>.Get(title);
+                var request = new RubricAssociationRequest {RubricId = rubric.Id};
+                PostOperations.AssociateRubric(title, resource, request);
+            }
         }
 
         [When(@"I add the following learning activity to '(.*)' course segment")]
@@ -539,6 +557,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     };
 
                 PostOperations.AddLearningMaterial(description, learningActivity, request);
+            }
+        }
+
+        [When(@"I have the following rubrics")]
+        public void WhenIHaveTheFollowingRubrics(Table table)
+        {
+            var rubrics = table.CreateSet<RubricInfoResponse>();
+        
+            foreach (var rubric in rubrics)
+            {
+                var resource = new RubricResource
+                    {
+                        Id = Guid.NewGuid(),
+                        ResourceUri = It.IsAny<Uri>()
+                    };
+        
+                Resources<RubricResource>.Add(rubric.Title, resource);
+                ApiFeature.MockAssessmentClient.Setup(x => x.GetRubric(It.IsAny<Uri>(), resource.Id)).Returns(rubric);
             }
         }
 

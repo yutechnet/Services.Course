@@ -73,5 +73,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var requestUri = string.Format("{0}/learningmaterial", learningActivity.ResourceUri);
             return ApiFeature.CourseTestHost.Post<LearningMaterialResource, LearningMaterialRequest>(name, requestUri, request);
         }
+
+        public static HttpResponseMessage AssociateRubric(string name, CourseLearningActivityResource resource, RubricAssociationRequest request)
+        {
+            var requestUri = string.Format("{0}/rubricassociation", resource.ResourceUri);
+            return ApiFeature.CourseTestHost.Post<CourseLearningActivityResource, RubricAssociationRequest>(name, requestUri, request);
+        }
     }
 }

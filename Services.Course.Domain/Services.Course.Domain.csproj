@@ -143,6 +143,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.OData.0.3.0.0\lib\net35\NHibernate.OData.dll</HintPath>
     </Reference>
+    <Reference Include="Services.Assessment.Contract">
+      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.125\lib\net40\Services.Assessment.Contract.dll</HintPath>
+    </Reference>
     <Reference Include="Services.Section.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.182\lib\net40\Services.Section.Contracts.dll</HintPath>
