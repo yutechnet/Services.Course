@@ -10,7 +10,7 @@ Background:
 	| Name |
 	| COB  |
 	And I have the following capabilities
-	| Capability   |
+	| Capability    |
 	| CourseCreate  |
 	| CoursePublish |
 	| CourseView    |
@@ -43,14 +43,25 @@ Scenario: Associate multiple rubric id's to learning activity
 	| Math101 Rubric |
 	| Econ101 Rubric |
 	Then the learning activity 'Custom 1' should have the following rubrics
-	| Title          | Description                   | OrganizationId                       | PerformanceLevel | ScoringModel | MinPoint | MaxPoint | IsPublished |
-	| Math101 Rubric | Basic math assessment tool    | D2DF063D-E2A1-4F83-9BE0-218EC676C05F | Low, Med, High   | Unset        | 50       | 100      | True        |
-	| Econ101 Rubric | Basic econ assessment tool    | D2DF063D-E2A1-4F83-9BE0-218EC676C05F | Low, Med, High   | Unset        | 50       | 100      | True        |
-	
+	| Title          |
+	| Math101 Rubric |
+	| Econ101 Rubric |
 
+Scenario: Disassociate a rubric from a learning activity
+When I associate the following rubrics to 'Custom 1' learning activity
+	| Title          |
+	| Math101 Rubric |
+	| Econ101 Rubric |
+When I disassociate the following rubrics
+	| Title          |
+	| Econ101 Rubric |
+Then the learning activity 'Custom 1' should have the following rubrics
+	| Title          |
+	| Math101 Rubric |
+	
 Scenario: Verify unpublished rubrics cannot be associated to learning activities
 	When I associate the following rubrics to 'Custom 1' learning activity
-	| Title          |
+	| Title         |
 	| Eng101 Rubric |
 	Then I get 'BadRequest' response
 
@@ -89,7 +100,7 @@ Scenario: Cannot modify learning activity to update type or gradability if rubri
 	Then I get 'BadRequest' response
 	And I update 'Custom 3' learning activity with the following info
 	| Field         | Value                                |
-	| Name          | Custom 1                             |
+	| Name          | Custom 3                             |
 	| Type          | Assignment                           |
 	| IsGradeable   | true                                 |
 	| IsExtraCredit | false                                |

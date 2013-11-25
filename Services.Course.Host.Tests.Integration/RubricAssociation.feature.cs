@@ -249,34 +249,49 @@ this.FeatureBackground();
  testRunner.When("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table8, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Title",
-                        "Description",
-                        "OrganizationId",
-                        "PerformanceLevel",
-                        "ScoringModel",
-                        "MinPoint",
-                        "MaxPoint",
-                        "IsPublished"});
+                        "Title"});
             table9.AddRow(new string[] {
-                        "Math101 Rubric",
-                        "Basic math assessment tool",
-                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "Low, Med, High",
-                        "Unset",
-                        "50",
-                        "100",
-                        "True"});
+                        "Math101 Rubric"});
             table9.AddRow(new string[] {
-                        "Econ101 Rubric",
-                        "Basic econ assessment tool",
-                        "D2DF063D-E2A1-4F83-9BE0-218EC676C05F",
-                        "Low, Med, High",
-                        "Unset",
-                        "50",
-                        "100",
-                        "True"});
+                        "Econ101 Rubric"});
 #line 45
  testRunner.Then("the learning activity \'Custom 1\' should have the following rubrics", ((string)(null)), table9, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Disassociate a rubric from a learning activity")]
+        public virtual void DisassociateARubricFromALearningActivity()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Disassociate a rubric from a learning activity", ((string[])(null)));
+#line 50
+this.ScenarioSetup(scenarioInfo);
+#line 8
+this.FeatureBackground();
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table10.AddRow(new string[] {
+                        "Math101 Rubric"});
+            table10.AddRow(new string[] {
+                        "Econ101 Rubric"});
+#line 51
+testRunner.When("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table10, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table11.AddRow(new string[] {
+                        "Econ101 Rubric"});
+#line 55
+testRunner.When("I disassociate the following rubrics", ((string)(null)), table11, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Title"});
+            table12.AddRow(new string[] {
+                        "Math101 Rubric"});
+#line 58
+testRunner.Then("the learning activity \'Custom 1\' should have the following rubrics", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -286,18 +301,18 @@ this.FeatureBackground();
         public virtual void VerifyUnpublishedRubricsCannotBeAssociatedToLearningActivities()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verify unpublished rubrics cannot be associated to learning activities", ((string[])(null)));
-#line 51
+#line 62
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "Title"});
-            table10.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "Eng101 Rubric"});
-#line 52
- testRunner.When("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table10, "When ");
-#line 55
+#line 63
+ testRunner.When("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table13, "When ");
+#line 66
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -308,18 +323,18 @@ this.FeatureBackground();
         public virtual void CanOnlyAddRubricsToLearningActivitiesOfTypeCustom()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Can only add rubrics to learning activities of type Custom", ((string[])(null)));
-#line 57
+#line 68
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "Title"});
-            table11.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "Math101 Rubric"});
-#line 58
- testRunner.When("I associate the following rubrics to \'Assignment 1\' learning activity", ((string)(null)), table11, "When ");
-#line 61
+#line 69
+ testRunner.When("I associate the following rubrics to \'Assignment 1\' learning activity", ((string)(null)), table14, "When ");
+#line 72
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -330,20 +345,20 @@ this.FeatureBackground();
         public virtual void CannotAddOneRubricMoreThanOnceToTheSameLearningActivity()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot add one rubric more than once to the same learning activity", ((string[])(null)));
-#line 63
+#line 74
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "Title"});
-            table12.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Math101 Rubric"});
-            table12.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "Math101 Rubric"});
-#line 64
- testRunner.When("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table12, "When ");
-#line 68
+#line 75
+ testRunner.When("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table15, "When ");
+#line 79
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -354,18 +369,18 @@ this.FeatureBackground();
         public virtual void CanOnlyAddRubricsToLearningActivitiesThatAreGradable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Can only add rubrics to learning activities that are gradable", ((string[])(null)));
-#line 70
+#line 81
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "Title"});
-            table13.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "Math101 Rubric"});
-#line 71
- testRunner.When("I associate the following rubrics to \'Custom 2\' learning activity", ((string)(null)), table13, "When ");
-#line 74
+#line 82
+ testRunner.When("I associate the following rubrics to \'Custom 2\' learning activity", ((string)(null)), table16, "When ");
+#line 85
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -378,74 +393,74 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot modify learning activity to update type or gradability if rubric is alread" +
                     "y assigned", ((string[])(null)));
-#line 76
+#line 87
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "Title"});
-            table14.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "Math101 Rubric"});
-#line 77
- testRunner.When("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table14, "When ");
+#line 88
+ testRunner.When("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table17, "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table15.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "Name",
                         "Custom 1"});
-            table15.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "Type",
                         "Custom"});
-            table15.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "IsGradeable",
                         "false"});
-            table15.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "IsExtraCredit",
                         "false"});
-            table15.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "Weight",
                         "100"});
-            table15.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "MaxPoint",
                         "100"});
-            table15.AddRow(new string[] {
+            table18.AddRow(new string[] {
                         "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 80
- testRunner.And("I update \'Custom 1\' learning activity with the following info", ((string)(null)), table15, "And ");
-#line 89
+#line 91
+ testRunner.And("I update \'Custom 1\' learning activity with the following info", ((string)(null)), table18, "And ");
+#line 100
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table16.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "Name",
-                        "Custom 1"});
-            table16.AddRow(new string[] {
+                        "Custom 3"});
+            table19.AddRow(new string[] {
                         "Type",
                         "Assignment"});
-            table16.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "IsGradeable",
                         "true"});
-            table16.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "IsExtraCredit",
                         "false"});
-            table16.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "Weight",
                         "100"});
-            table16.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "MaxPoint",
                         "100"});
-            table16.AddRow(new string[] {
+            table19.AddRow(new string[] {
                         "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 90
- testRunner.And("I update \'Custom 3\' learning activity with the following info", ((string)(null)), table16, "And ");
-#line 99
+#line 101
+ testRunner.And("I update \'Custom 3\' learning activity with the following info", ((string)(null)), table19, "And ");
+#line 110
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -458,27 +473,27 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Course must be unpublished for any rubric association/disassociation (to learning" +
                     " activities)", ((string[])(null)));
-#line 101
+#line 112
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Note"});
-            table17.AddRow(new string[] {
+            table20.AddRow(new string[] {
                         "Econ 100",
                         "a note"});
-#line 102
- testRunner.When("I publish the following courses", ((string)(null)), table17, "When ");
+#line 113
+ testRunner.When("I publish the following courses", ((string)(null)), table20, "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "Title"});
-            table18.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "Math101 Rubric"});
-#line 105
- testRunner.And("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table18, "And ");
-#line 108
+#line 116
+ testRunner.And("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table21, "And ");
+#line 119
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -491,7 +506,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot delete a rubric from a learning activity where the rubric is not associate" +
                     "d", ((string[])(null)));
-#line 110
+#line 121
 this.ScenarioSetup(scenarioInfo);
 #line 8
 this.FeatureBackground();

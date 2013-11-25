@@ -480,9 +480,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
             var actual = GetOperations.GetCourseLearningActivity(resource);
 
-            //Assert that learning activity contains rubrics
-            //Cannot complete until learning activity response is updated with rubric info
-           // Assert.That(actual.Rubric.Count, Is.EqualTo(table.RowCount));
+//            Assert.That(actual.Rubrics.Count, Is.EqualTo(table.RowCount));
+//            foreach (var row in table.Rows)
+//            {
+//                var title = row["Title"];
+//                var rubricId = Resources<RubricResource>.Get(title);
+//                Assert.That(actual.Rubrics.Any(x => x.RubricId == rubricId.Id));
+//            }
         }
     }
 }

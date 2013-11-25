@@ -173,6 +173,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
+        [When(@"I disassociate the following rubrics")]
+        public void WhenIDisassociateTheFollowingRubrics(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var title = row["Title"];
+                var resource = Resources<RubricResource>.Get(title);
+                DeleteOperations.DeleteResource(resource);
+            }
+        }
+
         [When(@"I publish the following courses")]
         public void WhenIPublishTheFollowingCourses(Table table)
         {
