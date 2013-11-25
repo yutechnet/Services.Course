@@ -13,6 +13,7 @@ using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Outcomes;
 using BpeProducts.Services.Course.Domain.Repositories;
+using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain
 {
@@ -47,6 +48,9 @@ namespace BpeProducts.Services.Course.Domain
 
             containerBuilder.RegisterType<LearningMaterialService>().As<ILearningMaterialService>().EnableInterfaceInterceptors().EnableAuthorization();
             containerBuilder.RegisterType<AssetServiceClient>().As<IAssetServiceClient>();
+
+			containerBuilder.RegisterType<RubricAssociationService>().As<IRubricAssociationService>().EnableInterfaceInterceptors().EnableAuthorization();
+			containerBuilder.RegisterType<AssessmentClient>().As<IAssessmentClient>();
 
 			containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
 			containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>();

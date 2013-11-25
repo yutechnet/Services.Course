@@ -1,7 +1,9 @@
 ﻿using System;
 using AutoMapper;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
+using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -15,10 +17,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
 	public class RubricAssociationService : IRubricAssociationService
 	{
 		private readonly ICourseRepository _courseRepository;
+		private readonly IAssessmentClient _assessmentClient;
 
-		public RubricAssociationService(ICourseRepository courseRepository)
+		public RubricAssociationService(ICourseRepository courseRepository, IAssessmentClient assessmentClient)
 		{
 			_courseRepository = courseRepository;
+			_assessmentClient = assessmentClient;
 		}
 
 		public RubricAssociationInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid rubricassociationId)
@@ -31,7 +35,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
 		{
 			var course = _courseRepository.GetOrThrow(courseId);
 
-			// TODO: Get rubric and ensure viability
+			var rubric = _assessmentClient.GetRubric(new Uri("http://google.com"), request.RubricId);
+
+			//TODO: Enable once rubric versioning/publishing is enabled
+			//if (!rubric.IsPublished)
+			//{
+			//	throw new BadRequestException(string.Format("Rubric {0} is not published, and thus cannot be associated with learning activities.", rubric.Id));
+			//}
 
 			var learningMaterial = course.AddRubricAssociation(segmentId, learningActivityId, request);
 			return Mapper.Map<RubricAssociationInfo>(learningMaterial);

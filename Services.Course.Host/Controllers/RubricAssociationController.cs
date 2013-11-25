@@ -22,6 +22,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		[Transaction]
 		[CheckModelForNull]
 		[ValidateModelState]
+		[SetSamlTokenInBootstrapContext]
 		[HttpPost]
 		[POST("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/rubricassociation")]
 		public HttpResponseMessage Post(Guid courseId, Guid segmentId, Guid learningActivityId, RubricAssociationRequest request)
