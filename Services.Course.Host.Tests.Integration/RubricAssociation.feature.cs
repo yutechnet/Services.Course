@@ -277,21 +277,21 @@ this.FeatureBackground();
             table10.AddRow(new string[] {
                         "Econ101 Rubric"});
 #line 51
-testRunner.When("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table10, "When ");
+ testRunner.When("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table10, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "Title"});
             table11.AddRow(new string[] {
                         "Econ101 Rubric"});
 #line 55
-testRunner.When("I disassociate the following rubrics", ((string)(null)), table11, "When ");
+ testRunner.When("I disassociate the following rubrics", ((string)(null)), table11, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Title"});
             table12.AddRow(new string[] {
                         "Math101 Rubric"});
 #line 58
-testRunner.Then("the learning activity \'Custom 1\' should have the following rubrics", ((string)(null)), table12, "Then ");
+ testRunner.Then("the learning activity \'Custom 1\' should have the following rubrics", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -459,7 +459,7 @@ this.FeatureBackground();
                         "ObjectId",
                         "D2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
 #line 101
- testRunner.And("I update \'Custom 3\' learning activity with the following info", ((string)(null)), table19, "And ");
+ testRunner.When("I update \'Custom 3\' learning activity with the following info", ((string)(null)), table19, "When ");
 #line 110
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -495,21 +495,6 @@ this.FeatureBackground();
  testRunner.And("I associate the following rubrics to \'Custom 1\' learning activity", ((string)(null)), table21, "And ");
 #line 119
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Cannot delete a rubric from a learning activity where the rubric is not associate" +
-            "d")]
-        public virtual void CannotDeleteARubricFromALearningActivityWhereTheRubricIsNotAssociated()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot delete a rubric from a learning activity where the rubric is not associate" +
-                    "d", ((string[])(null)));
-#line 121
-this.ScenarioSetup(scenarioInfo);
-#line 8
-this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
