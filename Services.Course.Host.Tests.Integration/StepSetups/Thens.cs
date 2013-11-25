@@ -480,13 +480,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
             var actual = GetOperations.GetCourseLearningActivity(resource);
 
-//            Assert.That(actual.Rubrics.Count, Is.EqualTo(table.RowCount));
-//            foreach (var row in table.Rows)
-//            {
-//                var title = row["Title"];
-//                var rubricId = Resources<RubricResource>.Get(title);
-//                Assert.That(actual.Rubrics.Any(x => x.RubricId == rubricId.Id));
-//            }
+			Assert.That(actual.RubricAssociations.Count, Is.EqualTo(table.RowCount));
+			foreach (var row in table.Rows)
+			{
+				var title = row["Title"];
+				var rubricId = Resources<RubricResource>.Get(title);
+				Assert.That(actual.RubricAssociations.Any(x => x.RubricId == rubricId.Id));
+			}
         }
     }
 }

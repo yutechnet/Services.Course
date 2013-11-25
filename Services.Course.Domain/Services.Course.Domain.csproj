@@ -239,6 +239,7 @@
     <Compile Include="Mappings\LearningMaterialMappingOverride.cs" />
     <Compile Include="Mappings\CourseLearningActivityMappingOverride.cs" />
     <Compile Include="Mappings\CourseSegmentMappingOverride.cs" />
+    <Compile Include="Mappings\RubricAssociationMappingOverride.cs" />
     <Compile Include="Repositories\IProgramRepository.cs" />
     <Compile Include="Repositories\ProgramRepository.cs" />
     <Compile Include="Courses\ICourseService.cs" />
