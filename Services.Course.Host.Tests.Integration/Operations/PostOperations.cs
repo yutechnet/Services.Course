@@ -74,10 +74,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return ApiFeature.CourseTestHost.Post<LearningMaterialResource, LearningMaterialRequest>(name, requestUri, request);
         }
 
-        public static HttpResponseMessage AssociateRubric(string name, CourseLearningActivityResource resource, RubricAssociationRequest request)
+        public static HttpResponseMessage AssociateRubric(string name, CourseLearningActivityResource resource, CourseRubricRequest request)
         {
-            var requestUri = string.Format("{0}/rubricassociation", resource.ResourceUri);
-            return ApiFeature.CourseTestHost.Post<CourseLearningActivityResource, RubricAssociationRequest>(name, requestUri, request);
+            var requestUri = string.Format("{0}/courserubric", resource.ResourceUri);
+            return ApiFeature.CourseTestHost.Post<CourseLearningActivityResource, CourseRubricRequest>(name, requestUri, request);
         }
     }
 }

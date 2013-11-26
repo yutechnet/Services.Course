@@ -17,6 +17,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         Courses.Course GetOrThrow(Guid courseId);
 	    CourseSegment GetSegment(Guid courseId,Guid segmentId);
         LearningMaterial GetLearningMaterial(Guid learningMaterialId);
-	    RubricAssociation GetRubricAssociation(Guid rubricAssociationId);
+	    CourseRubric GetCourseRubric(Guid courseRubricId);
     }
 }

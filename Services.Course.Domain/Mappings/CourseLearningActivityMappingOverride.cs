@@ -23,9 +23,9 @@ namespace BpeProducts.Services.Course.Domain.Mappings
                 .ForeignKeyConstraintName("FK_LearningActivity_LearningMaterial");
 
 			mapping
-				.HasMany(x => x.RubricAssociations)
+				.HasMany(x => x.CourseRubrics)
 				.Access.CamelCaseField(Prefix.Underscore)
-				.ForeignKeyConstraintName("FK_LearningActivity_RubricAssociation");
+				.ForeignKeyConstraintName("FK_LearningActivity_CourseRubric");
         }
     }
 }

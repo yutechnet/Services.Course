@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BpeProducts.Services.Course.Contract
 {
-	public class RubricAssociationInfo
+	public class CourseRubricInfo
 	{
 		public Guid Id { get; set; }
 		public Guid RubricId { get; set; }

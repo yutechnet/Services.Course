@@ -12,7 +12,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
     public class CourseLearningActivity : TenantEntity
     {
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
-        private IList<RubricAssociation> _rubricAssociations = new List<RubricAssociation>();
+        private IList<CourseRubric> _courseRubrics = new List<CourseRubric>();
 
 	    private CourseLearningActivityType _type;
 	    private bool _isGradeable;
@@ -27,7 +27,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			set 
 			{
 				// Only LearningActivities of type 'Custom' may be associated to rubrics
-				if (RubricAssociations.Count > 0 && _type == CourseLearningActivityType.Custom)
+				if (CourseRubrics.Count > 0 && _type == CourseLearningActivityType.Custom)
 				{
 					throw new BadRequestException("This learning activity is associated with rubric(s). Since rubrics may only be associated with learning activities of type 'custom', this learning activity's type may not be changed.");
 				}
@@ -41,7 +41,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			set
 			{
 				// Only gradable LearningActivities may be associated to rubrics
-				if (RubricAssociations.Count > 0 && _isGradeable)
+				if (CourseRubrics.Count > 0 && _isGradeable)
 				{
 					throw new BadRequestException("This learning activity is associated with rubric(s). Since rubrics may only be associated with gradable learning activities, this learning activity's gradability may not be changed.");
 				}
@@ -71,10 +71,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
             set { _learningMaterials = value; }
         }
 
-        public virtual IList<RubricAssociation> RubricAssociations
+        public virtual IList<CourseRubric> CourseRubrics
         {
-            get { return _rubricAssociations; }
-            set { _rubricAssociations = value; }
+            get { return _courseRubrics; }
+            set { _courseRubrics = value; }
         }
 
         public virtual LearningMaterial AddLearningMaterial(Guid libraryItemId, string description)
@@ -85,9 +85,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningMaterial;
         }
 
-        public virtual RubricAssociation AddRubricAssociation(RubricAssociationRequest request)
+        public virtual CourseRubric AddCourseRubric(CourseRubricRequest request)
         {
-            var rubricAssociation = new RubricAssociation { Id = Guid.NewGuid(), RubricId = request.RubricId, TenantId = TenantId };
+            var courseRubric = new CourseRubric { Id = Guid.NewGuid(), RubricId = request.RubricId, TenantId = TenantId };
 
             if (Type != CourseLearningActivityType.Custom)
             {
@@ -99,28 +99,28 @@ namespace BpeProducts.Services.Course.Domain.Courses
 				throw new BadRequestException("Rubrics may only be associated with LearningActivities that are gradable.");
 			}
 
-            var associationCheck = _rubricAssociations.SingleOrDefault(r => r.RubricId == request.RubricId);
-            if (associationCheck != null)
+            var rubricAlreadyLinkedCheck = _courseRubrics.SingleOrDefault(r => r.RubricId == request.RubricId);
+            if (rubricAlreadyLinkedCheck != null)
             {
                 throw new BadRequestException(string.Format("RubricId {0} is already associated with learningActivity {1} and thus cannot be added again.", request.RubricId, Id));
             }
 
             //TODO: Add validation of rubric here (necessitates GET on assessmentSvc)
 
-            _rubricAssociations.Add(rubricAssociation);
-            return rubricAssociation;
+            _courseRubrics.Add(courseRubric);
+            return courseRubric;
         }
 
-        public virtual void DeleteRubricAssociation(Guid rubricId)
+        public virtual void DeleteCourseRubric(Guid rubricId)
         {
-            var rubricAssociation = _rubricAssociations.SingleOrDefault(r => r.RubricId == rubricId);
+            var courseRubric = _courseRubrics.SingleOrDefault(r => r.RubricId == rubricId);
 
-            if (rubricAssociation == null)
+            if (courseRubric == null)
             {
                 throw new NotFoundException(string.Format("RubricId {0} is not associated with learningActivity {1} and thus cannot be deleted.", rubricId, Id));
             }
 
-            _rubricAssociations.Remove(rubricAssociation);
+            _courseRubrics.Remove(courseRubric);
         }
 
         public virtual void DeleteLearningMaterial(Guid learningMaterialId)

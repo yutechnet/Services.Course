@@ -32,6 +32,6 @@ namespace BpeProducts.Services.Course.Contract
         public int? DueDate { get; set; }
 
         public List<LearningMaterialInfo> LearningMaterials { get; set; }
-		public List<RubricAssociationInfo> RubricAssociations { get; set; }
+		public List<CourseRubricInfo> CourseRubrics { get; set; }
     }
 }

@@ -4,9 +4,9 @@ using FluentNHibernate.Automapping.Alterations;
 
 namespace BpeProducts.Services.Course.Domain.Mappings
 {
-	public class RubricAssociationMappingOverride : IAutoMappingOverride<RubricAssociation>
+	public class CourseRubricMappingOverride : IAutoMappingOverride<CourseRubric>
 	{
-		public void Override(AutoMapping<RubricAssociation> mapping)
+		public void Override(AutoMapping<CourseRubric> mapping)
 		{
 			mapping.Id(x => x.Id).GeneratedBy.Assigned();
 		}

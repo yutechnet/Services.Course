@@ -144,16 +144,16 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity.AddLearningMaterial(libraryItemId, description);
         }
 
-        public virtual RubricAssociation AddRubricAssociation(Guid learningActivityId, RubricAssociationRequest request)
+        public virtual CourseRubric AddCourseRubric(Guid learningActivityId, CourseRubricRequest request)
         {
             var learningActivity = GetLearningActivityOrThrow(learningActivityId);
-            return learningActivity.AddRubricAssociation(request);
+            return learningActivity.AddCourseRubric(request);
         }
 
-        public virtual void DeleteRubricAssociation(Guid learningActivityId, Guid rubricId)
+        public virtual void DeleteCourseRubric(Guid learningActivityId, Guid rubricId)
         {
             var learningActivity = GetLearningActivityOrThrow(learningActivityId);
-            learningActivity.DeleteRubricAssociation(rubricId);
+            learningActivity.DeleteCourseRubric(rubricId);
         }
 
         public virtual void DeleteLearningMaterial(Guid learningActivityId, Guid learningMaterialId)

@@ -240,7 +240,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             {
                 var title = row["Title"];
                 var rubric = Resources<RubricResource>.Get(title);
-                var request = new RubricAssociationRequest {RubricId = rubric.Id};
+                var request = new CourseRubricRequest {RubricId = rubric.Id};
                 PostOperations.AssociateRubric(title, resource, request);
             }
         }

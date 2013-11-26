@@ -39,10 +39,10 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             return learningMaterial;
         }
 
-		public RubricAssociation GetRubricAssociation(Guid rubricAssociationId)
+		public CourseRubric GetCourseRubric(Guid courseRubricId)
 		{
-			var rubricAssociation = _repository.Query<RubricAssociation>().Single(c => c.Id == rubricAssociationId);
-			return rubricAssociation;
+			var courseRubric = _repository.Query<CourseRubric>().Single(c => c.Id == courseRubricId);
+			return courseRubric;
 		}
 
         public IList<Courses.Course> Get(List<Guid> ids)

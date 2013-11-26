@@ -2,7 +2,7 @@
 
 namespace BpeProducts.Services.Course.Contract
 {
-	public class RubricAssociationRequest
+	public class CourseRubricRequest
 	{
 		public Guid RubricId { get; set; }
 	}

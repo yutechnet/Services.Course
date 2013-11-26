@@ -254,7 +254,7 @@
     <Compile Include="Outcome\UpdateModelOnOutcomeUpdateTests.cs" />
     <Compile Include="Outcome\UpdateModelOnOutcomeVersionCreationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RubricAssociationServiceTests.cs" />
+    <Compile Include="CourseRubricServiceTests.cs" />
     <Compile Include="VersionableEntityFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
