@@ -14,13 +14,40 @@ namespace BpeProducts.Services.Course.Domain.Courses
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
         private IList<RubricAssociation> _rubricAssociations = new List<RubricAssociation>();
 
+	    private CourseLearningActivityType _type;
+	    private bool _isGradeable;
+
         [Required]
         public virtual string Name { get; set; }
 
-        [Required]
-        public virtual CourseLearningActivityType Type { get; set; }
+	    [Required]
+	    public virtual CourseLearningActivityType Type
+	    {
+			get { return _type; }
+			set 
+			{
+				// Only LearningActivities of type 'Custom' may be associated to rubrics
+				if (RubricAssociations.Count > 0 && _type == CourseLearningActivityType.Custom)
+				{
+					throw new BadRequestException("This learning activity is associated with rubric(s). Since rubrics may only be associated with learning activities of type 'custom', this learning activity's type may not be changed.");
+				}
+				_type = value;
+			}
+	    }
 
-        public virtual Boolean IsGradeable { get; set; }
+	    public virtual Boolean IsGradeable
+	    {
+			get { return _isGradeable; }
+			set
+			{
+				// Only gradable LearningActivities may be associated to rubrics
+				if (RubricAssociations.Count > 0 && _isGradeable)
+				{
+					throw new BadRequestException("This learning activity is associated with rubric(s). Since rubrics may only be associated with gradable learning activities, this learning activity's gradability may not be changed.");
+				}
+				_isGradeable = value;
+			}
+	    }
 
         public virtual Boolean IsExtraCredit { get; set; }
 
@@ -66,6 +93,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
             {
                 throw new BadRequestException("Rubrics may only be associated with LearningActivities of type CUSTOM. To associate rubrics to non-custom types supported by the platform, please consult the documentation.");
             }
+
+			if (!IsGradeable)
+			{
+				throw new BadRequestException("Rubrics may only be associated with LearningActivities that are gradable.");
+			}
 
             var associationCheck = _rubricAssociations.SingleOrDefault(r => r.RubricId == request.RubricId);
             if (associationCheck != null)
