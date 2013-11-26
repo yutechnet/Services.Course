@@ -127,6 +127,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 		}
 
 		[Test]
+		public void Attempt_to_alter_learningActivity_is_allowed_so_long_as_type_and_gradability_are_appropriate()
+		{
+			var rubricId = Guid.NewGuid();
+			var courseRubricRequest = new CourseRubricRequest { RubricId = rubricId };
+
+			var learningActivity = new CourseLearningActivity { Type = CourseLearningActivityType.Custom, IsGradeable = true };
+			learningActivity.AddCourseRubric(courseRubricRequest);
+
+			Assert.DoesNotThrow(() => learningActivity.Type = CourseLearningActivityType.Custom);
+			Assert.DoesNotThrow(() => learningActivity.IsGradeable = true);
+		}
+
+		[Test]
 		public void Attempt_to_alter_learningActivity_type_when_rubric_assigned_throws_badRequest()
 		{
 			var rubricId = Guid.NewGuid();

@@ -98,7 +98,10 @@ Scenario: Cannot modify learning activity to update type or gradability if rubri
 	| MaxPoint      | 100                                  |
 	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	Then I get 'BadRequest' response
-	When I update 'Custom 3' learning activity with the following info
+	When I associate the following rubrics to 'Custom 3' learning activity
+	| Title          |
+	| Econ101 Rubric |
+	And I update 'Custom 3' learning activity with the following info
 	| Field         | Value                                |
 	| Name          | Custom 3                             |
 	| Type          | Assignment                           |
@@ -116,5 +119,5 @@ Scenario: Course must be unpublished for any rubric association/disassociation (
 	And I associate the following rubrics to 'Custom 1' learning activity
 	| Title          |
 	| Math101 Rubric |
-	Then I get 'BadRequest' response
+	Then I get 'Forbidden' response
 	

@@ -27,7 +27,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			set 
 			{
 				// Only LearningActivities of type 'Custom' may be associated to rubrics
-				if (CourseRubrics.Count > 0 && _type == CourseLearningActivityType.Custom)
+				if ((CourseRubrics.Count > 0) && (value != CourseLearningActivityType.Custom))
 				{
 					throw new BadRequestException("This learning activity is associated with rubric(s). Since rubrics may only be associated with learning activities of type 'custom', this learning activity's type may not be changed.");
 				}
@@ -41,7 +41,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			set
 			{
 				// Only gradable LearningActivities may be associated to rubrics
-				if (CourseRubrics.Count > 0 && _isGradeable)
+				if (CourseRubrics.Count > 0 && value == false)
 				{
 					throw new BadRequestException("This learning activity is associated with rubric(s). Since rubrics may only be associated with gradable learning activities, this learning activity's gradability may not be changed.");
 				}
