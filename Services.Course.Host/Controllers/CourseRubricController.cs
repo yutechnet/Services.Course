@@ -31,7 +31,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
 			var response = Request.CreateResponse(HttpStatusCode.Created, courseRubric);
 
-			var uri = Url.Link("GetCourseRubric", new { courseId, segmentId, learningActivityId, courseRubricId = courseRubric.Id });
+			var uri = Url.Link("GetCourseRubric", new { courseId, segmentId, learningActivityId, courseRubricId = courseRubric.RubricId });
 			if (uri != null)
 			{
 				response.Headers.Location = new Uri(uri);

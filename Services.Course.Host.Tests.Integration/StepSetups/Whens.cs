@@ -180,8 +180,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             {
                 var title = row["Title"];
                 var resource = Resources<RubricAssociationResource>.Get(title);
-	            var rubricResource = Resources<RubricResource>.Get(title);
-	            resource.Id = rubricResource.Id;
                 DeleteOperations.DeleteResource(resource);
             }
         }
