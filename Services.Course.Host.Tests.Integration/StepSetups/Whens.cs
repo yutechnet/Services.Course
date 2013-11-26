@@ -179,7 +179,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var row in table.Rows)
             {
                 var title = row["Title"];
-                var resource = Resources<RubricResource>.Get(title);
+                var resource = Resources<RubricAssociationResource>.Get(title);
                 DeleteOperations.DeleteResource(resource);
             }
         }
