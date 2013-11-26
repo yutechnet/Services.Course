@@ -16,6 +16,35 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 			
 		}
 
+        [Test]
+        public void Can_add_learning_material()
+        {
+            var learningActivity = new CourseLearningActivity { Type = CourseLearningActivityType.Custom };
+
+            var libId = Guid.NewGuid();
+            const string description = "new description";
+            var learningMaterial = learningActivity.AddLearningMaterial(libId, description);
+
+            Assert.That(learningMaterial.Description, Is.EqualTo(description));
+            Assert.That(learningMaterial.LibraryItemId, Is.EqualTo(libId));
+            Assert.That(learningActivity.LearningMaterials.Single(), Is.EqualTo(learningMaterial));
+        }
+
+        [Test]
+        public void Can_delete_learning_material()
+        {
+            var learningActivity = new CourseLearningActivity { Type = CourseLearningActivityType.Custom };
+
+            var libId = Guid.NewGuid();
+            const string description = "new description";
+            var learningMaterial = learningActivity.AddLearningMaterial(libId, description);
+
+            Assert.That(learningActivity.LearningMaterials.Single(), Is.EqualTo(learningMaterial));
+
+            learningActivity.DeleteLearningMaterial(learningMaterial.Id);
+            Assert.That(learningMaterial.ActiveFlag, Is.False);
+        }
+
 		[Test]
 		public void Can_add_rubric_association()
 		{

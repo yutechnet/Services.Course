@@ -253,8 +253,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.Throws<ForbiddenException>(() => course.SetPrograms(new List<Program>()));
             Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiteCourse));
             Assert.Throws<ForbiddenException>(() => course.RemovePrerequisite(Guid.NewGuid()));
-            Assert.Throws<ForbiddenException>(
-                () => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
+            Assert.Throws<ForbiddenException>(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
+            Assert.Throws<ForbiddenException>(() => course.AddLearningMaterial(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "description"));
+            Assert.Throws<ForbiddenException>(() => course.DeleteLearningMaterial(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()));
         }
 
         [Test]
@@ -654,6 +655,67 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningActivities.ElementAt(1).Name, Is.EqualTo(la3.Name));
         }
 
+        [Test]
+        public void Can_add_learning_material()
+        {
+            var course = new Domain.Courses.Course
+            {
+                TenantId = 999999,
+                OrganizationId = Guid.NewGuid(),
+            };
+
+            var seg1Id = Guid.NewGuid();
+            var seg2Id = Guid.NewGuid();
+            var la1Id = Guid.NewGuid();
+            var la2Id = Guid.NewGuid();
+            var la3Id = Guid.NewGuid();
+            var libId = Guid.NewGuid();
+            const string description = "learning material";
+
+            course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
+            course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
+            var la1 = course.AddLearningActivity(seg1Id, new SaveCourseLearningActivityRequest { Name = "LA1" }, la1Id);
+            var la2 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la2Id);
+            var la3 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la3Id);
+
+            var returnedMaterial = course.AddLearningMaterial(seg2Id, la2Id, libId, description);
+
+            var internalMaterial = course.Segments.First(s => s.Id == seg2Id)
+                      .CourseLearningActivities.First(l => l.Id == la2Id)
+                      .LearningMaterials.Single();
+
+            Assert.That(course.Segments.SelectMany(s => s.CourseLearningActivities.SelectMany(l => l.LearningMaterials)).Count(), Is.EqualTo(1));
+
+            Assert.That(internalMaterial, Is.EqualTo(returnedMaterial));
+            Assert.That(internalMaterial.LibraryItemId, Is.EqualTo(libId));
+            Assert.That(internalMaterial.Description, Is.EqualTo(description));
+        }
+
+        [Test]
+        public void Get_error_if_adding_learning_material_to_unknown_section()
+        {
+            var course = new Domain.Courses.Course
+            {
+                TenantId = 999999,
+                OrganizationId = Guid.NewGuid(),
+            };
+
+            var seg1Id = Guid.NewGuid();
+            var seg2Id = Guid.NewGuid();
+            var la1Id = Guid.NewGuid();
+            var la2Id = Guid.NewGuid();
+            var la3Id = Guid.NewGuid();
+            var libId = Guid.NewGuid();
+            const string description = "learning material";
+
+            course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
+            course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
+            var la1 = course.AddLearningActivity(seg1Id, new SaveCourseLearningActivityRequest { Name = "LA1" }, la1Id);
+            var la2 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la2Id);
+            var la3 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la3Id);
+
+            Assert.Throws<NotFoundException>(() => course.AddLearningMaterial(Guid.NewGuid(), la2Id, libId, description));
+        }
         
         static readonly Random Random = new Random();
         static T RandomEnumValue<T>()
