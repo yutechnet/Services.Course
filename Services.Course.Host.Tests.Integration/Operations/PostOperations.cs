@@ -77,7 +77,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage AssociateRubric(string name, CourseLearningActivityResource resource, CourseRubricRequest request)
         {
             var requestUri = string.Format("{0}/courserubric", resource.ResourceUri);
-            return ApiFeature.CourseTestHost.Post<CourseLearningActivityResource, CourseRubricRequest>(name, requestUri, request);
+            return ApiFeature.CourseTestHost.Post<RubricAssociationResource, CourseRubricRequest>(name, requestUri, request);
         }
     }
 }

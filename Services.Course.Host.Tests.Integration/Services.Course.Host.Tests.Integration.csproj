@@ -287,10 +287,10 @@
     <Compile Include="Resources\RubricAssociationResource.cs" />
     <Compile Include="Resources\RubricResource.cs" />
     <Compile Include="Resources\SectionResource.cs" />
-    <Compile Include="RubricAssociation.feature.cs">
+    <Compile Include="CourseRubric.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>RubricAssociation.feature</DependentUpon>
+      <DependentUpon>CourseRubric.feature</DependentUpon>
     </Compile>
     <Compile Include="SectionCreation.feature.cs">
       <AutoGen>True</AutoGen>
@@ -370,9 +370,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ProgramCreation.feature.cs</LastGenOutput>
     </None>
-    <None Include="RubricAssociation.feature">
+    <None Include="CourseRubric.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>RubricAssociation.feature.cs</LastGenOutput>
+      <LastGenOutput>CourseRubric.feature.cs</LastGenOutput>
     </None>
     <None Include="SectionCreation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
