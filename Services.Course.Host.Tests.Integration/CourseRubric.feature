@@ -1,5 +1,4 @@
 ﻿@Api
-@Ignore
 Feature: Rubric Association
 	In order to assess student's work
 	As a Learning Activity Creator
