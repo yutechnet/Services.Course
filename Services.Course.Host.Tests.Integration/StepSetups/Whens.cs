@@ -585,7 +585,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     };
         
                 Resources<RubricResource>.Add(rubric.Title, resource);
-                ApiFeature.MockAssessmentClient.Setup(x => x.GetRubric(It.IsAny<Uri>(), resource.Id)).Returns(rubric);
+                ApiFeature.MockAssessmentClient.Setup(x => x.GetRubric(resource.Id)).Returns(rubric);
             }
         }
 

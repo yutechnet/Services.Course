@@ -89,6 +89,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             updater.RegisterInstance(MockAclClient.Object).As<IAclHttpClient>();
             updater.RegisterInstance(MockSectionClient.Object).As<ISectionClient>();
             updater.RegisterInstance(MockAssetClient.Object).As<IAssetServiceClient>();
+            updater.RegisterInstance(MockAssessmentClient.Object).As<IAssessmentClient>();
             updater.Update(CourseTestHost.Container);
         }
 

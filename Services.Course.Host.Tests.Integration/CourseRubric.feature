@@ -1,5 +1,4 @@
 ﻿@Api
-@Ignore
 Feature: Rubric Association
 	In order to assess student's work
 	As a Learning Activity Creator
@@ -59,6 +58,7 @@ Scenario: Disassociate a rubric from a learning activity
 	| Title          |
 	| Math101 Rubric |
 	
+@Ignore
 Scenario: Verify unpublished rubrics cannot be associated to learning activities
 	When I associate the following rubrics to 'Custom 1' learning activity
 	| Title         |

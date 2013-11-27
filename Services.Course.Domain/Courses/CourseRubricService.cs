@@ -35,7 +35,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 		{
 			var course = _courseRepository.GetOrThrow(courseId);
 
-			var rubric = _assessmentClient.GetRubric(new Uri("http://google.com"), request.RubricId);
+			var rubric = _assessmentClient.GetRubric(request.RubricId);
 
 			//TODO: Enable once rubric versioning/publishing is enabled
 			//if (!rubric.IsPublished)

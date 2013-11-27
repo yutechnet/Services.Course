@@ -43,7 +43,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			_repoMock.Setup(r => r.GetOrThrow(It.IsAny<Guid>())).Returns(courseMock.Object);
 
 			var rubricDto = new RubricInfoResponse();
-			_assessmentClientMock.Setup(a => a.GetRubric(It.IsAny<Uri>(), It.IsAny<Guid>())).Returns(rubricDto);
+			_assessmentClientMock.Setup(a => a.GetRubric(It.IsAny<Guid>())).Returns(rubricDto);
 
 			var rubricAssocationDto = new CourseRubricRequest {RubricId = Guid.NewGuid()};
 			var result = _courseRubricService.AddRubric(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), rubricAssocationDto);
@@ -56,7 +56,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 		public void Add_rubric_fails_if_rubric_does_not_exist()
 		{
 			_repoMock.Setup(r => r.GetOrThrow(It.IsAny<Guid>())).Returns(It.IsAny<Domain.Courses.Course>());
-			_assessmentClientMock.Setup(a => a.GetRubric(It.IsAny<Uri>(), It.IsAny<Guid>())).Throws(new NotFoundException("Rubric doesn't exist"));
+			_assessmentClientMock.Setup(a => a.GetRubric(It.IsAny<Guid>())).Throws(new NotFoundException("Rubric doesn't exist"));
 
 			var rubricAssocationDto = new CourseRubricRequest { RubricId = Guid.NewGuid() };
 			Assert.Throws(typeof(NotFoundException), () => _courseRubricService.AddRubric(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), rubricAssocationDto));
