@@ -119,8 +119,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
             {
                 throw new NotFoundException(string.Format("RubricId {0} is not associated with learningActivity {1} and thus cannot be deleted.", rubricId, Id));
             }
-
-            _courseRubrics.Remove(courseRubric);
+			courseRubric.ActiveFlag = false;
+            //_courseRubrics.Remove(courseRubric);
         }
 
         public virtual void DeleteLearningMaterial(Guid learningMaterialId)
