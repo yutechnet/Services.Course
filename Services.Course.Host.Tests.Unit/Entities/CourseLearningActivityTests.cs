@@ -112,7 +112,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
 			learningActivity.DeleteCourseRubric(rubricId);
 
-			Assert.That(learningActivity.CourseRubrics.Count, Is.EqualTo(0));
+			Assert.That(learningActivity.CourseRubrics.First().ActiveFlag, Is.EqualTo(false));
 		}
 
 		[Test]
