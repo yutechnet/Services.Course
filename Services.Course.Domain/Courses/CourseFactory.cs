@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using BpeProducts.Common.Capabilities;
+using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
-using BpeProducts.Common.WebApi.Authorization;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 
@@ -20,7 +19,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			_courseRepository = courseRepository;
 		}
 
-		[ClaimsAuthorize(Capability.CourseCreate)]
+		[Common.WebApi.Authorization.ClaimsAuthorize(Capability.CourseCreate)]
 		public Course Create(SaveCourseRequest request)
 		{
 			Course course = null;

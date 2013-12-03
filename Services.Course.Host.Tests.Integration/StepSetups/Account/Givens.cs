@@ -1,4 +1,4 @@
-﻿using BpeProducts.Common.Capabilities;
+﻿using BpeProducts.Common.Authorization;
 using BpeProducts.Common.WebApiTest;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System;

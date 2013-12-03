@@ -9,7 +9,6 @@ using System.Threading;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
 using AttributeRouting.Web.Http;
-using BpeProducts.Common.Capabilities;
 using BpeProducts.Common.WebApi.Attributes;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
