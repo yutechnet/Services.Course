@@ -7,6 +7,7 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
+using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain
 {

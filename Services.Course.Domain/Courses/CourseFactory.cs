@@ -6,6 +6,7 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -19,7 +20,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			_courseRepository = courseRepository;
 		}
 
-		[Common.WebApi.Authorization.ClaimsAuthorize(Capability.CourseCreate)]
+	
 		public Course Create(SaveCourseRequest request)
 		{
 			Course course = null;

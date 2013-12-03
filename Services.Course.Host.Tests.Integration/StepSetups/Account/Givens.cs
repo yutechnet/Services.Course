@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using Moq;
+using Services.Authorization.Contract;
 using TechTalk.SpecFlow;
 using BpeProducts.Common.WebApiTest.Framework;
 
