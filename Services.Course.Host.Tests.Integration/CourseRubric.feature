@@ -58,7 +58,6 @@ Scenario: Disassociate a rubric from a learning activity
 	| Title          |
 	| Math101 Rubric |
 	
-@Ignore
 Scenario: Verify unpublished rubrics cannot be associated to learning activities
 	When I associate the following rubrics to 'Custom 1' learning activity
 	| Title         |

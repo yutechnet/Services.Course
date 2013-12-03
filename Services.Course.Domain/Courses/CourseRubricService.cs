@@ -37,11 +37,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
 			var rubric = _assessmentClient.GetRubric(request.RubricId);
 
-			//TODO: Enable once rubric versioning/publishing is enabled
-			//if (!rubric.IsPublished)
-			//{
-			//	throw new BadRequestException(string.Format("Rubric {0} is not published, and thus cannot be associated with learning activities.", rubric.Id));
-			//}
+			if (!rubric.IsPublished)
+			{
+				throw new BadRequestException(string.Format("Rubric {0} is not published, and thus cannot be associated with learning activities.", rubric.Id));
+			}
 
 			var learningMaterial = course.AddCourseRubric(segmentId, learningActivityId, request);
 			return Mapper.Map<CourseRubricInfo>(learningMaterial);
