@@ -134,5 +134,11 @@ namespace BpeProducts.Services.Course.Domain
                 });
             }
         }
+
+        public IEnumerable<CourseInfoResponse> GetPublishedCourses(Guid organizationId)
+        {
+            var courses = _courseRepository.GetPublishedCourses(organizationId);
+            return Mapper.Map<IEnumerable<CourseInfoResponse>>(courses);
+        }
     }
 }

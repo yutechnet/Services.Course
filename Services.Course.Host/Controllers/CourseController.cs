@@ -42,6 +42,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         [SetSamlTokenInBootstrapContext]
         [HttpGet]
+        [GET("course/published?{organizationId:guid}")]
+        public IEnumerable<CourseInfoResponse> GetPublishedCourses(Guid organizationId)
+        {
+            return _courseService.GetPublishedCourses(organizationId);
+        }
+        
+        [SetSamlTokenInBootstrapContext]
+        [HttpGet]
         [GET("course/{courseId:guid}", RouteName = "GetCourse")]
         public CourseInfoResponse Get(Guid courseId)
         {

@@ -4,6 +4,7 @@ using System.Linq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.NHibernate;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using NHibernate;
 using NHibernate.Criterion;
@@ -44,6 +45,13 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 			var courseRubric = _repository.Query<CourseRubric>().Single(c => c.Id == courseRubricId);
 			return courseRubric;
 		}
+
+        public IEnumerable<Courses.Course> GetPublishedCourses(Guid organizationId)
+        {
+            return
+                _repository.Query<Courses.Course>()
+                           .Where(c => c.ActiveFlag == true && c.IsPublished && c.OrganizationId == organizationId).AsEnumerable();
+        }
 
         public IList<Courses.Course> Get(List<Guid> ids)
         {

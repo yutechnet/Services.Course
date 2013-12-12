@@ -210,3 +210,16 @@ Scenario: Cannot publish the same version twice
 Scenario: Cannot publish without a version
 	When I create a course without a version
 	Then I get 'BadRequest' response
+
+Scenario: Search for published course
+	When I publish the following courses
+	| Name           | Note      |
+	| English 1010   | Blah blah |
+	Then published courses for orgniazation 'COB' contains the following courses
+	| Name           |
+	| English 1010   |
+	And published courses for orgniazation 'COB' does not contain the following courses
+	| Name           |
+	| English 101011 |
+
+	

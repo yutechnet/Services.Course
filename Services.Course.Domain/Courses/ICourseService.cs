@@ -52,5 +52,12 @@ namespace BpeProducts.Services.Course.Domain
         /// <param name="courseId">Course to update</param>
         /// <param name="newPrerequisiteIds">List of course IDs that serve as the prerequisite list</param>
         void UpdatePrerequisiteList(Guid courseId, List<Guid> newPrerequisiteIds);
+
+        /// <summary>
+        /// Returns the list of published courses for an organization
+        /// </summary>
+        /// <param name="organizationId">Organization to return the published courses from</param>
+        /// <returns>List of published courses</returns>
+        IEnumerable<CourseInfoResponse> GetPublishedCourses(Guid organizationId);
     }
 }

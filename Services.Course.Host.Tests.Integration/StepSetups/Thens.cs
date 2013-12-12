@@ -488,6 +488,33 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 				Assert.That(actual.CourseRubrics.Any(x => x.RubricId == rubricId.Id));
 			}
         }
+
+        [Then(@"published courses for orgniazation '(.*)' contains the following courses")]
+        public void ThenPublishedCoursesForOrgniazationContainsTheFollowingCourses(string organization, Table table)
+        {
+            var orgResource = Resources<OrganizationResource>.Get(organization);
+            var courses = GetOperations.GetPublishedCourses(orgResource).ToList();
+
+            foreach (var row in table.Rows)
+            {
+                var courseResource = Resources<CourseResource>.Get(row["Name"]);
+                Assert.That(courses.Any(c => c.Id == courseResource.Id), Is.True);
+            }
+        }
+
+        [Then(@"published courses for orgniazation '(.*)' does not contain the following courses")]
+        public void ThenPublishedCoursesForOrgniazationDoesNotContainTheFollowingCourses(string organization, Table table)
+        {
+            var orgResource = Resources<OrganizationResource>.Get(organization);
+            var courses = GetOperations.GetPublishedCourses(orgResource).ToList();
+
+            foreach (var row in table.Rows)
+            {
+                var courseResource = Resources<CourseResource>.Get(row["Name"]);
+                Assert.That(courses.Count(c => c.Id == courseResource.Id), Is.EqualTo(0));
+            }
+        }
+
     }
 }
 

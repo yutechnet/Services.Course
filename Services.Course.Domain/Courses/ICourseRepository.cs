@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BpeProducts.Common.NHibernate.Version;
+using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using NHibernate;
 
@@ -18,5 +19,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 	    CourseSegment GetSegment(Guid courseId,Guid segmentId);
         LearningMaterial GetLearningMaterial(Guid learningMaterialId);
 	    CourseRubric GetCourseRubric(Guid courseRubricId);
+        IEnumerable<Courses.Course> GetPublishedCourses(Guid organizationId);
     }
 }
