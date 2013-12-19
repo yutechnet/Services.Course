@@ -12,9 +12,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
 {
     public interface ILearningMaterialService
     {
-        LearningMaterialInfo AddLearningMaterial(Guid courseId, Guid segmentId, Guid learningActivityId, LearningMaterialRequest request);
-        LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId);
-        void Delete(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId);
+        LearningMaterialInfo AddLearningMaterial(Guid courseId, Guid segmentId, LearningMaterialRequest request);
+        void UpdateLearningMaterial(Guid courseId, Guid segmentId, Guid learningMaterialId, UpdateLearningMaterialRequest request);
+        LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningMaterialId);
+        void Delete(Guid courseId, Guid segmentId, Guid learningMaterialId);
     }
 
     public class LearningMaterialService : ILearningMaterialService
@@ -28,27 +29,36 @@ namespace BpeProducts.Services.Course.Domain.Courses
             _assetService = assetService;
         }
 
-        public LearningMaterialInfo AddLearningMaterial(Guid courseId, Guid segmentId, Guid learningActivityId, LearningMaterialRequest request)
+        public LearningMaterialInfo AddLearningMaterial(Guid courseId, Guid segmentId, LearningMaterialRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);
 
-            var libraryInfo = _assetService.AddAssetToLibrary("course", course.Id, request.AssetId);
-            
-            var learningMaterial = course.AddLearningMaterial(segmentId, learningActivityId, libraryInfo.Id, request.Description);
+            //   var libraryInfo = _assetService.AddAssetToLibrary("course", course.Id, request.AssetId);
+
+            var learningMaterial = course.AddLearningMaterial(segmentId, request);
 
             return Mapper.Map<LearningMaterialInfo>(learningMaterial);
         }
 
-        public LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId)
+        public LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningMaterialId)
         {
             var learningMaterial = _courseRepository.GetLearningMaterial(learningMaterialId);
             return Mapper.Map<LearningMaterialInfo>(learningMaterial);
         }
 
-        public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId)
+        public void Delete(Guid courseId, Guid segmentId, Guid learningMaterialId)
         {
             var course = _courseRepository.GetOrThrow(courseId);
-            course.DeleteLearningMaterial(segmentId, learningActivityId, learningMaterialId);
+            course.DeleteLearningMaterial(segmentId, learningMaterialId);
+
+            _courseRepository.Save(course);
+        }
+
+
+        public void UpdateLearningMaterial(Guid courseId, Guid segmentId, Guid learningMaterialId, UpdateLearningMaterialRequest request)
+        {
+            var course = _courseRepository.GetOrThrow(courseId);
+            course.UpdateLearningMaterial(segmentId, learningMaterialId, request);
 
             _courseRepository.Save(course);
         }

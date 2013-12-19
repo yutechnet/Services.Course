@@ -465,12 +465,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
         }
         #endregion
 
-        public virtual LearningMaterial AddLearningMaterial(Guid segmentId, Guid learningActivityId, Guid libraryItemId, string description)
+        public virtual LearningMaterial AddLearningMaterial(Guid segmentId, LearningMaterialRequest learningMaterialRequest)
         {
             CheckPublished();
 
             var segment = GetSegmentOrThrow(segmentId);
-            return segment.AddLearningMaterial(learningActivityId, libraryItemId, description);
+            return segment.AddLearningMaterial(learningMaterialRequest);
         }
 
         public virtual CourseRubric AddCourseRubric(Guid segmentId, Guid learningActivityId, CourseRubricRequest request)
@@ -489,12 +489,20 @@ namespace BpeProducts.Services.Course.Domain.Courses
             segment.DeleteCourseRubric(learningActivityId, rubricId);
         }
 
-        public virtual void DeleteLearningMaterial(Guid segmentId, Guid learningActivityId, Guid learningMaterialId)
+        public virtual void DeleteLearningMaterial(Guid segmentId,Guid learningMaterialId)
         {
             CheckPublished();
 
             var segment = GetSegmentOrThrow(segmentId);
-            segment.DeleteLearningMaterial(learningActivityId, learningMaterialId);
+            segment.DeleteLearningMaterial(learningMaterialId);
+        }
+
+        public virtual void UpdateLearningMaterial(Guid segmentId, Guid learningMaterialId, UpdateLearningMaterialRequest updatelearningMaterialRequest)
+        {
+            CheckPublished();
+
+            var segment = GetSegmentOrThrow(segmentId);
+            segment.UpdateLearningMaterial(learningMaterialId,updatelearningMaterialRequest);
         }
     }
 }

@@ -31,7 +31,6 @@ namespace BpeProducts.Services.Course.Contract
         public int? InactiveDate { get; set; }
         public int? DueDate { get; set; }
 
-        public List<LearningMaterialInfo> LearningMaterials { get; set; }
 		public List<CourseRubricInfo> CourseRubrics { get; set; }
     }
 }

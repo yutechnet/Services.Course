@@ -11,7 +11,7 @@ namespace BpeProducts.Services.Course.Contract
             ChildSegments = new List<CourseSegmentInfo>();
             SupportedOutcomes = new List<OutcomeInfo>();
         }
-
+        public List<LearningMaterialInfo> LearningMaterials { get; set; }
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

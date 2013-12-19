@@ -11,7 +11,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
 {
     public class CourseLearningActivity : TenantEntity
     {
-        private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
         private IList<CourseRubric> _courseRubrics = new List<CourseRubric>();
 
 	    private CourseLearningActivityType _type;
@@ -65,26 +64,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual int? DueDate { get; set; }
 
-        public virtual IList<LearningMaterial> LearningMaterials
-        {
-            get { return _learningMaterials; }
-            set { _learningMaterials = value; }
-        }
-
         public virtual IList<CourseRubric> CourseRubrics
         {
             get { return _courseRubrics; }
             set { _courseRubrics = value; }
         }
-
-        public virtual LearningMaterial AddLearningMaterial(Guid libraryItemId, string description)
-        {
-            var learningMaterial = new LearningMaterial { Id = Guid.NewGuid(), LibraryItemId = libraryItemId, TenantId = TenantId, Description = description };
-
-            _learningMaterials.Add(learningMaterial);
-            return learningMaterial;
-        }
-
+      
         public virtual CourseRubric AddCourseRubric(CourseRubricRequest request)
         {
             var courseRubric = new CourseRubric { Id = Guid.NewGuid(), RubricId = request.RubricId, TenantId = TenantId };
@@ -122,20 +107,5 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			courseRubric.ActiveFlag = false;
         }
 
-        public virtual void DeleteLearningMaterial(Guid learningMaterialId)
-        {
-            var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
-            learningMaterial.ActiveFlag = false;
-        }
-
-        private LearningMaterial GetLearningMaterialOrThrow(Guid learningMaterialId)
-        {
-            var learningMaterial = _learningMaterials.SingleOrDefault(l => l.Id == learningMaterialId);
-
-            if (learningMaterial == null)
-                throw new NotFoundException(string.Format("Learning Material {0} for Course Learning Activity {1} is not found.", learningMaterialId, Id));
-
-            return learningMaterial;
-        }
     }
 }

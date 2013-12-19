@@ -79,9 +79,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.94\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Services.Asset.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.95\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
+    <Reference Include="BpeProducts.Services.Asset.Contracts">
+      <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.112\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Authorization.Contract">
       <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.408\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>

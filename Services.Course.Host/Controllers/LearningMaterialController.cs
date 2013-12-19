@@ -27,14 +27,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [ValidateModelState]
         [SetSamlTokenInBootstrapContext]
         [HttpPost]
-        [POST("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/learningmaterial")]
-        public HttpResponseMessage Post(Guid courseId, Guid segmentId, Guid learningActivityId, LearningMaterialRequest request)
+        [POST("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial")]
+        public HttpResponseMessage Post(Guid courseId, Guid segmentId, LearningMaterialRequest request)
         {
-            var learningMaterial = _learningMaterialService.AddLearningMaterial(courseId, segmentId, learningActivityId, request);
+            var learningMaterial = _learningMaterialService.AddLearningMaterial(courseId, segmentId, request);
 
             var response = Request.CreateResponse(HttpStatusCode.Created, learningMaterial);
 
-            var uri = Url.Link("GetLearningMaterial", new { courseId, segmentId, learningActivityId, learningMaterialId = learningMaterial.Id });
+            var uri = Url.Link("GetLearningMaterial", new { courseId, segmentId, learningMaterialId = learningMaterial.Id });
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
@@ -42,19 +42,31 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return response;
         }
 
-        [HttpGet]
-        [GET("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/learningmaterial/{learningMaterialId:guid}", RouteName = "GetLearningMaterial")]
-        public LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId)
+        [Transaction]
+        [CheckModelForNull]
+        [ValidateModelState]
+        [SetSamlTokenInBootstrapContext]
+        [HttpPut]
+        [PUT("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}")]
+        public void Put(Guid courseId, Guid segmentId, Guid learningMaterialId, UpdateLearningMaterialRequest request)
         {
-            return _learningMaterialService.Get(courseId, segmentId, learningActivityId, learningMaterialId);
+            _learningMaterialService.UpdateLearningMaterial(courseId, segmentId, learningMaterialId, request);
+
+        }
+
+        [HttpGet]
+        [GET("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}", RouteName = "GetLearningMaterial")]
+        public LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningMaterialId)
+        {
+            return _learningMaterialService.Get(courseId, segmentId,learningMaterialId);
         }
 
         [Transaction]
         [HttpDelete]
-        [DELETE("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/learningmaterial/{learningMaterialId:guid}")]
-        public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId,Guid learningMaterialId)
+        [DELETE("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}")]
+        public void Delete(Guid courseId, Guid segmentId,Guid learningMaterialId)
         {
-            _learningMaterialService.Delete(courseId, segmentId, learningActivityId, learningMaterialId);
+            _learningMaterialService.Delete(courseId, segmentId,learningMaterialId);
         }
     }
 }

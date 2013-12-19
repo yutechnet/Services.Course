@@ -564,7 +564,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var request = new LearningMaterialRequest
                     {
                         AssetId = asset.Id,
-                        Description = description
+                      //  Description = description
                     };
 
                 PostOperations.AddLearningMaterial(description, learningActivity, request);

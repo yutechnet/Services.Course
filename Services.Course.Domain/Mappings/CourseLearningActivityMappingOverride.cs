@@ -17,11 +17,6 @@ namespace BpeProducts.Services.Course.Domain.Mappings
         {
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
 
-            mapping
-                .HasMany(x => x.LearningMaterials)
-                .Access.CamelCaseField(Prefix.Underscore)
-                .ForeignKeyConstraintName("FK_LearningActivity_LearningMaterial");
-
 			mapping
 				.HasMany(x => x.CourseRubrics)
 				.Access.CamelCaseField(Prefix.Underscore)

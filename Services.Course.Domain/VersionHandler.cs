@@ -3,7 +3,11 @@ using System.Linq;
 using System.Reflection;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
+using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Domain.Events;
+using BpeProducts.Services.Course.Domain.Courses;
+using NHibernate.Type;
+using ServiceStack.Common.Extensions;
 
 namespace BpeProducts.Services.Course.Domain
 {
@@ -11,11 +15,12 @@ namespace BpeProducts.Services.Course.Domain
     {
         private readonly IVersionableEntityFactory _versionableEntityFactory;
         private readonly IDomainEvents _domainEvents;
-
-        public VersionHandler(IVersionableEntityFactory versionableEntityFactory, IDomainEvents domainEvents)
+        private readonly IAssetServiceClient _assetService;
+        public VersionHandler(IVersionableEntityFactory versionableEntityFactory, IDomainEvents domainEvents, IAssetServiceClient assetService)
         {
             _versionableEntityFactory = versionableEntityFactory;
             _domainEvents = domainEvents;
+            _assetService = assetService;
         }
 
         public VersionableEntity CreateVersion(string entityType, Guid parentEntityId, string versionNumber)
@@ -69,6 +74,11 @@ namespace BpeProducts.Services.Course.Domain
                 throw new BadRequestException(string.Format("{0} {1} is already published and cannot be published again.", entityType, entityId));
             }
 
+            if (type == typeof(Domain.Courses.Course))
+            {
+                PublishCourseAssets(entity);
+            }
+
             _domainEvents.Raise<VersionPublished>(new VersionPublished
             {
                 AggregateId = entity.Id,
@@ -76,6 +86,23 @@ namespace BpeProducts.Services.Course.Domain
                 EntityType = type
             });
 
+        }
+
+        private void PublishCourseAssets(VersionableEntity entity)
+        {
+            var course = (Domain.Courses.Course)entity;
+            course.Segments.ForEach(cs => cs.LearningMaterials.ForEach(l => PublishLearningMaterialAsset(l.AssetId)));
+        }
+
+        private void PublishLearningMaterialAsset(Guid assetId)
+        {
+            if (!CheckAssetIsPublished(assetId))
+                _assetService.PublishAsset(assetId, string.Empty);
+        }
+        private bool CheckAssetIsPublished(Guid assetId)
+        {
+            var asset = _assetService.GetAsset(assetId);
+            return asset.IsPublished;
         }
 
         private static Type GetEntityType(string entityTypeName)

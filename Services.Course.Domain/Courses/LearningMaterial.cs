@@ -5,7 +5,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
 {
     public class LearningMaterial : TenantEntity
     {
-        public virtual string Description { get; set; }
-        public virtual Guid LibraryItemId { get; set; }
+        public virtual Guid AssetId { get; set; }
+        public virtual Guid CourseSegmentId { get; set; }
+        public virtual string Instruction { get; set; }
+        public virtual bool IsRequired { get; set; }
+
     }
 }

@@ -36,6 +36,11 @@ namespace BpeProducts.Services.Course.Domain.Overrides
                 .ForeignKeyConstraintNames("none", "none")
                 .Table("EntityLearningOutcome")
                 .Inverse();
+
+            mapping
+                   .HasMany(x => x.LearningMaterials)
+                   .Access.CamelCaseField(Prefix.Underscore)
+                   .ForeignKeyConstraintName("FK_CourseSegment_LearningMaterial");
         }
     }
 }

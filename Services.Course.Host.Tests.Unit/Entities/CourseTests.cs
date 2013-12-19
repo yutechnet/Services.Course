@@ -254,8 +254,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiteCourse));
             Assert.Throws<ForbiddenException>(() => course.RemovePrerequisite(Guid.NewGuid()));
             Assert.Throws<ForbiddenException>(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
-            Assert.Throws<ForbiddenException>(() => course.AddLearningMaterial(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "description"));
-            Assert.Throws<ForbiddenException>(() => course.DeleteLearningMaterial(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()));
+            Assert.Throws<ForbiddenException>(() => course.AddLearningMaterial(Guid.NewGuid(),new LearningMaterialRequest()));
+            Assert.Throws<ForbiddenException>(() => course.DeleteLearningMaterial(Guid.NewGuid(), Guid.NewGuid()));
         }
 
         [Test]
@@ -670,7 +670,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var la2Id = Guid.NewGuid();
             var la3Id = Guid.NewGuid();
             var libId = Guid.NewGuid();
-            const string description = "learning material";
+            const string instruction = "learning material";
 
             course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
             course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
@@ -678,17 +678,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var la2 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la2Id);
             var la3 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la3Id);
 
-            var returnedMaterial = course.AddLearningMaterial(seg2Id, la2Id, libId, description);
+            var returnedMaterial = course.AddLearningMaterial(seg2Id,new LearningMaterialRequest{Instruction= instruction});
 
             var internalMaterial = course.Segments.First(s => s.Id == seg2Id)
-                      .CourseLearningActivities.First(l => l.Id == la2Id)
                       .LearningMaterials.Single();
 
-            Assert.That(course.Segments.SelectMany(s => s.CourseLearningActivities.SelectMany(l => l.LearningMaterials)).Count(), Is.EqualTo(1));
+            Assert.That(course.Segments.SelectMany(s => s.LearningMaterials).Count(), Is.EqualTo(1));
 
             Assert.That(internalMaterial, Is.EqualTo(returnedMaterial));
-            Assert.That(internalMaterial.LibraryItemId, Is.EqualTo(libId));
-            Assert.That(internalMaterial.Description, Is.EqualTo(description));
+            Assert.That(internalMaterial.Instruction, Is.EqualTo(instruction));
         }
 
         [Test]
@@ -706,7 +704,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var la2Id = Guid.NewGuid();
             var la3Id = Guid.NewGuid();
             var libId = Guid.NewGuid();
-            const string description = "learning material";
+            const string instruction = "learning material";
 
             course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
             course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
@@ -714,7 +712,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var la2 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la2Id);
             var la3 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la3Id);
 
-            Assert.Throws<NotFoundException>(() => course.AddLearningMaterial(Guid.NewGuid(), la2Id, libId, description));
+            Assert.Throws<NotFoundException>(() => course.AddLearningMaterial(Guid.NewGuid(), new LearningMaterialRequest { Instruction = instruction }));
         }
         
         static readonly Random Random = new Random();

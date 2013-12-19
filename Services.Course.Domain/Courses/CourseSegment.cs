@@ -12,6 +12,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 {
     public class CourseSegment : TenantEntity, ISupportingEntity
     {
+        private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
         private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();
         private IList<CourseSegment> _childSegments = new List<CourseSegment>();
         private CourseSegment _parentSegment;
@@ -46,6 +47,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
             protected internal set { _courseLearningActivities = value; }
         }
 
+        public virtual IList<LearningMaterial> LearningMaterials
+        {
+            get { return _learningMaterials; }
+            set { _learningMaterials = value; }
+        }
 
         public virtual IList<LearningOutcome> SupportedOutcomes
         {
@@ -138,12 +144,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity;
         }
 
-        public virtual LearningMaterial AddLearningMaterial(Guid learningActivityId, Guid libraryItemId, string description)
-        {
-            var learningActivity = GetLearningActivityOrThrow(learningActivityId);
-            return learningActivity.AddLearningMaterial(libraryItemId, description);
-        }
-
         public virtual CourseRubric AddCourseRubric(Guid learningActivityId, CourseRubricRequest request)
         {
             var learningActivity = GetLearningActivityOrThrow(learningActivityId);
@@ -156,10 +156,34 @@ namespace BpeProducts.Services.Course.Domain.Courses
             learningActivity.DeleteCourseRubric(rubricId);
         }
 
-        public virtual void DeleteLearningMaterial(Guid learningActivityId, Guid learningMaterialId)
+
+        public virtual LearningMaterial AddLearningMaterial(LearningMaterialRequest learningMaterialRequest)
         {
-            var learningActivity = GetLearningActivityOrThrow(learningActivityId);
-            learningActivity.DeleteLearningMaterial(learningMaterialId);
+            var learningMaterial = new LearningMaterial { Id = Guid.NewGuid(), AssetId = learningMaterialRequest.AssetId, TenantId = TenantId, Instruction = learningMaterialRequest.Instruction };
+            //to do mapper
+            _learningMaterials.Add(learningMaterial);
+            return learningMaterial;
+        }
+        public virtual void UpdateLearningMaterial(Guid learningMaterialId, UpdateLearningMaterialRequest updatelearningMaterialRequest)
+        {
+            var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
+            learningMaterial.ActiveFlag = false;
+        }
+
+        public virtual void DeleteLearningMaterial(Guid learningMaterialId)
+        {
+            var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
+            learningMaterial.ActiveFlag = false;
+        }
+
+        private LearningMaterial GetLearningMaterialOrThrow(Guid learningMaterialId)
+        {
+            var learningMaterial = _learningMaterials.SingleOrDefault(l => l.Id == learningMaterialId);
+
+            if (learningMaterial == null)
+                throw new NotFoundException(string.Format("Learning Material {0} for Course Learning Activity {1} is not found.", learningMaterialId, Id));
+
+            return learningMaterial;
         }
     }
 }

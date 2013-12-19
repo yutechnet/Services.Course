@@ -26,8 +26,7 @@ namespace BpeProducts.Services.Course.Domain
             var course = _courseRepository.Get(courseId);
 
             var learningActivity = course.GetLearningActivity(segmentId, learningActivityId);
-
-            var c = learningActivity.LearningMaterials.ToList();
+     
             return Mapper.Map<CourseLearningActivityResponse>(learningActivity);
         }
 

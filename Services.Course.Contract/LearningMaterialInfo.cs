@@ -5,6 +5,9 @@ namespace BpeProducts.Services.Course.Contract
     public class LearningMaterialInfo
     {
         public Guid Id { get; set; }
-        public string Description { get; set; }
+        public string Instruction { get; set; }
+        public bool IsRequired { get; set; }
+        public Guid CourseSegmentId { get; set; }
+        public Guid AssetId { get; set; }
     }
 }
