@@ -34,6 +34,13 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return _courseService.Search(Request.RequestUri.Query);
         }
 
+        [HttpGet]
+        [Route("course/published")]
+        public IEnumerable<CourseInfoResponse> GetPublishedCourses(Guid organizationId)
+        {
+            return _courseService.GetPublishedCourses(organizationId);
+        }
+
         [Route("course/{courseId:guid}", Name = "GetCourse")]
         public CourseInfoResponse Get(Guid courseId)
         {
