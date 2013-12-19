@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using AttributeRouting.Web.Http;
-using BpeProducts.Common.WebApi.Attributes;
+using BpeProducts.Common.WebApi.NHibernate;
+using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 
@@ -21,26 +20,23 @@ namespace BpeProducts.Services.Course.Host.Controllers
             _courseLearningActivityService = courseLearningActivityService;
         }
 
-        [HttpGet]
-        [GET("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{id:guid}", RouteName = "GetCourseLearningActivity")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{id:guid}", Name = "GetCourseLearningActivity")]
 		public CourseLearningActivityResponse Get(Guid courseId, Guid segmentId, Guid id)
 		{
             var learningActivity = _courseLearningActivityService.Get(courseId, segmentId, id);
             return learningActivity;
 		}
 
-        [HttpGet]
-        [GET("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/")]
         public IEnumerable<CourseLearningActivityResponse> Get(Guid courseId, Guid segmentId)
         {
             return _courseLearningActivityService.Get(courseId, segmentId);
         }
 
 		[Transaction]
-		[CheckModelForNull]
+        [ArgumentsNotNull]
 		[ValidateModelState]
-        [HttpPost]
-        [POST("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity")]
         public HttpResponseMessage Post(Guid courseId, Guid segmentId, SaveCourseLearningActivityRequest request)
 		{
             var learningActivityResponse = _courseLearningActivityService.Create(courseId, segmentId, request);
@@ -55,10 +51,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		}
 
 		[Transaction]
-		[CheckModelForNull]
+		[ArgumentsNotNull]
 		[ValidateModelState]
-        [HttpPut]
-        [PUT("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{id:guid}")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{id:guid}")]
         public HttpResponseMessage Put(Guid courseId, Guid segmentId, Guid id, SaveCourseLearningActivityRequest request)
 		{
             _courseLearningActivityService.Update(courseId, segmentId, id, request);
@@ -67,8 +62,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		}
 
 		[Transaction]
-        [HttpDelete]
-        [DELETE("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{id:guid}")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{id:guid}")]
         public void Delete(Guid courseId, Guid segmentId, Guid id)
 		{
             _courseLearningActivityService.Delete(courseId, segmentId, id);

@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
-using System.Threading;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
-using AttributeRouting.Web.Http;
-using BpeProducts.Common.WebApi.Attributes;
+using BpeProducts.Common.WebApi.NHibernate;
+using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
-    //    [DefaultHttpRouteConvention]
     [Authorize]
     public class CourseController : ApiController
     {
@@ -27,8 +22,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         // GET api/programs
-        [HttpGet]
-        [GET("course?{$filter}")]
+        [Route("course")]
         public IEnumerable<CourseInfoResponse> Get(ODataQueryOptions options)
         {
 			// get orgs/objs for which user has viewcourse capability (maybe a matrix later)
@@ -40,16 +34,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return _courseService.Search(Request.RequestUri.Query);
         }
 
-        [SetSamlTokenInBootstrapContext]
-        [HttpGet]
-        [GET("course/published?{organizationId:guid}")]
-        public IEnumerable<CourseInfoResponse> GetPublishedCourses(Guid organizationId)
-        {
-            return _courseService.GetPublishedCourses(organizationId);
-        }
-        
-        [SetSamlTokenInBootstrapContext]
-        [HttpGet]
         [GET("course/{courseId:guid}", RouteName = "GetCourse")]
         public CourseInfoResponse Get(Guid courseId)
         {
@@ -57,11 +41,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [CheckModelForNull]
+        [ArgumentsNotNull]
         [ValidateModelState]
-        [SetSamlTokenInBootstrapContext]
-        [HttpPost]
-        [POST("course")]
+        [Route("course")]
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
 	        var courseInfoResponse = _courseService.Create(request);
@@ -76,10 +58,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
 	    [Transaction]
-        [CheckModelForNull]
+        [ArgumentsNotNull]
         [ValidateModelState]
-        [HttpPut]
-        [PUT("course/{courseId:guid}")]
+        [Route("course/{courseId:guid}")]
         // PUT api/courses/5
         public void Put(Guid courseId, UpdateCourseRequest request)
         {
@@ -87,8 +68,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [HttpDelete]
-        [DELETE("course/{courseId:guid}")]
+        [Route("course/{courseId:guid}")]
         public void Delete(Guid courseId)
         {
             _courseService.Delete(courseId);

@@ -1,11 +1,8 @@
-﻿using System.IdentityModel.Services;
-using System.Security.Claims;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Autofac;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.WebApi;
 using BpeProducts.Services.Course.Host.App_Start;
-using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace BpeProducts.Services.Course.Host
 {

@@ -48,14 +48,14 @@ namespace BpeProducts.Services.Course.Domain
 
             if (entity == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new NotFoundException(string.Format("Entity '{0}' not found", entityId));
             }
 
             var outcome = entity.SupportedOutcomes.SingleOrDefault(l => l.Id == outcomeId);
 
             if (outcome == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new NotFoundException(string.Format("Outcome '{0}' not found", outcomeId));
             }
 
             return Mapper.Map<OutcomeInfo>(outcome);
@@ -67,7 +67,7 @@ namespace BpeProducts.Services.Course.Domain
 
             if (entity == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new NotFoundException(string.Format("Entity '{0}' not found", entityId));
             }
 
             var outcomes = entity.SupportedOutcomes ?? new List<LearningOutcome>();
@@ -106,7 +106,10 @@ namespace BpeProducts.Services.Course.Domain
         public OutcomeInfo Create(string entityType, Guid entityId, OutcomeRequest request)
         {
             var entity = _repository.Query<ISupportingEntity>().SingleOrDefault(x => x.Id == entityId);
-            if (entity == null) throw new HttpResponseException(HttpStatusCode.NotFound);
+            if (entity == null)
+            {
+                throw new NotFoundException(string.Format("Entity '{0}' not found", entityId));
+            }
 
             var learningOutcome = entity.SupportedOutcomes.SingleOrDefault(o => o.Description.ToLower() == request.Description.ToLower());
             if (learningOutcome == null)
@@ -140,7 +143,7 @@ namespace BpeProducts.Services.Course.Domain
 
             if (learningOutcome == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new NotFoundException(string.Format("Outcome '{0}' not found", outcomeId));
             }
 
             if (learningOutcome.IsPublished)

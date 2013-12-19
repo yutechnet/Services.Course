@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Host.Controllers;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 using System.Linq;
@@ -21,7 +20,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         private List<ProgramResponse> _programs;
 
         private SaveProgramRequest _programRequest;
-        private SaveProgramRequest _editProgramRequest;
         private ProgramResponse _programResponse;
         private HttpResponseMessage _responseMessageToValidate;
         private SaveProgramRequest _anotherProgramRequest;

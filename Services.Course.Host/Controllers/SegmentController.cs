@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using AttributeRouting.Web.Http;
-using BpeProducts.Common.WebApi.Attributes;
+using BpeProducts.Common.WebApi.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
-    //    [DefaultHttpRouteConvention]
     [Authorize]
     public class SegmentController : ApiController
     {
@@ -22,8 +20,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
       
         [Transaction]
-        [HttpPost]
-        [POST("course/{courseId:guid}/segments")]
+        [Route("course/{courseId:guid}/segments")]
         public HttpResponseMessage Post(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             var courseSegment = _courseSegmentService.Create(courseId, saveCourseSegmentRequest);
@@ -40,39 +37,34 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [HttpPut]
-        [PUT("course/{courseId:guid}/segments/{segmentId:guid}")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}")]
         public void Put(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             _courseSegmentService.Update(courseId, segmentId, saveCourseSegmentRequest);
         }
 
         [Transaction]
-        [HttpPut]
-        [PUT("course/{courseId:guid}/segments")]
+        [Route("course/{courseId:guid}/segments")]
         public void Put(Guid courseId, IList<UpdateCourseSegmentRequest> updateCourseSegmentRequest)
         {
             _courseSegmentService.Update(courseId, updateCourseSegmentRequest);
         }
 
         [Transaction]
-        [HttpDelete]
-        [DELETE("course/{courseId:guid}/segments/{segmentId:guid}")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}")]
         public void Delete(Guid courseId, Guid segmentId)
         {
             _courseSegmentService.Delete(courseId, segmentId);
         }
 
-        [HttpGet]
-        [GET("course/{courseId:guid}/segments")]
+        [Route("course/{courseId:guid}/segments")]
         public IEnumerable<CourseSegmentInfo> Get(Guid courseId)
         {
             // returns the root course segments, including their childrent segments
             return _courseSegmentService.Get(courseId);
         }
 
-        [HttpGet]
-        [GET("course/{courseId:guid}/segments/{segmentId:guid}", RouteName = "GetSegment")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}", Name = "GetSegment")]
         public CourseSegmentInfo Get(Guid courseId, Guid segmentId)
         {
             return _courseSegmentService.Get(courseId, segmentId);

@@ -1,4 +1,4 @@
-# Deployment Module v0.1.56
+# Deployment Module v0.1.59
 
 $Script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -39,9 +39,7 @@ function Deployment-RemoveHandlerMapping
 	if ($handler -ne $null)
 	{
 		Write-Host "Removing handler mapping `"$handlerName`""
-	
-		Get-WebConfiguration -PSPath "IIS:\Sites\$websiteName" -Filter "/system.webServer/handlers/add[@name='$handlerName']" `
-		| % { Clear-WebConfiguration -PSPath $_.PSPath -Filter $_.ItemXPath -Location $_.Location }
+		Remove-WebHandler -Name "$handlerName" -PSPath "IIS:\Sites\$websiteName"
 	}
 }
 
@@ -803,8 +801,9 @@ function Deployment-UpdateConfigurationTransform
 			$octopusVariableName = $regexVariable.Groups[1]
 			
 			# try to match up the replacement variable with an octopus variable
+			$octopusVariable = Get-Variable -Name "$octopusVariableName" -ErrorAction SilentlyContinue
 			$octopusVariableValue = Get-Variable -Name "$octopusVariableName" -ValueOnly -ErrorAction SilentlyContinue
-			if (-not $octopusVariableValue)
+			if (-not $octopusVariable)
 			{
 				# error
 				if (-not ($missingVariables -contains "$octopusVariableName")) 
@@ -1394,7 +1393,14 @@ function Deployment-DeployNServiceBusService
 	# install new windows service
 	if ( $reinstallService -or $forceReinstall -or $existingService -eq $null )
 	{
-		Deployment-InstallNServiceBusService -ServiceName $serviceName -DisplayName $displayName -Description $description -StartMode $startMode -Account $account -Password $password
+		if ($account -ne $null)
+		{
+			Deployment-InstallNServiceBusService -ServiceName $serviceName -DisplayName $displayName -Description $description -StartMode $startMode -Account $account -Password $password
+		}
+		else
+		{
+			Deployment-InstallNServiceBusService -ServiceName $serviceName -DisplayName $displayName -Description $description -StartMode $startMode
+		}
 	}  
 }
 
@@ -1411,7 +1417,14 @@ function Deployment-UninstallNServiceBusService
 	$pinfo.Arguments = "-uninstall -serviceName=`"$serviceName`""
 	$pinfo.RedirectStandardOutput = $true
 	$pinfo.RedirectStandardError = $true
-	Write-Host "$($pinfo.FileName) $($($pinfo.Arguments).Replace("$password", "********"))"
+	if($password)
+	{
+		Write-Host "$($pinfo.FileName) $($($pinfo.Arguments).Replace("$password", "********"))"
+	}
+	else
+	{
+		Write-Host "$($pinfo.FileName) $($pinfo.Arguments)"
+	}
 	$p = New-Object System.Diagnostics.Process
 	$p.StartInfo = $pinfo
 	$p.Start() | Out-Null
@@ -1455,7 +1468,14 @@ function Deployment-InstallNServiceBusService
 	if ($startMode) { if ($startMode -ine "auto") { $pinfo.Arguments += " -startManually" } }
 	$pinfo.RedirectStandardOutput = $true
 	$pinfo.RedirectStandardError = $true
-	Write-Host "$($pinfo.FileName) $($($pinfo.Arguments).Replace("$password", "********"))"
+	if ($password)
+	{
+		Write-Host "$($pinfo.FileName) $($($pinfo.Arguments).Replace("$password", "********"))"
+	}
+	else
+	{
+		Write-Host "$($pinfo.FileName) $($pinfo.Arguments)"
+	}
 	$p = New-Object System.Diagnostics.Process
 	$p.StartInfo = $pinfo
 	$p.Start() | Out-Null

@@ -2,8 +2,8 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using AttributeRouting.Web.Http;
-using BpeProducts.Common.WebApi.Attributes;
+using BpeProducts.Common.WebApi.NHibernate;
+using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 
@@ -20,11 +20,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		}
 
 		[Transaction]
-		[CheckModelForNull]
+		[ArgumentsNotNull]
 		[ValidateModelState]
-		[SetSamlTokenInBootstrapContext]
-		[HttpPost]
-		[POST("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric")]
 		public HttpResponseMessage Post(Guid courseId, Guid segmentId, Guid learningActivityId, CourseRubricRequest request)
 		{
 			var courseRubric = _courseRubricService.AddRubric(courseId, segmentId, learningActivityId, request);
@@ -39,16 +37,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
 			return response;
 		}
 
-		[HttpGet]
-		[GET("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric/{courseRubricId:guid}", RouteName = "GetCourseRubric")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric/{courseRubricId:guid}", Name = "GetCourseRubric")]
 		public CourseRubricInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid courserubricId)
 		{
 			return _courseRubricService.Get(courseId, segmentId, learningActivityId, courserubricId);
 		}
 
 		[Transaction]
-		[HttpDelete]
-		[DELETE("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric/{rubricId:guid}", RouteName = "DeleteCourseRubric")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric/{rubricId:guid}", Name = "DeleteCourseRubric")]
 		public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId, Guid rubricId)
 		{
 			_courseRubricService.DeleteRubric(courseId, segmentId, learningActivityId, rubricId);

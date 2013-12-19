@@ -1,21 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.OData.Query;
-using AttributeRouting.Web.Http;
-using AutoMapper;
-using BpeProducts.Common.WebApi.Attributes;
+using BpeProducts.Common.WebApi.NHibernate;
+using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
-using BpeProducts.Services.Course.Domain.Entities;
-using BpeProducts.Services.Course.Domain.Repositories;
-using NHibernate;
-using NHibernate.Criterion;
-using NHibernate.Linq;
-using NHibernate.OData;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
@@ -29,32 +20,22 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		    _programService = programService;
 		}
 
-        [HttpGet]
-        [GET("program")]
-        public IEnumerable<ProgramResponse> GetPrograms()
+        [Route("program")]
+        public IEnumerable<ProgramResponse> Get()
         {
             return _programService.Search(Request.RequestUri.Query);
         }
 
-        [HttpGet]
-        [GET("program?{$filter}")]
-        public IEnumerable<ProgramResponse> SearchPrograms()
-        {
-            return _programService.Search(Request.RequestUri.Query);
-        }
-
-        [HttpGet]
-        [GET("program/{programId:guid}", RouteName = "GetProgram")]
+        [Route("program/{programId:guid}", Name = "GetProgram")]
         public ProgramResponse Get(Guid programId)
 		{
             return _programService.Search(programId);
 		}
 
 		[Transaction]
-		[CheckModelForNull]
+        [ArgumentsNotNull]
 		[ValidateModelState]
-        [HttpPost]
-        [POST("program")]
+        [Route("program")]
 		public HttpResponseMessage Post(SaveProgramRequest request)
 		{
 		    var programResponse = _programService.Create(request);
@@ -68,10 +49,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		}
 
 		[Transaction]
-		[CheckModelForNull]
+        [ArgumentsNotNull]
 		[ValidateModelState]
-        [HttpPut]
-        [PUT("program/{programId:guid}")]
+        [Route("program/{programId:guid}")]
         public HttpResponseMessage Put(Guid programId, UpdateProgramRequest request)
 		{
             _programService.Update(programId, request);
@@ -80,8 +60,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		}
 
 		[Transaction]
-        [HttpDelete]
-        [DELETE("program/{programId:guid}")]
+        [Route("program/{programId:guid}")]
         public void Delete(Guid programId)
 		{
             _programService.Delete(programId);

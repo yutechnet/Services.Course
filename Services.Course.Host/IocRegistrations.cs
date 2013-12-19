@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Autofac;
+﻿using Autofac;
 using Autofac.Extras.DynamicProxy2;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Ioc;
+using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.Log;
 using Services.Section.Contracts;
 

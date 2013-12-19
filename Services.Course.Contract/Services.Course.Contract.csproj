@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BpeProducts.Common.WebApi">
-      <HintPath>..\packages\BpeProducts.Common.WebApi.1.0.89\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />

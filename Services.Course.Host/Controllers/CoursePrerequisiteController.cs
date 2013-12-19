@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Http;
-using AttributeRouting.Web.Http;
-using BpeProducts.Common.WebApi.Attributes;
+using BpeProducts.Common.WebApi.NHibernate;
+using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 
@@ -19,10 +18,9 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
 		[Transaction]
-		[CheckModelForNull]
+		[ArgumentsNotNull]
 		[ValidateModelState]
-        [HttpPut]
-        [PUT("course/{courseId:guid}/prerequisites")]
+        [Route("course/{courseId:guid}/prerequisites")]
 		public void Put(Guid courseId, UpdateCoursePrerequisites prerequisites)
 		{
             _courseService.UpdatePrerequisiteList(courseId, prerequisites.PrerequisiteIds);

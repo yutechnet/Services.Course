@@ -4,6 +4,7 @@ using Autofac;
 using Autofac.Extras.DynamicProxy2;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Ioc;
+using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.Log;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
@@ -30,15 +31,15 @@ namespace BpeProducts.Services.Course.Domain
 
 			containerBuilder
 				.RegisterType<CourseRepository>().As<ICourseRepository>()
-				.EnableInterfaceInterceptors().EnableValidation()
+				.EnableInterfaceInterceptors().EnableUserInputValidation()
 				.InterceptedBy(typeof (PublicInterfaceLoggingInterceptor));
 			containerBuilder
 				.RegisterType<ProgramRepository>().As<IProgramRepository>()
-				.EnableInterfaceInterceptors().EnableValidation()
+                .EnableInterfaceInterceptors().EnableUserInputValidation()
 				.InterceptedBy(typeof (PublicInterfaceLoggingInterceptor));
 			containerBuilder
 				.RegisterType<LearningOutcomeRepository>().As<ILearningOutcomeRepository>()
-				.EnableInterfaceInterceptors().EnableValidation()
+                .EnableInterfaceInterceptors().EnableUserInputValidation()
 				.InterceptedBy(typeof (PublicInterfaceLoggingInterceptor));
 
 

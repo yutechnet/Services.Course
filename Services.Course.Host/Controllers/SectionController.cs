@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using AttributeRouting.Web.Http;
-using BpeProducts.Common.WebApi.Attributes;
+using BpeProducts.Common.WebApi.NHibernate;
+using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Services.Section.Contracts;
@@ -25,12 +22,10 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [CheckModelForNull]
+        [ArgumentsNotNull]
         [ValidateModelState]
-        [SetSamlTokenInBootstrapContext]
 		// POST api/courses
-        [HttpPost]
-        [POST("course/{courseId:guid}/section")]
+        [Route("course/{courseId:guid}/section")]
         public HttpResponseMessage Post(Guid courseId, CourseSectionRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);

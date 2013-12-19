@@ -54,7 +54,7 @@ namespace BpeProducts.Services.Course.Domain
             });
         }
 
-		[AuthByAcl(Capability = Capability.CourseView, ObjectIdArgument = "courseId", ObjectType = typeof(Courses.Course))]
+        [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public CourseInfoResponse Get(Guid courseId)
         {
             var course = _courseRepository.GetOrThrow(courseId);

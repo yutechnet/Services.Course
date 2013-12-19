@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using AttributeRouting.Web.Http;
-using BpeProducts.Common.NHibernate.Version;
-using BpeProducts.Common.WebApi.Attributes;
+using BpeProducts.Common.WebApi.NHibernate;
+using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 
@@ -22,16 +19,16 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [CheckModelForNull]
+        [ArgumentsNotNull]
         [ValidateModelState]
         [HttpPost]
-        [POST("{entityType}/version", RouteName = "CreateVersion")]
+        [Route("{entityType}/version", Name = "CreateVersion")]
         public HttpResponseMessage CreateVersion(string entityType, VersionRequest request)
         {
             var entityTypeName = entityType == "outcome" ? "learningoutcome" : entityType;
 
             var entity = _versionHandler.CreateVersion(entityTypeName, request.ParentVersionId, request.VersionNumber);
-            HttpResponseMessage response = base.Request.CreateResponse(HttpStatusCode.Created);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
 
             string uri = Url.Link("CreateVersion", new { entityType });
             if (uri != null)
@@ -43,10 +40,10 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [CheckModelForNull]
+        [ArgumentsNotNull]
         [ValidateModelState]
         [HttpPut]
-        [PUT("{entityType}/{entityId:guid}/publish")]
+        [Route("{entityType}/{entityId:guid}/publish")]
         public void PublishVersion(string entityType, Guid entityId, PublishRequest request)
         {
             var entityTypeName = entityType == "outcome" ? "learningoutcome" : entityType;

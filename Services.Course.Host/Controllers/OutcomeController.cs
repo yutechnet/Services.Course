@@ -4,12 +4,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using AttributeRouting.Web.Http;
 using BpeProducts.Common.Exceptions;
-using BpeProducts.Common.WebApi.Attributes;
-using BpeProducts.Common.WebApi.Authorization;
+using BpeProducts.Common.WebApi.NHibernate;
+using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
+using Thinktecture.IdentityModel.Authorization.WebApi;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
@@ -23,15 +23,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [HttpGet]
-        [GET("{entityType}/{entityId:guid}/supports", RouteName = "GetEntityOutcomes")]
+        [Route("{entityType}/{entityId:guid}/supports", Name = "GetEntityOutcomes")]
         public List<OutcomeInfo> Get(string entityType, Guid entityId)
         {
             return _learningOutcomeService.GetEntityOutcomes(entityId).ToList();
         }
 
         [HttpGet]
-        [GET("outcome/entityoutcomes?{entityIds}")]
+        [Route("outcome/entityoutcomes")]
         public Dictionary<Guid, List<OutcomeInfo>> GetEntityOutcomes(string entityIds)
         {
             var ids = entityIds.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -48,23 +47,20 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [HttpGet]
-        [GET("outcome/{outcomeId:guid}", RouteName = "GetOutcome")]
+        [Route("outcome/{outcomeId:guid}", Name = "GetOutcome")]
         public OutcomeInfo Get(Guid outcomeId)
         {
             return _learningOutcomeService.Get(outcomeId);
         }
 
         [Transaction]
-        [CheckModelForNull]
+        [ArgumentsNotNull]
         [ValidateModelState]
-        [ClaimsAuthorize]
-        [HttpPost]
-        [POST("outcome")]
+        [Route("outcome")]
         public HttpResponseMessage Post(OutcomeRequest request)
         {
             var outcomeResponse = _learningOutcomeService.Create(request);
-            var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
+            var response = Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
 
             var uri = Url.Link("GetOutcome", new { outcomeId = outcomeResponse.Id });
             if (uri != null)
@@ -76,26 +72,23 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [HttpGet]
-        [GET("{entityType}/{entityId:guid}/supports/{outcomeId:guid}", RouteName = "GetEntityOutcome")]
+        [Route("{entityType}/{entityId:guid}/supports/{outcomeId:guid}", Name = "GetEntityOutcome")]
         public OutcomeInfo Get(string entityType, Guid entityId, Guid outcomeId)
         {
             return _learningOutcomeService.Get(entityType, entityId, outcomeId);
         }
 
         [Transaction]
-        [CheckModelForNull]
+        [ArgumentsNotNull]
         [ValidateModelState]
-        [ClaimsAuthorize]
-        [HttpPost]
-        [POST("{entityType}/{entityId:guid}/supports")]
+        [Route("{entityType}/{entityId:guid}/supports")]
         public HttpResponseMessage Post(string entityType, Guid entityId, OutcomeRequest request)
         {
             var outcomeResponse = _learningOutcomeService.Create(entityType, entityId, request);
 
-            var response = base.Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
+            var response = Request.CreateResponse(HttpStatusCode.Created, outcomeResponse);
 
-            var uri = Url.Link("GetEntityOutcome", new {entityType = entityType, entityId = entityId, outcomeId = outcomeResponse.Id});
+            var uri = Url.Link("GetEntityOutcome", new {entityType, entityId, outcomeId = outcomeResponse.Id});
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
@@ -104,43 +97,39 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [CheckModelForNull]
+        [ArgumentsNotNull]
         [ValidateModelState]
-        [HttpPut]
-        [PUT("outcome/{outcomeId:guid}")]
+        [Route("outcome/{outcomeId:guid}")]
         public void Put(Guid outcomeId, OutcomeRequest request)
         {
             _learningOutcomeService.Update(outcomeId, request);
         }
 
         [Transaction]
-        [CheckModelForNull]
+        [ArgumentsNotNull]
         [ValidateModelState]
-        [HttpPut]
-        [PUT("{entityType}/{entityId:guid}/supports/{outcomeId:guid}")]
+        [Route("{entityType}/{entityId:guid}/supports/{outcomeId:guid}", Order = 9)]
         public void Put(string entityType, Guid entityId, Guid outcomeId, OutcomeRequest request)
         {
             _learningOutcomeService.Update(entityType, entityId, outcomeId, request);
         }
 
         [Transaction]
-        [HttpDelete]
-        [DELETE("outcome/{outcomeId:guid}")]
+        [Route("outcome/{outcomeId:guid}")]
         public void Delete(Guid outcomeId)
         {
             _learningOutcomeService.Delete(outcomeId);
         }
 
         [Transaction]
-        [HttpDelete]
-        [DELETE("{entityType}/{entityId:guid}/supports/{outcomeId:guid}")]
+        [Route("{entityType}/{entityId:guid}/supports/{outcomeId:guid}")]
         public void Delete(string entityType, Guid entityId, Guid outcomeId)
         {
             _learningOutcomeService.Delete(entityType, entityId, outcomeId);
         }
 
         [HttpGet]
-        [GET("course/{courseId:guid}/segments/{segmentId:guid}/supports", RouteName = "GetSegmentOutcomes")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/supports", Name = "GetSegmentOutcomes")]
         public List<OutcomeInfo> CourseSegmentOutcome(Guid courseId, Guid segmentId)
         {
             return _learningOutcomeService.GetEntityOutcomes(segmentId).ToList();
@@ -148,7 +137,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         [Transaction]
         [HttpPost]
-        [POST("course/{courseId:guid}/segments/{segmentId:guid}/supports")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/supports")]
         public HttpResponseMessage CourseSegmentOutcome(Guid courseId, Guid segmentId, OutcomeRequest request)
         {
             var outcomeResponse = _learningOutcomeService.Create("segments", segmentId, request);
@@ -164,7 +153,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [HttpGet]
-        [GET("outcome/{supportingOutcomeId:guid}/supports", RouteName = "GetSupportingOutcomes", ControllerPrecedence = 1)]
+        [Route("outcome/{supportingOutcomeId:guid}/supports", Name = "GetSupportingOutcomes", Order = -3)]
         public List<OutcomeInfo> GetSupportingOutcomes(Guid supportingOutcomeId)
         {
             return _learningOutcomeService.GetSupportingOutcomes(supportingOutcomeId);
@@ -172,7 +161,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         [Transaction]
         [HttpPut]
-        [PUT("outcome/{supportingOutcomeId:guid}/supports/{supportedOutcomeId:guid}", ControllerPrecedence = 2)]
+        [Route("outcome/{supportingOutcomeId:guid}/supports/{supportedOutcomeId:guid}", Order = -2)]
         public void AddSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId)
         {
             _learningOutcomeService.AddSupportingOutcome(supportingOutcomeId, supportedOutcomeId);
@@ -180,7 +169,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         [Transaction]
         [HttpDelete]
-        [DELETE("outcome/{supportingOutcomeId:guid}/supports/{supportedOutcomeId:guid}", ControllerPrecedence = 3)]
+        [Route("outcome/{supportingOutcomeId:guid}/supports/{supportedOutcomeId:guid}", Order = -1)]
         public void RemoveSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId)
         {
             _learningOutcomeService.RemoveSupportingOutcome(supportingOutcomeId, supportedOutcomeId);
