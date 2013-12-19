@@ -34,7 +34,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return _courseService.Search(Request.RequestUri.Query);
         }
 
-        [GET("course/{courseId:guid}", RouteName = "GetCourse")]
+        [Route("course/{courseId:guid}", Name = "GetCourse")]
         public CourseInfoResponse Get(Guid courseId)
         {
             return _courseService.Get(courseId);
