@@ -38,6 +38,9 @@ namespace BpeProducts.Services.Course.Contract
         public int? InactiveDate { get; set; }
         [DataMember]
         public int? DueDate { get; set; }
-
+        [DataMember]
+        public Guid AssessmentId { get; set; }
+        [DataMember]
+        public string AssessmentType { get; set; }
     }
 }

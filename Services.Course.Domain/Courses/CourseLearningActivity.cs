@@ -6,10 +6,12 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Validation;
+using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-    public class CourseLearningActivity : TenantEntity
+    public class CourseLearningActivity : TenantEntity,IValidatable<CourseLearningActivity>
     {
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
         private IList<CourseRubric> _courseRubrics = new List<CourseRubric>();
@@ -77,6 +79,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             set { _courseRubrics = value; }
         }
 
+        public virtual Guid AssessmentId { get; set; }
+        public virtual AssessmentType AssessmentType { get; set; }
+
         public virtual LearningMaterial AddLearningMaterial(Guid libraryItemId, string description)
         {
             var learningMaterial = new LearningMaterial { Id = Guid.NewGuid(), LibraryItemId = libraryItemId, TenantId = TenantId, Description = description };
@@ -136,6 +141,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 throw new NotFoundException(string.Format("Learning Material {0} for Course Learning Activity {1} is not found.", learningMaterialId, Id));
 
             return learningMaterial;
+        }
+
+        public bool Validate(IValidator<CourseLearningActivity> validator, out IEnumerable<string> brokenRules)
+        {
+            brokenRules = validator.BrokenRules(this);
+            return validator.IsValid(this);
         }
     }
 }

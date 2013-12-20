@@ -8,6 +8,7 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment;
 using NHibernate.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -159,11 +160,29 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var resource = Resources<CourseSegmentResource>.Get(segmentName);
             var segment = GetOperations.GetSegment(resource);
 
-            var expectedLearningActivities =
-                (from r in table.Rows select Resources<CourseLearningActivityResource>.Get(r["Name"]).Id).ToList();
-            var actualLearningActivities = (from a in segment.CourseLearningActivities select a.Id).ToList();
+            if (table.ContainsColumn("Assessment"))
+            {
+                foreach (var row in table.Rows)
+                {
+                    if (!string.IsNullOrEmpty(row["Assessment"]))
+                    {
+                        var assessmentResource = Resources<AssessmentResource>.Get(row["Assessment"]);
+                        row["Assessment"] = assessmentResource.Id.ToString();
+                    }
+                    else
+                    {
+                        row["Assessment"] = Guid.Empty.ToString();
+                    }
+                }
+                table.RenameColumn("Assessment", "AssessmentId");
+            }
+            table.CompareToSet(segment.CourseLearningActivities);
 
-            CollectionAssert.AreEquivalent(expectedLearningActivities, actualLearningActivities);
+            //var expectedLearningActivities =
+            //    (from r in table.Rows select Resources<CourseLearningActivityResource>.Get(r["Name"]).Id).ToList();
+            //var actualLearningActivities = (from a in segment.CourseLearningActivities select a.Id).ToList();
+
+            //CollectionAssert.AreEquivalent(expectedLearningActivities, actualLearningActivities);
         }
 
         [Then(@"the learning outcome '(.*)' should contain")]

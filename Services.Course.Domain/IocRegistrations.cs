@@ -13,6 +13,7 @@ using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Outcomes;
 using BpeProducts.Services.Course.Domain.Repositories;
+using BpeProducts.Services.Course.Domain.Validation;
 using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain
@@ -93,6 +94,8 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<UpdateModelOnOutcomeVersionCreation>().As<IHandle<OutcomeVersionCreated>>();
 
 			containerBuilder.RegisterType<UpdateModelOnOutcomeVersionPublished>().As<IHandle<OutcomeVersionPublished>>();
+		    containerBuilder.RegisterType<CoursePublishValidator>().As<IValidator<Courses.Course>>();
+            containerBuilder.RegisterType<LearningActivityPublishValidator>().As<IValidator<Courses.CourseLearningActivity>>();
 
 		    RegisterMappings();
 		}
@@ -100,6 +103,7 @@ namespace BpeProducts.Services.Course.Domain
 	    private void RegisterMappings()
 	    {
 	        Mapper.CreateMap<LearningMaterial, LearningMaterialInfo>();
+	        Mapper.CreateMap<CourseLearningActivity, CourseLearningActivityResponse>();
 	    }
 	}
 }

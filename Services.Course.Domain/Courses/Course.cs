@@ -4,16 +4,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
+using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Validation;
 using Newtonsoft.Json;
 using ServiceStack.Common.Extensions;
+using Services.Assessment.Contract;
 using Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
 
-    public class Course : VersionableEntity, ISupportingEntity
+    public class Course : VersionableEntity, ISupportingEntity, IValidatable<Course>
     {
         #region Properties
 
@@ -393,6 +396,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             CourseSegment segment = GetSegmentOrThrow(segmentId);
 
+            // TODO: Consider using AutoMapper here
             var courseLearningActivity = new CourseLearningActivity()
             {
                 Id = learningActivityId,
@@ -408,14 +412,14 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 ActiveDate = request.ActiveDate,
                 InactiveDate = request.InactiveDate,
                 DueDate = request.DueDate,
+                AssessmentId = request.AssessmentId,
+                AssessmentType = string.IsNullOrEmpty(request.AssessmentType) ? AssessmentType.Custom : (AssessmentType) Enum.Parse(typeof(AssessmentType), request.AssessmentType),
                 ActiveFlag = true
             };
 
-            if (courseLearningActivity != null)
-            {
-                segment.CourseLearningActivities.Add(courseLearningActivity);
-            }
-
+            
+            segment.CourseLearningActivities.Add(courseLearningActivity);
+            
             return courseLearningActivity;
         }
 
@@ -425,6 +429,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             var learningActivity = GetCourseLearningActivityOrThrow(segmentId, learningActivityId);
 
+            // TODO: Consider using AutoMapper here
             learningActivity.Name = request.Name;
             learningActivity.Type = request.Type;
             learningActivity.IsExtraCredit = request.IsExtraCredit;
@@ -436,6 +441,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             learningActivity.ActiveDate = request.ActiveDate;
             learningActivity.InactiveDate = request.InactiveDate;
             learningActivity.DueDate = request.DueDate;
+            learningActivity.AssessmentId = request.AssessmentId;
+            learningActivity.AssessmentType = string.IsNullOrEmpty(request.AssessmentType) ? AssessmentType.Custom : 
+                (AssessmentType) Enum.Parse(typeof (AssessmentType), request.AssessmentType);
 
             return learningActivity;
         }
@@ -496,5 +504,38 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var segment = GetSegmentOrThrow(segmentId);
             segment.DeleteLearningMaterial(learningActivityId, learningMaterialId);
         }
+
+        public override void Publish(string publishNote)
+        {
+            //publish external resources
+                base.Publish(publishNote);
+
+         }
+
+        public virtual bool Validate(IValidator<Course> validator, out IEnumerable<string> brokenRules)
+        {
+            var isValid = validator.IsValid(this);
+            brokenRules = validator.BrokenRules(this);
+            return isValid;
+        }
     }
+
+    //public class CoursePublisher
+    //{
+    //    public void PublishAssessmentsAndAssets(Course course)
+    //    {
+    //        List<AssessmentInfo> assessmentInfos;
+    //        List<AssetInfo> assets;
+    //        foreach (var assetInfo in assets)
+    //        {
+    //                //call publish
+    //        }
+    //        foreach (var assessmentInfo in assessmentInfos)
+    //        {
+    //            //call publish
+    //        }
+    //        List<string> erros;
+
+    //    }
+    //}
 }

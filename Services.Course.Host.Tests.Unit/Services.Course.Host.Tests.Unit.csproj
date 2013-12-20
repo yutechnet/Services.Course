@@ -79,6 +79,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.22\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
+    <Reference Include="BpeProducts.Services.Asset.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.112\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="BpeProducts.Services.Authorization.Contract">
       <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.408\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
     </Reference>
@@ -137,7 +141,7 @@
     </Reference>
     <Reference Include="Services.Assessment.Contract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.127\lib\net40\Services.Assessment.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.153\lib\net40\Services.Assessment.Contract.dll</HintPath>
     </Reference>
     <Reference Include="Services.Section.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -233,8 +237,10 @@
   <ItemGroup>
     <Compile Include="CourseFactoryTests.cs" />
     <Compile Include="CourseServiceTests.cs" />
+    <Compile Include="Entities\CourseLearningActivityServiceTests.cs" />
     <Compile Include="Entities\CourseLearningActivityTests.cs" />
     <Compile Include="Entities\CourseTests.cs" />
+    <Compile Include="Entities\LearningActivityAssessmentTests.cs" />
     <Compile Include="Handlers\FakeDomainEvent.cs" />
     <Compile Include="Handlers\CourseUpdatedHandlerTests.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCoursePrerequisiteTests.cs" />
@@ -252,6 +258,7 @@
     <Compile Include="Outcome\UpdateModelOnOutcomeVersionCreationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CourseRubricServiceTests.cs" />
+    <Compile Include="Validation\CoursePublishValidatorTests.cs" />
     <Compile Include="VersionableEntityFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>

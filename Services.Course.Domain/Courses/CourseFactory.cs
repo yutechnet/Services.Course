@@ -14,14 +14,14 @@ namespace BpeProducts.Services.Course.Domain.Courses
 	{
 		private readonly IRepository _courseRepository;
 
-		public CourseFactory(IRepository courseRepository)
+	    public CourseFactory(IRepository courseRepository)
 			: base(courseRepository)
 		{
-			_courseRepository = courseRepository;
+		    _courseRepository = courseRepository;
 		}
 
-	
-		public Course Create(SaveCourseRequest request)
+
+	    public Course Create(SaveCourseRequest request)
 		{
 			Course course = null;
 			if (request.TemplateCourseId.HasValue)

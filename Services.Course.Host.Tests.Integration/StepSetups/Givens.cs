@@ -8,10 +8,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment;
+using Services.Assessment.Contract;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using BpeProducts.Common.WebApiTest.Framework;
 using Moq;
+using OutcomeRequest = BpeProducts.Services.Course.Contract.OutcomeRequest;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 {
@@ -129,12 +132,31 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Given(@"I add the following course learning activities to '(.*)' course segment")]
         public void GivenIAddTheFollowingCourseLearningActivitiesToCourseSegment(string segmentName, Table table)
         {
-            var learningActivityRequests = table.CreateSet<SaveCourseLearningActivityRequest>();
             var segment = Resources<CourseSegmentResource>.Get(segmentName);
 
-            foreach (var request in learningActivityRequests)
+            foreach (var row in table.Rows)
             {
-                var result = PostOperations.CreateCourseLearningActivity(request.Name, segment, request);
+                var learningActivityRequest = new SaveCourseLearningActivityRequest
+                    {
+                        Name = row["Name"],
+                        Type = (CourseLearningActivityType) Enum.Parse(typeof (CourseLearningActivityType), row["Type"]),
+                        IsGradeable = Convert.ToBoolean(row["IsGradeable"]),
+                        Weight = Convert.ToInt32(row["Weight"]),
+                        MaxPoint = Convert.ToInt32(row["MaxPoint"]),
+                        IsExtraCredit = Convert.ToBoolean(row["IsExtraCredit"])
+                    };
+
+                if (table.ContainsColumn("ObjectId"))
+                {
+                    learningActivityRequest.ObjectId = Guid.Parse(row["ObjectId"]);
+                }
+                if (table.ContainsColumn("Assessment"))
+                {
+                    var assessmentResource = Resources<AssessmentResource>.Get(row["Assessment"]);
+                    learningActivityRequest.AssessmentId = assessmentResource.Id;
+                }
+
+                var result = PostOperations.CreateCourseLearningActivity(learningActivityRequest.Name, segment, learningActivityRequest);
                 result.EnsureSuccessStatusCode();
             }
         }
