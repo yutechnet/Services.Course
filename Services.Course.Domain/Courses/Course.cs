@@ -544,5 +544,38 @@ namespace BpeProducts.Services.Course.Domain.Courses
             brokenRules = validator.BrokenRules(this);
             return isValid;
         }
+
+        public override void Publish(string publishNote)
+        {
+            //publish external resources
+                base.Publish(publishNote);
+
+         }
+
+        public virtual bool Validate(IValidator<Course> validator, out IEnumerable<string> brokenRules)
+        {
+            var isValid = validator.IsValid(this);
+            brokenRules = validator.BrokenRules(this);
+            return isValid;
+        }
     }
+
+    //public class CoursePublisher
+    //{
+    //    public void PublishAssessmentsAndAssets(Course course)
+    //    {
+    //        List<AssessmentInfo> assessmentInfos;
+    //        List<AssetInfo> assets;
+    //        foreach (var assetInfo in assets)
+    //        {
+    //                //call publish
+    //        }
+    //        foreach (var assessmentInfo in assessmentInfos)
+    //        {
+    //            //call publish
+    //        }
+    //        List<string> erros;
+
+    //    }
+    //}
 }

@@ -29,6 +29,7 @@ namespace BpeProducts.Services.Course.Domain.Handlers
             
             if (entity == null) return;
             
+            
             entity.Publish(e.PublishNote);
             _repository.Save(entity);
         }
