@@ -1,4 +1,5 @@
 ﻿using BpeProducts.Common.WebApiTest.Extensions;
+using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
@@ -551,26 +552,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<CreateSectionRequest>())).Returns(response);
         }
 
-        [When(@"I add the following assets as learning material to '(.*)' learning activity")]
-        public void WhenIAddTheFollowingAssetsAsLearningMaterialToLearningActivity(string learningActivityName, Table table)
-        {
-            var learningActivity = Resources<CourseLearningActivityResource>.Get(learningActivityName);
-
-            foreach (var row in table.Rows)
-            {
-                var description = row["Description"];
-                var asset = Resources<AssetResource>.Get(description);
-
-                var request = new LearningMaterialRequest
-                    {
-                        AssetId = asset.Id,
-                      //  Description = description
-                    };
-
-                PostOperations.AddLearningMaterial(description, learningActivity, request);
-            }
-        }
-
         [When(@"I have the following rubrics")]
         public void WhenIHaveTheFollowingRubrics(Table table)
         {
@@ -589,14 +570,143 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [When(@"I delete the following learning meterial")]
-        public void WhenIDeleteTheFollowingLearningMeterial(Table table)
+        [When(@"Create learning material as the following info")]
+        public void WhenCreateLearningMaterialAsTheFollowingInfo(Table table)
         {
             foreach (var row in table.Rows)
             {
-                var description = row["Description"];
-                var resourse = Resources<LearningMaterialResource>.Get(description);
-                DeleteOperations.DeleteResource(resourse);
+                var segmentName = row["CourseSegment"];
+                var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
+                var assetName = row["Asset"];
+                var asset = Resources<AssetResource>.Get(assetName);
+                var learningMaterial = row["LearningMaterial"];
+                var request = new LearningMaterialRequest
+                {
+                    AssetId = asset.Id,
+                    Instruction = row["Instruction"],
+                    IsRequired = bool.Parse(row["IsRequired"])
+                };
+
+                PostOperations.CreateCourseLearningMaterial(learningMaterial, courseSegment, request);
+            }
+        }
+
+        [When(@"Update '(.*)' learning material as the following info")]
+        public void WhenUpdateLearningMaterialAsTheFollowingInfo(string materialName, Table table)
+        {
+            var learningMaterialResource = Resources<LearningMaterialResource>.Get(materialName);
+            foreach (var row in table.Rows)
+            {
+                var assetName = row["Asset"];
+                var asset = Resources<AssetResource>.Get(assetName);
+                var request = new UpdateLearningMaterialRequest
+                {
+                    AssetId = asset.Id,
+                    Instruction = row["Instruction"],
+                    IsRequired = bool.Parse(row["IsRequired"])
+
+                };
+
+                PutOperations.UpdateLearningMaterial(learningMaterialResource, request);
+            }
+        }
+
+        [When(@"I remove '(.*)' learning material")]
+        public void WhenIRemoveLearningMaterial(string materialName)
+        {
+            var resource = Resources<LearningMaterialResource>.Get(materialName);
+            DeleteOperations.DeleteResource(resource);
+        }
+
+        [When(@"I retrieve the learning material '(.*)'")]
+        public void WhenIRetrieveTheLearningMaterial(string materialName)
+        {
+            var resource = Resources<LearningMaterialResource>.Get(materialName);
+            GetOperations.GetCourseLearningMaterial(resource);
+        }
+
+        [When(@"Create section as following")]
+        public void WhenCreateSectionAsFollowing(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var course = Resources<CourseResource>.Get(row["CourseName"]);
+                var uri = new Uri("http://mockedlocation/");
+
+                var request = new CourseSectionRequest
+                {
+                    SectionServiceUri = uri,
+                    Name = row["Name"],
+                    Code = row["Code"],
+                    StartDate = row.GetValue("StartDate", DateTime.MinValue),
+                    EndDate = row.GetValue<DateTime?>("EndDate", null),
+                    OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id
+                };
+
+                PostOperations.CreateSection(request.Name, course, request);
+            }
+        }
+
+        [When(@"Create a course from the template '(.*)' with the following")]
+        public void WhenCreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
+        {
+            var template = Resources<CourseResource>.Get(templateName);
+            foreach (var row in table.Rows)
+            {
+                string type;
+                string isTemplate;
+
+                var saveCourseRequest = new SaveCourseRequest
+                {
+                    Code = row["Code"],
+                    Description = row["Description"],
+                    Name = row["Name"],
+                    OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id,
+                    PrerequisiteCourseIds = new List<Guid>(),
+                    CourseType = row.TryGetValue("CourseType", out type) ? (ECourseType)Enum.Parse(typeof(ECourseType), type) : ECourseType.Traditional,
+                    IsTemplate = row.TryGetValue("IsTemplate", out isTemplate) && bool.Parse(isTemplate),
+                    Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0"))
+                };
+                saveCourseRequest.TemplateCourseId = template.Id;
+                var result = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
+                result.EnsureSuccessStatusCode();
+            }
+        }
+
+        [When(@"Publish the following courses")]
+        public void WhenPublishTheFollowingCourses(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var course = Resources<CourseResource>.Get(row["CourseName"]);
+
+                var request = new Contract.PublishRequest
+                {
+                    PublishNote = row["Note"]
+                };
+
+                PutOperations.PublishCourse(course, request);
+            }
+        }
+
+        [When(@"Publish the following courses with '(.*)' asset does not publish")]
+        public void WhenPublishTheFollowingCoursesWithAssetDoesNotPublishing(string assetName, Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var course = Resources<CourseResource>.Get(row["CourseName"]);
+                var asset = Resources<AssetResource>.Get(assetName);
+                var request = new Contract.PublishRequest
+                {
+                    PublishNote = row["Note"]
+                };
+                ApiFeature.MockAssetClient.Setup(x => x.PublishAsset(asset.Id, row["Note"]));
+                ApiFeature.MockAssetClient.Setup(x => x.GetAsset(asset.Id)).Returns(new AssetInfo
+                {
+                    Id = asset.Id,
+                    IsPublished = true
+                });
+                PutOperations.PublishCourse(course, request);
             }
         }
     }

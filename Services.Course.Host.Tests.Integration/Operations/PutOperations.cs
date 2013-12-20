@@ -153,5 +153,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var requestUri = string.Format("{0}/segments", course.ResourceUri);
             return ApiFeature.CourseTestHost.Put(requestUri, request);
         }
+
+        public static HttpResponseMessage UpdateLearningMaterial(LearningMaterialResource learningMaterial, UpdateLearningMaterialRequest request)
+        {
+            var requestUri = learningMaterial.ResourceUri.ToString();
+            return ApiFeature.CourseTestHost.Put(requestUri, request);
+        }
     }
 }

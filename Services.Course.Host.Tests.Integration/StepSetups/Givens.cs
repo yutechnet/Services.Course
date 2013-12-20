@@ -225,5 +225,59 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var result = PostOperations.CreateCourse(courseRequest.Name, courseRequest);
             return result;
         }
+
+        [Given(@"Create learning material as the following info")]
+        public void GivenCreateLearningMaterialAsTheFollowingInfo(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var segmentName = row["CourseSegment"];
+                var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
+                var assetName = row["Asset"];
+                var asset = Resources<AssetResource>.Get(assetName);
+                var learningMaterial = row["LearningMaterial"];
+                var request = new LearningMaterialRequest
+                {
+                    AssetId = asset.Id,
+                    Instruction = row["Instruction"],
+                    IsRequired = bool.Parse(row["IsRequired"])
+                };
+
+                PostOperations.CreateCourseLearningMaterial(learningMaterial, courseSegment, request);
+            }
+        }
+
+        [Given(@"Published the following assets")]
+        public void GivenPublishedTheFollowingAssets(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var name = row["Name"];
+                var publishNote = row["PublishNote"];
+                var asset = Resources<AssetResource>.Get(name);
+                ApiFeature.MockAssetClient.Setup(x => x.PublishAsset(asset.Id, publishNote));
+                ApiFeature.MockAssetClient.Setup(x => x.GetAsset(asset.Id)).Returns(new AssetInfo
+                {
+                    Id = asset.Id,
+                    IsPublished = true
+                });
+            }
+        }
+
+        [Given(@"Publish the following courses")]
+        public void GivenPublishTheFollowingCourses(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var course = Resources<CourseResource>.Get(row["CourseName"]);
+
+                var request = new Contract.PublishRequest
+                {
+                    PublishNote = row["Note"]
+                };
+
+                PutOperations.PublishCourse(course, request);
+            }
+        }
     }
 }

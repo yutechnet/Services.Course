@@ -460,20 +460,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [Then(@"'(.*)' learning activity has the following learning material")]
-        public void ThenLearningActivityHasTheFollowingLearningMaterial(string learningActivityName, Table table)
-        {
-            var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
-            var actual = GetOperations.GetCourseLearningActivity(resource);
-
-            //Assert.That(actual.LearningMaterials.Count, Is.EqualTo(table.Rows.Count));
-            //foreach (var row in table.Rows)
-            //{
-            //    var description = row["Description"];
-            //    Assert.That(actual.LearningMaterials.Any(x => x.Description == description));
-            //}
-        }
-
         [Then(@"the learning activity '(.*)' should have the following rubrics")]
         public void ThenTheLearningActivityShouldHaveTheFollowingRubrics(string learningActivityName, Table table)
         {
@@ -513,6 +499,70 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var courseResource = Resources<CourseResource>.Get(row["Name"]);
                 Assert.That(courses.Count(c => c.Id == courseResource.Id), Is.EqualTo(0));
             }
+        }
+
+        [Then(@"The '(.*)' learning material has the following info")]
+        public void ThenTheLearningMaterialHasTheFollowingInfo(string materialName, Table table)
+        {
+            var materialResource = Resources<LearningMaterialResource>.Get(materialName);
+            var response = GetOperations.GetCourseLearningMaterial(materialResource);
+            foreach (var row in table.Rows)
+            {
+                var segmentName = row["CourseSegment"];
+                var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
+                var assetName = row["Asset"];
+                var asset = Resources<AssetResource>.Get(assetName);
+                Assert.That(response.AssetId, Is.EqualTo(asset.Id));
+                Assert.That(response.CourseSegmentId, Is.EqualTo(courseSegment.Id));
+                Assert.That(response.Instruction, Is.EqualTo(row["Instruction"]));
+                Assert.That(response.IsRequired, Is.EqualTo(bool.Parse(row["IsRequired"])));
+            }
+        }
+
+        [Then(@"The following learning materials have the following info")]
+        public void ThenTheFollowingLearningMaterialsHaveTheFollowingInfo(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var materialName = row["LearningMaterial"];
+                var materialResource = Resources<LearningMaterialResource>.Get(materialName);
+                var response = GetOperations.GetCourseLearningMaterial(materialResource);
+                var segmentName = row["CourseSegment"];
+                var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
+                var assetName = row["Asset"];
+                var asset = Resources<AssetResource>.Get(assetName);
+                Assert.That(response.AssetId, Is.EqualTo(asset.Id));
+                Assert.That(response.CourseSegmentId, Is.EqualTo(courseSegment.Id));
+                Assert.That(response.Instruction, Is.EqualTo(row["Instruction"]));
+                Assert.That(response.IsRequired, Is.EqualTo(bool.Parse(row["IsRequired"])));
+            }
+        }
+
+        [Then(@"The course '(.*)' has following learning material")]
+        public void ThenTheCourseHasFollowingLearningMaterial(string courseName, Table table)
+        {
+            var courseResource = Resources<CourseResource>.Get(courseName);
+            var response = GetOperations.GetCourse(courseResource);
+            foreach (var row in table.Rows)
+            {
+                var segmentName = row["CourseSegment"];
+                var assetName = row["Asset"];
+                var asset = Resources<AssetResource>.Get(assetName);
+                var segmentResponse = response.Segments.First(p => p.Name == segmentName);
+                Assert.That(segmentResponse.LearningMaterials.Count, Is.EqualTo(1));
+                Assert.That(segmentResponse.LearningMaterials[0].AssetId, Is.EqualTo(asset.Id));
+                Assert.That(segmentResponse.LearningMaterials[0].CourseSegmentId, Is.EqualTo(segmentResponse.Id));
+                Assert.That(segmentResponse.LearningMaterials[0].Instruction, Is.EqualTo(row["Instruction"]));
+                Assert.That(segmentResponse.LearningMaterials[0].IsRequired, Is.EqualTo(bool.Parse(row["IsRequired"])));
+            }
+        }
+
+        [Then(@"The asset '(.*)' is published")]
+        public void ThenTheAssetIsPublished(string assetName)
+        {
+            var asset = Resources<AssetResource>.Get(assetName);
+            var response = ApiFeature.MockAssetClient.Object.GetAsset(asset.Id);
+            Assert.That(response.IsPublished, Is.EqualTo(true));
         }
 
     }

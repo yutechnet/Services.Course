@@ -64,5 +64,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var uri = string.Format("{0}/course/published?organizationId={1}", ApiFeature.LeadingPath, orgResource.Id);
             return ApiFeature.CourseTestHost.Get<IEnumerable<CourseInfoResponse>>(uri);
         }
+
+        public static LearningMaterialInfo GetCourseLearningMaterial(IResource resource)
+        {
+            return ApiFeature.CourseTestHost.Get<LearningMaterialInfo>(resource.ResourceUri.ToString());
+        }
     }
 }
