@@ -7,6 +7,7 @@ using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Repositories;
+using BpeProducts.Services.Course.Domain.Validation;
 using Moq;
 using NUnit.Framework;
 
@@ -22,7 +23,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         public void SetUp()
         {
             _mcokRepository = new Mock<IRepository>();
-            _updateModelOnCourseVersionPublish = new UpdateModelOnCourseVersionPublish(_mcokRepository.Object);
+            _updateModelOnCourseVersionPublish = new UpdateModelOnCourseVersionPublish(_mcokRepository.Object,new CoursePublishValidator(new LearningActivityPublishValidator()));
         }
 
         [Test]

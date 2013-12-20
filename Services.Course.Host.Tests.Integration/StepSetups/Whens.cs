@@ -1,9 +1,11 @@
-﻿using BpeProducts.Common.WebApiTest.Extensions;
+﻿using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment;
 using Moq;
 using NHibernate.Linq;
 using NUnit.Framework;
@@ -250,8 +252,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIAddTheFollowingLearningActivityToCourseSegment(string segmentName, Table table)
         {
             var segment = Resources<CourseSegmentResource>.Get(segmentName);
-
+            
             var request = table.CreateInstance<SaveCourseLearningActivityRequest>();
+            var assessmentRow=table.Rows.SingleOrDefault(r => r["Field"] == "Assessment");
+            if (assessmentRow != null)
+            {
+                var assessment = Resources<AssessmentResource>.Get(assessmentRow["Value"]);
+                request.AssessmentId = assessment.Id;
+            }
             PostOperations.CreateCourseLearningActivity(request.Name, segment, request);
         }
 
@@ -275,6 +283,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var resourse = Resources<CourseLearningActivityResource>.Get(activityName);
             
             var learningActivity = table.CreateInstance<SaveCourseLearningActivityRequest>();
+            var assessmentRow = table.Rows.SingleOrDefault(r => r["Field"] == "Assessment");
+            if (assessmentRow != null)
+            {
+                if (assessmentRow["Value"] == "Non-Existing")
+                {
+                    learningActivity.AssessmentId = Guid.NewGuid();
+                    ApiFeature.MockAssessmentClient.Setup(a => a.GetAssessment(learningActivity.AssessmentId))
+                              .Throws(new NotFoundException("assessment not found"));
+                }
+                else
+                {
+                    var assessment = Resources<AssessmentResource>.Get(assessmentRow["Value"]);
+                    learningActivity.AssessmentId = assessment.Id;
+                }
+            }
 
             PutOperations.UpdateCourseLearningActivity(resourse, learningActivity);
         }

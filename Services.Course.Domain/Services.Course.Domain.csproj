@@ -131,7 +131,7 @@
     </Reference>
     <Reference Include="Services.Assessment.Contract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.149\lib\net40\Services.Assessment.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.153\lib\net40\Services.Assessment.Contract.dll</HintPath>
     </Reference>
     <Reference Include="Services.Section.Contracts">
       <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.253\lib\net40\Services.Section.Contracts.dll</HintPath>
@@ -275,6 +275,11 @@
     <Compile Include="Courses\ICourseRepository.cs" />
     <Compile Include="Repositories\ILearningOutcomeRepository.cs" />
     <Compile Include="Repositories\LearningOutcomeRepository.cs" />
+    <Compile Include="Validation\CoursePublishValidator.cs" />
+    <Compile Include="Validation\IValidatable.cs" />
+    <Compile Include="Validation\IValidator.cs" />
+    <Compile Include="Validation\LearningActivityPublishValidator.cs" />
+    <Compile Include="Validation\Validator.cs" />
     <Compile Include="VersionableEntityFactory.cs" />
     <Compile Include="VersionFactory.cs" />
     <Compile Include="VersionHandler.cs" />

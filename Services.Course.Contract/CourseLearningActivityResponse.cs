@@ -32,5 +32,8 @@ namespace BpeProducts.Services.Course.Contract
         public int? DueDate { get; set; }
 
 		public List<CourseRubricInfo> CourseRubrics { get; set; }
+
+        public Guid AssessmentId { get; set; }
+        public string AssessmentType { get; set; }
     }
 }

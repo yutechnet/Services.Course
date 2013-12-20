@@ -21,5 +21,7 @@ namespace BpeProducts.Services.Course.Contract
         public int? ActiveDate { get; set; }
         public int? InactiveDate { get; set; }
         public IList<SaveCourseSegmentRequest> ChildrenSegments { get; set; }
+
+	   
 	}
 }

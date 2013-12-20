@@ -6,10 +6,12 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Validation;
+using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-    public class CourseLearningActivity : TenantEntity
+    public class CourseLearningActivity : TenantEntity,IValidatable<CourseLearningActivity>
     {
         private IList<CourseRubric> _courseRubrics = new List<CourseRubric>();
 
@@ -70,6 +72,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             set { _courseRubrics = value; }
         }
       
+        public virtual Guid AssessmentId { get; set; }
+        public virtual AssessmentType AssessmentType { get; set; }
+
         public virtual CourseRubric AddCourseRubric(CourseRubricRequest request)
         {
             var courseRubric = new CourseRubric { Id = Guid.NewGuid(), RubricId = request.RubricId, TenantId = TenantId };
@@ -107,5 +112,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			courseRubric.ActiveFlag = false;
         }
 
+        }
+
+        public bool Validate(IValidator<CourseLearningActivity> validator, out IEnumerable<string> brokenRules)
+        {
+            brokenRules = validator.BrokenRules(this);
+            return validator.IsValid(this);
     }
 }

@@ -7,18 +7,19 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
+using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain
 {
     public class CourseLearningActivityService : ICourseLearningActivityService
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly IDomainEvents _domainEvents;
+        private readonly IAssessmentClient _assessmentClient;
 
-        public CourseLearningActivityService(ICourseRepository courseRepository, IDomainEvents domainEvents)
+        public CourseLearningActivityService(ICourseRepository courseRepository, IAssessmentClient assessmentClient)
         {
             _courseRepository = courseRepository;
-            _domainEvents = domainEvents;
+            _assessmentClient = assessmentClient;
         }
 
         public CourseLearningActivityResponse Get(Guid courseId, Guid segmentId, Guid learningActivityId)
@@ -41,53 +42,44 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Update(Guid courseId, Guid segmentId, Guid learningActivityId, SaveCourseLearningActivityRequest request)
         {
+            var course = _courseRepository.Get(courseId);
 
-            _domainEvents.Raise<CourseLearningActivityUpdated>(new CourseLearningActivityUpdated
-                {
-                    AggregateId = courseId, 
-                    SegmentId = segmentId,
-                    LearningActivityId = learningActivityId,
-                    Request = request
-                });
+            if (request.AssessmentId != Guid.Empty)
+            {
+               var assessmentResponse = _assessmentClient.GetAssessment(request.AssessmentId);
+               request.AssessmentType = assessmentResponse.AssessmentType.ToString();
+            }
+
+            course.UpdateLearningActivity(segmentId, learningActivityId, request);
+            _courseRepository.Save(course);
         }
 
         public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId)
         {
-            _domainEvents.Raise<CourseLearningActivityDeleted>(new CourseLearningActivityDeleted
-            {
-                AggregateId = courseId,
-                SegmentId = segmentId,
-                LearningActivityId = learningActivityId
-            });
+            var course = _courseRepository.Get(courseId);
+            course.DeleteLearningActivity(segmentId, learningActivityId);
+            _courseRepository.Save(course);
         }
 
         public CourseLearningActivityResponse Create(Guid courseId, Guid segmentId, SaveCourseLearningActivityRequest request)
         {
-            var learningActivityId = Guid.NewGuid();
+            var course = _courseRepository.Get(courseId);
 
-            _domainEvents.Raise<CourseLearningActivityAdded>(new CourseLearningActivityAdded
+            if (request.AssessmentId != Guid.Empty)
+            {
+                var assessmentResponse = _assessmentClient.GetAssessment(request.AssessmentId);
+                if (assessmentResponse != null)
                 {
-                    AggregateId = courseId,
-                    LearningActivityId = learningActivityId,
-                    Request = request,
-                    SegmentId = segmentId
-                });
+                    // TODO: What if the assessmentType from Assessment does not match with the assessmentType in the request?
+                    // Throw and exception or override?
+                    request.AssessmentType = assessmentResponse.AssessmentType.ToString();
+                }
+            }
 
-            var response = new CourseLearningActivityResponse
-                {
-                    Id = learningActivityId,
-                    Name = request.Name,
-                    Type = request.Type,
-                    IsGradeable = request.IsGradeable,
-                    IsExtraCredit = request.IsExtraCredit,
-                    Weight = request.Weight,
-                    MaxPoint = request.MaxPoint,
-                    ObjectId = request.ObjectId,
-                    ActiveDate = request.ActiveDate,
-                    InactiveDate = request.InactiveDate,
-                    DueDate = request.DueDate
-                };
-            return response;
+            var learningActivity = course.AddLearningActivity(segmentId, request, Guid.NewGuid());
+            _courseRepository.Save(course);
+
+            return Mapper.Map<CourseLearningActivityResponse>(learningActivity);
         }
     }
 
