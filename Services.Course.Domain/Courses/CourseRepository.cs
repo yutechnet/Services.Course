@@ -28,23 +28,27 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             return course;
         }
 
-		public CourseSegment GetSegment(Guid courseId, Guid segmentId)
-		{
-			var segment = _repository.Query<CourseSegment>().Single(s => s.Course.Id == courseId && s.Id == segmentId);
-			return segment;
-		}
+        public CourseSegment GetSegment(Guid courseId, Guid segmentId)
+        {
+            var segment = _repository.Query<CourseSegment>().Single(s => s.Course.Id == courseId && s.Id == segmentId);
+            return segment;
+        }
 
         public LearningMaterial GetLearningMaterial(Guid learningMaterialId)
         {
-            var learningMaterial = _repository.Query<LearningMaterial>().Single(c => c.Id == learningMaterialId);
+            var learningMaterial = _repository.Get<LearningMaterial>(learningMaterialId);
+            if (learningMaterial == null || !learningMaterial.ActiveFlag)
+            {
+                throw new NotFoundException(string.Format("LearningMaterial {0} not found.", learningMaterialId));
+            }
             return learningMaterial;
         }
 
-		public CourseRubric GetCourseRubric(Guid courseRubricId)
-		{
-			var courseRubric = _repository.Query<CourseRubric>().Single(c => c.Id == courseRubricId);
-			return courseRubric;
-		}
+        public CourseRubric GetCourseRubric(Guid courseRubricId)
+        {
+            var courseRubric = _repository.Query<CourseRubric>().Single(c => c.Id == courseRubricId);
+            return courseRubric;
+        }
 
         public IEnumerable<Courses.Course> GetPublishedCourses(Guid organizationId)
         {
@@ -68,7 +72,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 
             return courses;
         }
-        
+
         public Courses.Course GetOrThrow(Guid courseId)
         {
             var course = Get(courseId);
@@ -96,17 +100,17 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         {
             var version = (from c in _repository.Query<Courses.Course>()
                            where c.OriginalEntity.Id == originalEntityId && c.VersionNumber == versionNumber
-                         select c).FirstOrDefault();
+                           select c).FirstOrDefault();
 
             return version;
         }
 
         public IList<Courses.Course> ODataQuery(string queryString)
         {
-			
+
             var criteria = _repository.ODataQuery<Courses.Course>(queryString);
             criteria.Add(Restrictions.Eq("ActiveFlag", true));
-			
+
             var courses = criteria.List<Courses.Course>();
 
             return courses;

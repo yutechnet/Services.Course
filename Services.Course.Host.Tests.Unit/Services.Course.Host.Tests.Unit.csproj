@@ -140,9 +140,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.149\lib\net40\Services.Assessment.Contract.dll</HintPath>
     </Reference>
-    <Reference Include="Services.Section.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.248\lib\net40\Services.Section.Contracts.dll</HintPath>
+    <Reference Include="Services.Section.Contracts">
+      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.253\lib\net40\Services.Section.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.70.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

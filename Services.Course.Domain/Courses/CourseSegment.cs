@@ -159,15 +159,17 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual LearningMaterial AddLearningMaterial(LearningMaterialRequest learningMaterialRequest)
         {
-            var learningMaterial = new LearningMaterial { Id = Guid.NewGuid(), AssetId = learningMaterialRequest.AssetId, TenantId = TenantId, Instruction = learningMaterialRequest.Instruction };
-            //to do mapper
+            var learningMaterial = new LearningMaterial { Id = Guid.NewGuid(), AssetId = learningMaterialRequest.AssetId, TenantId = TenantId, IsRequired = learningMaterialRequest.IsRequired, Instruction = learningMaterialRequest.Instruction };
+            learningMaterial.CourseSegment = this;
             _learningMaterials.Add(learningMaterial);
             return learningMaterial;
         }
         public virtual void UpdateLearningMaterial(Guid learningMaterialId, UpdateLearningMaterialRequest updatelearningMaterialRequest)
         {
             var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
-            learningMaterial.ActiveFlag = false;
+            learningMaterial.AssetId = updatelearningMaterialRequest.AssetId;
+            learningMaterial.Instruction = updatelearningMaterialRequest.Instruction;
+            learningMaterial.IsRequired = updatelearningMaterialRequest.IsRequired;
         }
 
         public virtual void DeleteLearningMaterial(Guid learningMaterialId)
@@ -181,7 +183,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var learningMaterial = _learningMaterials.SingleOrDefault(l => l.Id == learningMaterialId);
 
             if (learningMaterial == null)
-                throw new NotFoundException(string.Format("Learning Material {0} for Course Learning Activity {1} is not found.", learningMaterialId, Id));
+                throw new NotFoundException(string.Format("Learning Material {0} for Course Learning Material {1} is not found.", learningMaterialId, Id));
 
             return learningMaterial;
         }

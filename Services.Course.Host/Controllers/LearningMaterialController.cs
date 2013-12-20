@@ -22,7 +22,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [ArgumentsNotNull]
         [ValidateModelState]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/learningmaterial")]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial")]
         public HttpResponseMessage Post(Guid courseId, Guid segmentId, LearningMaterialRequest request)
         {
             var learningMaterial = _learningMaterialService.AddLearningMaterial(courseId, segmentId, request);
@@ -37,8 +37,19 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return response;
         }
 
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/learningmaterial/{learningMaterialId:guid}", Name = "GetLearningMaterial")]
-        public LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid learningMaterialId)
+        [Transaction]
+        [ArgumentsNotNull]
+        [ValidateModelState]
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}")]
+        public void Put(Guid courseId, Guid segmentId, Guid learningMaterialId, UpdateLearningMaterialRequest request)
+        {
+            _learningMaterialService.UpdateLearningMaterial(courseId, segmentId, learningMaterialId, request);
+
+        }
+
+
+        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}", Name = "GetLearningMaterial")]
+        public LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningMaterialId)
         {
             return _learningMaterialService.Get(courseId, segmentId, learningMaterialId);
         }

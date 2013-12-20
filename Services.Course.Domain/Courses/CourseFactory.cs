@@ -62,7 +62,15 @@ namespace BpeProducts.Services.Course.Domain.Courses
 				courseSegment.Course = course;
 			}
 
-		
+            foreach (CourseSegment courseSegment in newSegments)
+            {
+                var newLearningMaterials = Mapper.Map<List<LearningMaterial>>(courseSegment.LearningMaterials);
+                foreach (LearningMaterial learningMaterial in newLearningMaterials)
+                {
+                    learningMaterial.Id = Guid.NewGuid();
+                    learningMaterial.CourseSegment = courseSegment;
+                }
+            }
 			course.Programs = new List<Program>(template.Programs);
 
 

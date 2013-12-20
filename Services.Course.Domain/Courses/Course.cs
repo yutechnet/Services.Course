@@ -310,7 +310,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 Type = courseSegment.Type,
                 CourseSegmentId = courseSegment.Id,
                 ChildSegments = BuildSectionSegments(courseSegment.ChildSegments),
-                LearningActivities = BuildLearningActivities(courseSegment.CourseLearningActivities)
+                LearningActivities = BuildLearningActivities(courseSegment.CourseLearningActivities),
+                LearningMaterials = BuildLearningMaterials(courseSegment.LearningMaterials)
             }).ToList();
 
             return sectionSegments;
@@ -331,6 +332,18 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 Weight = courseLearningActivity.Weight,
                 ObjectId = courseLearningActivity.ObjectId,
                 CustomAttribute = courseLearningActivity.CustomAttribute
+            }).ToList();
+
+            return sectionLearningActivities;
+        }
+
+        private IList<SectionLearningMaterialRequest> BuildLearningMaterials(IEnumerable<LearningMaterial> courseLearningMaterials)
+        {
+            var sectionLearningActivities = courseLearningMaterials.Select(courseLearningMaterial => new SectionLearningMaterialRequest
+            {
+                Instruction = courseLearningMaterial.Instruction,
+                AssetId = courseLearningMaterial.AssetId,
+                IsRequired = courseLearningMaterial.IsRequired
             }).ToList();
 
             return sectionLearningActivities;
@@ -489,7 +502,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             segment.DeleteCourseRubric(learningActivityId, rubricId);
         }
 
-        public virtual void DeleteLearningMaterial(Guid segmentId,Guid learningMaterialId)
+        public virtual void DeleteLearningMaterial(Guid segmentId, Guid learningMaterialId)
         {
             CheckPublished();
 
@@ -502,7 +515,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             CheckPublished();
 
             var segment = GetSegmentOrThrow(segmentId);
-            segment.UpdateLearningMaterial(learningMaterialId,updatelearningMaterialRequest);
+            segment.UpdateLearningMaterial(learningMaterialId, updatelearningMaterialRequest);
         }
     }
 }
