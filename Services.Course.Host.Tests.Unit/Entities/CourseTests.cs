@@ -716,6 +716,30 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             Assert.Throws<NotFoundException>(() => course.AddLearningMaterial(Guid.NewGuid(), la2Id, libId, description));
         }
+
+        [Test]
+        public void Cannot_publish_course_when_invalid()
+        {
+            var course = new Domain.Courses.Course
+            {
+                TenantId = 999999,
+                OrganizationId = Guid.NewGuid(),
+            };
+
+            var seg1Id = Guid.NewGuid();
+            var seg2Id = Guid.NewGuid();
+            var la1Id = Guid.NewGuid();
+            var la2Id = Guid.NewGuid();
+
+            course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
+            course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
+            // Next two are "invalid" from publishing perspective
+            // because they are non-Custom type and do not have AssessmentIds.
+            course.AddLearningActivity(seg1Id, new SaveCourseLearningActivityRequest { Name = "LA1", AssessmentType = "Essay" }, la1Id);
+            course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2", AssessmentType = "Essay" }, la2Id);
+
+            Assert.Throws<BadRequestException>(() => course.Publish("should not publish"));
+        }
         
         static readonly Random Random = new Random();
         static T RandomEnumValue<T>()

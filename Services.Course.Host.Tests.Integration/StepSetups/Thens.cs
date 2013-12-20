@@ -139,6 +139,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             var courseLearningActivity = GetOperations.GetCourseLearningActivity(resource);
 
+            var assessmentRow = table.Rows.FirstOrDefault(r => r["Field"] == "Assessment");
+            if (assessmentRow != null)
+            {
+                var assessmentResource = Resources<AssessmentResource>.Get(assessmentRow["Value"]);
+                assessmentRow["Field"] = "AssessmentId";
+                assessmentRow["Value"] = assessmentResource.Id.ToString();
+            }
+
             table.CompareToInstance(courseLearningActivity);
         }
 

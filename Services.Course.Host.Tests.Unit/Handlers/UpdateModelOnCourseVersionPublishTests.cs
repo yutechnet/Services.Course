@@ -23,7 +23,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         public void SetUp()
         {
             _mcokRepository = new Mock<IRepository>();
-            _updateModelOnCourseVersionPublish = new UpdateModelOnCourseVersionPublish(_mcokRepository.Object,new CoursePublishValidator(new LearningActivityPublishValidator()));
+            _updateModelOnCourseVersionPublish = new UpdateModelOnCourseVersionPublish(_mcokRepository.Object);
         }
 
         [Test]
