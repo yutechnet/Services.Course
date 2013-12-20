@@ -11,12 +11,10 @@ namespace BpeProducts.Services.Course.Domain.Handlers
     public class UpdateModelOnCourseVersionPublish : IHandle<VersionPublished>
     {
         private readonly IRepository _repository;
-        private readonly IValidator<Courses.Course> _courseValidator;
 
-        public UpdateModelOnCourseVersionPublish(IRepository repository, Validation.IValidator<Courses.Course> courseValidator)
+        public UpdateModelOnCourseVersionPublish(IRepository repository)
         {
             _repository = repository;
-            _courseValidator = courseValidator;
         }
 
         public void Handle(IDomainEvent domainEvent)
@@ -27,14 +25,10 @@ namespace BpeProducts.Services.Course.Domain.Handlers
                 throw new InvalidOperationException("Invalid domain event.");
             }
 
-            var entity = _repository.Get(e.EntityType, e.AggregateId) as Course.Domain.Courses.Course;
+            var entity = _repository.Get(e.EntityType, e.AggregateId) as VersionableEntity;
             
             if (entity == null) return;
             
-            IEnumerable<string> brokenRules;
-
-            if (!entity.Validate(_courseValidator, out brokenRules)) return;
-
             entity.Publish(e.PublishNote);
             _repository.Save(entity);
         }

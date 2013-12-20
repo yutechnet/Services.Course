@@ -129,8 +129,8 @@ Scenario: Create a course version from a previously-published version with prere
 	| VersionNumber | 2.0a                          |
 	| IsPublished   | false                         |
 	And the course 'English 1010 v2' should have the following prerequisites
-	| Name     | 
-	| English 101011 | 
+	| Name           |
+	| English 101011 |
 
 Scenario: Create a course version from a previously-published version with segments
 	Given I have the following course segments for 'English 1010'
@@ -160,15 +160,18 @@ Scenario: Create a course version from a previously-published version with segme
 	| Topic       | Topic for a discussion         | Topic      | Discussion    |
 
 Scenario: Create a course version from a previously-published version with segments and learning activities
-	Given I have the following course segments for 'English 1010'
+	Given I have the following assessments
+	| Name        | Instructions | AssessmentType | IsPublished | VersionNumber |
+	| Assessment1 | Do this      | Essay          | true        | 1.1           |
+	And I have the following course segments for 'English 1010'
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
 	| Discussion  | Discussion for the first week  | Discussion | Week1         |
 	| Discussion2 | Discussion2 for the first week | Discussion | Week1         |
 	| Topic       | Topic for a discussion         | Topic      | Discussion    |
 	And I add the following course learning activities to 'Week1' course segment
-	| Name         | Type       | IsGradeable | IsExtraCredit | Weight | MaxPoint | ObjectId                             |
-	| Discussion 1 | Discussion | True        | true         | 100     | 20       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Name         | Type       | IsGradeable | IsExtraCredit | Weight | MaxPoint | ObjectId                             | Assessment  |
+	| Discussion 1 | Discussion | True        | true          | 100    | 20       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F | Assessment1 |
 	When I publish the following courses
 	| Name         | Note      |
 	| English 1010 | Blah blah |
@@ -189,14 +192,16 @@ Scenario: Create a course version from a previously-published version with segme
 	| Discussion2 | Discussion2 for the first week | Discussion | Week1         |
 	| Topic       | Topic for a discussion         | Topic      | Discussion    |
 	And my course learning activity 'Discussion 1' contains the following
-	| Field         | Value                                |
-	| Name          | Discussion 1                         |
-	| Type          | Discussion                           |
-	| IsGradeable   | true                                 |
-	| IsExtraCredit | true                                 |
-	| Weight        | 100                                  |
-	| MaxPoint      | 20                                   |
-	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Field          | Value                                |
+	| Name           | Discussion 1                         |
+	| Type           | Discussion                           |
+	| IsGradeable    | true                                 |
+	| IsExtraCredit  | true                                 |
+	| Weight         | 100                                  |
+	| MaxPoint       | 20                                   |
+	| ObjectId       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Assessment     | Assessment1                          |
+	| AssessmentType | Essay                                |
 
 Scenario: Cannot publish the same version twice
 	When I publish the following courses

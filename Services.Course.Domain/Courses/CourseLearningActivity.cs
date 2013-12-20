@@ -114,7 +114,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         }
 
-        public bool Validate(IValidator<CourseLearningActivity> validator, out IEnumerable<string> brokenRules)
+        public virtual bool Validate(IValidator<CourseLearningActivity> validator, out IEnumerable<string> brokenRules)
         {
             brokenRules = validator.BrokenRules(this);
             return validator.IsValid(this);
