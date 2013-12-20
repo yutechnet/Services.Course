@@ -17,13 +17,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     public class UpdateModelOnCourseVersionPublishTests
     {
         private Mock<IRepository> _mcokRepository;
-        private UpdateModelOnCourseVersionPublish _updateModelOnCourseVersionPublish;
+        private UpdateModelOnEntityVersionPublish _updateModelOnCourseVersionPublish;
 
         [SetUp]
         public void SetUp()
         {
             _mcokRepository = new Mock<IRepository>();
-            _updateModelOnCourseVersionPublish = new UpdateModelOnCourseVersionPublish(_mcokRepository.Object,new CoursePublishValidator(new LearningActivityPublishValidator()));
+            _updateModelOnCourseVersionPublish = new UpdateModelOnEntityVersionPublish(_mcokRepository.Object);
         }
 
         [Test]

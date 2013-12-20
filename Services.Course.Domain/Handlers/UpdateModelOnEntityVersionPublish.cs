@@ -8,11 +8,11 @@ using BpeProducts.Services.Course.Domain.Validation;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
 {
-    public class UpdateModelOnCourseVersionPublish : IHandle<VersionPublished>
+    public class UpdateModelOnEntityVersionPublish : IHandle<VersionPublished>
     {
         private readonly IRepository _repository;
 
-        public UpdateModelOnCourseVersionPublish(IRepository repository)
+        public UpdateModelOnEntityVersionPublish(IRepository repository)
         {
             _repository = repository;
         }

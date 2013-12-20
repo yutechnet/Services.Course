@@ -86,7 +86,7 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<UpdateModelOnCourseDeletion>().As<IHandle<CourseDeleted>>();
 			containerBuilder.RegisterType<UpdateModelOnCourseVersionCreation>().As<IHandle<VersionCreated>>();
 
-			containerBuilder.RegisterType<UpdateModelOnCourseVersionPublish>().As<IHandle<VersionPublished>>();
+			containerBuilder.RegisterType<UpdateModelOnEntityVersionPublish>().As<IHandle<VersionPublished>>();
 			containerBuilder.RegisterType<UpdateModelOnOutcomeCreation>().As<IHandle<OutcomeCreated>>();
 			containerBuilder.RegisterType<UpdateModelOnOutcomeUpdate>().As<IHandle<OutcomeUpdated>>();
 

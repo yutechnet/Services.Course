@@ -237,7 +237,7 @@
     <Compile Include="Events\VersionPublished.cs" />
     <Compile Include="Handlers\UpdateModelOnUpdatingCourseSegment.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionCreation.cs" />
-    <Compile Include="Handlers\UpdateModelOnCourseVersionPublish.cs" />
+    <Compile Include="Handlers\UpdateModelOnEntityVersionPublish.cs" />
     <Compile Include="Outcomes\OutcomeFactory.cs" />
     <Compile Include="Outcomes\OutcomeVersionCreated.cs" />
     <Compile Include="Outcomes\OutcomeVersionPublished.cs" />

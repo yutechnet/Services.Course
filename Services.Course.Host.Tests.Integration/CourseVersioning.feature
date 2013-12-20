@@ -226,5 +226,3 @@ Scenario: Search for published course
 	And published courses for orgniazation 'COB' does not contain the following courses
 	| Name           |
 	| English 101011 |
-
-	
