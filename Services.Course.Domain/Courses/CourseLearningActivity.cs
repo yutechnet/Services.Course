@@ -112,11 +112,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			courseRubric.ActiveFlag = false;
         }
 
-        }
-
         public virtual bool Validate(IValidator<CourseLearningActivity> validator, out IEnumerable<string> brokenRules)
         {
             brokenRules = validator.BrokenRules(this);
             return validator.IsValid(this);
+        }
     }
 }
