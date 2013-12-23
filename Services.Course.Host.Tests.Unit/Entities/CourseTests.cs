@@ -666,19 +666,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             var seg1Id = Guid.NewGuid();
             var seg2Id = Guid.NewGuid();
-            var la1Id = Guid.NewGuid();
-            var la2Id = Guid.NewGuid();
-            var la3Id = Guid.NewGuid();
-            var libId = Guid.NewGuid();
+            var assetId = Guid.NewGuid();
+            const bool isRequird = false;
             const string instruction = "learning material";
 
             course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
             course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
-            var la1 = course.AddLearningActivity(seg1Id, new SaveCourseLearningActivityRequest { Name = "LA1" }, la1Id);
-            var la2 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la2Id);
-            var la3 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la3Id);
 
-            var returnedMaterial = course.AddLearningMaterial(seg2Id,new LearningMaterialRequest{Instruction= instruction});
+            var returnedMaterial = course.AddLearningMaterial(seg2Id,new LearningMaterialRequest{Instruction= instruction,AssetId=assetId,IsRequired = isRequird});
 
             var internalMaterial = course.Segments.First(s => s.Id == seg2Id)
                       .LearningMaterials.Single();
@@ -687,6 +682,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             Assert.That(internalMaterial, Is.EqualTo(returnedMaterial));
             Assert.That(internalMaterial.Instruction, Is.EqualTo(instruction));
+            Assert.That(internalMaterial.AssetId, Is.EqualTo(assetId));
+            Assert.That(internalMaterial.IsRequired, Is.EqualTo(isRequird));
         }
 
         [Test]
@@ -700,19 +697,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             var seg1Id = Guid.NewGuid();
             var seg2Id = Guid.NewGuid();
-            var la1Id = Guid.NewGuid();
-            var la2Id = Guid.NewGuid();
-            var la3Id = Guid.NewGuid();
-            var libId = Guid.NewGuid();
+            var assetId = Guid.NewGuid();
+            const bool isRequird = false;
             const string instruction = "learning material";
 
             course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
             course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
-            var la1 = course.AddLearningActivity(seg1Id, new SaveCourseLearningActivityRequest { Name = "LA1" }, la1Id);
-            var la2 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la2Id);
-            var la3 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la3Id);
 
-            Assert.Throws<NotFoundException>(() => course.AddLearningMaterial(Guid.NewGuid(), new LearningMaterialRequest { Instruction = instruction }));
+            Assert.Throws<NotFoundException>(() => course.AddLearningMaterial(Guid.NewGuid(), new LearningMaterialRequest { Instruction = instruction,AssetId=assetId,IsRequired=isRequird }));
         }
 
         [Test]

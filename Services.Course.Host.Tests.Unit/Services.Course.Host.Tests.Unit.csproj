@@ -235,6 +235,7 @@
     <Compile Include="CourseServiceTests.cs" />
     <Compile Include="Entities\CourseLearningActivityServiceTests.cs" />
     <Compile Include="Entities\CourseLearningActivityTests.cs" />
+    <Compile Include="Entities\CourseSegmentTests.cs" />
     <Compile Include="Entities\CourseTests.cs" />
     <Compile Include="Entities\LearningActivityAssessmentTests.cs" />
     <Compile Include="Handlers\FakeDomainEvent.cs" />
