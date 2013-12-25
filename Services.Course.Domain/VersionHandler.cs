@@ -74,7 +74,7 @@ namespace BpeProducts.Services.Course.Domain
                 throw new BadRequestException(string.Format("{0} {1} is already published and cannot be published again.", entityType, entityId));
             }
 
-            if (type == typeof(Domain.Courses.Course))
+            if (type == typeof(Courses.Course))
             {
                 PublishCourseAssets(entity);
             }
@@ -88,9 +88,10 @@ namespace BpeProducts.Services.Course.Domain
 
         }
 
+        //TODO: move into course domain
         private void PublishCourseAssets(VersionableEntity entity)
         {
-            var course = (Domain.Courses.Course)entity;
+            var course = (Courses.Course)entity;
             course.Segments.ForEach(cs => cs.LearningMaterials.ForEach(l => PublishLearningMaterialAsset(l.AssetId)));
         }
 

@@ -61,7 +61,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 				courseSegment.Id = Guid.NewGuid();
 				courseSegment.Course = course;
 			}
-
+            //TODO: move the following code fragment into the above foreach
             foreach (CourseSegment courseSegment in newSegments)
             {
                 var newLearningMaterials = Mapper.Map<List<LearningMaterial>>(courseSegment.LearningMaterials);
@@ -72,10 +72,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 }
             }
 			course.Programs = new List<Program>(template.Programs);
-
-
 			course.SupportedOutcomes = new List<LearningOutcome>(template.SupportedOutcomes);
-
 			course.CourseType = template.CourseType;
 			course.Segments = newSegments;
 			course.TenantId = template.TenantId;

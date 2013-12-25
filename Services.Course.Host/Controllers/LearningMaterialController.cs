@@ -44,7 +44,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public void Put(Guid courseId, Guid segmentId, Guid learningMaterialId, UpdateLearningMaterialRequest request)
         {
             _learningMaterialService.UpdateLearningMaterial(courseId, segmentId, learningMaterialId, request);
-
         }
 
 

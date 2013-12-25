@@ -159,6 +159,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual LearningMaterial AddLearningMaterial(LearningMaterialRequest learningMaterialRequest)
         {
+            //TODO: use mapper to instantiate learningMaterial
             var learningMaterial = new LearningMaterial { Id = Guid.NewGuid(), AssetId = learningMaterialRequest.AssetId, TenantId = TenantId, IsRequired = learningMaterialRequest.IsRequired, Instruction = learningMaterialRequest.Instruction };
             learningMaterial.CourseSegment = this;
             _learningMaterials.Add(learningMaterial);
@@ -166,6 +167,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         }
         public virtual void UpdateLearningMaterial(Guid learningMaterialId, UpdateLearningMaterialRequest updatelearningMaterialRequest)
         {
+            //TODO: use mapper
             var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
             learningMaterial.AssetId = updatelearningMaterialRequest.AssetId;
             learningMaterial.Instruction = updatelearningMaterialRequest.Instruction;

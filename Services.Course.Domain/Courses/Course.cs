@@ -251,6 +251,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         protected override VersionableEntity Clone()
         {
+            //TODO: Copy learning material
             var course = AutoMapper.Mapper.Map<Course>(this);
             course.Id = Guid.NewGuid();
 

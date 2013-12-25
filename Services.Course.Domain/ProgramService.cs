@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
@@ -38,7 +39,7 @@ namespace BpeProducts.Services.Course.Domain
                 _repository.ODataQuery<Program>(queryArray.Length > 1 ? queryArray[1] : "");
             criteria.Add(Restrictions.Eq("ActiveFlag", true));
             criteria.SetFetchMode("Courses", FetchMode.Join);  //for eager loading
-            var programs = criteria.List<Program>();
+            var programs = criteria.List<Program>().Distinct();
             var programResponses = new List<ProgramResponse>();
             Mapper.Map(programs, programResponses);
             return programResponses;
