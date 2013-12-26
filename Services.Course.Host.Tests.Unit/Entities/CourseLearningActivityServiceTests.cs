@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Courses;
@@ -26,8 +27,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         private CourseLearningActivityService _courseLearningActivityService;
 
         private Domain.Courses.Course _course;
+	    private AutoMock _autoMock;
 
-        [SetUp]
+	    [SetUp]
         public void SetUp()
         {
             _assessmentClient = new Mock<IAssessmentClient>();
@@ -37,8 +39,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             _segmentId = Guid.NewGuid();
             _assessmentId = Guid.NewGuid();
             _learningActivityId = Guid.NewGuid();
-
-            _course = new Domain.Courses.Course {Id = _courseId};
+	        _autoMock = AutoMock.GetLoose();
+		    _course = _autoMock.Create<Course.Domain.Courses.Course>();
+			_course.Id = _courseId;
             _course.AddSegment(_segmentId, new SaveCourseSegmentRequest());
             _course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest {AssessmentType = "Custom"},
                                         _learningActivityId);

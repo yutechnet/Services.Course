@@ -1,4 +1,5 @@
 ﻿using System;
+using Autofac.Extras.Moq;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
@@ -13,6 +14,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 	{
 		private Mock<IRepository> _repositoryMock;
 		private UpdateModelOnRemovingCoursePrerequisite _removePrereqHandler;
+		Course.Domain.Courses.Course GetCourse()
+		{
+			var am=AutoMock.GetLoose();
+			return am.Create<Course.Domain.Courses.Course>();
+			
+		}
 
 		[SetUp]
 		public void SetUp()
@@ -36,16 +43,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 			var aggregateCourseGuid = Guid.NewGuid();
 			var prerequisiteCourseGuid = Guid.NewGuid();
 
-			var courseToAddAsPrerequisite = new Domain.Courses.Course {Id = prerequisiteCourseGuid};
+			var courseToAddAsPrerequisite = GetCourse();
+			courseToAddAsPrerequisite.Id = prerequisiteCourseGuid ;
 			courseToAddAsPrerequisite.Publish("");
 
-			var courseToAddAsPrerequisite2 = new Domain.Courses.Course {Id = Guid.NewGuid()};
+			var courseToAddAsPrerequisite2 = GetCourse();
+			courseToAddAsPrerequisite2.Id = Guid.NewGuid();
 			courseToAddAsPrerequisite2.Publish("");
 
-			var aggregateCourse = new Domain.Courses.Course();
+			var aggregateCourse =GetCourse();
 			aggregateCourse.AddPrerequisite(courseToAddAsPrerequisite);
 			aggregateCourse.AddPrerequisite(courseToAddAsPrerequisite2);
-			var prerequisiteCourse = new Domain.Courses.Course { Id = prerequisiteCourseGuid };
+			var prerequisiteCourse = GetCourse();
+			prerequisiteCourse.Id = prerequisiteCourseGuid ;
 
 			_repositoryMock.Setup(r => r.Get<Domain.Courses.Course>(aggregateCourseGuid)).Returns(aggregateCourse);
 			_repositoryMock.Setup(r => r.Get<Domain.Courses.Course>(prerequisiteCourseGuid)).Returns(prerequisiteCourse);
@@ -62,16 +72,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
 			var aggregateCourseGuid = Guid.NewGuid();
 			var prerequisiteCourseGuid = Guid.NewGuid();
 
-			var courseToAddAsPrerequisite = new Domain.Courses.Course { Id = prerequisiteCourseGuid };
+			var courseToAddAsPrerequisite = GetCourse();
+			courseToAddAsPrerequisite.Id = prerequisiteCourseGuid ;
 			courseToAddAsPrerequisite.Publish("");
 
-			var courseToAddAsPrerequisite2 = new Domain.Courses.Course { Id = Guid.NewGuid() };
+			var courseToAddAsPrerequisite2 = GetCourse();
+			courseToAddAsPrerequisite2.Id = Guid.NewGuid() ;
 			courseToAddAsPrerequisite2.Publish("");
 
-			var aggregateCourse = new Domain.Courses.Course();
+			var aggregateCourse = GetCourse();
 			aggregateCourse.AddPrerequisite(courseToAddAsPrerequisite);
 			aggregateCourse.AddPrerequisite(courseToAddAsPrerequisite2);
-			var prerequisiteCourse = new Domain.Courses.Course { Id = prerequisiteCourseGuid };
+			var prerequisiteCourse = GetCourse();
+			prerequisiteCourse.Id = prerequisiteCourseGuid ;
 
 			_repositoryMock.Setup(r => r.Get<Domain.Courses.Course>(aggregateCourseGuid)).Returns(aggregateCourse);
 			_repositoryMock.Setup(r => r.Get<Domain.Courses.Course>(prerequisiteCourseGuid)).Returns(prerequisiteCourse);

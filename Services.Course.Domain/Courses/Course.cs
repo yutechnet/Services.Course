@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
-using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Validation;
@@ -529,14 +528,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public override void Publish(string publishNote)
         {
+			//todo: move this out or atleast dont resort to newing up
             var validator = new CoursePublishValidator(new LearningActivityPublishValidator());
             IEnumerable<string> brokenRules;
             var isValid = this.Validate(validator, out brokenRules);
             if (!isValid)
                 throw new BadRequestException(string.Join("\n", brokenRules));
-            base.Publish(publishNote);
-        }
-
+}
         public virtual void PublishLearningMaterialAsset(IAssetServiceClient assetServiceClient)
         {
             Segments.ForEach(courseSegment => courseSegment.PublishLearningMaterialAsset(assetServiceClient));

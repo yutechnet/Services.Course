@@ -27,11 +27,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         public void Can_add_top_level_segments()
         {
             var segmentCount = 5;
-            var course = new Domain.Courses.Course
-                {
-                    OrganizationId = Guid.NewGuid(),
-                    TenantId = 999999
-                };
+
+			var course = GetCourse();
 
             var segmentId = Guid.NewGuid();
             for (int i = 0; i < segmentCount; i++)
@@ -64,11 +61,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_add_multiple_sub_segments()
         {
-            var course = new Domain.Courses.Course
-                {
-                    OrganizationId = Guid.NewGuid(),
-                    TenantId = 999999
-                };
+			var course = GetCourse();
 
             var request = new SaveCourseSegmentRequest
                 {
@@ -114,12 +107,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         public void Can_add_nested_course_segments()
         {
             var segmentCount = 5;
-
-            var course = new Domain.Courses.Course
-                {
-                    OrganizationId = Guid.NewGuid(),
-                    TenantId = 999999
-                };
+			var course = GetCourse();
 
             CourseSegment lastSegment = null;
             for (int i = 0; i < segmentCount; i++)
@@ -268,11 +256,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_add_learning_activity_to_segment()
         {
-            var course = new Domain.Courses.Course
-                {
-                    OrganizationId = Guid.NewGuid(),
-                    TenantId = 999999
-                };
+			var course = GetCourse();
 
             var segmentId = Guid.NewGuid();
             var request = new SaveCourseSegmentRequest
@@ -313,11 +297,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_get_learning_activity_from_course()
         {
-            var course = new Domain.Courses.Course
-            {
-                OrganizationId = Guid.NewGuid(),
-                TenantId = 999999
-            };
+			var course = GetCourse();
 
             var segmentId = Guid.NewGuid();
             var request = new SaveCourseSegmentRequest
@@ -358,11 +338,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_check_for_missing_segment_or_learningActivity()
         {
-            var course = new Domain.Courses.Course
-            {
-                OrganizationId = Guid.NewGuid(),
-                TenantId = 999999
-            };
+			var course = GetCourse();
 
             var segmentId = Guid.NewGuid();
             var request = new SaveCourseSegmentRequest
@@ -400,11 +376,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_remove_learningoutcome_from_supporting_outcome()
         {
-            var course = new Domain.Courses.Course
-            {
-                OrganizationId = Guid.NewGuid(),
-                TenantId = 999999
-            };
+			var course = GetCourse();
 
             var learningOutcome1 = new LearningOutcome {Id = Guid.NewGuid()};
             course.SupportOutcome(learningOutcome1);
@@ -424,11 +396,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_check_for_missing_parent_segment_during_adding_segment()
         {
-            var course = new Domain.Courses.Course
-            {
-                OrganizationId = Guid.NewGuid(),
-                TenantId = 999999
-            };
+			var course = GetCourse();
 
             Assert.Throws<BadRequestException>(
                 () => course.AddSegment(Guid.NewGuid(), Guid.NewGuid(), new SaveCourseSegmentRequest()));
@@ -437,11 +405,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_check_for_missing_segment_during_update()
         {
-            var course = new Domain.Courses.Course
-            {
-                OrganizationId = Guid.NewGuid(),
-                TenantId = 999999
-            };
+			var course = GetCourse();
 
             Assert.Throws<NotFoundException>(() => course.UpdateSegment(Guid.NewGuid(), new SaveCourseSegmentRequest()));
             Assert.Throws<NotFoundException>(
@@ -461,12 +425,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     OrganizationId = Guid.NewGuid(),
                 };
 
-            var course = new Domain.Courses.Course
-            {
-                TenantId = 999999,
-                OrganizationId = Guid.NewGuid(),
-            };
-
+			var course = GetCourse();
             course.Publish("It's published");
 
             var request = course.GetSectionRequest(sectionRequest,_assessmentClientMock.Object);
@@ -483,11 +442,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_not_build_section_request_from_unpublished_course()
         {
-            var course = new Domain.Courses.Course
-            {
-                TenantId = 999999,
-                OrganizationId = Guid.NewGuid(),
-            };
+			var course = GetCourse();
 
             Assert.Throws<BadRequestException>(() => course.GetSectionRequest(new CourseSectionRequest(),_assessmentClientMock.Object));
         }
@@ -503,12 +458,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 EndDate = DateTime.Now.AddMonths(1)
             };
 
-            var course = new Domain.Courses.Course
-            {
-                TenantId = 999999,
-                OrganizationId = Guid.NewGuid(),
-            };
-
+			var course = GetCourse();
             var seg1Id = Guid.NewGuid();
             var seg11Id = Guid.NewGuid();
             var seg2Id = Guid.NewGuid();
@@ -559,11 +509,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 EndDate = DateTime.Now.AddMonths(1)
             };
 
-            var course = new Domain.Courses.Course
-            {
-                TenantId = 999999,
-                OrganizationId = Guid.NewGuid(),
-            };
+			var course = GetCourse();
 
             var seg1Id = Guid.NewGuid();
             var la1Id = Guid.NewGuid();
@@ -632,11 +578,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 EndDate = DateTime.Now.AddMonths(1)
             };
 
-            var course = new Domain.Courses.Course
-            {
-                TenantId = 999999,
-                OrganizationId = Guid.NewGuid(),
-            };
+			var course = GetCourse();
 
             var seg1Id = Guid.NewGuid();
             var seg2Id = Guid.NewGuid();
@@ -665,11 +607,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_add_learning_material()
         {
-            var course = new Domain.Courses.Course
-            {
-                TenantId = 999999,
-                OrganizationId = Guid.NewGuid(),
-            };
+			var course = GetCourse();
 
             var seg1Id = Guid.NewGuid();
             var seg2Id = Guid.NewGuid();
@@ -696,11 +634,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Get_error_if_adding_learning_material_to_unknown_section()
         {
-            var course = new Domain.Courses.Course
-            {
-                TenantId = 999999,
-                OrganizationId = Guid.NewGuid(),
-            };
+			var course = GetCourse();
 
             var seg1Id = Guid.NewGuid();
             var seg2Id = Guid.NewGuid();
@@ -717,11 +651,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Cannot_publish_course_when_invalid()
         {
-            var course = new Domain.Courses.Course
-            {
-                TenantId = 999999,
-                OrganizationId = Guid.NewGuid(),
-            };
+
+	        var course = GetCourse();
 
             var seg1Id = Guid.NewGuid();
             var seg2Id = Guid.NewGuid();
@@ -747,5 +678,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 .OrderBy(x => Random.Next())
                 .FirstOrDefault();
         }
+
+		Course.Domain.Courses.Course GetCourse()
+		{
+
+			//var course = new Domain.Courses.Course
+			//{
+			//	TenantId = 999999,
+			//	OrganizationId = Guid.NewGuid(),
+			//};
+
+			var amoq = AutoMock.GetLoose();
+			var course = amoq.Create<Course.Domain.Courses.Course>();
+			course.OrganizationId = Guid.NewGuid();
+			course.TenantId = 999999;
+			return course;
+		}
     }
+
+
 }

@@ -21,8 +21,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         private Mock<IProgramRepository> _mockProgramRepository;
         private Mock<IRepository> _mockRepository; 
         private UpdateModelOnCourseUpdating _updateModelOnCourseUpdating;
+		private AutoMock _autoMock;
 
-        [TestFixtureSetUp]
+		[TestFixtureSetUp]
         public static void SetUpFixture()
         {
             MapperConfiguration.Configure();
@@ -31,11 +32,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         [SetUp]
         public void SetUp()
         {
-            var autoMock = AutoMock.GetLoose();
-            _mockRepository = autoMock.Mock<IRepository>();
-            _mockCourseRepository = autoMock.Mock<ICourseRepository>();
-            _mockProgramRepository = autoMock.Mock<IProgramRepository>();
-            _updateModelOnCourseUpdating = autoMock.Create<UpdateModelOnCourseUpdating>();
+            _autoMock = AutoMock.GetLoose();
+            _mockRepository = _autoMock.Mock<IRepository>();
+            _mockCourseRepository = _autoMock.Mock<ICourseRepository>();
+            _mockProgramRepository = _autoMock.Mock<IProgramRepository>();
+            _updateModelOnCourseUpdating = _autoMock.Create<UpdateModelOnCourseUpdating>();
         }
 
         [Test]
@@ -86,13 +87,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     ProgramIds = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()}
                 };
 
-            var course = new Domain.Courses.Course
-                {
-                    Code = "OldCode1",
-                    Description = "OldDescription1",
-                    Id = courseId,
-                    Name = "OldName1"
-                };
+	        var course = _autoMock.Create<Course.Domain.Courses.Course>();
+	        course.Code = "OldCode1";
+	        course.Description = "OldDescription1";
+	        course.Id = courseId;
+	        course.Name = "OldName1";
+                
 
             course.SetPrograms(new List<Program>
                 {

@@ -16,6 +16,7 @@ namespace BpeProducts.Services.Course.Domain.Overrides
     {
         public void Override(AutoMapping<Courses.Course> mapping)
         {
+
             mapping.Map(x => x.Name).Access.CamelCaseField(Prefix.Underscore);
             mapping.Map(x => x.Code).Access.CamelCaseField(Prefix.Underscore);
             mapping.Map(x => x.Description).Access.CamelCaseField(Prefix.Underscore);

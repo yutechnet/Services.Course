@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Validation;
@@ -20,8 +21,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
 
         private Mock<IValidator<CourseLearningActivity>> _mockLearningActivityValidator; 
         private CoursePublishValidator _validator;
+	    private AutoMock _autoMock;
 
-        [SetUp]
+	    [SetUp]
         public void SetUp()
         {
             _courseId = Guid.NewGuid();
@@ -32,12 +34,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
             _mockLearningActivityValidator = new Mock<IValidator<CourseLearningActivity>>();
 
             _validator = new CoursePublishValidator(new LearningActivityPublishValidator());
+	        _autoMock = AutoMock.GetLoose();
         }
-
+		
         [Test]
         public void Can_validate_course_for_publishability()
         {
-            var course = new Course.Domain.Courses.Course();
+			var course = _autoMock.Create<Course.Domain.Courses.Course>();
             course.AddSegment(_segmentId, new SaveCourseSegmentRequest());
             course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
                 {
@@ -54,7 +57,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
         [Test]
         public void Can_find_broken_rules_before_publishing()
         {
-            var course = new Course.Domain.Courses.Course();
+			var course = _autoMock.Create<Course.Domain.Courses.Course>();
             course.AddSegment(_segmentId, new SaveCourseSegmentRequest());
             course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
             {
@@ -72,7 +75,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
         [Test]
         public void Can_find_multiple_broken_rules_before_publishing()
         {
-            var course = new Course.Domain.Courses.Course();
+			var course = _autoMock.Create<Course.Domain.Courses.Course>();
             course.AddSegment(_segmentId, new SaveCourseSegmentRequest());
             course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
@@ -41,14 +42,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         public void Add_Root_Segment_If_ParentSegmentId_Not_Specified()
         {
             // Setup
+			var amoq = AutoMock.GetLoose();
+			var course = amoq.Create<Course.Domain.Courses.Course>();
             var courseId = Guid.NewGuid();
-            var course = new Domain.Courses.Course
-                {
-                    Id = courseId,
-                    Code = "Code",
-                    Name = "Name",
-                    Description = "Description"
-                };
+	        course.Id = courseId;
+	        course.Code = "Code";
+	        course.Name = "Name";
+	        course.Description = "Description";
+             
 
             _mockRepository.Setup(c => c.GetOrThrow(It.IsAny<Guid>())).Returns(course);
 
@@ -79,13 +80,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             // Setup
             var courseId = Guid.NewGuid();
             var parentSegmentId = Guid.NewGuid();
-            var course = new Domain.Courses.Course
-            {
-                Id = courseId,
-                Code = "Code",
-                Name = "Name",
-                Description = "Description"
-            };
+			var amoq = AutoMock.GetLoose();
+			var course = amoq.Create<Course.Domain.Courses.Course>();
+	        
+			course.Id = courseId;
+	        course.Code = "Code";
+	        course.Name = "Name";
+	        course.Description = "Description";
+            
 
             course.AddSegment(parentSegmentId, Guid.Empty, new SaveCourseSegmentRequest());
 

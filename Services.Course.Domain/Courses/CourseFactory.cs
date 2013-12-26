@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
-using Services.Assessment.Contract;
-
+using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -54,9 +54,15 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     Description = request.Description,
                     OrganizationId = request.OrganizationId,
                     Credit = request.Credit
-                };
+				};
 
-            var newSegments = Mapper.Map<List<CourseSegment>>(template.Segments);
+			var newSegments = Mapper.Map<List<CourseSegment>>(template.Segments);
+			foreach (CourseSegment courseSegment in newSegments)
+			{
+				courseSegment.Id = Guid.NewGuid();
+				courseSegment.Course = course;
+			}
+
             foreach (CourseSegment courseSegment in newSegments)
             {
                 courseSegment.Id = Guid.NewGuid();

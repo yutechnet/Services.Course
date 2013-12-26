@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Autofac.Extras.Moq;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
@@ -18,8 +19,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         private Mock<IDomainEvents> _mockDomainEvents;
         private Mock<IRepository> _mockRepository;
         private CourseUpdatedHandler _courseUpdatedHandler;
+	    private AutoMock _autoMock;
 
-        [SetUp]
+	    [SetUp]
         public void SetUp()
         {
             _mockDomainEvents = new Mock<IDomainEvents>();
@@ -33,6 +35,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     Description = "program description",
                     ProgramType = "traditional"
                 });
+
+	        _autoMock = AutoMock.GetLoose();
         }
 
         [Test]
@@ -91,14 +95,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     ProgramIds = new List<Guid> {programId}
                 };
 
-            var course = new Domain.Courses.Course
-                {
-                    Code = "NewCode1",
-                    Description = "NewDescription1",
-                    Id = courseId,
-                    Name = "NewName1",
-                    OrganizationId = organizationId
-                };
+	        var course = _autoMock.Create<Course.Domain.Courses.Course>();
+	        course.Code = "NewCode1";
+	        course.Description = "NewDescription1";
+	        course.Id = courseId;
+	        course.Name = "NewName1";
+	        course.OrganizationId = organizationId;
+                
 
             course.SetPrograms(new List<Program>
                 {
@@ -128,14 +131,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     ProgramIds = new List<Guid> {programId}
                 };
 
-            var course = new Domain.Courses.Course
-                {
-                    Code = "OldCode1",
-                    Description = "OldDescription1",
-                    Id = courseId,
-                    Name = "OldName1",
-                    OrganizationId = organizationId
-                };
+         var course = _autoMock.Create<Course.Domain.Courses.Course>();
+	        course.Code = "OldCode1";
+	        course.Description = "OldDescription1";
+	        course.Id = courseId;
+	        course.Name = "OldName1";
+	        course.OrganizationId = organizationId;
+           
 
             course.SetPrograms(new List<Program>
                 {
@@ -164,16 +166,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     ProgramIds = new List<Guid> {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()}
                 };
 
-            var course = new Domain.Courses.Course
-                {
-                    Code = "OldCode1",
-                    Description = "OldDescription1",
-                    Id = courseId,
-                    Name = "OldName1",
-                    OrganizationId = organizationId
-                };
+            var course = _autoMock.Create<Course.Domain.Courses.Course>();
+	        course.Code = "OldCode1";
+	        course.Description = "OldDescription1";
+	        course.Id = courseId;
+	        course.Name = "OldName1";
+	        course.OrganizationId = organizationId;
 
-            course.SetPrograms(new List<Program>
+	        course.SetPrograms(new List<Program>
                 {
                     new Program {Id = Guid.NewGuid()},
                     new Program {Id = Guid.NewGuid()},
@@ -211,16 +211,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                         }
                 };
 
-            var course = new Domain.Courses.Course
-                {
-                    Code = "NewCode1",
-                    Description = "NewDescription1",
-                    Id = courseId,
-                    Name = "NewName1",
-                    OrganizationId = organizationId,
-                };
+			var course = _autoMock.Create<Course.Domain.Courses.Course>();
+	        course.Code = "NewCode1";
+	        course.Description = "NewDescription1";
+	        course.Id = courseId;
+	        course.Name = "NewName1";
+	        course.OrganizationId = organizationId;
 
-            course.SetPrograms(new List<Program>
+	        course.SetPrograms(new List<Program>
                 {
                     new Program {Id = programId}
                 });

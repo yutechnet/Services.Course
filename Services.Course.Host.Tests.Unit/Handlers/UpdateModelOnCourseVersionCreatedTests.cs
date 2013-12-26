@@ -18,17 +18,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     [TestFixture]
     public class UpdateModelOnCourseVersionCreatedTests
     {
-        [TestFixtureSetUp]
+	    private AutoMock _autoMock;
+
+	    [TestFixtureSetUp]
         public static void SetUpFixture()
         {
             MapperConfiguration.Configure();
         }
+		[SetUp]
+		public void SetUp()
+		{
+			_autoMock = AutoMock.GetLoose();
+		}
         [Test]
         public void Throw_Exception_When_DomainEvent_Is_Not_CourseVersionCreated()
         {
-            var autoMock = AutoMock.GetLoose();
+            
 
-            var updateModelOnCourseVersionCreation = autoMock.Create<UpdateModelOnCourseVersionCreation>();
+            var updateModelOnCourseVersionCreation = _autoMock.Create<UpdateModelOnCourseVersionCreation>();
             var exception =
                 Assert.Throws<InvalidOperationException>(
                     () => updateModelOnCourseVersionCreation.Handle(new FakeDomainEvent()));
@@ -42,11 +49,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var mockRepository = autoMock.Mock<IRepository>();
 
             var courseId = Guid.NewGuid();
+	        var course = _autoMock.Create<Course.Domain.Courses.Course>();
+	        var newVersion=course.CreateVersion("2.0a");
 
             var courseVersionCreated = new VersionCreated
                 {
                     AggregateId = courseId,
-                    NewVersion = new Domain.Courses.Course().CreateVersion("2.0a")
+                    NewVersion = newVersion
                 };
 
             var updateModelOnCourseVersionCreation = autoMock.Create<UpdateModelOnCourseVersionCreation>();

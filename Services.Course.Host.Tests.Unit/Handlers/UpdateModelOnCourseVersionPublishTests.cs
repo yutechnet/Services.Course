@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac.Extras.Moq;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
@@ -18,12 +19,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
     {
         private Mock<IRepository> _mcokRepository;
         private UpdateModelOnEntityVersionPublish _updateModelOnCourseVersionPublish;
+	    private AutoMock _autoMock;
 
-        [SetUp]
+	    [SetUp]
         public void SetUp()
         {
             _mcokRepository = new Mock<IRepository>();
             _updateModelOnCourseVersionPublish = new UpdateModelOnEntityVersionPublish(_mcokRepository.Object);
+	        _autoMock = AutoMock.GetLoose();
         }
 
         [Test]
@@ -45,10 +48,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
                     PublishNote = "Blah blah"
                 };
 
-            _mcokRepository.Setup(c => c.Get<Domain.Courses.Course>(courseVersionId)).Returns(new Domain.Courses.Course
-                {
-                    Id = courseVersionId,
-                });
+	        var courseToReturn = _autoMock.Create<Course.Domain.Courses.Course>();
+	        courseToReturn.Id = courseVersionId;
+            _mcokRepository.Setup(c => c.Get<Domain.Courses.Course>(courseVersionId)).Returns(courseToReturn);
 
             _updateModelOnCourseVersionPublish.Handle(courseVersionPublished);
 

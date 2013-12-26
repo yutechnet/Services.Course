@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -29,13 +30,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			_courseService = new CourseService(_courseFactoryMock.Object, _domainEventsMock.Object, _repoMock.Object);
         }
 
+		Course.Domain.Courses.Course GetCourse()
+		{
+			var amoq = AutoMock.GetLoose();
+			var course = amoq.Create<Course.Domain.Courses.Course>();
+			return course;
+		}
+
         [Test]
         public void Can_Add_prerequisites()
         {
-            var courseToReturn = new Domain.Courses.Course {Id = Guid.NewGuid(), ActiveFlag = true};
+	        var courseToReturn = GetCourse();
+	        courseToReturn.Id = Guid.NewGuid();
+			courseToReturn.ActiveFlag = true;
+
 			_courseFactoryMock.Setup(r => r.Reconstitute(It.IsAny<Guid>())).Returns(courseToReturn);
 
-            var courseToBePrerequisite = new Domain.Courses.Course { Id = Guid.NewGuid(), ActiveFlag = true };
+            var courseToBePrerequisite = GetCourse();
+	        courseToBePrerequisite.Id = Guid.NewGuid();
+	        courseToBePrerequisite.ActiveFlag = true;
+
             var prereqCoursesInDb = new List<Domain.Courses.Course> { courseToBePrerequisite };
 
             _repoMock.Setup(c => c.Get(It.IsAny<List<Guid>>())).Returns(prereqCoursesInDb);
@@ -50,13 +64,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Can_Remove_prerequisites()
         {
-			var prerequisiteCourse = new Domain.Courses.Course { Id = Guid.NewGuid() };
+			var prerequisiteCourse =GetCourse();
+			prerequisiteCourse.Id = Guid.NewGuid() ;
 			prerequisiteCourse.Publish("");
 
             var prereqCoursesInDb = new List<Domain.Courses.Course> { prerequisiteCourse };
             _repoMock.Setup(c => c.Get(It.IsAny<List<Guid>>())).Returns(prereqCoursesInDb);
 
-            var courseToReturn = new Domain.Courses.Course { Id = Guid.NewGuid(), ActiveFlag = true };
+	        var courseToReturn = GetCourse();
+	        courseToReturn.Id = Guid.NewGuid();
+			courseToReturn.ActiveFlag = true ;
 			courseToReturn.AddPrerequisite(prerequisiteCourse);
 			_courseFactoryMock.Setup(r => r.Reconstitute(It.IsAny<Guid>())).Returns(courseToReturn);
 			//_repoMock.Setup(c => c.Get(It.IsAny<Guid>())).Returns(courseToReturn);
@@ -75,15 +92,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             var guid2 = Guid.NewGuid();
             var guid3 = Guid.NewGuid();
 
-            var prerequisiteCourse = new Domain.Courses.Course {Id = guid1};
-	        var prerequisiteCourse2 = new Domain.Courses.Course {Id = guid2};
-            
-            var prerequisiteCourseToBeAdded = new Domain.Courses.Course {Id = guid3};
+	        var prerequisiteCourse = GetCourse();
+				prerequisiteCourse.Id = guid1;
+	        var prerequisiteCourse2 =GetCourse();
+			prerequisiteCourse2.Id = guid2;
+
+	        var prerequisiteCourseToBeAdded = GetCourse();
+			prerequisiteCourseToBeAdded.Id = guid3;
 			prerequisiteCourse.Publish("");
 			prerequisiteCourse2.Publish("");
             var prereqCoursesInDb = new List<Domain.Courses.Course> { prerequisiteCourse, prerequisiteCourse2, prerequisiteCourseToBeAdded };
 
-            var courseToReturn = new Domain.Courses.Course { Id = Guid.NewGuid(), ActiveFlag = true };
+	        var courseToReturn = GetCourse();
+	        courseToReturn.Id = Guid.NewGuid();
+			courseToReturn.ActiveFlag = true ;
 			courseToReturn.AddPrerequisite(prerequisiteCourse);
 			courseToReturn.AddPrerequisite(prerequisiteCourse2);
 			_courseFactoryMock.Setup(r => r.Reconstitute(It.IsAny<Guid>())).Returns(courseToReturn);

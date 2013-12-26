@@ -1,4 +1,5 @@
 ﻿using System;
+using Autofac.Extras.Moq;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
@@ -34,11 +35,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         [Test]
         public void Soft_Deletes_Course_When_CourseDeleted()
         {
-            var course = new Domain.Courses.Course
-                {
-                    ActiveFlag = true
-                };
+			var amoq = AutoMock.GetLoose();
+			var course = amoq.Create<Course.Domain.Courses.Course>();
 
+	        course.ActiveFlag = true;
+      
             _mockRepository.Setup(c => c.Get<Domain.Courses.Course>(It.IsAny<Guid>())).Returns(course);
 
             var courseId = Guid.NewGuid();
