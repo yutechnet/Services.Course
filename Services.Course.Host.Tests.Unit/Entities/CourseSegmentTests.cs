@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac.Extras.Moq;
+using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
@@ -20,7 +21,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [SetUp]
         public void SetUp()
         {
-
+            Mapper.CreateMap<LearningMaterialRequest, Domain.Courses.LearningMaterial>();
+            Mapper.CreateMap<UpdateLearningMaterialRequest, Domain.Courses.LearningMaterial>();
         }
 
         [Test]

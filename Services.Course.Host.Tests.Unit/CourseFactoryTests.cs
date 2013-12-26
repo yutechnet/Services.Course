@@ -19,6 +19,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         public void Setup()
         {
             Mapper.CreateMap<CourseSegment, CourseSegment>();
+            Mapper.CreateMap<LearningMaterialRequest, LearningMaterial>();
+            Mapper.CreateMap<UpdateLearningMaterialRequest, LearningMaterial>();
         }
 
         [Test]

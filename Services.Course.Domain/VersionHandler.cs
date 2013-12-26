@@ -76,7 +76,8 @@ namespace BpeProducts.Services.Course.Domain
 
             if (type == typeof(Courses.Course))
             {
-                PublishCourseAssets(entity);
+                var course = (Courses.Course)entity;
+                course.PublishLearningMaterialAsset(_assetService);
             }
 
             _domainEvents.Raise<VersionPublished>(new VersionPublished
@@ -86,24 +87,6 @@ namespace BpeProducts.Services.Course.Domain
                 EntityType = type
             });
 
-        }
-
-        //TODO: move into course domain
-        private void PublishCourseAssets(VersionableEntity entity)
-        {
-            var course = (Courses.Course)entity;
-            course.Segments.ForEach(cs => cs.LearningMaterials.ForEach(l => PublishLearningMaterialAsset(l.AssetId)));
-        }
-
-        private void PublishLearningMaterialAsset(Guid assetId)
-        {
-            if (!CheckAssetIsPublished(assetId))
-                _assetService.PublishAsset(assetId, string.Empty);
-        }
-        private bool CheckAssetIsPublished(Guid assetId)
-        {
-            var asset = _assetService.GetAsset(assetId);
-            return asset.IsPublished;
         }
 
         private static Type GetEntityType(string entityTypeName)

@@ -52,6 +52,10 @@ namespace BpeProducts.Services.Course.Host.App_Start
 		    Mapper.CreateMap<SaveCourseLearningActivityRequest, Domain.Courses.CourseLearningActivity>()
                 .ForMember(x =>x.Id, opt=>opt.Ignore());
 
+		    Mapper.CreateMap<LearningMaterialRequest, Domain.Courses.LearningMaterial>();
+
+            Mapper.CreateMap<UpdateLearningMaterialRequest, Domain.Courses.LearningMaterial>();
+
             //for course deep copy purpose
             Mapper.CreateMap<Domain.Courses.Course, Domain.Courses.Course>()
                 .ForMember(dest=>dest.IsPublished, opt=>opt.UseValue(false)); 

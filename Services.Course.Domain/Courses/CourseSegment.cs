@@ -2,11 +2,14 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
+using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using Newtonsoft.Json;
+using ServiceStack.Common.Extensions;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -159,19 +162,17 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual LearningMaterial AddLearningMaterial(LearningMaterialRequest learningMaterialRequest)
         {
-            //TODO: use mapper to instantiate learningMaterial
-            var learningMaterial = new LearningMaterial { Id = Guid.NewGuid(), AssetId = learningMaterialRequest.AssetId, TenantId = TenantId, IsRequired = learningMaterialRequest.IsRequired, Instruction = learningMaterialRequest.Instruction };
+            var learningMaterial = Mapper.Map<LearningMaterial>(learningMaterialRequest);
+            learningMaterial.TenantId = TenantId;
+            learningMaterial.Id = Guid.NewGuid();
             learningMaterial.CourseSegment = this;
             _learningMaterials.Add(learningMaterial);
             return learningMaterial;
         }
         public virtual void UpdateLearningMaterial(Guid learningMaterialId, UpdateLearningMaterialRequest updatelearningMaterialRequest)
         {
-            //TODO: use mapper
             var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
-            learningMaterial.AssetId = updatelearningMaterialRequest.AssetId;
-            learningMaterial.Instruction = updatelearningMaterialRequest.Instruction;
-            learningMaterial.IsRequired = updatelearningMaterialRequest.IsRequired;
+            Mapper.Map(updatelearningMaterialRequest, learningMaterial);
         }
 
         public virtual void DeleteLearningMaterial(Guid learningMaterialId)
@@ -189,5 +190,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             return learningMaterial;
         }
+
+        public virtual void PublishLearningMaterialAsset(IAssetServiceClient assetServiceClient)
+        {
+            LearningMaterials.ForEach(learningMaterial => learningMaterial.PublishAsset(assetServiceClient));
+            ChildSegments.ForEach(childSegment => childSegment.PublishLearningMaterialAsset(assetServiceClient));
+        }
+
     }
 }

@@ -251,7 +251,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         protected override VersionableEntity Clone()
         {
-            //TODO: Copy learning material
             var course = AutoMapper.Mapper.Map<Course>(this);
             course.Id = Guid.NewGuid();
 
@@ -534,10 +533,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var isValid = this.Validate(validator, out brokenRules);
             if (!isValid)
                 throw new BadRequestException(string.Join("\n", brokenRules));
-
             base.Publish(publishNote);
-
          }
+
+        public virtual void PublishLearningMaterialAsset(IAssetServiceClient assetServiceClient)
+        {
+            Segments.ForEach(courseSegment => courseSegment.PublishLearningMaterialAsset(assetServiceClient));
+        }
 
         public virtual bool Validate(IValidator<Course> validator, out IEnumerable<string> brokenRules)
         {
