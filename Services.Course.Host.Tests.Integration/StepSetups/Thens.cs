@@ -569,18 +569,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void ThenTheCourseHasFollowingLearningMaterial(string courseName, Table table)
         {
             var courseResource = Resources<CourseResource>.Get(courseName);
-            var response = GetOperations.GetCourse(courseResource);
+            var course = GetOperations.GetCourse(courseResource);
             foreach (var row in table.Rows)
             {
                 var segmentName = row["CourseSegment"];
                 var assetName = row["Asset"];
                 var asset = Resources<AssetResource>.Get(assetName);
-                var segmentResponse = response.Segments.First(p => p.Name == segmentName);
-                Assert.That(segmentResponse.LearningMaterials.Count, Is.EqualTo(1));
-                Assert.That(segmentResponse.LearningMaterials[0].AssetId, Is.EqualTo(asset.Id));
-                Assert.That(segmentResponse.LearningMaterials[0].CourseSegmentId, Is.EqualTo(segmentResponse.Id));
-                Assert.That(segmentResponse.LearningMaterials[0].Instruction, Is.EqualTo(row["Instruction"]));
-                Assert.That(segmentResponse.LearningMaterials[0].IsRequired, Is.EqualTo(bool.Parse(row["IsRequired"])));
+                var parentCourseResource = Resources<CourseResource>.Get(row["ParentCourse"]);
+                var parentCourse = GetOperations.GetCourse(parentCourseResource);
+                var segments = course.Segments.FlattenTree(c => c.ChildSegments).ToList();
+                var segment = segments.First(s => s.Name == segmentName);
+                var learningMaterial = segment.LearningMaterials.First(l => l.AssetId == asset.Id); 
+                var parentCourseSegments = parentCourse.Segments.FlattenTree(c => c.ChildSegments).ToList();
+                var parentCourseSegment = parentCourseSegments.First(s => s.Name == segmentName);
+                var parentCourseLearningMaterial = parentCourseSegment.LearningMaterials.First(l => l.AssetId == asset.Id); 
+                Assert.That(segment.LearningMaterials.Count, Is.EqualTo(parentCourseSegment.LearningMaterials.Count));
+                Assert.That(learningMaterial.Id, Is.Not.EqualTo(parentCourseLearningMaterial.Id));
+                Assert.That(learningMaterial.AssetId, Is.EqualTo(asset.Id));
+                Assert.That(learningMaterial.CourseSegmentId, Is.EqualTo(segment.Id));
+                Assert.That(learningMaterial.Instruction, Is.EqualTo(row["Instruction"]));
+                Assert.That(learningMaterial.IsRequired, Is.EqualTo(bool.Parse(row["IsRequired"])));
             }
         }
 

@@ -17,6 +17,7 @@ Background:
 	| Name   | Description               | Type     | ParentSegment |
 	| Week 1 | First week is slack time  | TimeSpan |               |
 	| Week 2 | Second week is slack time | TimeSpan |               |
+	| Day 1  | First Day is slack time   | TimeSpan | Week 1        |
 	And I have the following assets
 	| Name  |
 	| file1 |
@@ -60,7 +61,7 @@ Scenario: Create learning materials with same asset
 	    | Material A       | file2 | Week 1        |             | false      |
 	    | Material B       | file2 | Week 2        |             | false      |
 
-Scenario: Can create a Section from the course with learning materials
+Scenario: Can create a section from the course with learning materials
 	Given Published the following assets
 	    | Name  | PublishNote |
 	    | file1 | published   |
@@ -72,7 +73,7 @@ Scenario: Can create a Section from the course with learning materials
 	And Publish the following courses
         | CourseName | Note      |
         | Econ 100   | published |
-	When the section service returns 'Created'
+	When The section service returns 'Created'
 	And Create section as following
 		| CourseName | Name             | Code      | StartDate | EndDate   | OrganizationName |
 		| Econ 100   | Econ 100 Section | Test Code | 2/15/2014 | 6/15/2014 | COB              |
@@ -86,17 +87,43 @@ Scenario: Create a course from a course template with learning materials
 	    | Name     | Description | Type     | ParentSegment |
 	    | Week one | First week  | TimeSpan |               |
 	    | Week two | Second week | TimeSpan |               |
+	    | Day one  | First Day   | TimeSpan | Week one      |
     And Create learning material as the following info
 	    | Asset | CourseSegment | Instruction       | IsRequired | LearningMaterial    |
 	    | file1 | Week one      |                   | false      | Template Material A |
 	    | file2 | Week two      | test  instruction | true       | Template Material B |
+	    | file3 | Day one       | test  instruction | true       | Template Material C |
 	When Create a course from the template 'English Template' with the following
 	    | Name           | Code    | Description                   | OrganizationName | CourseType  | IsTemplate |
 	    | English Course | ENG 200 | My First Course from Template | COB              | Traditional | false      |
 	Then The course 'English Course' has following learning material
-	    | Asset | CourseSegment | Instruction       | IsRequired |
-	    | file1 | Week one      |                   | false      |
-	    | file2 | Week two      | test  instruction | true       |
+	    | Asset | CourseSegment | Instruction       | IsRequired | ParentCourse     |
+	    | file1 | Week one      |                   | false      | English Template |
+	    | file2 | Week two      | test  instruction | true       | English Template |
+	    | file3 | Day one       | test  instruction | true       | English Template |
+
+Scenario: Create a course version from a previously-published version with learning materials
+	Given Published the following assets
+	    | Name  | PublishNote |
+	    | file1 | published   |
+	    | file2 | published   |
+		| file3 | published   |
+    And Create learning material as the following info
+	    | Asset | CourseSegment | Instruction   | IsRequired | LearningMaterial |
+	    | file1 | Week 1        | instruction 1 | true       | Material A       |
+	    | file2 | Week 2        | instruction 2 | false      | Material B       |
+	    | file3 | Day 1         | instruction 3 | true       | Material C       |
+	And Publish the following courses
+        | CourseName | Note      |
+        | Econ 100   | published |
+	When Create a new version of 'Econ 100' course named 'Econ 100 v1.0.0.1' with the following info
+	    | Field         | Value    |
+	    | VersionNumber | 1.0.0.1  |
+	Then The course 'Econ 100 v1.0.0.1' has following learning material
+	    | Asset | CourseSegment | Instruction   | IsRequired | ParentCourse |
+	    | file1 | Week 1        | instruction 1 | true       | Econ 100     |
+	    | file2 | Week 2        | instruction 2 | false      | Econ 100     |
+	    | file3 | Day 1         | instruction 3 | true       | Econ 100     |
 
 Scenario: Publish course with learning materials then the associate assets need publish
     Given Create learning material as the following info

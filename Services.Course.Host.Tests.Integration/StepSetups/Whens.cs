@@ -356,6 +356,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             PutOperations.UpdateCourse(course, updateCourseRequest);
         }
 
+        [When(@"Create a new version of '(.*)' course named '(.*)' with the following info")]
         [When(@"I create a new version of '(.*)' course named '(.*)' with the following info")]
         public void WhenICreateANewVersionOfCourseNamedWithTheFollowingInfo(string courseName, string newVersionName, Table table)
         {
@@ -563,6 +564,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
+        [When(@"The section service returns '(.*)'")]
         [When(@"the section service returns '(.*)'")]
         public void WhenTheSectionServiceReturns(string statusCode)
         {
