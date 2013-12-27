@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Asset.Contracts;
 using Services.Assessment.Contract;
@@ -30,18 +31,32 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual void CloneLearningMaterialOutcomes(IAssessmentClient assessmentClient)
         {
-            var supportingOutcomes = assessmentClient.GetSupportingOutcomes(SourceLearningMaterialId, "learningmaterial");
+            var supportingOutcomes = GetSupportingOutcomes(assessmentClient);
             if (supportingOutcomes != null)
                 supportingOutcomes.ForEach(supportingOutcome => assessmentClient.SupportsOutcome("learningmaterial", Id, supportingOutcome.Id));
         }
 
         public virtual List<Guid> GetOutcomes(IAssessmentClient assessmentClient)
         {
-            var supportingOutcomes = assessmentClient.GetSupportingOutcomes(SourceLearningMaterialId, "learningmaterial");
+            var supportingOutcomes = GetSupportingOutcomes(assessmentClient);
             var outcomeIds = new List<Guid>();
             if (supportingOutcomes != null)
                 supportingOutcomes.ForEach(supportingOutcome => outcomeIds.Add(supportingOutcome.Id));
             return outcomeIds;
+        }
+
+        private List<OutcomeInfo> GetSupportingOutcomes(IAssessmentClient assessmentClient)
+        {
+            var supportingOutcomes = new List<OutcomeInfo>();
+            //when there is no learning material outcomes,it will throw exception
+            try
+            {
+                supportingOutcomes = assessmentClient.GetSupportingOutcomes(SourceLearningMaterialId, "learningmaterial");
+            }
+            catch (InternalServerErrorException)
+            {
+            }
+            return supportingOutcomes;
         }
     }
 }
