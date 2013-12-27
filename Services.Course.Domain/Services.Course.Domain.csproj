@@ -188,6 +188,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Courses\coursePublisher.cs" />
     <Compile Include="Courses\LearningMaterialService.cs" />
     <Compile Include="Courses\CourseLearningActivity.cs" />
     <Compile Include="Courses\CourseSegmentService.cs" />

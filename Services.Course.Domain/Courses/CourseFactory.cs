@@ -6,6 +6,7 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
+using Services.Assessment.Contract;
 using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses

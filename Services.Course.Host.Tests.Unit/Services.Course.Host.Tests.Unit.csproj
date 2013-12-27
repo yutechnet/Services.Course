@@ -260,7 +260,8 @@
     <Compile Include="Outcome\UpdateModelOnOutcomeVersionCreationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CourseRubricServiceTests.cs" />
-    <Compile Include="Validation\CoursePublishValidatorTests.cs" />
+    <Compile Include="Publishing\CourseLinkedVersionableEntityPublisherTests.cs" />
+    <Compile Include="Publishing\CoursePublishValidatorTests.cs" />
     <Compile Include="VersionableEntityFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -22,6 +22,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             _assessmentClientMock = new Mock<IAssessmentClient>();
             Mapper.CreateMap<LearningMaterialRequest, Domain.Courses.LearningMaterial>();
+	        _coursePublisher = new Mock<ICoursePublisher>();
         }
         [Test]
         public void Can_add_top_level_segments()
@@ -145,7 +146,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(course.Prerequisites, Is.Empty);
 
             var prerequisiste = courseFactory.Create(new SaveCourseRequest());
-            prerequisiste.Publish("");
+            prerequisiste.Publish("",_coursePublisher.Object);
             course.AddPrerequisite(prerequisiste);
 
             Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
@@ -163,7 +164,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(course.Prerequisites, Is.Empty);
 
             var prerequisiste = courseFactory.Create(new SaveCourseRequest());
-            prerequisiste.Publish("");
+            prerequisiste.Publish("",_coursePublisher.Object);
             course.AddPrerequisite(prerequisiste);
             course.AddPrerequisite(prerequisiste);
 
@@ -197,7 +198,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             var prerequisiste = courseFactory.Create(new SaveCourseRequest());
             prerequisiste.Id = Guid.NewGuid();
-            prerequisiste.Publish("");
+			prerequisiste.Publish("", _coursePublisher.Object);
             course.AddPrerequisite(prerequisiste);
 
             Assert.That(course.Prerequisites.Count, Is.EqualTo(1));
@@ -228,7 +229,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var courseFactory = autoMock.Create<CourseFactory>();
             var course = courseFactory.Create(new SaveCourseRequest());
             var prerequisiteCourse = courseFactory.Create(new SaveCourseRequest());
-            prerequisiteCourse.Publish("");
+			prerequisiteCourse.Publish("", _coursePublisher.Object);
 
             Assert.DoesNotThrow(() => course.Name = "name");
             Assert.DoesNotThrow(() => course.Description = "description");
@@ -239,7 +240,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.DoesNotThrow(() => course.RemovePrerequisite(Guid.NewGuid()));
             Assert.DoesNotThrow(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
 
-            course.Publish("note");
+			course.Publish("note", _coursePublisher.Object);
 
             Assert.Throws<ForbiddenException>(() => course.Name = "name");
             Assert.Throws<ForbiddenException>(() => course.Description = "description");
@@ -426,7 +427,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 };
 
 			var course = GetCourse();
-            course.Publish("It's published");
+            course.Publish("It's published",_coursePublisher.Object);
 
             var request = course.GetSectionRequest(sectionRequest,_assessmentClientMock.Object);
 
@@ -473,7 +474,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var seg22 = course.AddSegment(seg22Id, seg2Id, new SaveCourseSegmentRequest { Name = "22" });
             var seg221 = course.AddSegment(seg221Id, seg22Id, new SaveCourseSegmentRequest { Name = "221" });
 
-            course.Publish("It's published");
+            course.Publish("It's published",_coursePublisher.Object);
 
             var request = course.GetSectionRequest(sectionRequest,_assessmentClientMock.Object);
 
@@ -543,7 +544,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             course.AddLearningActivity(seg1Id, cla, la1Id);
 
-            course.Publish("It's published");
+			course.Publish("It's published", _coursePublisher.Object);
 
             var request = course.GetSectionRequest(sectionRequest, _assessmentClientMock.Object);
 
@@ -592,7 +593,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var la2 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la2Id);
             var la3 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" }, la3Id);
 
-            course.Publish("It's published");
+			course.Publish("It's published", _coursePublisher.Object);
 
             var request = course.GetSectionRequest(sectionRequest, _assessmentClientMock.Object);
 
@@ -666,11 +667,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             course.AddLearningActivity(seg1Id, new SaveCourseLearningActivityRequest { Name = "LA1", AssessmentType = "Essay" }, la1Id);
             course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2", AssessmentType = "Essay" }, la2Id);
 
-            Assert.Throws<BadRequestException>(() => course.Publish("should not publish"));
+			Assert.Throws<BadRequestException>(() => course.Publish("should not publish", _coursePublisher.Object));
         }
         
         static readonly Random Random = new Random();
-        static T RandomEnumValue<T>()
+	    private Mock<ICoursePublisher> _coursePublisher;
+
+	    static T RandomEnumValue<T>()
         {
             return Enum
                 .GetValues(typeof(T))
