@@ -23,7 +23,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Publishing
 
 		private Mock<IAssessmentClient> _assessmentClient;
 		private Mock<IAssetServiceClient> _assetClient;
-		private CourseLinkedVersionableEntityPublisher _courseLinkedVersionableEntityPublisher;
+		private CoursePublisher _coursePublisher;
 
 		[SetUp]
 		public void Before_each()
@@ -46,7 +46,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Publishing
 					AssessmentType = "Essay"
 				}, _learningActivityId);
 
-			_courseLinkedVersionableEntityPublisher = new CourseLinkedVersionableEntityPublisher(_assessmentClient.Object,
+			_coursePublisher = new CoursePublisher(_assessmentClient.Object,
 			                                                                                     _assetClient.Object);
 		}
 
@@ -54,7 +54,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Publishing
 		public void Should_publish_assessments_in_learning_activities_when_course_is_published()
 		{
 			var publishNote = "hello";
-			_courseLinkedVersionableEntityPublisher.Publish(_course, publishNote);
+			_coursePublisher.Publish(_course, publishNote);
 
 			_assessmentClient.Verify(a => a.PublishAssessment(_assessmentId, publishNote));
 		}
@@ -68,7 +68,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Publishing
 					AssessmentType = "Custom"
 				}, Guid.NewGuid());
 
-			_courseLinkedVersionableEntityPublisher.Publish(_course, publishNote);
+			_coursePublisher.Publish(_course, publishNote);
 			// should expect only one call although the segment has two learning activities. 
 			_assessmentClient.Verify(a => a.PublishAssessment(It.IsAny<Guid>(), publishNote), Times.Once());
 		}

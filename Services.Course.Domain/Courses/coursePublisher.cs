@@ -4,7 +4,13 @@ using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-	public class CourseLinkedVersionableEntityPublisher
+	public interface ICoursePublisher
+	{
+		void Publish(Course course,string publishNote);
+		void PublishAssesments(IList<CourseSegment> segments, string publishNote);
+	}
+
+	public class CoursePublisher : ICoursePublisher
 	{
 		private readonly IAssessmentClient _assessmentClient;
 		private readonly IAssetServiceClient _assetServiceClient;
@@ -12,7 +18,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 		//1. assesmments
 		//2. learning materials
 
-		public CourseLinkedVersionableEntityPublisher(IAssessmentClient assessmentClient, IAssetServiceClient assetServiceClient)
+		public CoursePublisher(IAssessmentClient assessmentClient, IAssetServiceClient assetServiceClient)
 		{
 			_assessmentClient = assessmentClient;
 			_assetServiceClient = assetServiceClient;

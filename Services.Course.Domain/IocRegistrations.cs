@@ -95,7 +95,7 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<UpdateModelOnOutcomeVersionCreation>().As<IHandle<OutcomeVersionCreated>>();
 
 			containerBuilder.RegisterType<UpdateModelOnOutcomeVersionPublished>().As<IHandle<OutcomeVersionPublished>>();
-			containerBuilder.RegisterType<CourseLinkedVersionableEntityPublisher>().AsSelf();
+			containerBuilder.RegisterType<CoursePublisher>().As<ICoursePublisher>();
 			containerBuilder.RegisterType<CoursePublishValidator>().As<IValidator<Courses.Course>>();
             containerBuilder.RegisterType<LearningActivityPublishValidator>().As<IValidator<Courses.CourseLearningActivity>>();
 

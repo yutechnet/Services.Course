@@ -37,7 +37,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         [Test]
         public void Add_New_Course_To_Repository()
         {
-            var course = new Domain.Courses.Course(new Mock<Lazy<CourseLinkedVersionableEntityPublisher>>().Object);
+            var course = new Domain.Courses.Course();
             _updateModelOnCourseCreation.Handle(new CourseCreated { Course = course });
 
             _mockRepository.Verify(c => c.Save(course), Times.Once());

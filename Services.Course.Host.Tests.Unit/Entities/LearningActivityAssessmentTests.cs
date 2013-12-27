@@ -21,14 +21,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         private Guid _assessmentId;
 
         private Mock<IAssessmentClient> _assessmentClient;
-	    private Mock<Lazy<CourseLinkedVersionableEntityPublisher>>  _courseLinkedVersionableEntityPublisher;
-
+	
         [SetUp]
         public void SetUp()
         {
             _assessmentClient = new Mock<IAssessmentClient>();
-			_courseLinkedVersionableEntityPublisher=new Mock<Lazy<CourseLinkedVersionableEntityPublisher>>();
-             _course=new Domain.Courses.Course(_courseLinkedVersionableEntityPublisher.Object);
+		    _course=new Domain.Courses.Course();
             _learningActivity = new CourseLearningActivity();
             _courseSegment=_course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest { });
             _course.AddLearningActivity(_courseSegment.Id, new SaveCourseLearningActivityRequest { AssessmentType = "Custom" }, _learningActivity.Id);

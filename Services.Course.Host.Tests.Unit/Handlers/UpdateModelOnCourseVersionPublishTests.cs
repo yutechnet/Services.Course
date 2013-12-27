@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using BpeProducts.Common.NHibernate;
+using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Repositories;
@@ -25,7 +26,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         public void SetUp()
         {
             _mcokRepository = new Mock<IRepository>();
-            _updateModelOnCourseVersionPublish = new UpdateModelOnEntityVersionPublish(_mcokRepository.Object);
+            _updateModelOnCourseVersionPublish = new UpdateModelOnEntityVersionPublish(_mcokRepository.Object,new Mock<ICoursePublisher>().Object);
 	        _autoMock = AutoMock.GetLoose();
         }
 

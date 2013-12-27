@@ -17,7 +17,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
     public class Course : VersionableEntity, ISupportingEntity, IValidatable<Course>
     {
-        #region Properties
+	       public Course()
+	    {
+		    
+	    }
+		
+	    #region Properties
 
         private string _name;
         private string _code;
@@ -526,7 +531,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
             segment.UpdateLearningMaterial(learningMaterialId, updatelearningMaterialRequest);
         }
 
-        public override void Publish(string publishNote)
+		public override void Publish(string publishNote)
+		{
+			throw new NotImplementedException("this overload is not supported for course");
+		} 
+
+        public virtual void Publish(string publishNote,ICoursePublisher coursePublisher)
         {
 			//todo: move this out or atleast dont resort to newing up
             var validator = new CoursePublishValidator(new LearningActivityPublishValidator());
