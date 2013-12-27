@@ -5,9 +5,7 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Domain.Events;
-using BpeProducts.Services.Course.Domain.Courses;
-using NHibernate.Type;
-using ServiceStack.Common.Extensions;
+using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain
 {
@@ -15,12 +13,14 @@ namespace BpeProducts.Services.Course.Domain
     {
         private readonly IVersionableEntityFactory _versionableEntityFactory;
         private readonly IDomainEvents _domainEvents;
+        private readonly IAssessmentClient _assessmentClient;
         private readonly IAssetServiceClient _assetService;
-        public VersionHandler(IVersionableEntityFactory versionableEntityFactory, IDomainEvents domainEvents, IAssetServiceClient assetService)
+        public VersionHandler(IVersionableEntityFactory versionableEntityFactory, IDomainEvents domainEvents, IAssetServiceClient assetService, IAssessmentClient assessmentClient)
         {
             _versionableEntityFactory = versionableEntityFactory;
             _domainEvents = domainEvents;
             _assetService = assetService;
+            _assessmentClient = assessmentClient;
         }
 
         public VersionableEntity CreateVersion(string entityType, Guid parentEntityId, string versionNumber)
@@ -44,7 +44,12 @@ namespace BpeProducts.Services.Course.Domain
             }
 
             var newVersion = parentEntity.CreateVersion(versionNumber);
-
+            if (type == typeof(Courses.Course))
+            {
+                var course =(Courses.Course) newVersion;
+                course.CloneLearningMaterialOutcomes(_assessmentClient);     
+          
+            }
             _domainEvents.Raise<VersionCreated>(new VersionCreated
             {
                 AggregateId = newVersion.Id,

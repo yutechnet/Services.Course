@@ -2,20 +2,27 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac.Extras.Moq;
+using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
-using EventStore;
+using Moq;
 using NUnit.Framework;
+using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 {
     public class CourseTests
     {
+        private Mock<IAssessmentClient> _assessmentClientMock;
+        [SetUp]
+        public void SetUp()
+        {
+            _assessmentClientMock = new Mock<IAssessmentClient>();
+            Mapper.CreateMap<LearningMaterialRequest, Domain.Courses.LearningMaterial>();
+        }
         [Test]
         public void Can_add_top_level_segments()
         {
@@ -114,7 +121,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     TenantId = 999999
                 };
 
-            Domain.Courses.CourseSegment lastSegment = null;
+            CourseSegment lastSegment = null;
             for (int i = 0; i < segmentCount; i++)
             {
                 var request = new SaveCourseSegmentRequest
@@ -462,7 +469,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             course.Publish("It's published");
 
-            var request = course.GetSectionRequest(sectionRequest);
+            var request = course.GetSectionRequest(sectionRequest,_assessmentClientMock.Object);
 
             Assert.That(request.Name, Is.EqualTo(sectionRequest.Name));
             Assert.That(request.Code, Is.EqualTo(sectionRequest.Code));
@@ -482,7 +489,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 OrganizationId = Guid.NewGuid(),
             };
 
-            Assert.Throws<BadRequestException>(() => course.GetSectionRequest(new CourseSectionRequest()));
+            Assert.Throws<BadRequestException>(() => course.GetSectionRequest(new CourseSectionRequest(),_assessmentClientMock.Object));
         }
 
         [Test]
@@ -518,7 +525,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             course.Publish("It's published");
 
-            var request = course.GetSectionRequest(sectionRequest);
+            var request = course.GetSectionRequest(sectionRequest,_assessmentClientMock.Object);
 
             Assert.That(request.Segments.Count, Is.EqualTo(2));
 
@@ -592,7 +599,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             course.Publish("It's published");
 
-            var request = course.GetSectionRequest(sectionRequest);
+            var request = course.GetSectionRequest(sectionRequest, _assessmentClientMock.Object);
 
             var segment = request.Segments.First();
             var learningActivity = request.Segments.First().LearningActivities.First();
@@ -645,7 +652,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             course.Publish("It's published");
 
-            var request = course.GetSectionRequest(sectionRequest);
+            var request = course.GetSectionRequest(sectionRequest, _assessmentClientMock.Object);
 
             Assert.That(request.Segments.ElementAt(0).LearningActivities.Count, Is.EqualTo(1));
             Assert.That(request.Segments.ElementAt(0).LearningActivities.ElementAt(0).Name, Is.EqualTo(la1.Name));

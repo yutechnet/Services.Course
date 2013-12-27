@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
-using Services.Authorization.Contract;
+using Services.Assessment.Contract;
+
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
     public class CourseFactory : VersionFactory<Course>, ICourseFactory
     {
         private readonly IRepository _courseRepository;
-
-        public CourseFactory(IRepository courseRepository)
+        private readonly IAssessmentClient _assessmentClient;
+        public CourseFactory(IRepository courseRepository, IAssessmentClient assessmentClient)
             : base(courseRepository)
         {
             _courseRepository = courseRepository;
+            _assessmentClient = assessmentClient;
         }
 
 
@@ -60,11 +61,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
             {
                 courseSegment.Id = Guid.NewGuid();
                 courseSegment.Course = course;
-                var newLearningMaterials = Mapper.Map<List<LearningMaterial>>(courseSegment.LearningMaterials);
-                foreach (LearningMaterial learningMaterial in newLearningMaterials)
+                foreach (LearningMaterial learningMaterial in courseSegment.LearningMaterials)
                 {
-                    learningMaterial.Id = Guid.NewGuid();
                     learningMaterial.CourseSegment = courseSegment;
+                    learningMaterial.CloneLearningMaterialOutcomes(_assessmentClient);
                 }
             }
 
@@ -79,6 +79,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             return course;
         }
+
+
 
         protected Course BuildFromScratch(SaveCourseRequest request)
         {

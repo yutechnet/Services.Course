@@ -9,6 +9,7 @@ using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using Newtonsoft.Json;
+using Services.Assessment.Contract;
 using ServiceStack.Common.Extensions;
 
 namespace BpeProducts.Services.Course.Domain.Courses
@@ -197,5 +198,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
             ChildSegments.ForEach(childSegment => childSegment.PublishLearningMaterialAsset(assetServiceClient));
         }
 
+
+        public virtual void CloneLearningMaterialOutcomes(IAssessmentClient assessmentClient)
+        {
+            LearningMaterials.ForEach(learningMaterial => learningMaterial.CloneLearningMaterialOutcomes(assessmentClient));
+            ChildSegments.ForEach(childSegment => childSegment.CloneLearningMaterialOutcomes(assessmentClient));
+        }
     }
 }

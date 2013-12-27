@@ -5,6 +5,7 @@ using BpeProducts.Common.WebApi.NHibernate;
 using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
+using Services.Assessment.Contract;
 using Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Host.Controllers
@@ -14,11 +15,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
     {
         private readonly ICourseRepository _courseRepository;
         private readonly ISectionClient _sectionClient;
-
-        public SectionController(ICourseRepository courseRepository, ISectionClient sectionClient)
+        private readonly IAssessmentClient _assessmentClient;
+        public SectionController(ICourseRepository courseRepository, ISectionClient sectionClient,IAssessmentClient assessmentClient)
         {
             _courseRepository = courseRepository;
             _sectionClient = sectionClient;
+            _assessmentClient = assessmentClient;
         }
 
         [Transaction]
@@ -29,7 +31,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public HttpResponseMessage Post(Guid courseId, CourseSectionRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);
-            var sectionRequest = course.GetSectionRequest(request);
+            var sectionRequest = course.GetSectionRequest(request,_assessmentClient);
 
             var response = _sectionClient.CreateSection(request.SectionServiceUri, sectionRequest);
             return response;

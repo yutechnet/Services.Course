@@ -9,6 +9,7 @@ using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
 using Moq;
 using NUnit.Framework;
+using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit
 {
@@ -167,8 +168,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
     internal class TestCourseFactory : CourseFactory
     {
-        public TestCourseFactory(IRepository courseRepository)
-            : base(courseRepository)
+        public TestCourseFactory(IRepository courseRepository, IAssessmentClient assessmentClient)
+            : base(courseRepository, assessmentClient)
         {
         }
 

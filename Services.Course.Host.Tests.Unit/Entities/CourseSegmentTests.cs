@@ -12,6 +12,7 @@ using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
 using EventStore;
 using NUnit.Framework;
+using Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 {
@@ -21,8 +22,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [SetUp]
         public void SetUp()
         {
-            Mapper.CreateMap<LearningMaterialRequest, Domain.Courses.LearningMaterial>();
-            Mapper.CreateMap<UpdateLearningMaterialRequest, Domain.Courses.LearningMaterial>();
+            Mapper.CreateMap<LearningMaterialRequest, LearningMaterial>();
+            Mapper.CreateMap<UpdateLearningMaterialRequest, LearningMaterial>();
         }
 
         [Test]
@@ -92,11 +93,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             };
             var learningMaterial = courseSegment.AddLearningMaterial(learningMaterialRequest);
             Assert.That(courseSegment.LearningMaterials.Single(), Is.EqualTo(learningMaterial));
-            courseSegment.UpdateLearningMaterial(learningMaterial.Id,updateLearningMaterialRequest);
+            courseSegment.UpdateLearningMaterial(learningMaterial.Id, updateLearningMaterialRequest);
             Assert.That(learningMaterial.AssetId, Is.EqualTo(updateAssetId));
             Assert.That(learningMaterial.Instruction, Is.EqualTo(updateInstruction));
             Assert.That(learningMaterial.IsRequired, Is.EqualTo(updateIsRequired));
-          
+
         }
 
     }
