@@ -338,7 +338,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 MaxPoint = courseLearningActivity.MaxPoint,
                 Weight = courseLearningActivity.Weight,
                 ObjectId = courseLearningActivity.ObjectId,
-                CustomAttribute = courseLearningActivity.CustomAttribute
+                CustomAttribute = courseLearningActivity.CustomAttribute,
+				AssessmentId=courseLearningActivity.AssessmentId,
+				AssessmentType=courseLearningActivity.AssessmentType.ToString()
+			
             }).ToList();
 
             return sectionLearningActivities;
