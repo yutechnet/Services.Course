@@ -31,27 +31,27 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual void CloneLearningMaterialOutcomes(IAssessmentClient assessmentClient)
         {
-            var supportingOutcomes = GetSupportingOutcomes(assessmentClient);
+            var supportingOutcomes = GetSupportingOutcomes(assessmentClient,SourceLearningMaterialId);
             if (supportingOutcomes != null)
                 supportingOutcomes.ForEach(supportingOutcome => assessmentClient.SupportsOutcome("learningmaterial", Id, supportingOutcome.Id));
         }
 
         public virtual List<Guid> GetOutcomes(IAssessmentClient assessmentClient)
         {
-            var supportingOutcomes = GetSupportingOutcomes(assessmentClient);
+            var supportingOutcomes = GetSupportingOutcomes(assessmentClient,Id);
             var outcomeIds = new List<Guid>();
             if (supportingOutcomes != null)
                 supportingOutcomes.ForEach(supportingOutcome => outcomeIds.Add(supportingOutcome.Id));
             return outcomeIds;
         }
 
-        private List<OutcomeInfo> GetSupportingOutcomes(IAssessmentClient assessmentClient)
+        private List<OutcomeInfo> GetSupportingOutcomes(IAssessmentClient assessmentClient,Guid supportingEntityId)
         {
             var supportingOutcomes = new List<OutcomeInfo>();
             //when there is no learning material outcomes,it will throw exception
             try
             {
-                supportingOutcomes = assessmentClient.GetSupportingOutcomes(SourceLearningMaterialId, "learningmaterial");
+                supportingOutcomes = assessmentClient.GetSupportingOutcomes(supportingEntityId, "learningmaterial");
             }
             catch (InternalServerErrorException)
             {
