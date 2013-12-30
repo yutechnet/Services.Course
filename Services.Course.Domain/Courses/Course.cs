@@ -538,12 +538,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual void Publish(string publishNote,ICoursePublisher coursePublisher)
         {
-			//todo: move this out or atleast dont resort to newing up
-            var validator = new CoursePublishValidator(new LearningActivityPublishValidator());
-            IEnumerable<string> brokenRules;
-            var isValid = this.Validate(validator, out brokenRules);
-            if (!isValid)
-                throw new BadRequestException(string.Join("\n", brokenRules));
 			coursePublisher.Publish(this,publishNote);
 			base.Publish(publishNote);
 		}

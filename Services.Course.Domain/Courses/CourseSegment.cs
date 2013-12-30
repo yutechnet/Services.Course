@@ -191,6 +191,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningMaterial;
         }
 
+        
+
 
         public virtual void CloneLearningMaterialOutcomes(IAssessmentClient assessmentClient)
         {

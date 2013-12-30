@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Asset.Contracts;
@@ -14,19 +15,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
         public virtual string Instruction { get; set; }
         public virtual bool IsRequired { get; set; }
         public virtual Guid SourceLearningMaterialId { get; set; }
-
-
-        public virtual void PublishAsset(IAssetServiceClient assetServiceClient, string publishNote)
-        {
-            if (!CheckAssetIsPublished(assetServiceClient, AssetId))
-                assetServiceClient.PublishAsset(AssetId, publishNote);
-        }
-        private bool CheckAssetIsPublished(IAssetServiceClient assetServiceClient, Guid assetId)
-        {
-            var asset = assetServiceClient.GetAsset(assetId);
-            return asset.IsPublished;
-        }
-
 
         public virtual void CloneLearningMaterialOutcomes(IAssessmentClient assessmentClient)
         {
