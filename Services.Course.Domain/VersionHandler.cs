@@ -14,12 +14,10 @@ namespace BpeProducts.Services.Course.Domain
         private readonly IVersionableEntityFactory _versionableEntityFactory;
         private readonly IDomainEvents _domainEvents;
         private readonly IAssessmentClient _assessmentClient;
-        private readonly IAssetServiceClient _assetService;
-        public VersionHandler(IVersionableEntityFactory versionableEntityFactory, IDomainEvents domainEvents, IAssetServiceClient assetService, IAssessmentClient assessmentClient)
+        public VersionHandler(IVersionableEntityFactory versionableEntityFactory, IDomainEvents domainEvents, IAssessmentClient assessmentClient)
         {
             _versionableEntityFactory = versionableEntityFactory;
             _domainEvents = domainEvents;
-            _assetService = assetService;
             _assessmentClient = assessmentClient;
         }
 
@@ -77,12 +75,6 @@ namespace BpeProducts.Services.Course.Domain
             if (entity.IsPublished)
             {
                 throw new BadRequestException(string.Format("{0} {1} is already published and cannot be published again.", entityType, entityId));
-            }
-
-            if (type == typeof(Courses.Course))
-            {
-                var course = (Courses.Course)entity;
-                course.PublishLearningMaterialAsset(_assetService);
             }
 
             _domainEvents.Raise<VersionPublished>(new VersionPublished

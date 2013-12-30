@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
-using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using Newtonsoft.Json;
@@ -190,12 +189,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 throw new NotFoundException(string.Format("Learning Material {0} for Course Learning Material {1} is not found.", learningMaterialId, Id));
 
             return learningMaterial;
-        }
-
-        public virtual void PublishLearningMaterialAsset(IAssetServiceClient assetServiceClient)
-        {
-            LearningMaterials.ForEach(learningMaterial => learningMaterial.PublishAsset(assetServiceClient));
-            ChildSegments.ForEach(childSegment => childSegment.PublishLearningMaterialAsset(assetServiceClient));
         }
 
 

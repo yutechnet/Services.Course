@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
-using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Validation;
@@ -548,11 +547,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			coursePublisher.Publish(this,publishNote);
 			base.Publish(publishNote);
 		}
-
-        public virtual void PublishLearningMaterialAsset(IAssetServiceClient assetServiceClient)
-        {
-            Segments.ForEach(courseSegment => courseSegment.PublishLearningMaterialAsset(assetServiceClient));
-        }
 
         public virtual void CloneLearningMaterialOutcomes(IAssessmentClient assessmentClient)
         {
