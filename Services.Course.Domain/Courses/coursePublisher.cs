@@ -49,9 +49,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             foreach (var segment in segments)
             {
-                foreach (var learningMaterials in segment.LearningMaterials)
+                foreach (var learningMaterial in segment.LearningMaterials)
                 {
-                    _assetServiceClient.PublishAsset(learningMaterials.AssetId, publishNote);
+                    learningMaterial.PublishAsset(_assetServiceClient,publishNote);
                 }
                 if (segment.ChildSegments.Count > 0) PublishLearningMaterialAsset(segment.ChildSegments, publishNote);
             }
