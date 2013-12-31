@@ -5,6 +5,7 @@ using AutoMapper;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Services.Authorization.Contract;
@@ -16,12 +17,14 @@ namespace BpeProducts.Services.Course.Domain
         private readonly ICourseFactory _courseFactory;
         private readonly IDomainEvents _domainEvents;
         private readonly ICourseRepository _courseRepository;
+	    private readonly ICoursePublisher _coursePublisher;
 
-        public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository)
+	    public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository, ICoursePublisher coursePublisher)
         {
             _courseFactory = courseFactory;
             _domainEvents = domainEvents;
             _courseRepository = courseRepository;
+			_coursePublisher = coursePublisher;
         }
 
 		[AuthByAcl(Capability = Capability.CourseCreate, OrganizationObject = "request")]
@@ -140,5 +143,29 @@ namespace BpeProducts.Services.Course.Domain
             var courses = _courseRepository.GetPublishedCourses(organizationId);
             return Mapper.Map<IEnumerable<CourseInfoResponse>>(courses);
         }
+
+	    public CourseInfoResponse CreateVersion(Guid parentVersionId, string versionNumber)
+	    {
+		    var parentVersion = _courseRepository.Get(parentVersionId);
+
+			if (parentVersion == null)
+			{
+				throw new BadRequestException(string.Format("Parent course {0} is not found.", parentVersionId));
+			}
+
+			if (_courseRepository.GetVersion(parentVersion.OriginalEntity.Id, versionNumber) != null)
+			{
+				throw new BadRequestException(string.Format("Version {0} for Course {1} already exists.", versionNumber, parentVersion.OriginalEntity.Id));
+			}
+
+			var newVersion = parentVersion.CreateVersion(versionNumber);
+			newVersion.CloneLearningMaterialOutcomes(_assessmentClient);
+	    }
+
+	    public void PublishVersion(Guid courseId, string publishNote)
+	    {
+			var course = _courseRepository.GetOrThrow(courseId);
+			course.Publish(publishNote, _coursePublisher);
+		}
     }
 }

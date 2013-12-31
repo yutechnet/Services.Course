@@ -80,5 +80,35 @@ namespace BpeProducts.Services.Course.Host.Controllers
         {
             _courseService.Delete(courseId);
         }
+
+		[Transaction]
+		[ArgumentsNotNull]
+		[ValidateModelState]
+		[HttpPost]
+		[Route("course/version", Name = "CreateCourseVersion")]
+		public HttpResponseMessage CreateVersion(VersionRequest request)
+		{
+			var course = _courseService.CreateVersion(request.ParentVersionId, request.VersionNumber);
+			HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+
+			string uri = Url.Link("GetCourse", new { courseId = course.Id });
+			if (uri != null)
+			{
+				uri = uri.Replace("version", course.Id.ToString());
+				response.Headers.Location = new Uri(uri);
+			}
+			return response;
+		}
+
+		[Transaction]
+		[ArgumentsNotNull]
+		[ValidateModelState]
+		[HttpPut]
+		[Route("course/{courseId:guid}/publish")]
+		public void PublishVersion(Guid courseId, PublishRequest request)
+		{
+			_courseService.PublishVersion(courseId, request.PublishNote);
+		}
+
     }
 }

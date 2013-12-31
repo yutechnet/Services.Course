@@ -59,5 +59,8 @@ namespace BpeProducts.Services.Course.Domain
         /// <param name="organizationId">Organization to return the published courses from</param>
         /// <returns>List of published courses</returns>
         IEnumerable<CourseInfoResponse> GetPublishedCourses(Guid organizationId);
+
+	    CourseInfoResponse CreateVersion(Guid parentVersionId, string versionNumber);
+	    void PublishVersion(Guid courseId, string publishNote);
     }
 }
