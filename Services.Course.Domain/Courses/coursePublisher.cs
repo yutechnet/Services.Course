@@ -52,13 +52,19 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			{
 				foreach (var learningActivity in segment.CourseLearningActivities)
 				{
-					if (learningActivity.AssessmentType != AssessmentType.Custom)
+					if (learningActivity.AssessmentType != AssessmentType.Custom && AssessmentNotPublished(learningActivity.AssessmentId))
 					{
 						_assessmentClient.PublishAssessment(learningActivity.AssessmentId, publishNote);
 					}
 				}
 				if (segment.ChildSegments.Count > 0) PublishAssesments(segment.ChildSegments, publishNote);
 			}
+		}
+
+		private bool AssessmentNotPublished(Guid assessmentId)
+		{
+			AssessmentInfo assessment = _assessmentClient.GetAssessment(assessmentId);
+			return assessment.IsPublished == false;
 		}
 
 		public  void PublishLearningMaterialAsset(IList<CourseSegment> segments, string publishNote)

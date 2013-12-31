@@ -87,6 +87,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 		[Test]
 		public void Should_publish_assessments_in_learning_activities_when_course_is_published()
 		{
+
+			_assessmentClient.Setup(a => a.GetAssessment(It.IsAny<Guid>())).Returns(new AssessmentInfo { IsPublished = false });
 			var publishNote = "hello";
 			_coursePublisher.Publish(_course, publishNote);
 
@@ -96,6 +98,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 		[Test]
 		public void Should_publish_assets_in_learning_materials_when_course_is_published()
 		{
+			_assessmentClient.Setup(a => a.GetAssessment(It.IsAny<Guid>())).Returns(new AssessmentInfo { IsPublished = false });
 			_course.AddLearningMaterial(_segmentId, new LearningMaterialRequest
 			{
 				AssetId = _assetId,
@@ -118,6 +121,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 		public void Should_not_publish_custom_assesstment_type()
 		{
 			var publishNote = "blah";
+			_assessmentClient.Setup(a => a.GetAssessment(It.IsAny<Guid>())).Returns(new AssessmentInfo {IsPublished = false});
 			_course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
 			{
 				AssessmentType = "Custom"
@@ -126,6 +130,21 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 			_coursePublisher.Publish(_course, publishNote);
 			// should expect only one call although the segment has two learning activities. 
 			_assessmentClient.Verify(a => a.PublishAssessment(It.IsAny<Guid>(), publishNote), Times.Once());
+		}
+
+		[Test]
+		public void Should_not_publish_assesstments_that_are_published()
+		{
+			var publishNote = "blah";
+			_assessmentClient.Setup(a => a.GetAssessment(It.IsAny<Guid>())).Returns(new AssessmentInfo { IsPublished = true });
+			_course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
+			{
+				AssessmentType = "Essay",AssessmentId = Guid.NewGuid()
+			}, Guid.NewGuid());
+
+			_coursePublisher.Publish(_course, publishNote);
+			// should make any calls since all assessments are stubbed to be publsihed 
+			_assessmentClient.Verify(a => a.PublishAssessment(It.IsAny<Guid>(), publishNote), Times.Never());
 		}
 	}
 }
