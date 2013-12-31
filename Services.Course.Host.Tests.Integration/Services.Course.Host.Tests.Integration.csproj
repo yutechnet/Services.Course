@@ -138,7 +138,7 @@
     </Reference>
     <Reference Include="Services.Assessment.Contract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.158\lib\net40\Services.Assessment.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.161\lib\net40\Services.Assessment.Contract.dll</HintPath>
     </Reference>
     <Reference Include="Services.Section.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

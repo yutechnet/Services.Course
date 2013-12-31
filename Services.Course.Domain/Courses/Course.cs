@@ -542,7 +542,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         public virtual void Publish(string publishNote,ICoursePublisher coursePublisher)
         {
 			coursePublisher.Publish(this,publishNote);
-			base.Publish(publishNote);
+            base.Publish(publishNote);
 		}
 
         public virtual void CloneLearningMaterialOutcomes(IAssessmentClient assessmentClient)

@@ -9,6 +9,7 @@ using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Handlers
 {
+    // TODO: Remove this and other IHandle<> classes after LearningOutcome management has been completely migrated over to Assessment Service
     public class UpdateModelOnCourseVersionCreation : IHandle<VersionCreated>
     {
         private readonly IRepository _repository;

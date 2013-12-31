@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Domain.Validation;
 using Services.Assessment.Contract;
@@ -42,6 +43,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
 			PublishAssesments(course.Segments,publishNote);
 			PublishLearningMaterialAsset(course.Segments, publishNote);
+      
 		}
 
 		public void PublishAssesments(IList<CourseSegment> segments, string publishNote)

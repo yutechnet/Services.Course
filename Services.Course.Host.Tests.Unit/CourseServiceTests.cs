@@ -27,13 +27,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 	    [SetUp]
         public void SetUp()
         {
-            _courseFactoryMock = new Mock<ICourseFactory>();
-            _domainEventsMock = new Mock<IDomainEvents>();
-	        _repoMock = new Mock<ICourseRepository>();
-			_autoMock = AutoMock.GetLoose();
+            _autoMock = AutoMock.GetLoose();
+            _courseFactoryMock = _autoMock.Mock<ICourseFactory>();
+            _domainEventsMock = _autoMock.Mock<IDomainEvents>();
+	        _repoMock = _autoMock.Mock<ICourseRepository>();
+			
 		    _coursePublisher = _autoMock.Mock<ICoursePublisher>();
-			_courseService = new CourseService(_courseFactoryMock.Object, _domainEventsMock.Object, _repoMock.Object);
-		 
+	        _courseService = _autoMock.Create<CourseService>();
         }
 
 
@@ -92,8 +92,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             var guid2 = Guid.NewGuid();
             var guid3 = Guid.NewGuid();
 
-	        var prerequisiteCourse = new Domain.Courses.Course();
+            var prerequisiteCourse = new Domain.Courses.Course();
 				prerequisiteCourse.Id = guid1;
+
 	        var prerequisiteCourse2 =new Domain.Courses.Course();
 			prerequisiteCourse2.Id = guid2;
 

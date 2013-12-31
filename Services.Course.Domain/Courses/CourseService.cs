@@ -8,6 +8,7 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
+using Services.Assessment.Contract;
 using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain
@@ -18,13 +19,15 @@ namespace BpeProducts.Services.Course.Domain
         private readonly IDomainEvents _domainEvents;
         private readonly ICourseRepository _courseRepository;
 	    private readonly ICoursePublisher _coursePublisher;
+        private readonly IAssessmentClient _assessmentClient;
 
-	    public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository, ICoursePublisher coursePublisher)
+        public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository, ICoursePublisher coursePublisher,IAssessmentClient assessmentClient)
         {
             _courseFactory = courseFactory;
             _domainEvents = domainEvents;
             _courseRepository = courseRepository;
 			_coursePublisher = coursePublisher;
+	        _assessmentClient = assessmentClient;
         }
 
 		[AuthByAcl(Capability = Capability.CourseCreate, OrganizationObject = "request")]
@@ -158,14 +161,22 @@ namespace BpeProducts.Services.Course.Domain
 				throw new BadRequestException(string.Format("Version {0} for Course {1} already exists.", versionNumber, parentVersion.OriginalEntity.Id));
 			}
 
-			var newVersion = parentVersion.CreateVersion(versionNumber);
+			var newVersion = parentVersion.CreateVersion(versionNumber) as Courses.Course;
+            if (newVersion == null)
+            {
+                throw new Exception(string.Format("Failed to create a new version {0} from the parent version {1}", versionNumber, parentVersion.Id));
+            }
+
 			newVersion.CloneLearningMaterialOutcomes(_assessmentClient);
+            _courseRepository.Save(newVersion);
+	        return Mapper.Map<CourseInfoResponse>(newVersion);
 	    }
 
 	    public void PublishVersion(Guid courseId, string publishNote)
 	    {
 			var course = _courseRepository.GetOrThrow(courseId);
 			course.Publish(publishNote, _coursePublisher);
+            _courseRepository.Save(course);
 		}
     }
 }

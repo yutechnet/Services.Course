@@ -131,7 +131,7 @@
     </Reference>
     <Reference Include="Services.Assessment.Contract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.158\lib\net40\Services.Assessment.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.161\lib\net40\Services.Assessment.Contract.dll</HintPath>
     </Reference>
     <Reference Include="Services.Section.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -199,20 +199,14 @@
     <Compile Include="Courses\CourseRubricService.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
     <Compile Include="Courses\CourseSegment.cs" />
-    <Compile Include="Events\CourseLearningActivityAdded.cs" />
-    <Compile Include="Events\CourseLearningActivityDeleted.cs" />
-    <Compile Include="Events\CourseLearningActivityUpdated.cs" />
     <Compile Include="Events\CoursePrerequisiteAdded.cs" />
     <Compile Include="Events\CoursePrerequisiteRemoved.cs" />
     <Compile Include="Events\CourseSegmentDeleted.cs" />
     <Compile Include="Events\CourseSegmentReordered.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCoursePrerequisite.cs" />
-    <Compile Include="Handlers\UpdateModelOnAddingCourseLearningActivity.cs" />
-    <Compile Include="Handlers\UpdateModelOnDeletingCourseLearningActivity.cs" />
     <Compile Include="Handlers\UpdateModelOnDeletingCourseSegment.cs" />
     <Compile Include="Handlers\UpdateModelOnRemovingCoursePrerequisite.cs" />
     <Compile Include="Handlers\UpdateModelOnReorderingCourseSegment.cs" />
-    <Compile Include="Handlers\UpdateModelOnUpdatingCourseLearningActivity.cs" />
     <Compile Include="ICourseLearningActivityService.cs" />
     <Compile Include="IVersionableEntityFactory.cs" />
     <Compile Include="IVersionHandler.cs" />

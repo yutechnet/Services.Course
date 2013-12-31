@@ -16,10 +16,12 @@ namespace BpeProducts.Services.Course.Host.Controllers
     public class OutcomeController : ApiController
     {
         private readonly ILearningOutcomeService _learningOutcomeService;
+        private IVersionHandler _versionHandler;
 
-        public OutcomeController(ILearningOutcomeService learningOutcomeService)
+        public OutcomeController(ILearningOutcomeService learningOutcomeService,IVersionHandler versionHandler)
         {
             _learningOutcomeService = learningOutcomeService;
+            _versionHandler = versionHandler;
         }
 
         [Transaction]
@@ -173,6 +175,36 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public void RemoveSupportingOutcome(Guid supportingOutcomeId, Guid supportedOutcomeId)
         {
             _learningOutcomeService.RemoveSupportingOutcome(supportingOutcomeId, supportedOutcomeId);
+        }
+
+        [Transaction]
+        [ArgumentsNotNull]
+        [ValidateModelState]
+        [HttpPost]
+        [Route("outcome/version", Name = "CreateOutcomeVersion")]
+        public HttpResponseMessage CreateVersion(VersionRequest request)
+        {
+           
+            var entity = _versionHandler.CreateVersion("learningoutcome", request.ParentVersionId, request.VersionNumber);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+
+            var uri = Url.Link("GetOutcome", new { outcomeId = entity.Id });
+            if (uri != null)
+            {
+                response.Headers.Location = new Uri(uri);
+            }
+           
+            return response;
+        }
+
+        [Transaction]
+        [ArgumentsNotNull]
+        [ValidateModelState]
+        [HttpPut]
+        [Route("outcome/{entityId:guid}/publish")]
+        public void PublishVersion( Guid entityId, PublishRequest request)
+        {
+            _versionHandler.PublishVersion("learningoutcome", entityId, request.PublishNote);
         }
     }
 }
