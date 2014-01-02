@@ -1,29 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac.Extras.Moq;
 using AutoMapper;
-using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
-using BpeProducts.Services.Course.Domain.Entities;
-using EventStore;
+using Moq;
 using NUnit.Framework;
-using Services.Section.Contracts;
+using Services.Assessment.Contract;
+using OutcomeInfo = Services.Assessment.Contract.OutcomeInfo;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 {
     [TestFixture]
     public class CourseSegmentTests
     {
+        private Domain.Courses.Course _course;
+        private CourseSegment _courseSegment;
+
+        private Mock<IAssessmentClient> _mockAssessmentClient;
         [SetUp]
         public void SetUp()
         {
             Mapper.CreateMap<LearningMaterialRequest, LearningMaterial>();
             Mapper.CreateMap<UpdateLearningMaterialRequest, LearningMaterial>();
+            _mockAssessmentClient = new Mock<IAssessmentClient>();
+            _course = new Domain.Courses.Course();
+            _courseSegment = _course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest { });
+            _courseSegment.AddLearningMaterial(new LearningMaterialRequest());
+            _courseSegment.AddLearningMaterial(new LearningMaterialRequest());
         }
 
         [Test]
@@ -97,6 +101,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(learningMaterial.AssetId, Is.EqualTo(updateAssetId));
             Assert.That(learningMaterial.Instruction, Is.EqualTo(updateInstruction));
             Assert.That(learningMaterial.IsRequired, Is.EqualTo(updateIsRequired));
+
+        }
+
+        [Test]
+        public void Can_clone_learning_material_0utcomes()
+        {
+            var supportOutcomes = new List<OutcomeInfo> { new OutcomeInfo() { Id = Guid.NewGuid() }, new OutcomeInfo() { Id = Guid.NewGuid() } };
+            _mockAssessmentClient.Setup(a => a.GetSupportingOutcomes(It.IsAny<Guid>(), It.IsAny<string>())).Returns(supportOutcomes);
+            _courseSegment.CloneLearningMaterialOutcomes(_mockAssessmentClient.Object);
+            _mockAssessmentClient.Verify(a => a.SupportsOutcome("learningmaterial", It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(supportOutcomes.Count*_courseSegment.LearningMaterials.Count));
 
         }
 
