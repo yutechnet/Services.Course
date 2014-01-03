@@ -51,9 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Authorization, Version=1.0.36.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Authorization, Version=1.0.40.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.36\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.40\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.20.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
