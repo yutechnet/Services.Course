@@ -67,7 +67,7 @@ Scenario: Cannot add a prerequisite to a course that is published
 	And I add the following prerequisites to 'Econ 300'
 	| Name     |
 	| Math 101 |
-	Then I get 'Forbidden' response
+	Then I get 'BadRequest' response
 
 Scenario: Cannot add an unpublished course ass a prerequisite
 	When I add the following prerequisites to 'Math 200'

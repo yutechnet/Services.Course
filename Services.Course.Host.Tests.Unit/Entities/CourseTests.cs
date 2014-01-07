@@ -244,16 +244,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             course.Publish("note", _coursePublisher.Object);
 
-            Assert.Throws<ForbiddenException>(() => course.Name = "name");
-            Assert.Throws<ForbiddenException>(() => course.Description = "description");
-            Assert.Throws<ForbiddenException>(() => course.CourseType = ECourseType.Competency);
-            Assert.Throws<ForbiddenException>(() => course.Code = "code");
-            Assert.Throws<ForbiddenException>(() => course.SetPrograms(new List<Program>()));
-            Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiteCourse));
-            Assert.Throws<ForbiddenException>(() => course.RemovePrerequisite(Guid.NewGuid()));
-            Assert.Throws<ForbiddenException>(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
-            Assert.Throws<ForbiddenException>(() => course.AddLearningMaterial(Guid.NewGuid(), new LearningMaterialRequest()));
-            Assert.Throws<ForbiddenException>(() => course.DeleteLearningMaterial(Guid.NewGuid(), Guid.NewGuid()));
+            Assert.Throws<BadRequestException>(() => course.Name = "name");
+            Assert.Throws<BadRequestException>(() => course.Description = "description");
+            Assert.Throws<BadRequestException>(() => course.CourseType = ECourseType.Competency);
+            Assert.Throws<BadRequestException>(() => course.Code = "code");
+            Assert.Throws<BadRequestException>(() => course.SetPrograms(new List<Program>()));
+            Assert.Throws<BadRequestException>(() => course.AddPrerequisite(prerequisiteCourse));
+            Assert.Throws<BadRequestException>(() => course.RemovePrerequisite(Guid.NewGuid()));
+            Assert.Throws<BadRequestException>(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
+            Assert.Throws<BadRequestException>(() => course.AddLearningMaterial(Guid.NewGuid(), new LearningMaterialRequest()));
+            Assert.Throws<BadRequestException>(() => course.DeleteLearningMaterial(Guid.NewGuid(), Guid.NewGuid()));
         }
 
         [Test]

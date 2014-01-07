@@ -127,7 +127,7 @@ Scenario: Cannot add a learning activity to a course that is already published
 	| Weight        | 50                                   |
 	| MaxPoint      | 20                                   |
 	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	Then I get 'Forbidden' response
+	Then I get 'BadRequest' response
 
 Scenario: Add a new learning activity with a custom type
 	When I add the following learning activity to 'Week 1' course segment

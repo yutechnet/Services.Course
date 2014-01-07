@@ -284,7 +284,7 @@ this.FeatureBackground();
 #line 63
  testRunner.And("I update \'English 1010\' course with the following info", ((string)(null)), table10, "And ");
 #line 69
- testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

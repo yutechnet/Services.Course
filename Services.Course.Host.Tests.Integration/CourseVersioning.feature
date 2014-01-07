@@ -66,7 +66,7 @@ Scenario: Published version cannot be modified
 	| Code           | ENG101                               |
 	| Description    | Johns's terrible English Class       |
 	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
-	Then I get 'Forbidden' response
+	Then I get 'BadRequest' response
 
 Scenario: Published version cannot be deleted
 	When I publish the following courses

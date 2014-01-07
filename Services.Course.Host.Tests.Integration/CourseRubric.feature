@@ -118,5 +118,5 @@ Scenario: Course must be unpublished for any rubric association/disassociation (
 	And I associate the following rubrics to 'Custom 1' learning activity
 	| Title          |
 	| Math101 Rubric |
-	Then I get 'Forbidden' response
+	Then I get 'BadRequest' response
 	
