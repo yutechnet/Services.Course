@@ -67,17 +67,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.20\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.76\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+    <Reference Include="BpeProducts.Common.NHibernate">
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.77\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis, Version=1.0.23.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.23\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApi, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApi.2.0.3\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
+    <Reference Include="BpeProducts.Common.WebApi">
+      <HintPath>..\packages\BpeProducts.Common.WebApi.2.0.7\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.79.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -136,13 +134,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Services.Assessment.Contract, Version=0.1.175.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.175\lib\net40\Services.Assessment.Contract.dll</HintPath>
+    <Reference Include="Services.Assessment.Contract">
+      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.177\lib\net40\Services.Assessment.Contract.dll</HintPath>
     </Reference>
-    <Reference Include="Services.Section.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.264\lib\net40\Services.Section.Contracts.dll</HintPath>
+    <Reference Include="Services.Section.Contracts">
+      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.266\lib\net40\Services.Section.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.70.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
