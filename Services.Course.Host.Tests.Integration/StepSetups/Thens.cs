@@ -19,6 +19,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
     [Binding]
     public class Thens
     {
+        [Then(@"the organization '(.*)' has the following programs")]
+        public void ThenTheOrganizationHasTheFollowingPrograms(string orgName, Table table)
+        {
+            var orgResource = Resources<OrganizationResource>.Get(orgName);
+            var queryString = string.Format("?$filter=OrganizationId+eq+'{0}'", orgResource.Id);
+            var programs = GetOperations.SearchPrograms(queryString);
+        }
+
+        [Then(@"the organization with '(.*)' id has the following programs")]
+        public void ThenTheOrganizationWithIdHasTheFollowingPrograms(Guid orgId, Table table)
+        {
+            var queryString = string.Format("?$filter=OrganizationId+eq+'{0}'", orgId.ToString());
+            var programs = GetOperations.SearchPrograms(queryString);
+
+            //table.CompareToSet(programs);
+        }
+
         [Then(@"the course '(.*)' should have the following info")]
         public void ThenTheCourseShouldHaveTheFollowingInfo(string courseName, Table table)
         {

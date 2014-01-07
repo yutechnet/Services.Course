@@ -59,3 +59,13 @@ Scenario: Unable to create program due to missing info
 	| StatusCode |
 	| BadRequest |
 	| BadRequest |
+
+Scenario: Search for programs
+	Given I have the following programs
+	| Name                | Description | ProgramType | OrganizationName |
+	| Bachelor of Science | Economics   | MA          | Default          |
+	| Bachelor of Art     | Art program | BA          | Default          |
+	Then the organization with 'E2DF063D-E2A1-4F83-9BE0-218EC676C05F' id has the following programs
+	| Name                | Description | ProgramType | OrganizationId                       |
+	| Bachelor of Science | Economics   | MA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Bachelor of Art     | Art program | BA          | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |

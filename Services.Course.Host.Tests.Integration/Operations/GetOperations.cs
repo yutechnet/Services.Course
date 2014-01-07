@@ -69,5 +69,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         {
             return ApiFeature.CourseTestHost.Get<LearningMaterialInfo>(resource.ResourceUri.ToString());
         }
+
+        public static IEnumerable<ProgramResponse> SearchPrograms(string queryString)
+        {
+            var uri = string.Format("{0}/program/{1}", ApiFeature.LeadingPath, queryString);
+            return ApiFeature.CourseTestHost.Get<IEnumerable<ProgramResponse>>(uri);
+        }
     }
 }

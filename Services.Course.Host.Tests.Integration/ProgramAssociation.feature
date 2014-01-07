@@ -87,3 +87,19 @@ Scenario: Verify a course version can be created from a previously published ver
 	Then the course 'Econ 400 v1.0.0.1' should have the following prerequisites
 	| Name     | 
 	| Econ 100 | 
+
+Scenario: Search for programs with courses
+	When I associate 'English 101' course with the following programs
+	| Program Name        |
+	| Bachelor of Art     |
+	| Bachelor of Science |
+	And I associate 'Psychology 101' course with the following programs
+	| Program Name        |
+	| Bachelor of Art     |
+	Then the organization 'COB' has the following programs
+	| Name                | Description | ProgramType | OrganizationName |
+	| Bachelor of Art     | BA Program  | BA          | COB              |
+	| Bachelor of Science | BS program  | BS          | COB              |
+
+
+
