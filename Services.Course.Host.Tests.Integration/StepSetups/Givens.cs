@@ -9,11 +9,10 @@ using System.Linq;
 using System.Net.Http;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment;
-using Services.Assessment.Contract;
-using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Assist;
 using BpeProducts.Common.WebApiTest.Framework;
 using Moq;
+using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 using OutcomeRequest = BpeProducts.Services.Course.Contract.OutcomeRequest;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups

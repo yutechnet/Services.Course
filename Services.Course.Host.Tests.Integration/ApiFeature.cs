@@ -78,10 +78,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             Resources<OrganizationResource>.Add("Default", defaultOrg);
 
             //Some scenarios change the user, so make sure we set it to a know user for each scenario
-            CourseTestHost.SetTestUser(DefaultTestUser);
-            CourseTestHost.Client.DefaultRequestHeaders.Add("X-ApiKey",
-                                                            Guid.Parse("5d653b84-8bb1-4e6a-914a-a288010f6b72")
-                                                                .ToString());
+            CourseTestHost.SetTestUser(DefaultTestUser);;
 
             MockAclClient = new Mock<IAclHttpClient>();
             MockSectionClient = new Mock<ISectionClient>();

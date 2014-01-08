@@ -1,15 +1,11 @@
-﻿using BpeProducts.Common.Authorization;
-using BpeProducts.Common.WebApiTest;
-using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+﻿using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using Moq;
 using Services.Authorization.Contract;
-using TechTalk.SpecFlow;
 using BpeProducts.Common.WebApiTest.Framework;
+using TechTalk.SpecFlow;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
 {

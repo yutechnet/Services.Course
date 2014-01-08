@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BpeProducts.Common.WebApiTest.Framework;
-using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment;
 using Services.Assessment.Contract;
 using TechTalk.SpecFlow;

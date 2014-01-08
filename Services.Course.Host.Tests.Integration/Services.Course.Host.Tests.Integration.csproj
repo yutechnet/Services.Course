@@ -77,13 +77,13 @@
     <Reference Include="BpeProducts.Common.WebApi">
       <HintPath>..\packages\BpeProducts.Common.WebApi.2.0.7\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.79.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.82.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.79\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.82\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Asset.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.112\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.113\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Authorization.Contract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -138,8 +138,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.184\lib\net40\Services.Assessment.Contract.dll</HintPath>
     </Reference>
-    <Reference Include="Services.Section.Contracts">
-      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.266\lib\net40\Services.Section.Contracts.dll</HintPath>
+    <Reference Include="Services.Section.Contracts, Version=0.1.271.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.271\lib\net40\Services.Section.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.70.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
