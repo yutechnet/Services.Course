@@ -25,8 +25,8 @@ Background:
 
 Scenario: Create a learning activity with an assessment
 	Given I have the following assessments
-	| Name        | Instructions | AssessmentType | IsPublished | VersionNumber |
-	| Assessment1 | Do this      | Essay          | true        | 1.1           |
+	| Name        | Instructions | AssessmentType | IsPublished |
+	| Assessment1 | Do this      | Essay          | true        |
 	When I add the following learning activity to 'Week 1' course segment
 	| Field         | Value                                |
 	| Name          | Discussion 2                         |
@@ -44,8 +44,8 @@ Scenario: Create a learning activity with an assessment
 
 Scenario: Associate a published assessment to an existing learning activity
 	Given I have the following assessments
-	| Name        | Instructions | AssessmentType | IsPublished | VersionNumber |
-	| Assessment1 | Do this      | Essay          | true        | 1.1           |
+	| Name        | Instructions | AssessmentType | IsPublished |
+	| Assessment1 | Do this      | Essay          | true        |
 	When I update 'Discussion 1' learning activity with the following info
 	| Field         | Value                                |
 	| Name          | Discussion 1                         |

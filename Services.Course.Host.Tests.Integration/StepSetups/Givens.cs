@@ -10,6 +10,7 @@ using System.Net.Http;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment;
 using BpeProducts.Common.WebApiTest.Framework;
+using BpeProducts.Common.WebApiTest.Extensions;
 using Moq;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -138,12 +139,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var learningActivityRequest = new SaveCourseLearningActivityRequest
                     {
                         Name = row["Name"],
-                        Type = (CourseLearningActivityType) Enum.Parse(typeof (CourseLearningActivityType), row["Type"]),
                         IsGradeable = Convert.ToBoolean(row["IsGradeable"]),
                         Weight = Convert.ToInt32(row["Weight"]),
                         MaxPoint = Convert.ToInt32(row["MaxPoint"]),
                         IsExtraCredit = Convert.ToBoolean(row["IsExtraCredit"])
                     };
+
+                var type = row.GetValue("Type", null);
+                if(type != null)
+                    learningActivityRequest.Type = (CourseLearningActivityType) Enum.Parse(typeof (CourseLearningActivityType), type);
+
+                learningActivityRequest.AssessmentType = row.GetValue("AssessmentType", null);
 
                 if (table.ContainsColumn("ObjectId"))
                 {

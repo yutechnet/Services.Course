@@ -38,13 +38,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             _courseId = Guid.NewGuid();
             _segmentId = Guid.NewGuid();
             _assessmentId = Guid.NewGuid();
-            _learningActivityId = Guid.NewGuid();
 	        _autoMock = AutoMock.GetLoose();
-		    _course = _autoMock.Create<Course.Domain.Courses.Course>();
+		    _course = _autoMock.Create<Domain.Courses.Course>();
 			_course.Id = _courseId;
             _course.AddSegment(_segmentId, new SaveCourseSegmentRequest());
-            _course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest {AssessmentType = "Custom"},
-                                        _learningActivityId);
+            _learningActivityId = _course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest {AssessmentType = "Custom"}).Id;
 
             _courseLearningActivityService = new CourseLearningActivityService(_courseRepository.Object, _assessmentClient.Object);
 

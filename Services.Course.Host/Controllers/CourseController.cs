@@ -108,6 +108,5 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		{
 			_courseService.PublishVersion(courseId, request.PublishNote);
 		}
-
     }
 }

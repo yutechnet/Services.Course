@@ -232,6 +232,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoursePreRequisite.feature</DependentUpon>
     </Compile>
+    <Compile Include="CoursePublishingValidation.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoursePublishingValidation.feature</DependentUpon>
+    </Compile>
     <Compile Include="CourseSegment.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -343,6 +348,10 @@
     <None Include="CoursePreRequisite.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CoursePreRequisite.feature.cs</LastGenOutput>
+    </None>
+    <None Include="CoursePublishingValidation.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CoursePublishingValidation.feature.cs</LastGenOutput>
     </None>
     <None Include="CourseSegment.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

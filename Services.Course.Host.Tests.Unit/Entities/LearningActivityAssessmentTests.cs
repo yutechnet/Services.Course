@@ -15,21 +15,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
     [TestFixture]
     public class LearningActivityAssessmentTests
     {
-        private Course.Domain.Courses.Course _course;
-        private Course.Domain.Courses.CourseSegment _courseSegment;
+        private Domain.Courses.Course _course;
+        private CourseSegment _courseSegment;
         private CourseLearningActivity _learningActivity;
         private Guid _assessmentId;
 
-        private Mock<IAssessmentClient> _assessmentClient;
-	
         [SetUp]
         public void SetUp()
         {
-            _assessmentClient = new Mock<IAssessmentClient>();
-		    _course=new Domain.Courses.Course();
-            _learningActivity = new CourseLearningActivity();
-            _courseSegment=_course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest { });
-            _course.AddLearningActivity(_courseSegment.Id, new SaveCourseLearningActivityRequest { AssessmentType = "Custom" }, _learningActivity.Id);
+            _course = new Domain.Courses.Course();
+            _courseSegment = _course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest());
+            _learningActivity = _course.AddLearningActivity(_courseSegment.Id, new SaveCourseLearningActivityRequest { AssessmentType = "Custom" });
             _assessmentId = Guid.NewGuid();
         }
 
@@ -37,7 +33,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         public void Can_create_learning_activity_with_assessment()
         {
             var courseLearningActivityRequest=new SaveCourseLearningActivityRequest {AssessmentId = _assessmentId, AssessmentType = "Essay"};
-            var learningActivity=_course.AddLearningActivity(_courseSegment.Id, courseLearningActivityRequest, Guid.NewGuid());
+            var learningActivity=_course.AddLearningActivity(_courseSegment.Id, courseLearningActivityRequest);
             Assert.That(learningActivity.AssessmentId, Is.EqualTo(_assessmentId));
             Assert.That(learningActivity.AssessmentType, Is.EqualTo(AssessmentType.Essay));
         }

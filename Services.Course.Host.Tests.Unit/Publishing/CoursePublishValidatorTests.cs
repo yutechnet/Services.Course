@@ -16,7 +16,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
     {
         private Guid _courseId;
         private Guid _segmentId;
-        private Guid _learningActivityId;
         private Guid _assessmentId;
 
         private Mock<IValidator<CourseLearningActivity>> _mockLearningActivityValidator; 
@@ -28,7 +27,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
         {
             _courseId = Guid.NewGuid();
             _segmentId = Guid.NewGuid();
-            _learningActivityId = Guid.NewGuid();
             _assessmentId = Guid.NewGuid();
 
             _mockLearningActivityValidator = new Mock<IValidator<CourseLearningActivity>>();
@@ -40,12 +38,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
         [Test]
         public void Can_validate_course_for_publishability()
         {
-			var course = _autoMock.Create<Course.Domain.Courses.Course>();
+			var course = _autoMock.Create<Domain.Courses.Course>();
             course.AddSegment(_segmentId, new SaveCourseSegmentRequest());
             course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
                 {
                     AssessmentId = _assessmentId, AssessmentType = "Essay"
-                }, _learningActivityId);
+                });
 
             IEnumerable<string> brokenRules;
             var isValid = course.Validate(_validator, out brokenRules);
@@ -63,7 +61,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
             {
                 AssessmentId = Guid.Empty,
                 AssessmentType = "Essay"
-            }, _learningActivityId);
+            });
 
             IEnumerable<string> brokenRules;
             var isValid = course.Validate(_validator, out brokenRules);
@@ -81,12 +79,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
             {
                 AssessmentId = Guid.Empty,
                 AssessmentType = "Essay"
-            }, Guid.NewGuid());
+            });
+
             course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
             {
                 AssessmentId = Guid.NewGuid(),
                 AssessmentType = "Essay"
-            }, Guid.NewGuid());
+            });
 
             IEnumerable<string> brokenRules;
             var isValid = course.Validate(_validator, out brokenRules);

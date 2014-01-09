@@ -32,21 +32,19 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			_coursePublishValidator = coursePublishValidator;
 		}
 
-		public void Publish(Course course,string publishNote)
-		{
+	    public void Publish(Course course, string publishNote)
+	    {
+	        IEnumerable<string> brokenRules;
+	        var isValid = course.Validate(_coursePublishValidator, out brokenRules);
 
-			IEnumerable<string> brokenRules;
-			var isValid = course.Validate(_coursePublishValidator, out brokenRules);
-			
-			if (!isValid)
-				throw new BadRequestException(string.Join("\n", brokenRules));
+	        if (!isValid)
+	            throw new BadRequestException(string.Join("\n", brokenRules));
 
-			PublishAssesments(course.Segments,publishNote);
-			PublishLearningMaterialAsset(course.Segments, publishNote);
-      
-		}
+	        PublishAssesments(course.Segments, publishNote);
+	        PublishLearningMaterialAsset(course.Segments, publishNote);
+	    }
 
-		public void PublishAssesments(IList<CourseSegment> segments, string publishNote)
+	    public void PublishAssesments(IList<CourseSegment> segments, string publishNote)
 		{
 			foreach (var segment in segments)
 			{

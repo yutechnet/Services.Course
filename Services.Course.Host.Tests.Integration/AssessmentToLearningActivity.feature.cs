@@ -152,14 +152,12 @@ this.FeatureBackground();
                         "Name",
                         "Instructions",
                         "AssessmentType",
-                        "IsPublished",
-                        "VersionNumber"});
+                        "IsPublished"});
             table6.AddRow(new string[] {
                         "Assessment1",
                         "Do this",
                         "Essay",
-                        "true",
-                        "1.1"});
+                        "true"});
 #line 27
  testRunner.Given("I have the following assessments", ((string)(null)), table6, "Given ");
 #line hidden
@@ -240,14 +238,12 @@ this.FeatureBackground();
                         "Name",
                         "Instructions",
                         "AssessmentType",
-                        "IsPublished",
-                        "VersionNumber"});
+                        "IsPublished"});
             table9.AddRow(new string[] {
                         "Assessment1",
                         "Do this",
                         "Essay",
-                        "true",
-                        "1.1"});
+                        "true"});
 #line 46
  testRunner.Given("I have the following assessments", ((string)(null)), table9, "Given ");
 #line hidden

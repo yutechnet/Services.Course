@@ -1,5 +1,6 @@
 ﻿using System;
 using BpeProducts.Common.WebApiTest.Framework;
+using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment;
 using Services.Assessment.Contract;
 using TechTalk.SpecFlow;
@@ -20,8 +21,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Assessme
                         AssessmentType = (AssessmentType) Enum.Parse(typeof (AssessmentType), row["AssessmentType"]),
                         Id = assessmentId,
                         Instructions = row["Instructions"],
-                        Title = row["Name"]
+                        Title = row["Name"], 
+                        IsPublished = row.GetValue("IsPublished", false),
                     });
+
                 Resources<AssessmentResource>.Add(row["Name"], new AssessmentResource { Id = assessmentId});
             }
         }

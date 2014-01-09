@@ -5,19 +5,18 @@ Feature: CourseVersioning
 	I want to version the course
 
 Background:
-	And the following organizations exist
+	Given the following organizations exist
 	| Name |
 	| COB  |
 	And I have the following capabilities
-	| Capability   |
+	| Capability    |
 	| CourseCreate  |
 	| CoursePublish |
 	| CourseView    |
-	Given I have the following courses   
+	And I have the following courses   
 	| Name           | Code   | Description                   | OrganizationName | CourseType  | IsTemplate |
 	| English 1010   | ENG101 | Ranji's awesome English Class | COB              | Traditional | false      |
 	| English 101011 | E10011 | Macroeconomics                | COB              | Traditional | false      |
-
 
 Scenario: Create a default version
 	Then the course 'English 1010' should have the following info

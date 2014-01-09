@@ -15,17 +15,13 @@ namespace BpeProducts.Services.Course.Domain.Validation
 
         public IEnumerable<string> BrokenRules(CourseLearningActivity learningActivity)
         {
-            // All learning activities, except those of custom type, must have
-            // assessment id.
-          
+            // All learning activities, except those of custom type, must have assessment id.
             if (learningActivity.AssessmentType != AssessmentType.Custom && learningActivity.AssessmentId == Guid.Empty)
             {
                 yield return string.Format(
                     "LeanringActivity {0} is not of custom type but does not have an assessment assigned.",
                     learningActivity.Id);
-
             }
-
         }
     }
 }

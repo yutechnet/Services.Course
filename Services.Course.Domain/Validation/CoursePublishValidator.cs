@@ -45,7 +45,6 @@ namespace BpeProducts.Services.Course.Domain.Validation
             {
                 CheckForValidLearningActivity(childSegment);
             }
-          
         }
     }
 }

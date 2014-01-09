@@ -240,7 +240,6 @@
     <Compile Include="Controllers\CourseRubricController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\SegmentController.cs" />
-    <Compile Include="Controllers\VersionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

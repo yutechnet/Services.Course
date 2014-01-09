@@ -76,11 +76,10 @@ namespace BpeProducts.Services.Course.Domain
                 }
             }
 
-            var learningActivity = course.AddLearningActivity(segmentId, request, Guid.NewGuid());
+            var learningActivity = course.AddLearningActivity(segmentId, request);
             _courseRepository.Save(course);
 
             return Mapper.Map<CourseLearningActivityResponse>(learningActivity);
         }
     }
-
 }
