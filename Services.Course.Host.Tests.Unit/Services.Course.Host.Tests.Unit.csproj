@@ -146,6 +146,9 @@
     <Reference Include="Services.Section.Contracts, Version=0.1.271.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.271\lib\net40\Services.Section.Contracts.dll</HintPath>
+    <Reference Include="Services.Section.Contracts, Version=0.1.274.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.274\lib\net40\Services.Section.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.70.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
