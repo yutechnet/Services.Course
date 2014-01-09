@@ -105,22 +105,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         }
 
         [Test]
-        public void Should_not_publish_custom_assesstment_type()
-        {
-            var publishNote = "blah";
-            _assessmentClient.Setup(a => a.GetAssessment(It.IsAny<Guid>()))
-                             .Returns(new AssessmentInfo {IsPublished = false});
-            _course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
-                {
-                    AssessmentType = "Custom"
-                });
-
-            _coursePublisher.Publish(_course, publishNote);
-            // should expect only one call although the segment has two learning activities. 
-            _assessmentClient.Verify(a => a.PublishAssessment(It.IsAny<Guid>(), publishNote), Times.Once());
-        }
-
-        [Test]
         public void Should_not_publish_assesstments_that_are_published()
         {
             var publishNote = "blah";

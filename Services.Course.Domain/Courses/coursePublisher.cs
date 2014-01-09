@@ -50,7 +50,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			{
 				foreach (var learningActivity in segment.CourseLearningActivities)
 				{
-					if (learningActivity.AssessmentType != AssessmentType.Custom && AssessmentNotPublished(learningActivity.AssessmentId))
+					if (learningActivity.AssessmentId != Guid.Empty && AssessmentNotPublished(learningActivity.AssessmentId))
 					{
 						_assessmentClient.PublishAssessment(learningActivity.AssessmentId, publishNote);
 					}
