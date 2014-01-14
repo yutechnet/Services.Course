@@ -114,7 +114,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static HttpResponseMessage SetCoursePrerequisites(CourseResource course, UpdateCoursePrerequisites request)
         {
-            var requestUri = string.Format("{0}/prerequisites", course.ResourceUri);
+            var requestUri = string.Format("{0}/prerequisite", course.ResourceUri);
             return ApiFeature.CourseTestHost.Put(requestUri, request);
         }
 
@@ -150,7 +150,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
 
         public static HttpResponseMessage UpdateBulkCourseSegments(CourseResource course, IList<UpdateCourseSegmentRequest> request)
         {
-            var requestUri = string.Format("{0}/segments", course.ResourceUri);
+            var requestUri = string.Format("{0}/segment", course.ResourceUri);
             return ApiFeature.CourseTestHost.Put(requestUri, request);
         }
 

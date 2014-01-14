@@ -12,7 +12,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static Dictionary<Guid, List<OutcomeInfo>> GetEntityLearningOutcomes(IList<Guid> entityIds)
         {
             var queryString = entityIds.Aggregate("?entityIds=", (current, entityId) => current + (entityId + ",")).TrimEnd(',');
-            var requestUri = ApiFeature.LeadingPath + "/outcome/entityoutcomes" + queryString;
+            var requestUri = ApiFeature.LeadingPath + "/outcome/entityoutcome" + queryString;
             return ApiFeature.CourseTestHost.Get<Dictionary<Guid, List<OutcomeInfo>>>(requestUri);
         }
 

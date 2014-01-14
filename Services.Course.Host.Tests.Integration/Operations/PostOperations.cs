@@ -31,7 +31,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         public static HttpResponseMessage CreateSegment(string name, CourseResource course, SaveCourseSegmentRequest request)
         {
             request.TenantId = ApiFeature.TenantId;
-            var requestUri = string.Format("{0}/course/{1}/segments", ApiFeature.LeadingPath, course.Id);
+            var requestUri = string.Format("{0}/course/{1}/segment", ApiFeature.LeadingPath, course.Id);
             return ApiFeature.CourseTestHost.Post<CourseSegmentResource, SaveCourseSegmentRequest>(name, requestUri, request);
         }
 

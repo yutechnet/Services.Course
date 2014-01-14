@@ -20,7 +20,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		[Transaction]
 		[ArgumentsNotNull]
 		[ValidateModelState]
-        [Route("course/{courseId:guid}/prerequisites")]
+        [Route("course/{courseId:guid}/prerequisite")]
 		public void Put(Guid courseId, UpdateCoursePrerequisites prerequisites)
 		{
             _courseService.UpdatePrerequisiteList(courseId, prerequisites.PrerequisiteIds);

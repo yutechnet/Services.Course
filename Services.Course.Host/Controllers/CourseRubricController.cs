@@ -22,7 +22,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		[Transaction]
 		[ArgumentsNotNull]
 		[ValidateModelState]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric")]
 		public HttpResponseMessage Post(Guid courseId, Guid segmentId, Guid learningActivityId, CourseRubricRequest request)
 		{
 			var courseRubric = _courseRubricService.AddRubric(courseId, segmentId, learningActivityId, request);
@@ -37,14 +37,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
 			return response;
 		}
 
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric/{courseRubricId:guid}", Name = "GetCourseRubric")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric/{courseRubricId:guid}", Name = "GetCourseRubric")]
 		public CourseRubricInfo Get(Guid courseId, Guid segmentId, Guid learningActivityId, Guid courserubricId)
 		{
 			return _courseRubricService.Get(courseId, segmentId, learningActivityId, courserubricId);
 		}
 
 		[Transaction]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric/{rubricId:guid}", Name = "DeleteCourseRubric")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningactivity/{learningActivityId:guid}/courserubric/{rubricId:guid}", Name = "DeleteCourseRubric")]
 		public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId, Guid rubricId)
 		{
 			_courseRubricService.DeleteRubric(courseId, segmentId, learningActivityId, rubricId);

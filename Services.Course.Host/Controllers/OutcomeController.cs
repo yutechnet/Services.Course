@@ -32,7 +32,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [HttpGet]
-        [Route("outcome/entityoutcomes")]
+        [Route("outcome/entityoutcome")]
         public Dictionary<Guid, List<OutcomeInfo>> GetEntityOutcomes(string entityIds)
         {
             var ids = entityIds.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -131,7 +131,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [HttpGet]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/supports", Name = "GetSegmentOutcomes")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/supports", Name = "GetSegmentOutcomes")]
         public List<OutcomeInfo> CourseSegmentOutcome(Guid courseId, Guid segmentId)
         {
             return _learningOutcomeService.GetEntityOutcomes(segmentId).ToList();
@@ -139,7 +139,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
         [Transaction]
         [HttpPost]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/supports")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/supports")]
         public HttpResponseMessage CourseSegmentOutcome(Guid courseId, Guid segmentId, OutcomeRequest request)
         {
             var outcomeResponse = _learningOutcomeService.Create("segments", segmentId, request);

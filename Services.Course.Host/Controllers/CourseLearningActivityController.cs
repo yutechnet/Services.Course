@@ -20,14 +20,14 @@ namespace BpeProducts.Services.Course.Host.Controllers
             _courseLearningActivityService = courseLearningActivityService;
         }
 
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{id:guid}", Name = "GetCourseLearningActivity")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningactivity/{id:guid}", Name = "GetCourseLearningActivity")]
 		public CourseLearningActivityResponse Get(Guid courseId, Guid segmentId, Guid id)
 		{
             var learningActivity = _courseLearningActivityService.Get(courseId, segmentId, id);
             return learningActivity;
 		}
 
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningactivity/")]
         public IEnumerable<CourseLearningActivityResponse> Get(Guid courseId, Guid segmentId)
         {
             return _courseLearningActivityService.Get(courseId, segmentId);
@@ -36,7 +36,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		[Transaction]
         [ArgumentsNotNull]
 		[ValidateModelState]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningactivity")]
         public HttpResponseMessage Post(Guid courseId, Guid segmentId, SaveCourseLearningActivityRequest request)
 		{
             var learningActivityResponse = _courseLearningActivityService.Create(courseId, segmentId, request);
@@ -53,7 +53,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		[Transaction]
 		[ArgumentsNotNull]
 		[ValidateModelState]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{id:guid}")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningactivity/{id:guid}")]
         public HttpResponseMessage Put(Guid courseId, Guid segmentId, Guid id, SaveCourseLearningActivityRequest request)
 		{
             _courseLearningActivityService.Update(courseId, segmentId, id, request);
@@ -62,7 +62,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		}
 
 		[Transaction]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningactivity/{id:guid}")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningactivity/{id:guid}")]
         public void Delete(Guid courseId, Guid segmentId, Guid id)
 		{
             _courseLearningActivityService.Delete(courseId, segmentId, id);

@@ -22,7 +22,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [ArgumentsNotNull]
         [ValidateModelState]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningmaterial")]
         public HttpResponseMessage Post(Guid courseId, Guid segmentId, LearningMaterialRequest request)
         {
             var learningMaterial = _learningMaterialService.AddLearningMaterial(courseId, segmentId, request);
@@ -40,21 +40,21 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [ArgumentsNotNull]
         [ValidateModelState]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}")]
         public void Put(Guid courseId, Guid segmentId, Guid learningMaterialId, UpdateLearningMaterialRequest request)
         {
             _learningMaterialService.UpdateLearningMaterial(courseId, segmentId, learningMaterialId, request);
         }
 
 
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}", Name = "GetLearningMaterial")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}", Name = "GetLearningMaterial")]
         public LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningMaterialId)
         {
             return _learningMaterialService.Get(courseId, segmentId, learningMaterialId);
         }
 
         [Transaction]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningmaterial/{learningMaterialId:guid}")]
         public void Delete(Guid courseId, Guid segmentId, Guid learningMaterialId)
         {
             _learningMaterialService.Delete(courseId, segmentId, learningMaterialId);

@@ -20,7 +20,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
       
         [Transaction]
-        [Route("course/{courseId:guid}/segments")]
+        [Route("course/{courseId:guid}/segment")]
         public HttpResponseMessage Post(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             var courseSegment = _courseSegmentService.Create(courseId, saveCourseSegmentRequest);
@@ -37,34 +37,34 @@ namespace BpeProducts.Services.Course.Host.Controllers
         }
 
         [Transaction]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}")]
         public void Put(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             _courseSegmentService.Update(courseId, segmentId, saveCourseSegmentRequest);
         }
 
         [Transaction]
-        [Route("course/{courseId:guid}/segments")]
+        [Route("course/{courseId:guid}/segment")]
         public void Put(Guid courseId, IList<UpdateCourseSegmentRequest> updateCourseSegmentRequest)
         {
             _courseSegmentService.Update(courseId, updateCourseSegmentRequest);
         }
 
         [Transaction]
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}")]
         public void Delete(Guid courseId, Guid segmentId)
         {
             _courseSegmentService.Delete(courseId, segmentId);
         }
 
-        [Route("course/{courseId:guid}/segments")]
+        [Route("course/{courseId:guid}/segment")]
         public IEnumerable<CourseSegmentInfo> Get(Guid courseId)
         {
             // returns the root course segments, including their childrent segments
             return _courseSegmentService.Get(courseId);
         }
 
-        [Route("course/{courseId:guid}/segments/{segmentId:guid}", Name = "GetSegment")]
+        [Route("course/{courseId:guid}/segment/{segmentId:guid}", Name = "GetSegment")]
         public CourseSegmentInfo Get(Guid courseId, Guid segmentId)
         {
             return _courseSegmentService.Get(courseId, segmentId);
