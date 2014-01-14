@@ -61,9 +61,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Authorization, Version=1.0.45.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Authorization, Version=1.0.46.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.45\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.46\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.20.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -87,9 +87,9 @@
     <Reference Include="BpeProducts.Common.WebApi">
       <HintPath>..\packages\BpeProducts.Common.WebApi.2.0.7\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Services.Authorization.Contract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Services.Authorization.Contract, Version=0.1.418.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.414\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.418\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Tenant.Client">
       <HintPath>..\packages\BpeProducts.Services.Tenant.Client.0.1.164\lib\net40\BpeProducts.Services.Tenant.Client.dll</HintPath>
