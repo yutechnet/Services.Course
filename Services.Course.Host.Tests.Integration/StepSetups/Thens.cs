@@ -57,6 +57,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
            }
            
             table.CompareToInstance(actual);
+
+            if (actual.PublishDate.HasValue)
+            {
+                Assert.That(actual.PublishDate, Is.InRange(DateTime.Now.AddMinutes(-5), DateTime.Now));
+            }
         }
 
         [Then(@"the course '(.*)' includes the following programs")]
