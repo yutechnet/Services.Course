@@ -238,7 +238,6 @@
     <Compile Include="Controllers\CoursePrerequisiteController.cs" />
     <Compile Include="Controllers\OutcomeController.cs" />
     <Compile Include="Controllers\ProgramController.cs" />
-    <Compile Include="Controllers\CourseRubricController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\SegmentController.cs" />
     <Compile Include="Global.asax.cs">

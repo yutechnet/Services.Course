@@ -56,8 +56,6 @@
     <Compile Include="CourseLearningActivityResponse.cs" />
     <Compile Include="CourseSectionRequest.cs" />
     <Compile Include="PublishRequest.cs" />
-    <Compile Include="CourseRubricInfo.cs" />
-    <Compile Include="CourseRubricRequest.cs" />
     <Compile Include="SaveCourseLearningActivityRequest.cs" />
     <Compile Include="SimpleCourseInfoResponse.cs" />
     <Compile Include="UpdateCoursePrerequisites.cs" />

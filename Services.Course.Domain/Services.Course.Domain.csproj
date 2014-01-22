@@ -195,8 +195,6 @@
     <Compile Include="Courses\CourseService.cs" />
     <Compile Include="Courses\ExtensionMethods.cs" />
     <Compile Include="Courses\LearningMaterial.cs" />
-    <Compile Include="Courses\CourseRubric.cs" />
-    <Compile Include="Courses\CourseRubricService.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
     <Compile Include="Courses\CourseSegment.cs" />
     <Compile Include="Events\CoursePrerequisiteAdded.cs" />
@@ -214,7 +212,6 @@
     <Compile Include="Mappings\LearningMaterialMappingOverride.cs" />
     <Compile Include="Mappings\CourseLearningActivityMappingOverride.cs" />
     <Compile Include="Mappings\CourseSegmentMappingOverride.cs" />
-    <Compile Include="Mappings\CourseRubricMappingOverride.cs" />
     <Compile Include="Repositories\IProgramRepository.cs" />
     <Compile Include="Repositories\ProgramRepository.cs" />
     <Compile Include="Courses\ICourseService.cs" />

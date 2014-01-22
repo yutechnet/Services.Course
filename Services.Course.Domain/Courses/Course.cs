@@ -516,22 +516,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return segment.AddLearningMaterial(learningMaterialRequest);
         }
 
-        public virtual CourseRubric AddCourseRubric(Guid segmentId, Guid learningActivityId, CourseRubricRequest request)
-        {
-            CheckPublished();
-
-            var segment = GetSegmentOrThrow(segmentId);
-            return segment.AddCourseRubric(learningActivityId, request);
-        }
-
-        public virtual void DeleteCourseRubric(Guid segmentId, Guid learningActivityId, Guid rubricId)
-        {
-            CheckPublished();
-
-            var segment = GetSegmentOrThrow(segmentId);
-            segment.DeleteCourseRubric(learningActivityId, rubricId);
-        }
-
         public virtual void DeleteLearningMaterial(Guid segmentId, Guid learningMaterialId)
         {
             CheckPublished();

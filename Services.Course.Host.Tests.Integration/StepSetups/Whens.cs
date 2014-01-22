@@ -172,17 +172,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [When(@"I disassociate the following rubrics")]
-        public void WhenIDisassociateTheFollowingRubrics(Table table)
-        {
-            foreach (var row in table.Rows)
-            {
-                var title = row["Title"];
-                var resource = Resources<RubricAssociationResource>.Get(title);
-                DeleteOperations.DeleteResource(resource);
-            }
-        }
-
         [When(@"I publish the following courses")]
         public void WhenIPublishTheFollowingCourses(Table table)
         {
@@ -228,20 +217,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 };
 
             PutOperations.SetCoursePrerequisites(course, request);
-        }
-
-        [When(@"I associate the following rubrics to '(.*)' learning activity")]
-        public void WhenIAssociateTheFollowingRubricsToLearningActivity(string learningActivityName, Table table)
-        {
-            var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
-            
-            foreach (var row in table.Rows)
-            {
-                var title = row["Title"];
-                var rubric = Resources<RubricResource>.Get(title);
-                var request = new CourseRubricRequest {RubricId = rubric.Id};
-                PostOperations.AssociateRubric(title, resource, request);
-            }
         }
 
         [When(@"I add the following learning activity to '(.*)' course segment")]
@@ -571,24 +546,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             response.Headers.Location = new Uri(uri, Guid.NewGuid().ToString());
             ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<Uri>(), It.IsAny<CreateSectionRequest>())).Returns(response);
             ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<CreateSectionRequest>())).Returns(response);
-        }
-
-        [When(@"I have the following rubrics")]
-        public void WhenIHaveTheFollowingRubrics(Table table)
-        {
-            var rubrics = table.CreateSet<RubricInfoResponse>();
-        
-            foreach (var rubric in rubrics)
-            {
-                var resource = new RubricResource
-                    {
-                        Id = Guid.NewGuid(),
-                        ResourceUri = It.IsAny<Uri>()
-                    };
-        
-                Resources<RubricResource>.Add(rubric.Title, resource);
-                ApiFeature.MockAssessmentClient.Setup(x => x.GetRubric(resource.Id)).Returns(rubric);
-            }
         }
 
         [When(@"Create learning material as the following info")]

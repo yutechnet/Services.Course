@@ -16,13 +16,6 @@ namespace BpeProducts.Services.Course.Domain.Mappings
         public void Override(AutoMapping<CourseLearningActivity> mapping)
         {
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
-
-			mapping
-				.HasMany(x => x.CourseRubrics)
-				.Access.CamelCaseField(Prefix.Underscore)
-				.ForeignKeyConstraintName("FK_LearningActivity_CourseRubric")
-				.Not.KeyNullable()
-				.Not.KeyUpdate();
         }
     }
 }

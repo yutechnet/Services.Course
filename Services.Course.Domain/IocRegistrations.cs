@@ -51,7 +51,6 @@ namespace BpeProducts.Services.Course.Domain
             containerBuilder.RegisterType<LearningMaterialService>().As<ILearningMaterialService>().EnableInterfaceInterceptors().EnableAuthorization();
             containerBuilder.RegisterType<AssetServiceClient>().As<IAssetServiceClient>();
 
-			containerBuilder.RegisterType<CourseRubricService>().As<ICourseRubricService>().EnableInterfaceInterceptors().EnableAuthorization();
 			containerBuilder.RegisterType<AssessmentClient>().As<IAssessmentClient>();
 
 			containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();

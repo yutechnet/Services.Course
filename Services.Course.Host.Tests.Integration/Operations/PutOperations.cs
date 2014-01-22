@@ -106,12 +106,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return ApiFeature.CourseTestHost.Put(requestUri, request);
         }
 
-        public static HttpResponseMessage PublishRubric(RubricResource rubric, PublishRequest request)
-        {
-            var requestUri = string.Format("{0}/publish", rubric.ResourceUri);
-            return ApiFeature.CourseTestHost.Put(requestUri, request);
-        }
-
         public static HttpResponseMessage SetCoursePrerequisites(CourseResource course, UpdateCoursePrerequisites request)
         {
             var requestUri = string.Format("{0}/prerequisites", course.ResourceUri);

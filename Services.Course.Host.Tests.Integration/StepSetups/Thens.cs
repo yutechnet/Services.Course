@@ -509,21 +509,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [Then(@"the learning activity '(.*)' should have the following rubrics")]
-        public void ThenTheLearningActivityShouldHaveTheFollowingRubrics(string learningActivityName, Table table)
-        {
-            var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
-            var actual = GetOperations.GetCourseLearningActivity(resource);
-
-			Assert.That(actual.CourseRubrics.Count, Is.EqualTo(table.RowCount));
-			foreach (var row in table.Rows)
-			{
-				var title = row["Title"];
-				var rubricId = Resources<RubricResource>.Get(title);
-				Assert.That(actual.CourseRubrics.Any(x => x.RubricId == rubricId.Id));
-			}
-        }
-
         [Then(@"published courses for orgniazation '(.*)' contains the following courses")]
         public void ThenPublishedCoursesForOrgniazationContainsTheFollowingCourses(string organization, Table table)
         {
