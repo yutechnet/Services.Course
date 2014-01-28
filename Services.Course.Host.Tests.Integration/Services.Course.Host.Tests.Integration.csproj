@@ -288,7 +288,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProgramCreation.feature</DependentUpon>
     </Compile>
-    <Compile Include="ProgramCreationSteps.cs" />
     <Compile Include="Resources\CourseResource.cs" />
     <Compile Include="Resources\LearningOutcomeResource.cs" />
     <Compile Include="Resources\CourseSegmentResource.cs" />
