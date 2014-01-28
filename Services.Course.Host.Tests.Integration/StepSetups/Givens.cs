@@ -1,4 +1,6 @@
-﻿using BpeProducts.Common.WebApiTest.Extensions;
+﻿using System.Net.Http;
+using System.Net.Http.Formatting;
+using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
@@ -6,11 +8,9 @@ using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment;
 using BpeProducts.Common.WebApiTest.Framework;
-using BpeProducts.Common.WebApiTest.Extensions;
 using Moq;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -21,26 +21,90 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
     [Binding]
     public class Givens
     {
-        [Given(@"I have the following programs")]
-        public void GivenIHaveTheFollowingPrograms(Table table)
-        {
-            foreach (var row in table.Rows)
-            {
-                var saveProgramRequest = new SaveProgramRequest
-                {
-                    Description = row["Description"],
-                    Name = row["Name"],
-                    ProgramType = row["ProgramType"],
-                    OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id,
-                };
+        private readonly string _leadingPath;
 
-                var result = PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
-                result.EnsureSuccessStatusCode();
+        public Givens()
+        {
+            var targetUri = new Uri(ApiFeature.BaseAddress);
+            if (!targetUri.Host.Equals("localhost"))
+            {
+                _leadingPath = targetUri.PathAndQuery + "/course";
+            }
+            else
+            {
+                _leadingPath = "/course";
             }
         }
 
-        [Given(@"I have the following course templates")]
+        [Given(@"I have existing courses with following info:")]
+        public void GivenIHaveExistingCoursesWithFollowingInfo(Table table)
+        {
+            // This is creating a course for us.
+            foreach (var row in table.Rows)
+            {
+                var saveCourseRequest = new SaveCourseRequest
+                {
+                    Name = ScenarioContext.Current.Get<long>("ticks") + row["Name"],
+                    Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
+                    Description = row["Description"],
+                    TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
+                    OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id,
+                    CourseType = ECourseType.Traditional,
+                    IsTemplate = false
+                };
+
+                var response = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+                response.EnsureSuccessStatusCode();
+            }
+        }
+
+        [Given(@"I have a course with following info:")]
+        public void GivenIHaveACourseWithFollowingInfo(Table table)
+        {
+            var saveCourseRequest = new SaveCourseRequest
+            {
+                Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
+                Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
+                Description = table.Rows[0]["Description"],
+                TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
+                //OrganizationId = new Guid(table.Rows[0]["OrganizationId"]),
+                OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id,
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false,
+                Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0"))
+            };
+
+            ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
+            ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
+            ScenarioContext.Current.Add("courseCode", table.Rows[0]["Code"]);
+            ScenarioContext.Current.Add("orgId", saveCourseRequest.OrganizationId);
+            ScenarioContext.Current.Add("courseType", saveCourseRequest.CourseType);
+            ScenarioContext.Current.Add("isTemplate", saveCourseRequest.IsTemplate);
+        }
+
+        [Given(@"I have an existing course with following info:")]
+        public void GivenIHaveAnExistingCourseWithFollowingInfo(Table table)
+        {
+            // This is creating a course for us.
+            GivenIHaveACourseWithFollowingInfo(table);
+
+            var whens = new Whens();
+            whens.WhenISubmitACreationRequest();
+
+            var thens = new Thens();
+            thens.ThenIShouldGetASuccessConfirmationMessage();
+        }
+
+        [Given(@"I create a course from the template '(.*)' with the following")]
+        public void GivenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
+        {
+            var whens = new Whens();
+            var result = whens.WhenICreateACourseFromTheTemplateWithTheFollowing(templateName, table);
+            result.EnsureSuccessStatusCode();
+        }
+
         [Given(@"I have the following courses")]
+        [Given(@"I have the following course templates")]
         public void GivenIHaveTheFollowingCourses(Table table)
         {
             foreach (var row in table.Rows)
@@ -61,6 +125,34 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 };
 
                 var result = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
+                result.EnsureSuccessStatusCode();
+            }
+        }
+
+        [Given(@"I delete this course")]
+        public void GivenIDeleteThisCourse()
+        {
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+            ScenarioContext.Current.Add("courseId", courseInfoResponse.Id);
+            var delSuccess = ApiFeature.CourseTestHost.Client.DeleteAsync(_leadingPath + "/" + courseInfoResponse.Id).Result;
+            delSuccess.EnsureSuccessStatusCode();
+        }
+
+        [Given(@"I have the following programs")]
+        public void GivenIHaveTheFollowingPrograms(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var saveProgramRequest = new SaveProgramRequest
+                {
+                    Description = row["Description"],
+                    Name = row["Name"],
+                    ProgramType = row["ProgramType"],
+                    OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id,
+                };
+
+                var result = PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
                 result.EnsureSuccessStatusCode();
             }
         }
@@ -217,14 +309,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             response.EnsureSuccessStatusCode();
         }
 
-        [Given(@"I create a course from the template '(.*)' with the following")]
-        public void GivenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
-        {
-            //TODO: Why not create a course steps file to put common code?
-            var result = CreateCourseTemplate(templateName, table);
-            result.EnsureSuccessStatusCode();
-        }
-
         [Given(@"I have the following assets")]
         public void GivenIHaveTheFollowingAssets(Table table)
         {
@@ -240,17 +324,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 ApiFeature.MockAssetClient.Setup(x => x.AddAssetToLibrary("course", It.IsAny<Guid>(), resource.Id))
                           .Returns(new LibraryInfo {Id = Guid.NewGuid()});
             }
-        }
-
-        public static HttpResponseMessage CreateCourseTemplate(string templateName, Table table)
-        {
-            var template = Resources<CourseResource>.Get(templateName);
-            var courseRequest = table.CreateInstance<SaveCourseRequest>();
-            courseRequest.OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id;
-            courseRequest.TemplateCourseId = template.Id;
-
-            var result = PostOperations.CreateCourse(courseRequest.Name, courseRequest);
-            return result;
         }
 
         [Given(@"Create learning material as the following info")]

@@ -1,4 +1,5 @@
-﻿using BpeProducts.Common.Exceptions;
+﻿using System.Net.Http.Formatting;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
@@ -12,25 +13,146 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using Services.Assessment.Contract;
 using Services.Section.Contracts;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using BpeProducts.Common.WebApiTest.Framework;
-using OutcomeRequest = BpeProducts.Services.Course.Contract.OutcomeRequest;
+using CourseInfoResponse = BpeProducts.Services.Course.Contract.CourseInfoResponse;
 using PublishRequest = BpeProducts.Services.Course.Contract.PublishRequest;
-using VersionRequest = BpeProducts.Services.Course.Contract.VersionRequest;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 {
     [Binding]
     public class Whens
     {
-        [When(@"I create a course from the template '(.*)' with the following")]
-        public void WhenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
+        private readonly string _leadingPath;
+
+        public Whens()
         {
-            //TODO: Why not create a course steps file to put common code?
-            Givens.CreateCourseTemplate(templateName, table);
+            var targetUri = new Uri(ApiFeature.BaseAddress);
+            if (!targetUri.Host.Equals("localhost"))
+            {
+                _leadingPath = targetUri.PathAndQuery + "/course";
+            }
+            else
+            {
+                _leadingPath = "/course";
+            }
+        }
+
+        [BeforeScenario]
+        public void BeforeScenario()
+        {
+            ScenarioContext.Current.Add("ticks", DateTime.Now.Ticks);
+        }
+
+        [When(@"I create the following course using a previous course template:")]
+        public void WhenICreateTheFollowingCourseUsingAPreviousCourseTemplate(Table table)
+        {
+            var course = ScenarioContext.Current.Get<SaveCourseRequest>("createCourseRequest");
+            var courseWithTemplateId = new SaveCourseRequest
+            {
+                Name = table.Rows[0]["Name"],
+                Code = table.Rows[0]["Code"],
+                Description = table.Rows[0]["Description"],
+                TenantId = course.TenantId,
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false
+            };
+
+            ScenarioContext.Current.Add("courseTemplate", courseWithTemplateId);
+
+            var response = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, courseWithTemplateId, new JsonMediaTypeFormatter()).Result;
+            response.EnsureSuccessStatusCode();
+
+            ScenarioContext.Current.Add("ResponseToValidate", response);
+        }
+
+        [When(@"I create a new course with (.*), (.*), (.*), (.*)")]
+        public void WhenICreateANewCourseWith(string name, string code, string description, string organizationName)
+        {
+            var saveCourseRequest = new SaveCourseRequest
+            {
+                Name = string.IsNullOrEmpty(name) ? name : ScenarioContext.Current.Get<long>("ticks") + name,
+                Code = string.IsNullOrEmpty(code) ? code : ScenarioContext.Current.Get<long>("ticks") + code,
+                Description = description,
+                TenantId = 999999,
+                OrganizationId = Resources<OrganizationResource>.Get(organizationName).Id,
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false
+            };
+
+            if (ScenarioContext.Current.ContainsKey("createCourseRequest"))
+            {
+                ScenarioContext.Current.Remove("createCourseRequest");
+            }
+            ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
+        }
+
+        [When(@"I request a course name that does not exist")]
+        public void WhenIRequestACourseNameThatDoesNotExist()
+        {
+            var courseName = "someCoureName";
+            var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "?name=" + ScenarioContext.Current.Get<long>("ticks") + courseName).Result;
+
+            ScenarioContext.Current.Add("getCourseName", result);
+        }
+
+        [When(@"I change the info to reflect the following:")]
+        public void WhenIChangeTheInfoToReflectTheFollowing(Table table)
+        {
+            var editCourseRequest = new SaveCourseRequest
+            {
+                Name = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Name"],
+                Code = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["Code"],
+                Description = table.Rows[0]["Description"],
+                TenantId = int.Parse(table.Rows[0]["Tenant Id"]),
+                OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id,
+                CourseType = ECourseType.Traditional,
+                IsTemplate = false,
+                Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0"))
+            };
+
+            ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
+            var result = ApiFeature.CourseTestHost.Client.PutAsync(_leadingPath + "/" + courseInfoResponse.Id, editCourseRequest, new JsonMediaTypeFormatter()).Result;
+            ScenarioContext.Current.Add("editCourseResponse", result);
+            ScenarioContext.Current.Add("courseId", courseInfoResponse.Id);
+
+            // this is the response to ensure the success code
+            if (ScenarioContext.Current.ContainsKey("responseToValidate"))
+            {
+                ScenarioContext.Current.Remove("responseToValidate");
+            }
+            ScenarioContext.Current.Add("responseToValidate", result);
+        }
+
+        [When(@"I submit a creation request")]
+        public void WhenISubmitACreationRequest()
+        {
+            var saveCourseRequest = ScenarioContext.Current.Get<SaveCourseRequest>("createCourseRequest");
+            var response = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+
+            if (ScenarioContext.Current.ContainsKey("createCourseResponse"))
+            {
+                ScenarioContext.Current.Remove("createCourseResponse");
+            }
+            ScenarioContext.Current.Add("createCourseResponse", response);
+
+            // this is the response to ensure the success code
+            if (ScenarioContext.Current.ContainsKey("responseToValidate"))
+            {
+                ScenarioContext.Current.Remove("responseToValidate");
+            }
+            ScenarioContext.Current.Add("responseToValidate", response);
+        }
+
+        [When(@"I create a course from the template '(.*)' with the following")]
+        public HttpResponseMessage WhenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
+        {
+           return CreateCourseTemplate(templateName, table);
         }
 
         [When(@"I associate the existing learning outcomes to '(.*)' program")]
@@ -536,7 +658,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         }
 
         [When(@"The section service returns '(.*)'")]
-        [When(@"the section service returns '(.*)'")]
         public void WhenTheSectionServiceReturns(string statusCode)
         {
             var uri = new Uri("http://mockedlocation/");
@@ -686,6 +807,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 });
                 PutOperations.PublishCourse(course, request);
             }
+        }
+
+        private static HttpResponseMessage CreateCourseTemplate(string templateName, Table table)
+        {
+            var template = Resources<CourseResource>.Get(templateName);
+            var courseRequest = table.CreateInstance<SaveCourseRequest>();
+            var organizationName = table.Rows[0]["OrganizationName"];
+            courseRequest.OrganizationId = Resources<OrganizationResource>.GetId(organizationName);
+            courseRequest.TemplateCourseId = template.Id;
+
+            var result = PostOperations.CreateCourse(courseRequest.Name, courseRequest);
+            return result;
         }
     }
 }

@@ -78,9 +78,9 @@
     <Reference Include="BpeProducts.Common.WebApi">
       <HintPath>..\packages\BpeProducts.Common.WebApi.2.0.7\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.82.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.88.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.82\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.88\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Asset.Contracts, Version=0.1.114.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -222,7 +222,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="CourseCreationSteps.cs" />
     <Compile Include="CourseLearningActivity.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
