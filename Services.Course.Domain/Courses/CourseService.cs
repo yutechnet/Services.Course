@@ -43,6 +43,19 @@ namespace BpeProducts.Services.Course.Domain
 			return Mapper.Map<CourseInfoResponse>(course);
         }
 
+        [AuthByAcl(Capability = Capability.CourseCreate, OrganizationObject = "request")]
+        public CourseInfoResponse Create(CreateCourseFromTemplateRequest request)
+        {
+            var course = _courseFactory.Create(request);
+            _domainEvents.Raise<CourseCreated>(new CourseCreated
+            {
+                AggregateId = course.Id,
+                Course = course
+            });
+
+            return Mapper.Map<CourseInfoResponse>(course);
+        }
+
         public void Update(Guid courseId, UpdateCourseRequest request)
         {
             var course = _courseFactory.Reconstitute(courseId);

@@ -25,36 +25,50 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public Course Create(SaveCourseRequest request)
         {
-            Course course = null;
             if (request.TemplateCourseId.HasValue)
             {
-                // var template = Reconstitute(request.TemplateCourseId.Value);
-                var template = _courseRepository.Get<Course>(request.TemplateCourseId.Value);
-                if (template == null)
-                {
-                    throw new NotFoundException(string.Format("Course template {0} not found.", request.TemplateCourseId.Value));
-                }
-
-                course = BuildFromTemplate(template, request);
+                // TODO: This block should be removed once Jenga migrates to using the separate endpoint for creating course from Template
+                var createCourseFromTemplateRequest = new CreateCourseFromTemplateRequest
+                    {
+                        Code = request.Code,
+                        Description = request.Description,
+                        IsTemplate = request.IsTemplate,
+                        Name = request.Name,
+                        OrganizationId = request.OrganizationId,
+                        TemplateCourseId = request.TemplateCourseId.Value,
+                        TenantId = request.TenantId
+                    };
+                return Create(createCourseFromTemplateRequest);
             }
             else
             {
-                course = BuildFromScratch(request);
+                return BuildFromScratch(request);                
             }
-
-            return course;
         }
 
-        protected Course BuildFromTemplate(Course template, SaveCourseRequest request)
+
+        public Course Create(CreateCourseFromTemplateRequest request)
+        {
+            // var template = Reconstitute(request.TemplateCourseId.Value);
+            var template = _courseRepository.Get<Course>(request.TemplateCourseId);
+            if (template == null)
+            {
+                throw new BadRequestException(string.Format("Course template {0} not found.", request.TemplateCourseId));
+            }
+
+            return BuildFromTemplate(template, request);
+        }
+
+        protected Course BuildFromTemplate(Course template, CreateCourseFromTemplateRequest request)
         {
             var course = new Course
                 {
                     Id = Guid.NewGuid(),
-                    Name = request.Name,
-                    Code = request.Code,
-                    Description = request.Description,
+                    Name = string.IsNullOrEmpty(request.Name) ? template.Name : request.Name,
+                    Code = string.IsNullOrEmpty(request.Code) ? template.Code : request.Code,
+                    Description = string.IsNullOrEmpty(request.Description) ? template.Description : request.Description,
                     OrganizationId = request.OrganizationId,
-                    Credit = request.Credit
+                    TenantId = request.TenantId
 				};
 
 			var newSegments = Mapper.Map<List<CourseSegment>>(template.Segments);
@@ -81,6 +95,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             course.Segments = newSegments;
             course.TenantId = template.TenantId;
             course.Template = template;
+            course.Credit = template.Credit;
             course.ActiveFlag = true;
             course.IsTemplate = request.IsTemplate;
 

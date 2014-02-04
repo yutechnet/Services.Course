@@ -64,7 +64,24 @@ namespace BpeProducts.Services.Course.Host.Controllers
             return response;
         }
 
-	    [Transaction]
+        [Transaction]
+        [ArgumentsNotNull]
+        [ValidateModelState]
+        [Route("coursefromtemplate")]
+        public HttpResponseMessage Post(CreateCourseFromTemplateRequest request)
+        {
+            var courseInfoResponse = _courseService.Create(request);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
+
+            string uri = Url.Link("GetCourse", new { courseId = courseInfoResponse.Id });
+            if (uri != null)
+            {
+                response.Headers.Location = new Uri(uri);
+            }
+            return response;
+        }
+
+        [Transaction]
         [ArgumentsNotNull]
         [ValidateModelState]
         [Route("course/{courseId:guid}")]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Contract;
@@ -19,6 +20,164 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
     [Binding]
     public class Thens
     {
+        private readonly string _leadingPath;
+
+        public Thens()
+        {
+            var targetUri = new Uri(ApiFeature.BaseAddress);
+            if (!targetUri.Host.Equals("localhost"))
+            {
+                _leadingPath = targetUri.PathAndQuery + "/course";
+            }
+            else
+            {
+                _leadingPath = "/course";
+            }
+        }
+
+        [Then(@"my course contains the following:")]
+        public void ThenMyCourseContainsTheFollowing(Table table)
+        {
+            var originalRequest = ScenarioContext.Current.Get<SaveCourseRequest>("courseTemplate");
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>();
+            var info = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
+            Assert.That(info.Name, Is.EqualTo(originalRequest.Name));
+            Assert.That(info.Code, Is.EqualTo(originalRequest.Code));
+            Assert.That(info.Description, Is.EqualTo(originalRequest.Description));
+            Assert.That(info.OrganizationId, Is.EqualTo(originalRequest.OrganizationId));
+            Assert.That(info.TemplateCourseId, Is.EqualTo(originalRequest.TemplateCourseId));
+            Assert.That(info.CourseType, Is.EqualTo(originalRequest.CourseType));
+            Assert.That(info.IsTemplate, Is.EqualTo(originalRequest.IsTemplate));
+        }
+
+        [Then(@"the course count is atleast '(.*)' when search term is '(.*)'")]
+        public void ThenTheCourseCountIsAtleastWhenSearchTermIs(int count, string searchPhrase)
+        {
+            var startsWithQuery = String.IsNullOrWhiteSpace(searchPhrase) ? "" : String.Format("?$filter=startswith(Name, '{0}')", ScenarioContext.Current.Get<long>("ticks") + searchPhrase);
+            var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + startsWithQuery).Result;
+            var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
+            var responseList = new List<CourseInfoResponse>(getResponse);
+            Assert.That(responseList.Count, Is.AtLeast(count));
+        }
+
+        [Then(@"the course name counts are as follows:")]
+        public void ThenTheCourseNameCountsAreAsFollows(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var operation = row["Operation"];
+                var argument = row["Argument"];
+                var count = int.Parse(row["Count"]);
+                var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + ConstructODataQueryString(operation, argument)).Result;
+                var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
+                var responseList = new List<CourseInfoResponse>(getResponse);
+                Assert.That(responseList.Count, Is.EqualTo(count));
+            }
+        }
+
+        private string ConstructODataQueryString(string operation, string argument)
+        {
+            string queryString;
+
+            if (operation.ToLower() == "startswith")
+            {
+                queryString = String.Format("?$filter={1}(Name, '{0}')",
+                                                    String.IsNullOrWhiteSpace(argument)
+                                                        ? ""
+                                                        : ScenarioContext.Current.Get<long>("ticks") + argument,
+                                                    operation);
+            }
+            else if (operation.ToLower() == "eq")
+            {
+                queryString = String.Format("?$filter=Name eq '{0}'",
+                                                    String.IsNullOrWhiteSpace(argument)
+                                                        ? ""
+                                                        : ScenarioContext.Current.Get<long>("ticks") + argument);
+            }
+            else
+            {
+                throw new InvalidOperationException(string.Format("Unknown operation: {0}", operation));
+            }
+
+            return queryString;
+        }
+
+        [Then(@"my course no longer exists")]
+        public void ThenMyCourseNoLongerExists()
+        {
+            var courseId = ScenarioContext.Current.Get<Guid>("courseId");
+            var getResponse = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + courseId).Result;
+            Assert.That(getResponse.StatusCode.Equals(HttpStatusCode.NotFound));
+        }
+
+        [Then(@"I should get a success confirmation message")]
+        public void ThenIShouldGetASuccessConfirmationMessage()
+        {
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("responseToValidate");
+            response.EnsureSuccessStatusCode();
+        }
+
+        [Then(@"I can retrieve the course by course name")]
+        public void ThenICanRetrieveTheCourseByCourseName()
+        {
+            var courseName = ScenarioContext.Current.Get<string>("courseName");
+            var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "?name=" + ScenarioContext.Current.Get<long>("ticks") + courseName).Result;
+            result.EnsureSuccessStatusCode();
+        }
+
+        [Then(@"I can retrieve the course by course code")]
+        public void ThenICanRetrieveTheCourseByCourseCode()
+        {
+            var courseCode = ScenarioContext.Current.Get<string>("courseCode");
+            var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "?code=" + ScenarioContext.Current.Get<long>("ticks") + courseCode).Result;
+            result.EnsureSuccessStatusCode();
+        }
+
+        [Then(@"my course info is changed")]
+        public void ThenMyCourseInfoIsChanged()
+        {
+            var courseId = ScenarioContext.Current.Get<Guid>("courseId");
+            var response = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + courseId).Result;
+            response.EnsureSuccessStatusCode();
+
+            var courseInfo = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+            var originalRequest = ScenarioContext.Current.Get<SaveCourseRequest>("editCourseRequest");
+            Assert.AreEqual(originalRequest.Name, courseInfo.Name);
+            Assert.AreEqual(originalRequest.Code, courseInfo.Code);
+            Assert.AreEqual(originalRequest.Description, courseInfo.Description);
+        }
+
+        [Then(@"I should get a not found message returned")]
+        public void ThenIShouldGetANotFoundMessageReturned()
+        {
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("getCourseName");
+            var expected = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), "NotFound");
+            Assert.That(response.StatusCode, Is.EqualTo(expected));
+        }
+
+        [Then(@"the organization id is returned as part of the request")]
+        public void ThenTheOrganizationIdIsReturnedAsPartOfTheRequest()
+        {
+            var orgId = ScenarioContext.Current.Get<Guid>("orgId");
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
+            Assert.That(courseInfoResponse.OrganizationId, Is.Not.Null);
+            Assert.That(courseInfoResponse.OrganizationId, Is.EqualTo(orgId));
+        }
+
+        [Then(@"the template course id is returned as part of the request")]
+        public void ThenTheTemplateCourseIdIsReturnedAsPartOfTheRequest()
+        {
+            var templateId = ScenarioContext.Current.Get<Guid>("templateId");
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
+            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+
+            Assert.That(courseInfoResponse.TemplateCourseId, Is.Not.Null);
+            Assert.That(courseInfoResponse.TemplateCourseId, Is.EqualTo(templateId));
+        }
+
         [Then(@"the organization '(.*)' has the following programs")]
         public void ThenTheOrganizationHasTheFollowingPrograms(string orgName, Table table)
         {
@@ -57,6 +216,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
            }
            
             table.CompareToInstance(actual);
+
+            if (actual.PublishDate.HasValue)
+            {
+                Assert.That(actual.PublishDate, Is.InRange(DateTime.Now.AddMinutes(-5), DateTime.Now));
+            }
         }
 
         [Then(@"the course '(.*)' includes the following programs")]
@@ -125,6 +289,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var expectedStatusCode = (HttpStatusCode) Enum.Parse(typeof (HttpStatusCode), status);
 
             Assert.That(response.StatusCode, Is.EqualTo(expectedStatusCode));
+        }
+
+        //TODO: Refactor this code to use "I get '(.*)' response"
+        [Then(@"I should get the status code (.*)")]
+        public void ThenIShouldGetA(string status)
+        {
+            var response = ScenarioContext.Current.Get<HttpResponseMessage>("responseToValidate");
+
+            var expectedStatusCode = (HttpStatusCode)Enum.Parse(typeof(HttpStatusCode), status);
+
+            Assert.That(response.StatusCode.Equals(expectedStatusCode));
         }
 
         [Then(@"The course '(.*)' should have the template named '(.*)'")]
@@ -502,21 +677,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Assert.That(index.First(x => x.Id == uncollapsedSegments[i].ParentSegmentId).Name, Is.EqualTo(table.Rows[i]["ParentSegment"]));
                 }
             }
-        }
-
-        [Then(@"the learning activity '(.*)' should have the following rubrics")]
-        public void ThenTheLearningActivityShouldHaveTheFollowingRubrics(string learningActivityName, Table table)
-        {
-            var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
-            var actual = GetOperations.GetCourseLearningActivity(resource);
-
-			Assert.That(actual.CourseRubrics.Count, Is.EqualTo(table.RowCount));
-			foreach (var row in table.Rows)
-			{
-				var title = row["Title"];
-				var rubricId = Resources<RubricResource>.Get(title);
-				Assert.That(actual.CourseRubrics.Any(x => x.RubricId == rubricId.Id));
-			}
         }
 
         [Then(@"published courses for orgniazation '(.*)' contains the following courses")]

@@ -103,7 +103,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                                                      new LearningOutcome().SupportOutcome(graphValidator.Object,
                                                                                           new LearningOutcome())));
 
-            var request = new SaveCourseRequest
+            var request = new CreateCourseFromTemplateRequest
                 {
                     Name = "CourseName",
                     Code = "CourseCode",
@@ -174,7 +174,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         }
 
 
-        public new Domain.Courses.Course BuildFromTemplate(Domain.Courses.Course template, SaveCourseRequest request)
+
+        public new Domain.Courses.Course BuildFromTemplate(Domain.Courses.Course template, CreateCourseFromTemplateRequest request)
         {
             return base.BuildFromTemplate(template, request);
         }

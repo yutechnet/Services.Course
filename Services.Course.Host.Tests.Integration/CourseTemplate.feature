@@ -30,8 +30,8 @@ Background:
 
 Scenario: Create a course from a template
 When I create a course from the template 'Template 1' with the following
-	| Name     | Code        | Description              | OrganizationName | CourseType  | IsTemplate |
-	| Course 1 | CourseCode1 | My First Course Template | COB              | Traditional | false      |
+	| Name     | Code        | Description              | OrganizationName | IsTemplate |
+	| Course 1 | CourseCode1 | My First Course Template | COB              | false      |
 Then the course 'Course 1' should have the following info
 	| Field       | Value                    |
 	| Name        | Course 1                 |
@@ -42,8 +42,8 @@ Then the course 'Course 1' should have the following info
 
 Scenario: Ignore course Type in the request when creating from template
 When I create a course from the template 'Template 1' with the following
-	| Name     | Code        | Description              | OrganizationName | CourseType | IsTemplate |
-	| Course 2 | CourseCode2 | My First Course Template | COB              | Competency | false      |
+	| Name     | Code        | Description              | OrganizationName |  IsTemplate |
+	| Course 2 | CourseCode2 | My First Course Template | COB              |  false      |
 Then the course 'Course 2' should have the following info
 	| Field       | Value                    |
 	| Name        | Course 2                 |
@@ -58,8 +58,8 @@ When I associate 'Template 1' course with the following programs
 	| Bachelor of Art     |
 	| Bachelor of Science |
 And I create a course from the template 'Template 1' with the following
-	| Name     | Code        | Description                   | OrganizationName | CourseType  | IsTemplate |
-	| Course 3 | CourseCode3 | My First Course from Template | COB              | Traditional | false      |
+	| Name     | Code        | Description                   | OrganizationName | IsTemplate |
+	| Course 3 | CourseCode3 | My First Course from Template | COB              | false      |
 Then the course 'Course 3' includes the following programs
 	| Program Name        |
 	| Bachelor of Art     |
@@ -67,8 +67,8 @@ Then the course 'Course 3' includes the following programs
 
 Scenario: Verify segments are copied from course template
 When I create a course from the template 'Template 1' with the following
-	| Name     | Code        | Description                   | OrganizationName | CourseType  | IsTemplate |
-	| Course 4 | CourseCode4 | My First Course from Template | COB              | Traditional | false      |
+	| Name     | Code        | Description                   | OrganizationName | IsTemplate |
+	| Course 4 | CourseCode4 | My First Course from Template | COB              | false      |
 Then the course 'Course 4' should have these course segments
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
@@ -82,8 +82,8 @@ When I associate the newly created learning outcomes to 'Template 1' course
 	| first course learning outcome  |
 	| second course learning outcome |
 And I create a course from the template 'Template 1' with the following
-	| Name     | Code        | Description                   | OrganizationName | CourseType  | IsTemplate |
-	| Course 5 | CourseCode5 | My First Course from Template | COB              | Traditional | false      |
+	| Name     | Code        | Description                   | OrganizationName | IsTemplate |
+	| Course 5 | CourseCode5 | My First Course from Template | COB              | false      |
 Then the course 'Template 1' should have the following learning outcomes
 	| Description                    | 
 	| first course learning outcome  | 
@@ -95,8 +95,8 @@ Scenario: Publish a course version, created from a template
 	| Bachelor of Art     |
 	| Bachelor of Science |
 	And I create a course from the template 'Template 1' with the following
-	| Name         | Code   | Description                   | OrganizationName | CourseType | IsTemplate |
-	| English 1010 | ENG101 | Ranji's awesome English Class | COB              | Competency | false      |
+	| Name         | Code   | Description                   | OrganizationName | IsTemplate |
+	| English 1010 | ENG101 | Ranji's awesome English Class | COB              | false      |
 	When I publish the following courses
 	| Name         | Note      |
 	| English 1010 | Blah blah |
@@ -120,8 +120,8 @@ Scenario: Version a course, which was created from a template
 	| Bachelor of Art     |
 	| Bachelor of Science |
 	And I create a course from the template 'Template 1' with the following
-	| Name         | Code   | Description                   | OrganizationName | CourseType | IsTemplate |
-	| English 1010 | ENG101 | Ranji's awesome English Class | COB              | Competency | false      |
+	| Name         | Code   | Description                   | OrganizationName | IsTemplate |
+	| English 1010 | ENG101 | Ranji's awesome English Class | COB              | false      |
 	When I publish the following courses
 	| Name         | Note      |
 	| English 1010 | Blah blah |
@@ -143,8 +143,8 @@ Scenario: Version a course, which was created from a template
 
 Scenario: Cannot get the template after create a course version from a previously-published version（DE395）
 	When I create a course from the template 'Template 1' with the following
-    | Name         | Code        | Description              | OrganizationName | CourseType  | IsTemplate |
-    | English 2020 | CourseCode1 | My First Course Template | COB              | Traditional | false      |
+    | Name         | Code        | Description              | OrganizationName | IsTemplate |
+    | English 2020 | CourseCode1 | My First Course Template | COB              | false      |
 	And I publish the following courses
 	| Name         | Note     |
 	| English 2020 | Blah blah |

@@ -94,8 +94,8 @@ Scenario: Create a course from a course template with learning materials
 	    | file2 | Week two      | test  instruction | true       | Template Material B |
 	    | file3 | Day one       | test  instruction | true       | Template Material C |
 	When Create a course from the template 'English Template' with the following
-	    | Name           | Code    | Description                   | OrganizationName | CourseType  | IsTemplate |
-	    | English Course | ENG 200 | My First Course from Template | COB              | Traditional | false      |
+	    | Name           | Code    | Description                   | OrganizationName | IsTemplate |
+	    | English Course | ENG 200 | My First Course from Template | COB              | false      |
 	Then The course 'English Course' has following learning material
 	    | Asset | CourseSegment | Instruction       | IsRequired | ParentCourse     |
 	    | file1 | Week one      |                   | false      | English Template |

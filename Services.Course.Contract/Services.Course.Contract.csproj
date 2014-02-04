@@ -50,14 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateCourseFromTemplateRequest.cs" />
     <Compile Include="LearningMaterialInfo.cs" />
     <Compile Include="LearningMaterialRequest.cs" />
     <Compile Include="CourseInfoResponse.cs" />
     <Compile Include="CourseLearningActivityResponse.cs" />
     <Compile Include="CourseSectionRequest.cs" />
     <Compile Include="PublishRequest.cs" />
-    <Compile Include="CourseRubricInfo.cs" />
-    <Compile Include="CourseRubricRequest.cs" />
     <Compile Include="SaveCourseLearningActivityRequest.cs" />
     <Compile Include="SimpleCourseInfoResponse.cs" />
     <Compile Include="UpdateCoursePrerequisites.cs" />

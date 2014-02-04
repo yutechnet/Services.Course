@@ -147,19 +147,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningActivity;
         }
 
-        public virtual CourseRubric AddCourseRubric(Guid learningActivityId, CourseRubricRequest request)
-        {
-            var learningActivity = GetLearningActivityOrThrow(learningActivityId);
-            return learningActivity.AddCourseRubric(request);
-        }
-
-        public virtual void DeleteCourseRubric(Guid learningActivityId, Guid rubricId)
-        {
-            var learningActivity = GetLearningActivityOrThrow(learningActivityId);
-            learningActivity.DeleteCourseRubric(rubricId);
-        }
-
-
         public virtual LearningMaterial AddLearningMaterial(LearningMaterialRequest learningMaterialRequest)
         {
             var learningMaterial = Mapper.Map<LearningMaterial>(learningMaterialRequest);

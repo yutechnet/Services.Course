@@ -326,6 +326,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
+<<<<<<< HEAD
+=======
+        public static HttpResponseMessage CreateCourseTemplate(string templateName, Table table)
+        {
+            var template = Resources<CourseResource>.Get(templateName);
+            var courseRequest = table.CreateInstance<CreateCourseFromTemplateRequest>();
+            courseRequest.OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id;
+            courseRequest.TemplateCourseId = template.Id;
+
+            var result = PostOperations.CreateCourseFromTemplate(courseRequest.Name, courseRequest);
+            return result;
+        }
+
+>>>>>>> Created a separate endpoint and contract for creating course from template
         [Given(@"Create learning material as the following info")]
         public void GivenCreateLearningMaterialAsTheFollowingInfo(Table table)
         {

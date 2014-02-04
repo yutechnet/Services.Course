@@ -51,9 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Authorization, Version=1.0.45.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Authorization, Version=1.0.46.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.45\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Authorization.1.0.46\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Exceptions, Version=1.0.20.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -67,8 +67,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Log.1.0.20\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate">
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.77\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+    <Reference Include="BpeProducts.Common.NHibernate, Version=1.0.81.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.1.0.81\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Redis, Version=1.0.23.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -77,17 +78,17 @@
     <Reference Include="BpeProducts.Common.WebApi">
       <HintPath>..\packages\BpeProducts.Common.WebApi.2.0.7\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.82.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.WebApiTest, Version=1.0.88.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.82\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.88\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Asset.Contracts, Version=0.1.114.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.114\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Services.Authorization.Contract, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Services.Authorization.Contract, Version=0.1.418.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.414\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.418\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Tenant.Client">
       <HintPath>..\packages\BpeProducts.Services.Tenant.Client.0.1.164\lib\net40\BpeProducts.Services.Tenant.Client.dll</HintPath>
@@ -138,9 +139,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.184\lib\net40\Services.Assessment.Contract.dll</HintPath>
     </Reference>
-    <Reference Include="Services.Section.Contracts, Version=0.1.274.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Services.Section.Contracts, Version=0.1.291.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.274\lib\net40\Services.Section.Contracts.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.291\lib\net40\Services.Section.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.70.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -221,7 +222,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="CourseCreationSteps.cs" />
     <Compile Include="CourseLearningActivity.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -288,21 +288,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProgramCreation.feature</DependentUpon>
     </Compile>
-    <Compile Include="ProgramCreationSteps.cs" />
     <Compile Include="Resources\CourseResource.cs" />
     <Compile Include="Resources\LearningOutcomeResource.cs" />
     <Compile Include="Resources\CourseSegmentResource.cs" />
     <Compile Include="Resources\ProgramResource.cs" />
     <Compile Include="Operations\GetOperations.cs" />
     <Compile Include="Resources\ResourceFactory.cs" />
-    <Compile Include="Resources\RubricAssociationResource.cs" />
-    <Compile Include="Resources\RubricResource.cs" />
     <Compile Include="Resources\SectionResource.cs" />
-    <Compile Include="CourseRubric.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CourseRubric.feature</DependentUpon>
-    </Compile>
     <Compile Include="SectionCreation.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -389,10 +381,6 @@
     <None Include="ProgramCreation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ProgramCreation.feature.cs</LastGenOutput>
-    </None>
-    <None Include="CourseRubric.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CourseRubric.feature.cs</LastGenOutput>
     </None>
     <None Include="SectionCreation.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

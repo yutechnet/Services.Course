@@ -44,12 +44,6 @@ namespace BpeProducts.Services.Course.Domain.Repositories
             return learningMaterial;
         }
 
-        public CourseRubric GetCourseRubric(Guid courseRubricId)
-        {
-            var courseRubric = _repository.Query<CourseRubric>().Single(c => c.Id == courseRubricId);
-            return courseRubric;
-        }
-
         public IEnumerable<Courses.Course> GetPublishedCourses(Guid organizationId)
         {
             return

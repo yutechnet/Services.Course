@@ -72,7 +72,6 @@ namespace BpeProducts.Services.Course.Domain
                 throw new NotFoundException(string.Format("{0} {1} is not found.", entityType, entityId));
             }
 
-			// TODO: idempotent?
             if (entity.IsPublished)
             {
                 throw new BadRequestException(string.Format("{0} {1} is already published and cannot be published again.", entityType, entityId));

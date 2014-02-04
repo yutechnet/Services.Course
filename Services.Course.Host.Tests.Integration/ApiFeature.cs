@@ -92,15 +92,5 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             updater.RegisterInstance(MockAssessmentClient.Object).As<IAssessmentClient>();
             updater.Update(CourseTestHost.Container);
         }
-
-        public static string GetDefaultConnectionString()
-        {
-            return GetDefaultConnectionString("DefaultConnection");
-        }
-
-        public static string GetDefaultConnectionString(string connectionName)
-        {
-            return ConfigurationManager.ConnectionStrings[connectionName].ConnectionString;
-        }
     }
 }
