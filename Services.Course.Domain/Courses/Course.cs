@@ -533,6 +533,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             segment.UpdateLearningMaterial(learningMaterialId, updatelearningMaterialRequest);
         }
 
+		// Base method is not supported
         public override void Publish(string publishNote)
         {
             throw new NotImplementedException("this overload is not supported for course");
