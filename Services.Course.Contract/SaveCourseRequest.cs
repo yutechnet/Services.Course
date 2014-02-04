@@ -18,6 +18,7 @@ namespace BpeProducts.Services.Course.Contract
 		}
 
         [DataMember]
+        [Obsolete("Consider using CreateCourseFromTemplate DTO")]
         public Guid? TemplateCourseId { get; set; }
         
         [DataMember]

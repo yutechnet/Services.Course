@@ -25,7 +25,25 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public Course Create(SaveCourseRequest request)
         {
-            return BuildFromScratch(request);
+            if (request.TemplateCourseId.HasValue)
+            {
+                // TODO: This block should be removed once Jenga migrates to using the separate endpoint for creating course from Template
+                var createCourseFromTemplateRequest = new CreateCourseFromTemplateRequest
+                    {
+                        Code = request.Code,
+                        Description = request.Description,
+                        IsTemplate = request.IsTemplate,
+                        Name = request.Name,
+                        OrganizationId = request.OrganizationId,
+                        TemplateCourseId = request.TemplateCourseId.Value,
+                        TenantId = request.TenantId
+                    };
+                return Create(createCourseFromTemplateRequest);
+            }
+            else
+            {
+                return BuildFromScratch(request);                
+            }
         }
 
 
