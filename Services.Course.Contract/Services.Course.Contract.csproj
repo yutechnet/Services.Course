@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateCourseFromTemplateRequest.cs" />
     <Compile Include="LearningMaterialInfo.cs" />
     <Compile Include="LearningMaterialRequest.cs" />
     <Compile Include="CourseInfoResponse.cs" />

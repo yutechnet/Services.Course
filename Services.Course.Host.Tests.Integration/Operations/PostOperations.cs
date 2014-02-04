@@ -73,5 +73,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var requestUri = string.Format("{0}/learningmaterial", segment.ResourceUri);
             return ApiFeature.CourseTestHost.Post<LearningMaterialResource, LearningMaterialRequest>(name, requestUri, request);
         }
+
+        public static HttpResponseMessage CreateCourseFromTemplate(string name, CreateCourseFromTemplateRequest courseRequest)
+        {
+            courseRequest.TenantId = ApiFeature.TenantId;
+            var requestUri = string.Format("{0}/coursefromtemplate", ApiFeature.LeadingPath);
+            return ApiFeature.CourseTestHost.Post<CourseResource, CreateCourseFromTemplateRequest>(name, requestUri, courseRequest);
+        }
     }
 }

@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
+using BpeProducts.Common.Authorization;
 using BpeProducts.Services.Course.Contract;
+using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain
 {
@@ -62,5 +64,8 @@ namespace BpeProducts.Services.Course.Domain
 
 	    CourseInfoResponse CreateVersion(Guid parentVersionId, string versionNumber);
 	    void PublishVersion(Guid courseId, string publishNote);
+
+        [AuthByAcl(Capability = Capability.CourseCreate, OrganizationObject = "request")]
+        CourseInfoResponse Create(CreateCourseFromTemplateRequest request);
     }
 }

@@ -752,22 +752,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var template = Resources<CourseResource>.Get(templateName);
             foreach (var row in table.Rows)
             {
-                string type;
                 string isTemplate;
 
-                var saveCourseRequest = new SaveCourseRequest
+                var request = new CreateCourseFromTemplateRequest
                 {
                     Code = row["Code"],
                     Description = row["Description"],
                     Name = row["Name"],
                     OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id,
-                    PrerequisiteCourseIds = new List<Guid>(),
-                    CourseType = row.TryGetValue("CourseType", out type) ? (ECourseType)Enum.Parse(typeof(ECourseType), type) : ECourseType.Traditional,
                     IsTemplate = row.TryGetValue("IsTemplate", out isTemplate) && bool.Parse(isTemplate),
-                    Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0"))
+                    TemplateCourseId = template.Id
                 };
-                saveCourseRequest.TemplateCourseId = template.Id;
-                var result = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
+
+                var result = PostOperations.CreateCourseFromTemplate(request.Name, request);
                 result.EnsureSuccessStatusCode();
             }
         }

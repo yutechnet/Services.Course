@@ -326,6 +326,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
+            var courseRequest = table.CreateInstance<CreateCourseFromTemplateRequest>();
+            var result = PostOperations.CreateCourseFromTemplate(courseRequest.Name, courseRequest);
         [Given(@"Create learning material as the following info")]
         public void GivenCreateLearningMaterialAsTheFollowingInfo(Table table)
         {

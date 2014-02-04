@@ -238,6 +238,7 @@
   <ItemGroup>
     <Compile Include="CourseFactoryTests.cs" />
     <Compile Include="CourseServiceTests.cs" />
+    <Compile Include="Entities\CourseFactoryTests.cs" />
     <Compile Include="Entities\CourseLearningActivityServiceTests.cs" />
     <Compile Include="Entities\CourseLearningActivityTests.cs" />
     <Compile Include="Entities\CoursePublisherTests.cs" />
