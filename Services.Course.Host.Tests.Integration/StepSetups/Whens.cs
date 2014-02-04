@@ -809,12 +809,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         private static HttpResponseMessage CreateCourseTemplate(string templateName, Table table)
         {
             var template = Resources<CourseResource>.Get(templateName);
-            var courseRequest = table.CreateInstance<SaveCourseRequest>();
+            var courseRequest = table.CreateInstance<CreateCourseFromTemplateRequest>();
             var organizationName = table.Rows[0]["OrganizationName"];
             courseRequest.OrganizationId = Resources<OrganizationResource>.GetId(organizationName);
             courseRequest.TemplateCourseId = template.Id;
 
-            var result = PostOperations.CreateCourse(courseRequest.Name, courseRequest);
+            var result = PostOperations.CreateCourseFromTemplate(courseRequest.Name, courseRequest);
             return result;
         }
     }
