@@ -26,6 +26,7 @@ namespace BpeProducts.Services.Course.Contract
         public int MaxPoint { get; set; }
         public int Weight { get; set; }
         public Guid ObjectId { get; set; }
+		public string Description { get; set; }
         public string CustomAttribute { get; set; }
         public int? ActiveDate { get; set; }
         public int? InactiveDate { get; set; }

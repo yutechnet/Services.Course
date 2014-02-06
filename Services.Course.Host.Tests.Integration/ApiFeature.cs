@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using Moq;
 using Services.Assessment.Contract;
-using Services.Section.Contracts;
+using BpeProducts.Services.Section.Contracts;
 using TechTalk.SpecFlow;
 using BpeProducts.Common.WebApiTest.Framework;
 

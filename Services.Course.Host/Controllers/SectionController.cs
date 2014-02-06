@@ -6,7 +6,7 @@ using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Services.Assessment.Contract;
-using Services.Section.Contracts;
+using BpeProducts.Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {

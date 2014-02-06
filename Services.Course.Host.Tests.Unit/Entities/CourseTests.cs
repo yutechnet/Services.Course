@@ -279,7 +279,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     Type = CourseLearningActivityType.Discussion,
                     IsGradeable = true,
                     IsExtraCredit = false,
-                    MaxPoint = 100
+                    MaxPoint = 100,
+					Description = "Some Description"
 
                 };
             
@@ -295,6 +296,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(learningActivity.IsExtraCredit, Is.EqualTo(learningActivityRequest.IsExtraCredit));
             Assert.That(learningActivity.MaxPoint, Is.EqualTo(learningActivityRequest.MaxPoint));
             Assert.That(learningActivity.TenantId, Is.EqualTo(course.TenantId));
+			Assert.That(learningActivity.Description, Is.EqualTo(learningActivityRequest.Description));
         }
 
         [Test]
@@ -319,7 +321,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 Type = CourseLearningActivityType.Discussion,
                 IsGradeable = true,
                 IsExtraCredit = false,
-                MaxPoint = 100
+                MaxPoint = 100,
+				Description = "desc"
             };
 
             var learningActivityId = course.AddLearningActivity(segmentId, learningActivityRequest).Id;
@@ -332,6 +335,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(learningActivity.IsExtraCredit, Is.EqualTo(learningActivityRequest.IsExtraCredit));
             Assert.That(learningActivity.MaxPoint, Is.EqualTo(learningActivityRequest.MaxPoint));
             Assert.That(learningActivity.TenantId, Is.EqualTo(course.TenantId));
+			Assert.That(learningActivity.Description, Is.EqualTo(learningActivityRequest.Description));
         }
 
         [Test]

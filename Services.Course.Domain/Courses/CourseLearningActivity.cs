@@ -46,6 +46,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual Guid ObjectId { get; set; }
 
+		public virtual string Description { get; set; }
+
         public virtual string CustomAttribute { get; set; }
 
         public virtual int? ActiveDate { get; set; }

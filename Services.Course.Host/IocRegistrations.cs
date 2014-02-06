@@ -4,7 +4,7 @@ using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.Log;
-using Services.Section.Contracts;
+using BpeProducts.Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Host
 {

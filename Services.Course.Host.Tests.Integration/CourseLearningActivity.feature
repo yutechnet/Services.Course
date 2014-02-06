@@ -27,6 +27,7 @@ Scenario: Add a learning activity
 	| Type          | Discussion                           |
 	| IsGradeable   | True                                 |
 	| IsExtraCredit | False                                |
+	| Description   | Desc                                 |
 	| Weight        | 100                                  |
 	| MaxPoint      | 20                                   |
 	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
@@ -34,6 +35,7 @@ Scenario: Add a learning activity
 	| Field         | Value                                |
 	| Name          | Discussion 1                         |
 	| Type          | Discussion                           |
+	| Description   | Desc                                 |
 	| IsGradeable   | True                                 |
 	| IsExtraCredit | False                                |
 	| Weight        | 100                                  |
@@ -47,6 +49,7 @@ Scenario: Add a learning activity with acitve, inactive, duedate
 	| Type          | Discussion                           |
 	| IsGradeable   | True                                 |
 	| IsExtraCredit | False                                |
+	| Description   | Desc                                 |
 	| Weight        | 100                                  |
 	| MaxPoint      | 20                                   |
 	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
@@ -59,6 +62,7 @@ Scenario: Add a learning activity with acitve, inactive, duedate
 	| Type          | Discussion                           |
 	| IsGradeable   | True                                 |
 	| IsExtraCredit | False                                |
+	| Description   | Desc                                 |
 	| Weight        | 100                                  |
 	| MaxPoint      | 20                                   |
 	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
@@ -91,6 +95,7 @@ Scenario: Update a learning activity NEW
 	| Type            | Assignment                                                                   |
 	| IsGradeable     | false                                                                        |
 	| IsExtraCredit   | false                                                                        |
+	| Description     | Desc                                                                         |
 	| Weight          | 100                                                                          |
 	| MaxPoint        | 100                                                                          |
 	| ObjectId        | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
@@ -101,6 +106,7 @@ Scenario: Update a learning activity NEW
 	| Type            | Assignment                                                                   |
 	| IsGradeable     | false                                                                        |
 	| IsExtraCredit   | false                                                                        |
+	| Description     | Desc                                                                         |
 	| Weight          | 100                                                                          |
 	| MaxPoint        | 100                                                                          |
 	| ObjectId        | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |

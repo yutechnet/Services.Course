@@ -10,7 +10,7 @@ using BpeProducts.Services.Course.Domain.Validation;
 using Newtonsoft.Json;
 using ServiceStack.Common.Extensions;
 using Services.Assessment.Contract;
-using Services.Section.Contracts;
+using BpeProducts.Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -341,8 +341,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
                         ObjectId = courseLearningActivity.ObjectId,
                         CustomAttribute = courseLearningActivity.CustomAttribute,
                         AssessmentId = courseLearningActivity.AssessmentId,
-                        AssessmentType = courseLearningActivity.AssessmentType.ToString()
-
+                        AssessmentType = courseLearningActivity.AssessmentType.ToString(),
+						Description = courseLearningActivity.Description
                     }).ToList();
 
             return sectionLearningActivities;
@@ -433,6 +433,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     MaxPoint = request.MaxPoint,
                     Weight = request.Weight,
                     ObjectId = request.ObjectId,
+					Description = request.Description,
                     CustomAttribute = request.CustomAttribute,
                     TenantId = TenantId,
                     ActiveDate = request.ActiveDate,
@@ -466,6 +467,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             learningActivity.MaxPoint = request.MaxPoint;
             learningActivity.Weight = request.Weight;
             learningActivity.ObjectId = request.ObjectId;
+	        learningActivity.Description = request.Description;
             learningActivity.CustomAttribute = request.CustomAttribute;
             learningActivity.ActiveDate = request.ActiveDate;
             learningActivity.InactiveDate = request.InactiveDate;
