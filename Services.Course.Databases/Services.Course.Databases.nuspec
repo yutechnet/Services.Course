@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>BpeProducts.Services.Course.Databases</id>
+    <version>1.0.0</version>
+    <authors>scm</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Parabola Database Deployment</description>
+    <tags>Products,Octopus,Database,Deployment</tags>
+  </metadata>
+  <files>
+    <file src="*.ps1" target="" /> 
+    <file src="*.psm1" target="" /> 
+    <file src="Databases\**\*" target="Databases" /> 
+    <file src="DatabaseTool\**\*" target="DatabaseTool" /> 
+  </files>
+</package>

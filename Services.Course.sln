@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{04DE37
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Course.Host.Tests.Integration", "Services.Course.Host.Tests.Integration\Services.Course.Host.Tests.Integration.csproj", "{A6853AF7-E4A4-4A9A-8D82-0B415BF46232}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Course.Databases", "Services.Course.Databases\Services.Course.Databases.csproj", "{7466685C-6AD1-4B8A-9619-85CB34DB73F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{A6853AF7-E4A4-4A9A-8D82-0B415BF46232}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6853AF7-E4A4-4A9A-8D82-0B415BF46232}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6853AF7-E4A4-4A9A-8D82-0B415BF46232}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7466685C-6AD1-4B8A-9619-85CB34DB73F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7466685C-6AD1-4B8A-9619-85CB34DB73F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7466685C-6AD1-4B8A-9619-85CB34DB73F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7466685C-6AD1-4B8A-9619-85CB34DB73F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
