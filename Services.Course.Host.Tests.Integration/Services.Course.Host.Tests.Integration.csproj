@@ -91,9 +91,6 @@
       <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.432\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Section.Contracts">
-      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.344\lib\net40\BpeProducts.Services.Section.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="BpeProducts.Services.Section.Contracts">
       <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.345\lib\net40\BpeProducts.Services.Section.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Tenant.Client">

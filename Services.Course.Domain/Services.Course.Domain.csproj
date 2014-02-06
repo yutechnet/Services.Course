@@ -136,10 +136,12 @@
       <HintPath>..\packages\NHibernate.OData.0.3.1.0\lib\net35\NHibernate.OData.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Services.Assessment.Contract">
+      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.184\lib\net40\Services.Assessment.Contract.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\packages\ServiceStack.Common.3.9.71\lib\net35\ServiceStack.Common.dll</HintPath>
       <Private>True</Private>
-
     </Reference>
     <Reference Include="ServiceStack.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -278,7 +280,6 @@
     <Compile Include="VersionHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
