@@ -7,6 +7,7 @@ using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Validation;
+using BpeProducts.Services.Section.Contracts;
 using Newtonsoft.Json;
 using ServiceStack.Common.Extensions;
 using Services.Assessment.Contract;
@@ -299,6 +300,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     TenantId = TenantId,
                     CourseId = Id,
                     Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null), assessmentClient),
+                    SupportedOutcomes = (from learningOutcome in SupportedOutcomes select learningOutcome.Id).ToList(),
                     Credit = Credit
                 };
 

@@ -93,6 +93,9 @@
     <Reference Include="BpeProducts.Services.Section.Contracts">
       <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.344\lib\net40\BpeProducts.Services.Section.Contracts.dll</HintPath>
     </Reference>
+    <Reference Include="BpeProducts.Services.Section.Contracts">
+      <HintPath>..\packages\BpeProducts.Services.Section.Contracts.0.1.345\lib\net40\BpeProducts.Services.Section.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="BpeProducts.Services.Tenant.Client">
       <HintPath>..\packages\BpeProducts.Services.Tenant.Client.0.1.164\lib\net40\BpeProducts.Services.Tenant.Client.dll</HintPath>
     </Reference>

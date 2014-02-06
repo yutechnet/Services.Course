@@ -7,6 +7,7 @@ using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using BpeProducts.Services.Section.Contracts;
 using Moq;
 using Services.Assessment.Contract;
 using BpeProducts.Services.Section.Contracts;

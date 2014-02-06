@@ -8,10 +8,12 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Section.Contracts;
 using Moq;
 using NUnit.Framework;
 using Services.Assessment.Contract;
 using ServiceStack.Common.Extensions;
+using CourseLearningActivityType = BpeProducts.Services.Course.Contract.CourseLearningActivityType;
 using OutcomeInfo = Services.Assessment.Contract.OutcomeInfo;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
@@ -645,7 +647,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         }
 
         [Test]
-        public void Can_clone_learning_material_0utcomes()
+        public void Can_clone_learning_material_Outcomes()
         {
             var course = GetCourse();
             const int segmentCount = 5;
@@ -662,6 +664,30 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             course.Segments.ForEach(s => learningMaterialsCount += s.LearningMaterials.Count);
             _assessmentClientMock.Verify(a => a.SupportsOutcome("learningmaterial", It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(supportOutcomes.Count * learningMaterialsCount));
 
+        }
+
+        [Test]
+        public void Can_build_section_request_with_supported_outcomes()
+        {
+            var course = GetCourse();
+            course.SupportOutcome(new LearningOutcome { Id = Guid.NewGuid(), Description = "outcome1" });
+            course.SupportOutcome(new LearningOutcome { Id = Guid.NewGuid(), Description = "outcome2" });
+            course.Publish("hello", _coursePublisher.Object);
+
+            var request = new Course.Contract.CourseSectionRequest()
+                {
+                    Name = "Section1",
+                    Code = "SECTION123",
+                    OrganizationId = Guid.NewGuid(),
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now.AddDays(10)
+                };
+
+            var sectionRequest = course.GetSectionRequest(request, _assessmentClientMock.Object);
+
+            Assert.That(sectionRequest.SupportedOutcomes, Is.Not.Null);
+            Assert.That(sectionRequest.SupportedOutcomes.Count, Is.EqualTo(course.SupportedOutcomes.Count));
+            CollectionAssert.AreEquivalent(sectionRequest.SupportedOutcomes, (from outcome in course.SupportedOutcomes select outcome.Id));
         }
 
         static readonly Random Random = new Random();
