@@ -49,6 +49,7 @@
     <Content Include="Databases\ConnectionStrings.Release.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Databases\Parabola\001-Initial_Schema.sql" />
     <Content Include="Databases\Parabola\placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -86,7 +87,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ReadMe.txt" />
-    <Content Include="ScriptReview\001-Add_description_to_learningActivity.sql" />
+    <Content Include="Databases\Parabola\002-Add_Description_to_CourseLearningActivity.sql" />
     <Content Include="ScriptReview\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
