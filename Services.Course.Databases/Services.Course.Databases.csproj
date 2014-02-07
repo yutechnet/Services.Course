@@ -86,6 +86,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ReadMe.txt" />
+    <Content Include="ScriptReview\001-Add_description_to_learningActivity.sql" />
+    <Content Include="ScriptReview\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
