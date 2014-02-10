@@ -10,6 +10,8 @@ using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment;
+using BpeProducts.Services.Section.Contracts;
+using Moq;
 using NHibernate.Linq;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -777,6 +779,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             Assert.That(response.IsPublished, Is.EqualTo(true));
         }
 
+        [Then(@"Section service is called with the following learning outcomes in the payload")]
+        public void ThenSectionServiceIsCalledWithTheFollowingLearningOutcomesInThePayload(Table table)
+        {
+            var mockSectionClient = ApiFeature.MockSectionClient;
+
+            var learningOutcomeIds =
+                (from row in table.Rows select Resources<LearningOutcomeResource>.Get(row["Description"]).Id);
+            mockSectionClient.Verify(s =>s.CreateSection(It.IsAny<Uri>(), It.Is<CreateSectionRequest>(c => c.SupportedOutcomes.SequenceEqual(learningOutcomeIds))));
+        }
     }
 }
 
