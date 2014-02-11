@@ -28,7 +28,6 @@ namespace BpeProducts.Services.Course.Contract
         public Guid AddedBy { get; set; }
         public Guid UpdatedBy { get; set; }
 		public List<CourseSegmentInfo> Segments { get; set; }
-        public List<OutcomeInfo> SupportedOutcomes { get; set; } 
 
         public string VersionNumber { get; set; }
         public bool IsPublished { get; set; }

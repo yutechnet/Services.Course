@@ -39,21 +39,3 @@ Scenario: Create a section from a course returns status of section service
 		| CourseName | Name     | Code        | StartDate | EndDate   |
 		| Math 101   | Math 334 | MATH334.ABC | 2/15/2014 | 6/15/2014 |
 	Then I get 'Forbidden' response
-
-Scenario: Course outcome is cloned to Section
-	And I associate the newly created learning outcomes to 'Math 101' course
-         | Description |
-         | CL1         |
-         | CL2         |
-	When I publish the following courses
-         | Name     | Note      |
-         | Math 101 | published |
-	And I create the following sections
-		| CourseName | Name     | Code        | StartDate | EndDate   |
-		| Math 101   | Math 334 | MATH334.ABC | 2/15/2014 | 6/15/2014 |
-	Then Section service is called with the following learning outcomes in the payload
-         | Description |
-         | CL1         |
-         | CL2         |
-
-

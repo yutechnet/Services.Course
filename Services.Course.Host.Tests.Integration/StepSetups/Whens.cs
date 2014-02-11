@@ -168,21 +168,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [When(@"I associate the newly created learning outcomes to '(.*)' course")]
-        public void WhenIAssociateTheNewlyCreatedLearningOutcomesToCourse(string courseName, Table table)
-        {
-            var requests = (from r in table.Rows
-                            select new OutcomeRequest {Description = r["Description"], TenantId = ApiFeature.TenantId})
-                .ToList();
-
-            var course = Resources<CourseResource>.Get(courseName);
-
-            foreach (var request in requests)
-            {
-                PostOperations.CreateEntityLearningOutcome(request.Description, course, request);
-            }
-        }
-
         [When(@"I associate the existing learning outcomes to '(.*)' course")]
         public void WhenIAssociateTheExistingLearningOutcomesToCourse(string courseName, Table table)
         {
@@ -395,43 +380,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             PutOperations.UpdateCourseLearningActivity(resourse, learningActivity);
         }
 
-        [When(@"I change the '(.*)' learning outcome description to '(.*)'")]
-        public void WhenIChangeTheLearningOutcomeDescriptionTo(string learningOutcomeName, string newDescription)
-        {
-            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
-
-            var request = new OutcomeRequest
-                {
-                    Description = newDescription
-                };
-
-            PutOperations.UpdateLearningOutcome(resource, request);
-        }
-
-        [When(@"I update '(.*)' learning outcome with the following info")]
-        public void WhenIUpdateLearningOutcomeWithTheFollowingInfo(string learningOutcomeName, Table table)
-        {
-            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
-            var request = table.CreateInstance<OutcomeRequest>();
-
-            PutOperations.UpdateLearningOutcome(resource, request);
-        }
-
-        [When(@"I get the learning outcome '(.*)'")]
-        public void WhenIGetTheLearningOutcome(string learningOutcomeName)
-        {
-            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
-            GetOperations.GetLearningOutcome(resource);
-        }
-
-        [When(@"I delete the '(.*)' learning outcome")]
-        public void WhenIDeleteTheLearningOutcome(string learningOutcomeName)
-        {
-            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
-
-            DeleteOperations.DeleteResource(resource);
-        }
-
 		[When(@"I view '(.*)' course")]
         [When(@"I retrieve '(.*)' course")]
         public void WhenIRetrieveCourse(string courseName)
@@ -491,17 +439,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var resource = Resources<CourseSegmentResource>.Get(segmentName);
                 DeleteOperations.DeleteResource(resource);
             }
-        }
-
-        [When(@"I create a new version of '(.*)' outcome named '(.*)' with the following info")]
-        public void WhenICreateANewVersionOfWithTheFollowingInfo(string learningOutcomeName, string newOutcomeName, Table table)
-        {
-            var versionRequest = table.CreateInstance<VersionRequest>();
-
-            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
-            versionRequest.ParentVersionId = resource.Id;
-
-            PostOperations.CreateLearningOutcomeVersion(newOutcomeName, resource, versionRequest);
         }
 
         [When(@"I create a course without a version")]

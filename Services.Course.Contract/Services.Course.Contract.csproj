@@ -66,8 +66,6 @@
     <Compile Include="UpdateLearningMaterialRequest.cs" />
     <Compile Include="UpdateProgramRequest.cs" />
     <Compile Include="VersionRequest.cs" />
-    <Compile Include="OutcomeRequest.cs" />
-    <Compile Include="OutcomeInfo.cs" />
     <Compile Include="SaveCourseSegmentRequest.cs" />
     <Compile Include="SaveProgramRequest.cs" />
     <Compile Include="ProgramResponse.cs" />

@@ -75,8 +75,6 @@ namespace BpeProducts.Services.Course.Host.App_Start
 
         private static void OutcomeMappings()
         {
-            Mapper.CreateMap<LearningOutcome, OutcomeInfo>();
-            Mapper.CreateMap<OutcomeRequest, LearningOutcome>();
         }
     }
 }

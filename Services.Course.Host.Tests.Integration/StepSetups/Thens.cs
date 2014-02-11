@@ -236,19 +236,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             CollectionAssert.AreEquivalent(course.ProgramIds, expectedProgramIds);
         }
 
-        [Then(@"'(.*)' program is associated with the following learning outcomes")]
-        public void ThenProgramIsAssociatedWithTheFollowingLearningOutcomes(string programName, Table table)
-        {
-            var resource = Resources<ProgramResource>.Get(programName);
-
-            var outcomes = GetOperations.GetEntityLearningOutcomes(new List<Guid> {resource.Id});
-
-            var actualOutcomes = from o in outcomes[resource.Id] select o.Description;
-            var expectedOutcomes = (from r in table.Rows select r["Description"]).ToList();
-
-            CollectionAssert.AreEquivalent(expectedOutcomes, actualOutcomes);
-        }
-
         [Then(@"the course '(.*)' includes '(.*)' program association")]
         public void ThenTheCourseIncludesProgramAssociation(string courseName, string programName)
         {
@@ -387,127 +374,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             //CollectionAssert.AreEquivalent(expectedLearningActivities, actualLearningActivities);
         }
 
-        [Then(@"the learning outcome '(.*)' should contain")]
-        public void ThenTheLearningOutcomeShouldContain(string learningOutcomeName, Table table)
-        {
-            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
-
-            var actual = GetOperations.GetLearningOutcome(resource);
-            var expected = table.CreateInstance<OutcomeInfo>();
-
-            Assert.That(expected.Description, Is.EqualTo(actual.Description));
-        }
-
-        [Then(@"the course '(.*)' has the following learning outcomes")]
-        public void ThenCourseHasTheFollowingLearningOutcomes(string courseName, Table table)
-        {
-            var resource = Resources<CourseResource>.Get(courseName);
-            var course = GetOperations.GetCourse(resource);
-
-            foreach (var row in table.Rows)
-            {
-                var supportedOutcomeDescription = row["Description"];
-
-                var supporedOutcome = course.SupportedOutcomes.FirstOrDefault(o => o.Description == supportedOutcomeDescription);
-                Assert.NotNull(supporedOutcome);
-
-                if (string.IsNullOrEmpty(row["SupportingOutcomes"]))
-                    continue;
-
-                var supportingOutcomeDescriptions = row["SupportingOutcomes"].Split(',');
-
-                foreach (var outcomeDescription in supportingOutcomeDescriptions)
-                {
-                    var supportingOutcome = supporedOutcome.SupportedOutcomes.FirstOrDefault(o => o.Description == outcomeDescription.Trim());
-                    Assert.NotNull(supportingOutcome);
-                }
-            }
-        }
-   
-        [Then(@"the segment '(.*)' includes the following learning outcomes")]
-        public void ThenTheSegmentIncludesTheFollowingLearningOutcomes(string segmentName, Table table)
-        {
-            var resource = Resources<CourseSegmentResource>.Get(segmentName);
-            var outcomes = GetOperations.GetSupportedOutcomes(resource);
-            table.CompareToSet(outcomes);
-        }
-
-        [Then(@"'(.*)' program is associated with the only following learning outcomes")]
-        public void ThenProgramIsAssociatedWithTheOnlyFollowingLearningOutcomes(string programName, Table table)
-        {
-            var resource = Resources<ProgramResource>.Get(programName);
-
-            var actualOutcomes =
-                (from o in GetOperations.GetSupportedOutcomes(resource) select o.Description).ToList();
-            var expectedOutcomes = (from o in table.Rows select o["Description"]).ToList();
-
-            CollectionAssert.AreEquivalent(expectedOutcomes, actualOutcomes);
-        }
-
-        [Then(@"learning outcome '(.*)' is supported by the following learning outcomes")]
-        public void ThenLearningOutcomeIsSupportedByTheFollowingLearningOutcomes(string learningOutcomeName, Table table)
-        {
-            var resource = Resources<LearningOutcomeResource>.Get(learningOutcomeName);
-
-            var actualOutcomes = (from o in GetOperations.GetSupportedOutcomes(resource) select o.Description).ToList();
-            var expectedOutcomes = (from o in table.Rows select o["Description"]).ToList();
-
-            CollectionAssert.AreEquivalent(expectedOutcomes, actualOutcomes);
-        }
-
-        [Then(@"I get the entity learning outcomes as follows")]
-        public void ThenIGetTheEntityLearningOutcomesAsFollows(Table table)
-        {
-            var expectedEntityOutcomes = new Dictionary<IResource, IList<Guid>>();
-            foreach (var row in table.Rows)
-            {
-                var entityType = row["EntityType"];
-                var entityName = row["EntityName"];
-                IResource resource = null;
-
-                switch (entityType)
-                {
-                    case "Program":
-                        resource = Resources<ProgramResource>.Get(entityName);
-                        break;
-                    case "Course":
-                        resource = Resources<CourseResource>.Get(entityName);
-                        break;
-                    case "Segment":
-                        resource = Resources<CourseSegmentResource>.Get(entityName);
-                        break;
-                }
-
-                if (resource == null)
-                    throw new Exception("No recourse found for entity type " + entityType);
-
-                var expectedOutcomes = (from o in row["LearningOutcomes"].Split(new[] {','})
-                                        where !String.IsNullOrWhiteSpace(o)
-                                        select Resources<LearningOutcomeResource>.Get(o.Trim()).Id).ToList();
-                expectedEntityOutcomes.Add(resource, expectedOutcomes);
-            }
-
-            var entityIdsToGet = (from e in expectedEntityOutcomes.Keys select e.Id).ToList();
-            var actualEntityOutcomes = GetOperations.GetEntityLearningOutcomes(entityIdsToGet);
-
-            foreach (var expectedEntity in expectedEntityOutcomes)
-            {
-                if (expectedEntity.Value.Count == 0) continue;
-
-                List<OutcomeInfo> outcomes;
-
-                if (actualEntityOutcomes.TryGetValue(expectedEntity.Key.Id, out outcomes))
-                {
-                    var actualEntityOutcomeIds = (from o in outcomes select o.Id).ToList();
-                    CollectionAssert.AreEquivalent(expectedEntity.Value.ToList(), actualEntityOutcomeIds);
-                }
-                else
-                {
-                    Assert.That(actualEntityOutcomes.Keys.Contains(expectedEntity.Key.Id));
-                }
-            }
-        }
-
         [Then(@"the course '(.*)' should have these course segments")]
         public void ThenTheCourseShouldHaveTheseCourseSegments(string courseName, Table table)
         {
@@ -577,18 +443,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [Then(@"the course '(.*)' should have the following learning outcomes")]
-        public void ThenTheCourseShouldHaveTheFollowingLearningOutcomes(string courseName, Table table)
-        {
-            var resource = Resources<CourseResource>.Get(courseName);
-            var courseInfo = GetOperations.GetCourse(resource);
-
-            var expected = (from r in table.Rows select r["Description"]).ToList();
-            var actual = (from o in courseInfo.SupportedOutcomes select o.Description).ToList();
-
-            CollectionAssert.AreEquivalent(expected, actual);
-        }
-
         [Then(@"the course template Ids in ""(.*)"" are:")]
         public void ThenTheCourseTemplateIdsInAre(string scenarioContextName, Table table)
         {
@@ -622,21 +476,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 Assert.That(actualProgram.Description, Is.EqualTo(expectedProgram.Description));
                 Assert.That(actualProgram.OrganizationId, Is.EqualTo(expectedOrgId));
                 Assert.That(actualProgram.ProgramType, Is.EqualTo(expectedProgram.ProgramType));
-            }
-        }
-
-
-        [Then(@"the learning outcome '(.*)' supports the following learning outcomes")]
-        public void ThenTheLearningOutcomeSupportsTheFollowingLearningOutcomes(string learningOutcomeName, Table table)
-        {
-            foreach (var row in table.Rows)
-            {
-                var resource = Resources<LearningOutcomeResource>.Get(row["Description"]);
-
-                var actualOutcomes = (from o in GetOperations.GetSupportedOutcomes(resource) select o.Description).ToList();
-
-                Assert.That(actualOutcomes.Count, Is.EqualTo(1));
-                Assert.That(actualOutcomes[0], Is.EqualTo(learningOutcomeName));
             }
         }
 

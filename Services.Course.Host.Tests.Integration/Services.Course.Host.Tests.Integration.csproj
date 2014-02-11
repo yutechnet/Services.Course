@@ -241,11 +241,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseSegment.feature</DependentUpon>
     </Compile>
-    <Compile Include="CourseSegmentLearningOutcome.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CourseSegmentLearningOutcome.feature</DependentUpon>
-    </Compile>
     <Compile Include="CourseTemplate.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -255,21 +250,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseVersioning.feature</DependentUpon>
-    </Compile>
-    <Compile Include="GetEntityLearningOutcomes.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>GetEntityLearningOutcomes.feature</DependentUpon>
-    </Compile>
-    <Compile Include="LearningOutcomeManagement.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LearningOutcomeManagement.feature</DependentUpon>
-    </Compile>
-    <Compile Include="LearningOutcomeVersioning.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LearningOutcomeVersioning.feature</DependentUpon>
     </Compile>
     <Compile Include="Operations\DeleteOperations.cs" />
     <Compile Include="Resources\Account\OrganizationResource.cs" />
@@ -348,10 +328,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseSegment.feature.cs</LastGenOutput>
     </None>
-    <None Include="CourseSegmentLearningOutcome.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>CourseSegmentLearningOutcome.feature.cs</LastGenOutput>
-    </None>
     <None Include="CourseTemplate.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseTemplate.feature.cs</LastGenOutput>
@@ -359,18 +335,6 @@
     <None Include="CourseVersioning.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseVersioning.feature.cs</LastGenOutput>
-    </None>
-    <None Include="GetEntityLearningOutcomes.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>GetEntityLearningOutcomes.feature.cs</LastGenOutput>
-    </None>
-    <None Include="LearningOutcomeManagement.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>LearningOutcomeManagement.feature.cs</LastGenOutput>
-    </None>
-    <None Include="LearningOutcomeVersioning.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>LearningOutcomeVersioning.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="ProgramAssociation.feature">

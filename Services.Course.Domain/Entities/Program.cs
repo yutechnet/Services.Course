@@ -7,9 +7,8 @@ namespace BpeProducts.Services.Course.Domain.Entities
 {
 	//[JsonObject(MemberSerialization.Fields)]
 	//[Serializable]
-    public class Program : TenantEntity, ISupportingEntity
+    public class Program : TenantEntity
     {
-        private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();
         private IList<Courses.Course> _courses = new List<Courses.Course>();
 
         [NotNullable]
@@ -26,24 +25,6 @@ namespace BpeProducts.Services.Course.Domain.Entities
         {
             get { return _courses; }
             set { _courses = value; }
-        }
-
-        public virtual IList<LearningOutcome> SupportedOutcomes
-        {
-            get { return _supportedOutcomes; }
-            protected internal set { _supportedOutcomes = value; }
-        }
-
-        public virtual void SupportOutcome(LearningOutcome outcome)
-        {
-            _supportedOutcomes.Add(outcome);
-            outcome.SupportingEntities.Add(this);
-        }
-
-        public virtual void UnsupportOutcome(LearningOutcome outcome)
-        {
-            _supportedOutcomes.Remove(outcome);
-            outcome.SupportingEntities.Remove(this);
         }
     }
 }

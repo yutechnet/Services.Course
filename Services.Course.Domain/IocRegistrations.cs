@@ -12,7 +12,6 @@ using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Handlers;
-using BpeProducts.Services.Course.Domain.Outcomes;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Domain.Validation;
 using Services.Assessment.Contract;
@@ -38,14 +37,8 @@ namespace BpeProducts.Services.Course.Domain
 				.RegisterType<ProgramRepository>().As<IProgramRepository>()
                 .EnableInterfaceInterceptors().EnableUserInputValidation()
 				.InterceptedBy(typeof (PublicInterfaceLoggingInterceptor));
-			containerBuilder
-				.RegisterType<LearningOutcomeRepository>().As<ILearningOutcomeRepository>()
-                .EnableInterfaceInterceptors().EnableUserInputValidation()
-				.InterceptedBy(typeof (PublicInterfaceLoggingInterceptor));
-
 
 			containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
-			containerBuilder.RegisterType<OutcomeFactory>().As<IOutcomeFactory>();
 			containerBuilder.RegisterType<CourseService>().As<ICourseService>().EnableInterfaceInterceptors().EnableAuthorization();
 
             containerBuilder.RegisterType<LearningMaterialService>().As<ILearningMaterialService>().EnableInterfaceInterceptors().EnableAuthorization();
@@ -55,11 +48,9 @@ namespace BpeProducts.Services.Course.Domain
 
 			containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
 			containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>();
-			containerBuilder.RegisterType<LearningOutcomeService>().As<ILearningOutcomeService>();
 			containerBuilder.RegisterType<ProgramService>().As<IProgramService>();
 			containerBuilder.RegisterType<VersionHandler>().As<IVersionHandler>();
 			containerBuilder.RegisterType<VersionableEntityFactory>().As<IVersionableEntityFactory>();
-			containerBuilder.RegisterType<GraphValidator>().As<IGraphValidator>();
 
 
 			containerBuilder.RegisterType<DomainEvents>().As<IDomainEvents>();
@@ -82,15 +73,8 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<UpdateModelOnCourseVersionCreation>().As<IHandle<VersionCreated>>();
 
 			containerBuilder.RegisterType<UpdateModelOnEntityVersionPublish>().As<IHandle<VersionPublished>>();
-			containerBuilder.RegisterType<UpdateModelOnOutcomeCreation>().As<IHandle<OutcomeCreated>>();
-			containerBuilder.RegisterType<UpdateModelOnOutcomeUpdate>().As<IHandle<OutcomeUpdated>>();
 
-			containerBuilder.RegisterType<UpdateModelOnOutcomeDeletion>().As<IHandle<OutcomeDeleted>>();
-
-			containerBuilder.RegisterType<UpdateModelOnOutcomeVersionCreation>().As<IHandle<OutcomeVersionCreated>>();
-
-			containerBuilder.RegisterType<UpdateModelOnOutcomeVersionPublished>().As<IHandle<OutcomeVersionPublished>>();
-			containerBuilder.RegisterType<CoursePublisher>().As<ICoursePublisher>();
+            containerBuilder.RegisterType<CoursePublisher>().As<ICoursePublisher>();
 			containerBuilder.RegisterType<CoursePublishValidator>().As<IValidator<Courses.Course>>();
             containerBuilder.RegisterType<LearningActivityPublishValidator>().As<IValidator<Courses.CourseLearningActivity>>();
 

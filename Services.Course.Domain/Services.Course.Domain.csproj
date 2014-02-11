@@ -215,31 +215,15 @@
     <Compile Include="Courses\ICourseService.cs" />
     <Compile Include="Courses\ICourseSegmentService.cs" />
     <Compile Include="IHandleVersioning.cs" />
-    <Compile Include="ILearningOutcomeService.cs" />
     <Compile Include="IProgramService.cs" />
-    <Compile Include="LearningOutcomeService.cs" />
-    <Compile Include="Outcomes\UpdateModelOnOutcomeUpdate.cs" />
-    <Compile Include="Outcomes\OutcomeUpdated.cs" />
-    <Compile Include="Outcomes\OutcomeCreated.cs" />
-    <Compile Include="Outcomes\OutcomeDeleted.cs" />
-    <Compile Include="Outcomes\IOutcomeFactory.cs" />
-    <Compile Include="Entities\ISupportingEntity.cs" />
     <Compile Include="Events\VersionCreated.cs" />
     <Compile Include="Events\VersionPublished.cs" />
     <Compile Include="Handlers\UpdateModelOnUpdatingCourseSegment.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionCreation.cs" />
     <Compile Include="Handlers\UpdateModelOnEntityVersionPublish.cs" />
-    <Compile Include="Outcomes\OutcomeFactory.cs" />
-    <Compile Include="Outcomes\OutcomeVersionCreated.cs" />
-    <Compile Include="Outcomes\OutcomeVersionPublished.cs" />
-    <Compile Include="Outcomes\UpdateModelOnOutcomeCreation.cs" />
-    <Compile Include="Outcomes\UpdateModelOnOutcomeDeletion.cs" />
-    <Compile Include="Outcomes\UpdateModelOnOutcomeVersionCreation.cs" />
-    <Compile Include="Outcomes\UpdateModelOnOutcomeVersionPublished.cs" />
     <Compile Include="Courses\CourseFactory.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="Courses\Course.cs" />
-    <Compile Include="Entities\LearningOutcome.cs" />
     <Compile Include="Entities\Program.cs" />
     <Compile Include="Events\CourseAssociatedWithProgram.cs" />
     <Compile Include="Events\CourseCreated.cs" />
@@ -264,8 +248,6 @@
     <Compile Include="Courses\CourseRepository.cs" />
     <Compile Include="Handlers\CourseUpdatedHandler.cs" />
     <Compile Include="Courses\ICourseRepository.cs" />
-    <Compile Include="Repositories\ILearningOutcomeRepository.cs" />
-    <Compile Include="Repositories\LearningOutcomeRepository.cs" />
     <Compile Include="Validation\CoursePublishValidator.cs" />
     <Compile Include="Validation\IValidatable.cs" />
     <Compile Include="Validation\IValidator.cs" />
@@ -285,11 +267,6 @@
       <Project>{3D017F9D-110A-4000-9059-AFC75DDEEA8E}</Project>
       <Name>Services.Course.Contract</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Mappings\BpeProducts.Services.Course.Domain.Entities.LearningOutcome.hbm.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

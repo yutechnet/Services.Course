@@ -118,12 +118,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return ApiFeature.CourseTestHost.Put(requestUri, request);
         }
 
-        public static HttpResponseMessage UpdateLearningOutcome(LearningOutcomeResource learningOutcome, OutcomeRequest request)
-        {
-            var requestUri = learningOutcome.ResourceUri.ToString();
-            return ApiFeature.CourseTestHost.Put(requestUri, request);
-        }
-
         public static HttpResponseMessage UpdateCourse(CourseResource course, UpdateCourseRequest request)
         {
             var requestUri = course.ResourceUri.ToString();

@@ -19,14 +19,6 @@ namespace BpeProducts.Services.Course.Domain.Overrides
                 .ChildKeyColumn("CourseId")
                 .Table("CourseProgram")
                 .Inverse();
-			
-			mapping
-				.HasManyToMany(x => x.SupportedOutcomes)
-				.ParentKeyColumn("EntityId")
-				.ChildKeyColumn("LearningOutcomeId")
-				.ForeignKeyConstraintNames("none", "none")
-                .Table("EntityLearningOutcome")
-                .Inverse();
         }
     }
 }

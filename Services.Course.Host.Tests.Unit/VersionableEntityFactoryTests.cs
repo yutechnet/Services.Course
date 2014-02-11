@@ -29,23 +29,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			_factory = new VersionableEntityFactory(_mockRepository.Object);
 		}
 
-		[Test]
-		public void Can_locate_type_from_entity_assembly()
-		{
-			_mockRepository.Setup(r => r.Get(It.IsAny<Type>(), It.IsAny<Guid>())).Returns(new LearningOutcome());
-
-			var entityType = "course";
-			var versionableEntity = _factory.Get(entityType, Guid.NewGuid());
-
-			Assert.That(versionableEntity, Is.Not.Null);
-
-			entityType = "learningoutcome";
-			versionableEntity = _factory.Get(entityType, Guid.NewGuid());
-
-			Assert.That(versionableEntity, Is.Not.Null);
-		}
-
-		[Test]
+        [Test]
 		public void Throws_exception_when_type_not_found()
 		{
 			var entityType = "nonExistingType";

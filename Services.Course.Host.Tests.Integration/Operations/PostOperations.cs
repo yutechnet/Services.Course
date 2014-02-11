@@ -35,26 +35,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return ApiFeature.CourseTestHost.Post<CourseSegmentResource, SaveCourseSegmentRequest>(name, requestUri, request);
         }
 
-        public static HttpResponseMessage CreateLearningOutcome(string name, OutcomeRequest request)
-        {
-            request.TenantId = ApiFeature.TenantId;
-            var requestUri = string.Format("{0}/outcome", ApiFeature.LeadingPath);
-            return ApiFeature.CourseTestHost.Post<LearningOutcomeResource, OutcomeRequest>(name, requestUri, request);
-        }
-
-        public static HttpResponseMessage CreateLearningOutcomeVersion(string name, LearningOutcomeResource learningOutcome, VersionRequest request)
-        {
-            var requestUri = string.Format("{0}/outcome/version", ApiFeature.LeadingPath);
-            return ApiFeature.CourseTestHost.Post<LearningOutcomeResource, VersionRequest>(name, requestUri, request);
-        }
-
-        public static HttpResponseMessage CreateEntityLearningOutcome(string name, IResource entityResource, OutcomeRequest request)
-        {
-            request.TenantId = ApiFeature.TenantId;
-            var requestUri = string.Format("{0}/supports", entityResource.ResourceUri);
-            return ApiFeature.CourseTestHost.Post<LearningOutcomeResource, OutcomeRequest>(name, requestUri, request);
-        }
-
         public static HttpResponseMessage CreateCourseLearningActivity(string name, CourseSegmentResource segment, SaveCourseLearningActivityRequest request)
         {
             request.TenantId = ApiFeature.TenantId;

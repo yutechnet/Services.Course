@@ -15,7 +15,7 @@ using BpeProducts.Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-    public class Course : VersionableEntity, ISupportingEntity, IValidatable<Course>
+    public class Course : VersionableEntity, IValidatable<Course>
     {
         #region Properties
 
@@ -26,7 +26,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
         private ECourseType _courseType;
         private IList<CourseSegment> _segments = new List<CourseSegment>();
         private IList<Program> _programs = new List<Program>();
-        private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();
         private IList<Course> _prerequisites = new List<Course>();
 
         [JsonProperty]
@@ -99,12 +98,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
             protected internal set { _segments = value; }
         }
 
-        public virtual IList<LearningOutcome> SupportedOutcomes
-        {
-            get { return _supportedOutcomes; }
-            protected internal set { _supportedOutcomes = value; }
-        }
-
         public virtual IList<Course> Prerequisites
         {
             get { return _prerequisites; }
@@ -112,22 +105,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
         }
 
         #endregion
-
-        public virtual void SupportOutcome(LearningOutcome outcome)
-        {
-            CheckPublished();
-
-            _supportedOutcomes.Add(outcome);
-            outcome.SupportingEntities.Add(this);
-        }
-
-        public virtual void UnsupportOutcome(LearningOutcome outcome)
-        {
-            CheckPublished();
-
-            _supportedOutcomes.Remove(outcome);
-            outcome.SupportingEntities.Remove(this);
-        }
 
         public virtual void SetPrograms(IList<Program> programs)
         {
@@ -256,27 +233,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             course.Id = Guid.NewGuid();
 
             course.Programs = new List<Program>(this.Programs);
-
-
-            SupportedOutcomes = new List<LearningOutcome>(this.SupportedOutcomes);
-            Prerequisites = new List<Course>(this.Prerequisites);
-
-            SupportedOutcomes.ForEach(r => r.SupportingEntities.Add(course));
-
-            foreach (var plo in SupportedOutcomes)
-            {
-                foreach (var clo in plo.SupportedOutcomes)
-                {
-                    foreach (var wlo in clo.SupportedOutcomes)
-                    {
-                        var segments = from segment in course.Segments
-                                       from outcome in segment.SupportedOutcomes
-                                       where outcome.Description.Equals(wlo.Description)
-                                       select segment;
-                        wlo.SupportingEntities.Add(segments.FirstOrDefault());
-                    }
-                }
-            }
+            course.Prerequisites = new List<Course>(this.Prerequisites);
 
             return course;
         }
@@ -300,7 +257,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     TenantId = TenantId,
                     CourseId = Id,
                     Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null), assessmentClient),
-                    SupportedOutcomes = (from learningOutcome in SupportedOutcomes select learningOutcome.Id).ToList(),
                     Credit = Credit
                 };
 

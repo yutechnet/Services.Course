@@ -216,61 +216,6 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
-        
-        [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Course outcome is cloned to Section")]
-        public virtual void CourseOutcomeIsClonedToSection()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Course outcome is cloned to Section", ((string[])(null)));
-#line 43
-this.ScenarioSetup(scenarioInfo);
-#line 4
-this.FeatureBackground();
-#line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table9.AddRow(new string[] {
-                        "CL1"});
-            table9.AddRow(new string[] {
-                        "CL2"});
-#line 44
- testRunner.And("I associate the newly created learning outcomes to \'Math 101\' course", ((string)(null)), table9, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Note"});
-            table10.AddRow(new string[] {
-                        "Math 101",
-                        "published"});
-#line 48
- testRunner.When("I publish the following courses", ((string)(null)), table10, "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "CourseName",
-                        "Name",
-                        "Code",
-                        "StartDate",
-                        "EndDate"});
-            table11.AddRow(new string[] {
-                        "Math 101",
-                        "Math 334",
-                        "MATH334.ABC",
-                        "2/15/2014",
-                        "6/15/2014"});
-#line 51
- testRunner.And("I create the following sections", ((string)(null)), table11, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Description"});
-            table12.AddRow(new string[] {
-                        "CL1"});
-            table12.AddRow(new string[] {
-                        "CL2"});
-#line 54
- testRunner.Then("Section service is called with the following learning outcomes in the payload", ((string)(null)), table12, "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore

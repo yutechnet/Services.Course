@@ -376,26 +376,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         }
 
         [Test]
-        public void Can_remove_learningoutcome_from_supporting_outcome()
-        {
-            var course = GetCourse();
-
-            var learningOutcome1 = new LearningOutcome { Id = Guid.NewGuid() };
-            course.SupportOutcome(learningOutcome1);
-            var learningOutcome2 = new LearningOutcome { Id = Guid.NewGuid() };
-            course.SupportOutcome(learningOutcome2);
-            var learningOutcome3 = new LearningOutcome { Id = Guid.NewGuid() };
-            course.SupportOutcome(learningOutcome3);
-
-            Assert.That(course.SupportedOutcomes.Count, Is.EqualTo(3));
-
-            course.UnsupportOutcome(learningOutcome1);
-
-            Assert.That(course.SupportedOutcomes.Count, Is.EqualTo(2));
-            Assert.That(course.SupportedOutcomes.FirstOrDefault(x => x.Id == learningOutcome1.Id), Is.Null);
-        }
-
-        [Test]
         public void Can_check_for_missing_parent_segment_during_adding_segment()
         {
             var course = GetCourse();
@@ -664,30 +644,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             course.Segments.ForEach(s => learningMaterialsCount += s.LearningMaterials.Count);
             _assessmentClientMock.Verify(a => a.SupportsOutcome("learningmaterial", It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(supportOutcomes.Count * learningMaterialsCount));
 
-        }
-
-        [Test]
-        public void Can_build_section_request_with_supported_outcomes()
-        {
-            var course = GetCourse();
-            course.SupportOutcome(new LearningOutcome { Id = Guid.NewGuid(), Description = "outcome1" });
-            course.SupportOutcome(new LearningOutcome { Id = Guid.NewGuid(), Description = "outcome2" });
-            course.Publish("hello", _coursePublisher.Object);
-
-            var request = new Course.Contract.CourseSectionRequest()
-                {
-                    Name = "Section1",
-                    Code = "SECTION123",
-                    OrganizationId = Guid.NewGuid(),
-                    StartDate = DateTime.Now,
-                    EndDate = DateTime.Now.AddDays(10)
-                };
-
-            var sectionRequest = course.GetSectionRequest(request, _assessmentClientMock.Object);
-
-            Assert.That(sectionRequest.SupportedOutcomes, Is.Not.Null);
-            Assert.That(sectionRequest.SupportedOutcomes.Count, Is.EqualTo(course.SupportedOutcomes.Count));
-            CollectionAssert.AreEquivalent(sectionRequest.SupportedOutcomes, (from outcome in course.SupportedOutcomes select outcome.Id));
         }
 
         static readonly Random Random = new Random();

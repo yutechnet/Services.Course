@@ -14,7 +14,6 @@ using BpeProducts.Common.WebApiTest.Framework;
 using Moq;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
-using OutcomeRequest = BpeProducts.Services.Course.Contract.OutcomeRequest;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 {
@@ -209,6 +208,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Given(@"I have the following learning outcomes")]
         public void GivenTheFollowingLearningOutcomesExist(Table table)
         {
+            /*
             foreach (var row in table.Rows)
             {
                 var request = new OutcomeRequest
@@ -219,6 +219,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var result = PostOperations.CreateLearningOutcome(request.Description, request);
                 result.EnsureSuccessStatusCode();
             }
+            */
         }
 
         [Given(@"I add the following course learning activities to '(.*)' course segment")]
@@ -254,47 +255,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 }
 
                 var result = PostOperations.CreateCourseLearningActivity(learningActivityRequest.Name, segment, learningActivityRequest);
-                result.EnsureSuccessStatusCode();
-            }
-        }
-
-        [Given(@"I associate the newly created learning outcomes to '(.*)' program")]
-        public void GivenIAssociateTheNewlyCreatedLearningOutcomesToProgram(string programName, Table table)
-        {
-            var requests = table.CreateSet<OutcomeRequest>();
-            var resource = Resources<ProgramResource>.Get(programName);
-
-            foreach (var request in requests)
-            {
-                var result = PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
-                result.EnsureSuccessStatusCode();
-            }
-        }
-
-        [Given(@"I associate the newly created learning outcomes to '(.*)' course")]
-        public void GivenIAssociateTheNewlyCreatedLearningOutcomesToCourse(string courseName, Table table)
-        {
-            var requests = table.CreateSet<OutcomeRequest>();
-            var resource = Resources<CourseResource>.Get(courseName);
-
-            foreach (var request in requests)
-            {
-                request.TenantId = ApiFeature.TenantId;
-                var result = PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
-                result.EnsureSuccessStatusCode();
-            }
-        }
-
-        [Given(@"I associate the newly created learning outcomes to '(.*)' segment")]
-        public void GivenIAssociateTheNewlyCreatedLearningOutcomesToSegment(string segmentName, Table table)
-        {
-            var requests = table.CreateSet<OutcomeRequest>();
-            var resource = Resources<CourseSegmentResource>.Get(segmentName);
-
-            foreach (var request in requests)
-            {
-                request.TenantId = ApiFeature.TenantId;
-                var result = PostOperations.CreateEntityLearningOutcome(request.Description, resource, request);
                 result.EnsureSuccessStatusCode();
             }
         }

@@ -57,7 +57,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
             AutoMock autoMock = AutoMock.GetLoose();
 
-            Mock<IGraphValidator> graphValidator = autoMock.Mock<IGraphValidator>();
+            // Mock<IGraphValidator> graphValidator = autoMock.Mock<IGraphValidator>();
             var factory = autoMock.Create<TestCourseFactory>();
 
             var template = new Domain.Courses.Course
@@ -97,11 +97,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 					new Program {Id = Guid.NewGuid()},
 					new Program {Id = Guid.NewGuid()}
 				});
-
-            template.SupportOutcome(
-                new LearningOutcome().SupportOutcome(graphValidator.Object,
-                                                     new LearningOutcome().SupportOutcome(graphValidator.Object,
-                                                                                          new LearningOutcome())));
 
             var request = new CreateCourseFromTemplateRequest
                 {
@@ -153,16 +148,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             {
                 Assert.That(template.Programs.Any(p => p.Id == program.Id));
             }
-
-            // Validating the learning outcomes are clones
-            Assert.That(course.SupportedOutcomes.Count, Is.EqualTo(template.SupportedOutcomes.Count));
-            foreach (LearningOutcome outcome in course.SupportedOutcomes)
-            {
-                Assert.That(template.SupportedOutcomes.Contains(outcome));
-            }
-
-            LearningOutcome outcomesWithChild = course.SupportedOutcomes.First(s => s.SupportedOutcomes.Count > 0);
-            Assert.That(outcomesWithChild.SupportedOutcomes.Count, Is.EqualTo(1));
         }
     }
 

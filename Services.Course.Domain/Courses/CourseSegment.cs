@@ -13,10 +13,9 @@ using ServiceStack.Common.Extensions;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-    public class CourseSegment : TenantEntity, ISupportingEntity
+    public class CourseSegment : TenantEntity
     {
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
-        private IList<LearningOutcome> _supportedOutcomes = new List<LearningOutcome>();
         private IList<CourseSegment> _childSegments = new List<CourseSegment>();
         private CourseSegment _parentSegment;
 
@@ -54,12 +53,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             get { return _learningMaterials; }
             set { _learningMaterials = value; }
-        }
-
-        public virtual IList<LearningOutcome> SupportedOutcomes
-        {
-            get { return _supportedOutcomes; }
-            protected internal set { _supportedOutcomes = value; }
         }
 
         public virtual IList<CourseSegment> ChildSegments
@@ -113,18 +106,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             segment.ParentSegment = this;
             ChildSegments.Add(segment);
-        }
-
-        public virtual void SupportOutcome(LearningOutcome outcome)
-        {
-            _supportedOutcomes.Add(outcome);
-            outcome.SupportingEntities.Add(this);
-        }
-
-        public virtual void UnsupportOutcome(LearningOutcome outcome)
-        {
-            _supportedOutcomes.Remove(outcome);
-            outcome.SupportingEntities.Remove(this);
         }
 
         public virtual void Delete()

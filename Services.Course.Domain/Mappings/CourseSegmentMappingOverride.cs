@@ -29,15 +29,6 @@ namespace BpeProducts.Services.Course.Domain.Overrides
             mapping.Map(segment => segment.SerializedData).CustomSqlType("nvarchar(max)");
 
             mapping
-                .HasManyToMany(x => x.SupportedOutcomes)
-                .Access.CamelCaseField(Prefix.Underscore)
-                .ParentKeyColumn("EntityId")
-                .ChildKeyColumn("LearningOutcomeId")
-                .ForeignKeyConstraintNames("none", "none")
-                .Table("EntityLearningOutcome")
-                .Inverse();
-
-            mapping
                    .HasMany(x => x.LearningMaterials)
                    .Access.CamelCaseField(Prefix.Underscore)
                    .ForeignKeyConstraintName("FK_CourseSegment_LearningMaterial");
