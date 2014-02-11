@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Net.Http;
 using System.Web.Http;
 using BpeProducts.Common.WebApi.NHibernate;
@@ -34,6 +35,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
             var sectionRequest = course.GetSectionRequest(request,_assessmentClient);
 
             var response = _sectionClient.CreateSection(request.SectionServiceUri, sectionRequest);
+
             return response;
         }
     }
