@@ -288,6 +288,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 courseLearningActivities.Select(courseLearningActivity => new SectionLearningActivityRequest
                     {
                         Name = courseLearningActivity.Name,
+                        CourseLearningActivityId = courseLearningActivity.Id,
                         Type = (SectionLearningActivityType) courseLearningActivity.Type,
                         ActiveDate = courseLearningActivity.ActiveDate,
                         InactiveDate = courseLearningActivity.InactiveDate,
@@ -312,10 +313,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var sectionLearningMaterials =
                 courseLearningMaterials.Select(courseLearningMaterial => new SectionLearningMaterialRequest
                     {
+                        CourseLearningMaterialId = courseLearningMaterial.Id,
                         Instruction = courseLearningMaterial.Instruction,
                         AssetId = courseLearningMaterial.AssetId,
                         IsRequired = courseLearningMaterial.IsRequired,
-                        OutcomeIds = courseLearningMaterial.GetOutcomes(assessmentClient)
                     }).ToList();
 
             return sectionLearningMaterials;

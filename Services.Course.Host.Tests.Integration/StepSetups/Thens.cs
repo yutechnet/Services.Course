@@ -617,16 +617,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var response = ApiFeature.MockAssetClient.Object.GetAsset(asset.Id);
             Assert.That(response.IsPublished, Is.EqualTo(true));
         }
-
-        [Then(@"Section service is called with the following learning outcomes in the payload")]
-        public void ThenSectionServiceIsCalledWithTheFollowingLearningOutcomesInThePayload(Table table)
-        {
-            var mockSectionClient = ApiFeature.MockSectionClient;
-
-            var learningOutcomeIds =
-                (from row in table.Rows select Resources<LearningOutcomeResource>.Get(row["Description"]).Id);
-            mockSectionClient.Verify(s =>s.CreateSection(It.IsAny<Uri>(), It.Is<CreateSectionRequest>(c => c.SupportedOutcomes.SequenceEqual(learningOutcomeIds))));
-        }
     }
 }
 
