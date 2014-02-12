@@ -576,10 +576,48 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             Assert.That(request.Segments.ElementAt(0).LearningActivities.Count, Is.EqualTo(1));
             Assert.That(request.Segments.ElementAt(0).LearningActivities.ElementAt(0).Name, Is.EqualTo(la1.Name));
+            Assert.That(request.Segments.ElementAt(0).LearningActivities.ElementAt(0).CourseLearningActivityId.HasValue);
 
             Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningActivities.Count, Is.EqualTo(2));
             Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningActivities.ElementAt(0).Name, Is.EqualTo(la2.Name));
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningActivities.ElementAt(0).CourseLearningActivityId.HasValue);
             Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningActivities.ElementAt(1).Name, Is.EqualTo(la3.Name));
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningActivities.ElementAt(1).CourseLearningActivityId.HasValue);
+        }
+
+        [Test]
+        public void Can_build_section_request_with_subsections_and_learning_materials()
+        {
+            var sectionRequest = new CourseSectionRequest
+            {
+                Name = "SectionName",
+                Code = "SectionCode",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddMonths(1)
+            };
+
+            var course = GetCourse();
+
+            var seg1Id = Guid.NewGuid();
+            var seg2Id = Guid.NewGuid();
+
+            course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
+            course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
+
+            var lm1 = course.AddLearningMaterial(seg1Id, new LearningMaterialRequest {Instruction = "LM1"});
+            var lm2 = course.AddLearningMaterial(seg2Id, new LearningMaterialRequest {Instruction = "LM2"});
+            var lm3 = course.AddLearningMaterial(seg2Id, new LearningMaterialRequest {Instruction = "LM3"});
+
+            course.Publish("It's published", _coursePublisher.Object);
+
+            var request = course.GetSectionRequest(sectionRequest, _assessmentClientMock.Object);
+
+            Assert.That(request.Segments.ElementAt(0).LearningMaterials.Count, Is.EqualTo(1));
+            Assert.That(request.Segments.ElementAt(0).LearningMaterials.ElementAt(0).CourseLearningMaterialId.HasValue);
+
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningMaterials.Count, Is.EqualTo(2));
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningMaterials.ElementAt(0).CourseLearningMaterialId.HasValue);
+            Assert.That(request.Segments.ElementAt(0).ChildSegments.ElementAt(0).LearningMaterials.ElementAt(1).CourseLearningMaterialId.HasValue);
         }
 
         [Test]
