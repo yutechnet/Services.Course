@@ -27,7 +27,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [ArgumentsNotNull]
         [ValidateModelState]
-		// POST api/courses
         [Route("course/{courseId:guid}/section")]
         public HttpResponseMessage Post(Guid courseId, CourseSectionRequest request)
         {
