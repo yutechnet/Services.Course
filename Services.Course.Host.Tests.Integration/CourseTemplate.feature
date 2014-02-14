@@ -30,15 +30,35 @@ Background:
 
 Scenario: Create a course from a template
 When I create a course from the template 'Template 1' with the following
-	| Name     | Code        | Description              | OrganizationName | IsTemplate |
-	| Course 1 | CourseCode1 | My First Course Template | COB              | false      |
+	| Name     | Code        | Description      | OrganizationName | IsTemplate |
+	| Course 1 | CourseCode1 | My First Course  | COB              | false      |
+And I create a course from the template 'Template 1' with the following
+	| Name     | Code        | Description      | OrganizationName | IsTemplate |
+	| Course 2 |             | My Second Course | COB              | true       |
+And I create a course from the template 'Template 1' with the following
+	| Name     | Code        | Description      | OrganizationName | IsTemplate |
+	| Course 3 |             |                  | COB              | true       |
 Then the course 'Course 1' should have the following info
+	| Field       | Value           |
+	| Name        | Course 1        |
+	| Code        | CourseCode1     |
+	| Description | My First Course |
+	| CourseType  | Traditional     |
+	| IsTemplate  | false           |
+And the course 'Course 2' should have the following info
+	| Field       | Value            |
+	| Name        | Course 2         |
+	| Code        | TemplateCode1    |
+	| Description | My Second Course |
+	| CourseType  | Traditional      |
+	| IsTemplate  | true             |
+And the course 'Course 3' should have the following info
 	| Field       | Value                    |
-	| Name        | Course 1                 |
-	| Code        | CourseCode1              |
+	| Name        | Course 3                 |
+	| Code        | TemplateCode1            |
 	| Description | My First Course Template |
 	| CourseType  | Traditional              |
-	| IsTemplate  | false                    |
+	| IsTemplate  | true                     |
 
 Scenario: Ignore course Type in the request when creating from template
 When I create a course from the template 'Template 1' with the following

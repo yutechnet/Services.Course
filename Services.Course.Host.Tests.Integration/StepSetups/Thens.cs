@@ -37,22 +37,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [Then(@"my course contains the following:")]
-        public void ThenMyCourseContainsTheFollowing(Table table)
-        {
-            var originalRequest = ScenarioContext.Current.Get<SaveCourseRequest>("courseTemplate");
-            var response = ScenarioContext.Current.Get<HttpResponseMessage>();
-            var info = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
-
-            Assert.That(info.Name, Is.EqualTo(originalRequest.Name));
-            Assert.That(info.Code, Is.EqualTo(originalRequest.Code));
-            Assert.That(info.Description, Is.EqualTo(originalRequest.Description));
-            Assert.That(info.OrganizationId, Is.EqualTo(originalRequest.OrganizationId));
-            Assert.That(info.TemplateCourseId, Is.EqualTo(originalRequest.TemplateCourseId));
-            Assert.That(info.CourseType, Is.EqualTo(originalRequest.CourseType));
-            Assert.That(info.IsTemplate, Is.EqualTo(originalRequest.IsTemplate));
-        }
-
         [Then(@"the course count is atleast '(.*)' when search term is '(.*)'")]
         public void ThenTheCourseCountIsAtleastWhenSearchTermIs(int count, string searchPhrase)
         {
