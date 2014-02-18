@@ -1,4 +1,4 @@
-# Deployment Module v0.1.59
+# Deployment Module v0.1.60
 
 $Script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -1251,14 +1251,15 @@ function Deployment-CheckForInstalledFrameworkVersion
 function Deployment-GetInstalledFrameworkVersions
 {
 	$installedFrameworks = @()
-	if(TestRegistryKey "HKLM:\Software\Microsoft\.NETFramework\Policy\v1.0" "3705") { $installedFrameworks += "1.0" }
-	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v1.1.4322" "Install") { $installedFrameworks += "1.1" }
-	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v2.0.50727" "Install") { $installedFrameworks += "2.0" }
-	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v3.0\Setup" "InstallSuccess") { $installedFrameworks += "3.0" }
-	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v3.5" "Install") { $installedFrameworks += "3.5" }
-	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v4\Client" "Install") { $installedFrameworks += "4.0c" }
-	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v4\Full" "Install") { $installedFrameworks += "4.0" }  
-	if(TestRegistryKey "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v4\Full" "Release") { $installedFrameworks += "4.5" }  
+	if(TestRegistryKey -Path "HKLM:\Software\Microsoft\.NETFramework\Policy\v1.0" -Key "3705") { $installedFrameworks += "1.0" }
+	if(TestRegistryKey -Path "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v1.1.4322" -Key "Install") { $installedFrameworks += "1.1" }
+	if(TestRegistryKey -Path "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v2.0.50727" -Key "Install") { $installedFrameworks += "2.0" }
+	if(TestRegistryKey -Path "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v3.0\Setup" -Key "InstallSuccess") { $installedFrameworks += "3.0" }
+	if(TestRegistryKey -Path "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v3.5" -Key "Install") { $installedFrameworks += "3.5" }
+	if(TestRegistryKey -Path "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v4\Client" -Key "Install") { $installedFrameworks += "4.0c" }
+	if(TestRegistryKey -Path "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v4\Full" -Key "Install") { $installedFrameworks += "4.0" }
+	if(TestRegistryKey -Path "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v4\Full" -Key "Release") { $installedFrameworks += "4.5" }
+	if(TestRegistryKey -Path "HKLM:\Software\Microsoft\NET Framework Setup\NDP\v4\Full" -Key "Release" -Value "378758") { $installedFrameworks += "4.5.1" }
 	
 	return $installedFrameworks
 }
@@ -1267,7 +1268,8 @@ function TestRegistryKey
 {
 	param(
 		[string]$path, 
-		[string]$key
+		[string]$key,
+		$value = $null
 	)
 	
 	if(-not (Test-Path $path))
@@ -1279,7 +1281,24 @@ function TestRegistryKey
 	{
 		return $false
 	}
-	return $true
+	else
+	{
+		if ($value -ne $null)
+		{
+			if (-not ((Get-ItemProperty $path).$key -eq $value))
+			{
+				return $false
+			}
+			else
+			{
+				return $true
+			}
+		}
+		else
+		{
+			return $true
+		}
+	}
 }
 
 #endregion
@@ -1696,7 +1715,111 @@ function Deployment-InstallMsi
 		Start-Sleep -s 30
 	}
 }
- 
+
+function Deployment-InstallDotNetFramework45
+{
+	param(
+		[string]$downloadDirectory
+	)
+	
+	Write-Host "Checking to see if .Net Framework 4.5 has been installed"
+	[array] $versions = Deployment-GetInstalledFrameworkVersions
+	$frameworkInstalled = $versions -contains "4.5"
+	if (-not $frameworkInstalled)
+	{
+		if (-not (Test-Path "$downloadDirectory"))
+		{
+			New-Item -ItemType directory -Path "$downloadDirectory" | Out-Null
+		}
+		
+		# get the MS .Net 4.5 executable
+		$uri = new-Object System.Uri "$($Script:BaseSoftwareDownloadUri)/DotNetFramework-4.5/dotnetfx45_full_x86_x64.exe"
+		Write-Host "Downloading Microsoft .Net Framework 4.5 ($uri)"
+		
+		# get the full download path
+		$fileName = $uri.Segments[-1] 
+		$downloadFile = Join-Path $downloadDirectory $fileName
+		
+		# delete the old downloaded file if it exists
+		if (Test-Path $downloadFile)
+		{
+			Remove-Item $downloadFile -Force | Out-Null
+		}
+		
+		# get the content from the software server
+		$webClient = New-Object System.Net.WebClient
+		$webClient.Headers.Add("Authorization","Basic $($Script:AuthToken)")
+		$webClient.DownloadFile($uri, $downloadFile)
+		
+		Write-Host "Installing Microsoft .Net Framework 4.5 (`"$downloadFile`" /q /norestart)"
+		$args = @()
+		$args += "/q"
+		$args += "/norestart"
+		$process = (Start-Process -FilePath "$downloadFile" -ArgumentList $args -PassThru -Wait)
+		Write-Host "Install Microsoft .Net Framework 4.5 Exit Code: $($process.ExitCode)"
+		if ($process.ExitCode -eq 1641)
+		{
+			Write-Host "The install Microsoft .Net Framework 4.5 has returned exit code $($process.ExitCode) indicating that a reboot is required to complete installation"
+		}
+		if ($process.ExitCode -eq 3010)
+		{
+			Write-Host "The install Microsoft .Net Framework 4.5 has returned exit code $($process.ExitCode) indicating that a reboot is required to complete installation"
+		}
+	}
+}
+
+function Deployment-InstallDotNetFramework451
+{
+	param(
+		[string]$downloadDirectory
+	)
+	
+	Write-Host "Checking to see if .Net Framework 4.5.1 has been installed"
+	[array] $versions = Deployment-GetInstalledFrameworkVersions
+	$frameworkInstalled = $versions -contains "4.5.1"
+	if (-not $frameworkInstalled)
+	{
+		if (-not (Test-Path "$downloadDirectory"))
+		{
+			New-Item -ItemType directory -Path "$downloadDirectory" | Out-Null
+		}
+		
+		# get the MS .Net 4.5.1 executable
+		$uri = new-Object System.Uri "$($Script:BaseSoftwareDownloadUri)/DotNetFramework-4.5.1/NDP451-KB2858728-x86-x64-AllOS-ENU.exe"
+		Write-Host "Downloading Microsoft .Net Framework 4.5.1 ($uri)"
+		
+		# get the full download path
+		$fileName = $uri.Segments[-1] 
+		$downloadFile = Join-Path $downloadDirectory $fileName
+		
+		# delete the old downloaded file if it exists
+		if (Test-Path $downloadFile)
+		{
+			Remove-Item $downloadFile -Force | Out-Null
+		}
+		
+		# get the content from the software server
+		$webClient = New-Object System.Net.WebClient
+		$webClient.Headers.Add("Authorization","Basic $($Script:AuthToken)")
+		$webClient.DownloadFile($uri, $downloadFile)
+		
+		Write-Host "Installing Microsoft .Net Framework 4.5.1 (`"$downloadFile`" /q /norestart)"
+		$args = @()
+		$args += "/q"
+		$args += "/norestart"
+		$process = (Start-Process -FilePath "$downloadFile" -ArgumentList $args -PassThru -Wait)
+		Write-Host "Install Microsoft .Net Framework 4.5.1 Exit Code: $($process.ExitCode)"
+		if ($process.ExitCode -eq 1641)
+		{
+			Write-Host "The install Microsoft .Net Framework 4.5.1 has returned exit code $($process.ExitCode) indicating that a reboot is required to complete installation"
+		}
+		if ($process.ExitCode -eq 3010)
+		{
+			Write-Host "The install Microsoft .Net Framework 4.5.1 has returned exit code $($process.ExitCode) indicating that a reboot is required to complete installation"
+		}
+	}
+}
+
 function Deployment-InstallPhalanger
 {
 	param(

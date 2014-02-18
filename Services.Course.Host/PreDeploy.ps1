@@ -24,7 +24,7 @@ trap [Exception]
 	Write-Host $_.Exception.Message
 	Write-Host $_.Exception.StackTrace
 	Write-Host "########################################################################################################################"
-	break
+	Exit 1
 }
 
 # import deployment module
@@ -119,6 +119,7 @@ Deployment-RemoveHandlerMapping -HandlerName "OPTIONSVerbHandler" -WebsiteName "
 Deployment-SetupWebApplication -WebsiteName "$IISWebsiteName" -WebApplicationName "$IISWebApplicationName" -WebApplicationDirectoryPath "$OctopusPackageDirectoryPath" -AppPoolName "$IISAppPoolName"
 
 # setup app pool
+Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'processModel.idleTimeout'  -AppPoolPropertyValue (New-TimeSpan -Minutes $IISAppPoolIdleTimeout)
 Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'managedRuntimeVersion'     -AppPoolPropertyValue 'v4.0'
 Deployment-SetAppPoolProperty -AppPoolName "$IISAppPoolName" -AppPoolProperty 'managedPipelineMode'       -AppPoolPropertyValue ([int] [Microsoft.Web.Administration.ManagedPipelineMode]::Identity)          -CompareValue 'Integrated'   #Integrated = 0, Classic = 1
 if ($IISAppPoolIdentity -ne $null)
