@@ -401,7 +401,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I create a new version of '(.*)' course named '(.*)' with the following info")]
         public void WhenICreateANewVersionOfCourseNamedWithTheFollowingInfo(string courseName, string newVersionName, Table table)
         {
-            var request = table.CreateInstance<VersionRequest>();
+            var request = table.CreateInstance<Contract.VersionRequest>();
 
             var course = Resources<CourseResource>.Get(courseName);       
             request.ParentVersionId = course.Id;
@@ -444,7 +444,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"I create a course without a version")]
         public void WhenICreateACourseWithoutAVersion()
         {
-            var versionRequest = new VersionRequest
+            var versionRequest = new Contract.VersionRequest
                 {
                     ParentVersionId = Guid.NewGuid(),
                     VersionNumber = null

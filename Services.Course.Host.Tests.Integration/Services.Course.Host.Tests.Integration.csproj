@@ -82,9 +82,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.WebApiTest.1.0.88\lib\net40\BpeProducts.Common.WebApiTest.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Services.Asset.Contracts, Version=0.1.114.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Services.Asset.Contracts, Version=0.1.141.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.114\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.141\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Authorization.Contract, Version=0.1.432.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

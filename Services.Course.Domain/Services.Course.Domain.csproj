@@ -72,9 +72,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Redis.1.0.23\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Services.Asset.Contracts, Version=0.1.114.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Services.Asset.Contracts, Version=0.1.141.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.114\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.141\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Authorization.Contract">
       <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.432\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
@@ -205,6 +205,7 @@
     <Compile Include="Handlers\UpdateModelOnDeletingCourseSegment.cs" />
     <Compile Include="Handlers\UpdateModelOnRemovingCoursePrerequisite.cs" />
     <Compile Include="Handlers\UpdateModelOnReorderingCourseSegment.cs" />
+    <Compile Include="IAssetServiceClient.cs" />
     <Compile Include="ICourseLearningActivityService.cs" />
     <Compile Include="IVersionableEntityFactory.cs" />
     <Compile Include="IVersionHandler.cs" />

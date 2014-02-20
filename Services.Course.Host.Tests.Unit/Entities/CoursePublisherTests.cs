@@ -3,6 +3,7 @@ using Autofac.Extras.Moq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Validation;
 using BpeProducts.Services.Course.Host.App_Start;
