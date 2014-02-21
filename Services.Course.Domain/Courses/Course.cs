@@ -8,10 +8,9 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Validation;
 using BpeProducts.Services.Section.Contracts;
+using Castle.Core.Internal;
 using Newtonsoft.Json;
-using ServiceStack.Common.Extensions;
 using Services.Assessment.Contract;
-using BpeProducts.Services.Section.Contracts;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {

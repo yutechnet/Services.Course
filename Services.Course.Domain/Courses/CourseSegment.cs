@@ -6,10 +6,8 @@ using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Entities;
+using Castle.Core.Internal;
 using Newtonsoft.Json;
-using Services.Assessment.Contract;
-using ServiceStack.Common.Extensions;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {

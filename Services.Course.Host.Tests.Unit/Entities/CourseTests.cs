@@ -9,11 +9,9 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
-using BpeProducts.Services.Section.Contracts;
+using Castle.Core.Internal;
 using Moq;
 using NUnit.Framework;
-using Services.Assessment.Contract;
-using ServiceStack.Common.Extensions;
 using CourseLearningActivityType = BpeProducts.Services.Course.Contract.CourseLearningActivityType;
 using OutcomeInfo = Services.Assessment.Contract.OutcomeInfo;
 
