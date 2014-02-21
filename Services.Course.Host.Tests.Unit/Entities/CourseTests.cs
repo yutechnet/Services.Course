@@ -6,6 +6,7 @@ using Autofac.Extras.Moq;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Section.Contracts;

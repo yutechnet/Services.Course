@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Courses;
 using Moq;
 using NUnit.Framework;

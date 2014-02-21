@@ -5,6 +5,7 @@ using AutoMapper;
 using Autofac.Extras.Moq;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
 using Moq;

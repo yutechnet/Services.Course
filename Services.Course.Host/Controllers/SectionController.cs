@@ -5,6 +5,7 @@ using System.Web.Http;
 using BpeProducts.Common.WebApi.NHibernate;
 using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Section.Contracts;
 using Services.Assessment.Contract;
