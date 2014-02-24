@@ -249,7 +249,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var translatedRequest = new CreateSectionRequest
                 {
                     Name = request.Name,
-                    Code = request.Code,
+                    CourseCode = request.CourseCode,
+                    SectionCode = request.SectionCode,
                     OrganizationId = request.OrganizationId,
                     StartDate = request.StartDate,
                     EndDate = request.EndDate,

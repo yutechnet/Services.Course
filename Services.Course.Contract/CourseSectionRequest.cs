@@ -13,7 +13,10 @@ namespace BpeProducts.Services.Course.Contract
         public string Name { get; set; }
 
         [DataMember(IsRequired = true)]
-        public string Code { get; set; }
+        public string CourseCode { get; set; }
+
+        [DataMember(IsRequired = true)]
+        public string SectionCode { get; set; }
 
         [DataMember(IsRequired = true)]
         public Guid OrganizationId { get; set; }

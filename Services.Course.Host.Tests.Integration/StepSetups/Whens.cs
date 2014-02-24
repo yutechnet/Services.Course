@@ -584,7 +584,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 {
                     SectionServiceUri = uri,
                     Name = row["Name"],
-                    Code = row["Code"],
+                    CourseCode = row["Code"],
+                    SectionCode = row["Code"],
                     StartDate = row.GetValue("StartDate", DateTime.MinValue),
                     EndDate = row.GetValue<DateTime?>("EndDate", null),
 					OrganizationId = Guid.NewGuid()
@@ -673,7 +674,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 {
                     SectionServiceUri = uri,
                     Name = row["Name"],
-                    Code = row["Code"],
+                    CourseCode = row["Code"],
+                    SectionCode = row["Code"],
                     StartDate = row.GetValue("StartDate", DateTime.MinValue),
                     EndDate = row.GetValue<DateTime?>("EndDate", null),
                     OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id

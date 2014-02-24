@@ -400,7 +400,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var sectionRequest = new CourseSectionRequest
                 {
                     Name = "SectionName",
-                    Code = "SectionCode",
+                    CourseCode = "SectionCode",
+                    SectionCode = "SectionCode",
                     StartDate = DateTime.Now,
                     EndDate = DateTime.Now.AddMonths(1),
                     OrganizationId = Guid.NewGuid(),
@@ -412,7 +413,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var request = course.GetSectionRequest(sectionRequest, _assessmentClientMock.Object);
 
             Assert.That(request.Name, Is.EqualTo(sectionRequest.Name));
-            Assert.That(request.Code, Is.EqualTo(sectionRequest.Code));
+            Assert.That(request.CourseCode, Is.EqualTo(sectionRequest.CourseCode));
+            Assert.That(request.SectionCode, Is.EqualTo(sectionRequest.SectionCode));
             Assert.That(request.OrganizationId, Is.EqualTo(sectionRequest.OrganizationId));
             Assert.That(request.StartDate, Is.EqualTo(sectionRequest.StartDate));
             Assert.That(request.EndDate, Is.EqualTo(sectionRequest.EndDate));
@@ -434,7 +436,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var sectionRequest = new CourseSectionRequest
             {
                 Name = "SectionName",
-                Code = "SectionCode",
+                CourseCode = "SectionCode",
+                SectionCode = "SectionCode",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddMonths(1)
             };
@@ -485,7 +488,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var sectionRequest = new CourseSectionRequest
             {
                 Name = "SectionName",
-                Code = "SectionCode",
+                CourseCode = "SectionCode",
+                SectionCode = "SectionCode",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddMonths(1)
             };
@@ -553,7 +557,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var sectionRequest = new CourseSectionRequest
             {
                 Name = "SectionName",
-                Code = "SectionCode",
+                CourseCode = "SectionCode",
+                SectionCode = "SectionCode",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddMonths(1)
             };
@@ -590,7 +595,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var sectionRequest = new CourseSectionRequest
             {
                 Name = "SectionName",
-                Code = "SectionCode",
+                CourseCode = "SectionCode",
+                SectionCode = "SectionCode",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddMonths(1)
             };
