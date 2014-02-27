@@ -118,13 +118,15 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "CourseName",
                         "Name",
-                        "Code",
+                        "CourseCode",
+                        "SectionCode",
                         "StartDate",
                         "EndDate"});
             table4.AddRow(new string[] {
                         "Math 101",
                         "Math 334",
                         "MATH334.ABC",
+                        "MATH334.ABCSectionCode",
                         "2/15/2014",
                         "6/15/2014"});
 #line 18
@@ -159,13 +161,15 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "CourseName",
                         "Name",
-                        "Code",
+                        "CourseCode",
+                        "SectionCode",
                         "StartDate",
                         "EndDate"});
             table6.AddRow(new string[] {
                         "Math 101",
                         "Math 334",
                         "MATH334.ABC",
+                        "MATH334.ABCSectionCode",
                         "2/15/2014",
                         "6/15/2014"});
 #line 28
@@ -200,13 +204,15 @@ this.FeatureBackground();
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "CourseName",
                         "Name",
-                        "Code",
+                        "CourseCode",
+                        "SectionCode",
                         "StartDate",
                         "EndDate"});
             table8.AddRow(new string[] {
                         "Math 101",
                         "Math 334",
                         "MATH334.ABC",
+                        "MATH334.ABCSectionCode",
                         "2/15/2014",
                         "6/15/2014"});
 #line 38

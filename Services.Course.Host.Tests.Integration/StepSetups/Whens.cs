@@ -584,8 +584,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 {
                     SectionServiceUri = uri,
                     Name = row["Name"],
-                    CourseCode = row["Code"],
-                    SectionCode = row["Code"],
+                    CourseCode = row["CourseCode"],
+                    SectionCode = row["SectionCode"],
                     StartDate = row.GetValue("StartDate", DateTime.MinValue),
                     EndDate = row.GetValue<DateTime?>("EndDate", null),
 					OrganizationId = Guid.NewGuid()
