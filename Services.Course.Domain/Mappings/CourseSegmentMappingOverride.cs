@@ -32,6 +32,8 @@ namespace BpeProducts.Services.Course.Domain.Overrides
                    .HasMany(x => x.LearningMaterials)
                    .Access.CamelCaseField(Prefix.Underscore)
                    .ForeignKeyConstraintName("FK_CourseSegment_LearningMaterial");
+
+            mapping.IgnoreProperty(x => x.SourceCourseSegmentId);
         }
     }
 }

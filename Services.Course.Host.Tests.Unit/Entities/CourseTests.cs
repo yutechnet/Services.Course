@@ -12,8 +12,8 @@ using BpeProducts.Services.Course.Domain.Entities;
 using Castle.Core.Internal;
 using Moq;
 using NUnit.Framework;
+using Services.Assessment.Contract;
 using CourseLearningActivityType = BpeProducts.Services.Course.Contract.CourseLearningActivityType;
-using OutcomeInfo = Services.Assessment.Contract.OutcomeInfo;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 {
@@ -670,23 +670,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         }
 
         [Test]
-        public void Can_clone_learning_material_Outcomes()
+        public void Can_clone_Outcomes()
         {
             var course = GetCourse();
             const int segmentCount = 5;
-            for (int i = 0; i < segmentCount; i++)
+            for (var i = 0; i < segmentCount; i++)
             {
                 var courseSegment = course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest());
                 courseSegment.AddLearningMaterial(new LearningMaterialRequest());
                 courseSegment.AddLearningMaterial(new LearningMaterialRequest());
             }
-            var supportOutcomes = new List<OutcomeInfo> { new OutcomeInfo { Id = Guid.NewGuid() }, new OutcomeInfo { Id = Guid.NewGuid() } };
-            _assessmentClientMock.Setup(a => a.GetSupportingOutcomes(It.IsAny<Guid>(), It.IsAny<string>())).Returns(supportOutcomes);
-            course.CloneLearningMaterialOutcomes(_assessmentClientMock.Object);
+            course.CloneOutcomes(_assessmentClientMock.Object);
             var learningMaterialsCount = 0;
             course.Segments.ForEach(s => learningMaterialsCount += s.LearningMaterials.Count);
-            _assessmentClientMock.Verify(a => a.SupportsOutcome("learningmaterial", It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(supportOutcomes.Count * learningMaterialsCount));
-
+            _assessmentClientMock.Verify(a => a.CloneEntityOutcomes(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CloneEntityOutcomeRequest>()));
         }
 
         static readonly Random Random = new Random();

@@ -506,9 +506,14 @@ namespace BpeProducts.Services.Course.Domain.Courses
             base.Publish(publishNote);
         }
 
-        public virtual void CloneLearningMaterialOutcomes(IAssessmentClient assessmentClient)
+        public virtual void CloneOutcomes(IAssessmentClient assessmentClient)
         {
-            Segments.ForEach(courseSegment => courseSegment.CloneLearningMaterialOutcomes(assessmentClient));
+            assessmentClient.CloneEntityOutcomes("course", OriginalEntity.Id, new CloneEntityOutcomeRequest()
+            {
+                EntityId = Id,
+                Type="course"
+            });
+            Segments.ForEach(courseSegment => courseSegment.CloneOutcomes(assessmentClient));
         }
 
         public virtual bool Validate(IValidator<Course> validator, out IEnumerable<string> brokenRules)

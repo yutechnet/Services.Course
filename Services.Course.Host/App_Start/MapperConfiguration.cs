@@ -57,17 +57,19 @@ namespace BpeProducts.Services.Course.Host.App_Start
 
             //for course deep copy purpose
             Mapper.CreateMap<Domain.Courses.Course, Domain.Courses.Course>()
-                .ForMember(dest => dest.IsPublished, opt => opt.UseValue(false));
+                  .ForMember(dest => dest.IsPublished, opt => opt.UseValue(false));
 
             Mapper.CreateMap<Domain.Courses.CourseSegment, Domain.Courses.CourseSegment>()
-                  .ForMember(dest => dest.Id, opt => opt.MapFrom(dest => Guid.NewGuid()));
+                  .ForMember(dest => dest.Id, opt => opt.MapFrom(source => Guid.NewGuid()))
+                  .ForMember(dest => dest.SourceCourseSegmentId, opt => opt.MapFrom(source => source.Id));
 
             Mapper.CreateMap<Domain.Courses.CourseLearningActivity, Domain.Courses.CourseLearningActivity>()
-                  .ForMember(dest => dest.Id, opt => opt.MapFrom(dest => Guid.NewGuid()));
+                  .ForMember(dest => dest.Id, opt => opt.MapFrom(source => Guid.NewGuid()))
+                  .ForMember(dest => dest.SourceCourseLearningActivityId, opt => opt.MapFrom(source => source.Id));
 
             Mapper.CreateMap<Domain.Courses.LearningMaterial, Domain.Courses.LearningMaterial>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(dest => Guid.NewGuid()))
-                .ForMember(dest => dest.SourceLearningMaterialId, opt => opt.MapFrom(dest =>dest.Id));
+                  .ForMember(dest => dest.Id, opt => opt.MapFrom(source => Guid.NewGuid()))
+                  .ForMember(dest => dest.SourceLearningMaterialId, opt => opt.MapFrom(source => source.Id));
 
             //for simple course info
             Mapper.CreateMap<Domain.Courses.Course, SimpleCourseInfoResponse>();

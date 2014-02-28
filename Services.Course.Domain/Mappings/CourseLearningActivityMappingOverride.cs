@@ -16,6 +16,7 @@ namespace BpeProducts.Services.Course.Domain.Mappings
         public void Override(AutoMapping<CourseLearningActivity> mapping)
         {
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
+            mapping.IgnoreProperty(x => x.SourceCourseLearningActivityId);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace BpeProducts.Services.Course.Domain
             if (type == typeof(Courses.Course))
             {
                 var course =(Courses.Course) newVersion;
-                course.CloneLearningMaterialOutcomes(_assessmentClient);     
+                course.CloneOutcomes(_assessmentClient);     
           
             }
             _domainEvents.Raise<VersionCreated>(new VersionCreated

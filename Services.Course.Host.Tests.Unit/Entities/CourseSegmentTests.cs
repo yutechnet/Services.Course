@@ -8,7 +8,6 @@ using BpeProducts.Services.Course.Domain.Courses;
 using Moq;
 using NUnit.Framework;
 using Services.Assessment.Contract;
-using OutcomeInfo = Services.Assessment.Contract.OutcomeInfo;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 {
@@ -106,13 +105,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         }
 
         [Test]
-        public void Can_clone_learning_material_0utcomes()
+        public void Can_clone_Outcomes()
         {
-            var supportOutcomes = new List<OutcomeInfo> { new OutcomeInfo() { Id = Guid.NewGuid() }, new OutcomeInfo() { Id = Guid.NewGuid() } };
-            _mockAssessmentClient.Setup(a => a.GetSupportingOutcomes(It.IsAny<Guid>(), It.IsAny<string>())).Returns(supportOutcomes);
-            _courseSegment.CloneLearningMaterialOutcomes(_mockAssessmentClient.Object);
-            _mockAssessmentClient.Verify(a => a.SupportsOutcome("learningmaterial", It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(supportOutcomes.Count*_courseSegment.LearningMaterials.Count));
-
+            _courseSegment.CloneOutcomes(_mockAssessmentClient.Object);
+            _mockAssessmentClient.Verify(a => a.CloneEntityOutcomes(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CloneEntityOutcomeRequest>()));
         }
 
     }

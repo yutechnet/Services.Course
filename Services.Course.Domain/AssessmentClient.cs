@@ -15,9 +15,6 @@ namespace BpeProducts.Services.Course.Domain
         RubricInfoResponse GetRubric(Guid id);
         AssessmentInfo GetAssessment(Guid id);
         void PublishAssessment(Guid id, string publishNote);
-        List<OutcomeInfo> GetSupportingOutcomes(Guid entityId, string entityType);
-        void SupportsOutcome(string entityType, Guid entityId, Guid outcomeId);
-
         FeedbackResponse GetFeedback(Guid rubricId, Guid criterionId, Guid feedbackId);
         ObservationInfoResponse GetObservation(Guid rubricId, Guid criterionId, Guid observationId);
         void CloneEntityOutcomes(string entityType, Guid entityId, CloneEntityOutcomeRequest request);
@@ -115,24 +112,6 @@ namespace BpeProducts.Services.Course.Domain
             }
 
             throw new InternalServerErrorException(message);
-        }
-
-        public List<OutcomeInfo> GetSupportingOutcomes(Guid entityId, string entityType)
-        {
-            var uri = string.Format("{0}/{1}/{2}/supports", BaseAddress, entityType, entityId);
-            var result = HttpClient.GetAsync(uri).Result;
-
-            CheckForErrors(result);
-
-            return result.Content.ReadAsAsync<List<OutcomeInfo>>().Result;
-        }
-
-        public void SupportsOutcome(string entityType, Guid entityId, Guid outcomeId)
-        {
-            var uri = string.Format("{0}/{1}/{2}/supports/{3}", BaseAddress, entityType, entityId, outcomeId);
-            var result = HttpClient.PutAsync(uri, null).Result;
-
-            CheckForErrors(result);
         }
 
         public FeedbackResponse GetFeedback(Guid rubricId, Guid criterionId, Guid feedbackId)

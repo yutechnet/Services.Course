@@ -58,11 +58,21 @@ namespace BpeProducts.Services.Course.Domain.Courses
       
         public virtual Guid AssessmentId { get; set; }
         public virtual AssessmentType AssessmentType { get; set; }
+        public virtual Guid SourceCourseLearningActivityId { get; set; }
 
         public virtual bool Validate(IValidator<CourseLearningActivity> validator, out IEnumerable<string> brokenRules)
         {
             brokenRules = validator.BrokenRules(this);
             return validator.IsValid(this);
+        }
+
+        public virtual void CloneOutcomes(IAssessmentClient assessmentClient)
+        {
+            assessmentClient.CloneEntityOutcomes("learningactivity", SourceCourseLearningActivityId, new CloneEntityOutcomeRequest()
+            {
+                EntityId = Id,
+                Type = "learningactivity"
+            });
         }
     }
 }

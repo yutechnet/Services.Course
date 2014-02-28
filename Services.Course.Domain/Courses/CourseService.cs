@@ -180,7 +180,7 @@ namespace BpeProducts.Services.Course.Domain
                 throw new Exception(string.Format("Failed to create a new version {0} from the parent version {1}", versionNumber, parentVersion.Id));
             }
 
-			newVersion.CloneLearningMaterialOutcomes(_assessmentClient);
+			newVersion.CloneOutcomes(_assessmentClient);
             _courseRepository.Save(newVersion);
 	        return Mapper.Map<CourseInfoResponse>(newVersion);
 	    }

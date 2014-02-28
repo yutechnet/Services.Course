@@ -85,7 +85,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 foreach (LearningMaterial learningMaterial in courseSegment.LearningMaterials)
                 {
                     learningMaterial.CourseSegment = courseSegment;
-                    learningMaterial.CloneLearningMaterialOutcomes(_assessmentClient);
+                    learningMaterial.CloneOutcomes(_assessmentClient);
                 }
             }
 

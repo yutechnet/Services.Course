@@ -8,6 +8,7 @@ using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using Castle.Core.Internal;
 using Newtonsoft.Json;
+using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -31,6 +32,8 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual int? ActiveDate { get; set; }
         public virtual int? InactiveDate { get; set; }
+
+        public virtual Guid SourceCourseSegmentId { get; set; }
 
         [NotNullable]
         public virtual Course Course { get; set; }
@@ -156,14 +159,17 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             return learningMaterial;
         }
-
         
-
-
-        public virtual void CloneLearningMaterialOutcomes(IAssessmentClient assessmentClient)
+        public virtual void CloneOutcomes(IAssessmentClient assessmentClient)
         {
-            LearningMaterials.ForEach(learningMaterial => learningMaterial.CloneLearningMaterialOutcomes(assessmentClient));
-            ChildSegments.ForEach(childSegment => childSegment.CloneLearningMaterialOutcomes(assessmentClient));
+            assessmentClient.CloneEntityOutcomes("segment", SourceCourseSegmentId, new CloneEntityOutcomeRequest()
+            {
+                EntityId = Id,
+                Type = "segment"
+            });
+            CourseLearningActivities.ForEach(learningActivity => learningActivity.CloneOutcomes(assessmentClient));
+            LearningMaterials.ForEach(learningMaterial => learningMaterial.CloneOutcomes(assessmentClient));
+            ChildSegments.ForEach(childSegment => childSegment.CloneOutcomes(assessmentClient));
         }
     }
 }
