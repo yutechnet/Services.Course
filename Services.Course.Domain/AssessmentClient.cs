@@ -63,7 +63,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public void CloneEntityOutcomes(string entityType, Guid entityId, CloneEntityOutcomeRequest request)
         {
-            var requestUri = string.Format("{0}{1}/{2}/clone", BaseAddress, entityType, entityId);
+            var requestUri = string.Format("{0}/{1}/{2}/clone", BaseAddress, entityType, entityId);
             var result = HttpClient.PostAsJsonAsync(requestUri, request).Result;
 
             CheckForErrors(result);
