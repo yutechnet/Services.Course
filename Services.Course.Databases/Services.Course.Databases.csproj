@@ -88,6 +88,9 @@
     </Content>
     <Content Include="ReadMe.txt" />
     <Content Include="Databases\Parabola\002-Add_Description_to_CourseLearningActivity.sql" />
+    <Content Include="ScriptReview\003-Update_Description_to_NVarcharmax_CourseLearningActivity.sql">
+      <SubType>Component</SubType>
+    </Content>
     <Content Include="ScriptReview\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
