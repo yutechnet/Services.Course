@@ -281,10 +281,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     IsGradeable = true,
                     IsExtraCredit = false,
                     MaxPoint = 100,
-					Description = "Some Description"
+                    Description = "Some Description"
 
                 };
-            
+
             var learningActivityId = course.AddLearningActivity(segmentId, learningActivityRequest).Id;
 
             var learningActivity =
@@ -297,7 +297,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(learningActivity.IsExtraCredit, Is.EqualTo(learningActivityRequest.IsExtraCredit));
             Assert.That(learningActivity.MaxPoint, Is.EqualTo(learningActivityRequest.MaxPoint));
             Assert.That(learningActivity.TenantId, Is.EqualTo(course.TenantId));
-			Assert.That(learningActivity.Description, Is.EqualTo(learningActivityRequest.Description));
+            Assert.That(learningActivity.Description, Is.EqualTo(learningActivityRequest.Description));
         }
 
         [Test]
@@ -323,7 +323,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 IsGradeable = true,
                 IsExtraCredit = false,
                 MaxPoint = 100,
-				Description = "desc"
+                Description = "desc"
             };
 
             var learningActivityId = course.AddLearningActivity(segmentId, learningActivityRequest).Id;
@@ -336,7 +336,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(learningActivity.IsExtraCredit, Is.EqualTo(learningActivityRequest.IsExtraCredit));
             Assert.That(learningActivity.MaxPoint, Is.EqualTo(learningActivityRequest.MaxPoint));
             Assert.That(learningActivity.TenantId, Is.EqualTo(course.TenantId));
-			Assert.That(learningActivity.Description, Is.EqualTo(learningActivityRequest.Description));
+            Assert.That(learningActivity.Description, Is.EqualTo(learningActivityRequest.Description));
         }
 
         [Test]
@@ -609,9 +609,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
             course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
 
-            var lm1 = course.AddLearningMaterial(seg1Id, new LearningMaterialRequest {Instruction = "LM1"});
-            var lm2 = course.AddLearningMaterial(seg2Id, new LearningMaterialRequest {Instruction = "LM2"});
-            var lm3 = course.AddLearningMaterial(seg2Id, new LearningMaterialRequest {Instruction = "LM3"});
+            var lm1 = course.AddLearningMaterial(seg1Id, new LearningMaterialRequest { Instruction = "LM1" });
+            var lm2 = course.AddLearningMaterial(seg2Id, new LearningMaterialRequest { Instruction = "LM2" });
+            var lm3 = course.AddLearningMaterial(seg2Id, new LearningMaterialRequest { Instruction = "LM3" });
 
             course.Publish("It's published", _coursePublisher.Object);
 
@@ -674,16 +674,30 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             var course = GetCourse();
             const int segmentCount = 5;
-            for (var i = 0; i < segmentCount; i++)
-            {
-                var courseSegment = course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest());
-                courseSegment.AddLearningMaterial(new LearningMaterialRequest());
-                courseSegment.AddLearningMaterial(new LearningMaterialRequest());
-            }
+            var courseSegment = course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest());
+            courseSegment.CourseLearningActivities.Add(new CourseLearningActivity());
+            courseSegment.AddLearningMaterial(new LearningMaterialRequest());
             course.CloneOutcomes(_assessmentClientMock.Object);
-            var learningMaterialsCount = 0;
-            course.Segments.ForEach(s => learningMaterialsCount += s.LearningMaterials.Count);
-            _assessmentClientMock.Verify(a => a.CloneEntityOutcomes(It.IsAny<SupportingEntityType>(), It.IsAny<Guid>(), It.IsAny<CloneEntityOutcomeRequest>()));
+            // Call to clone course learning outcomes
+            _assessmentClientMock.Verify(
+                a =>
+                a.CloneEntityOutcomes(SupportingEntityType.Course, It.IsAny<Guid>(),
+                                      It.Is<CloneEntityOutcomeRequest>(c => c.Type == SupportingEntityType.Course)));
+            //Call to clone segment
+            _assessmentClientMock.Verify(
+               a =>
+               a.CloneEntityOutcomes(SupportingEntityType.Segment, It.IsAny<Guid>(),
+                                     It.Is<CloneEntityOutcomeRequest>(c => c.Type == SupportingEntityType.Segment)));
+            //Call to clone learning activity
+            _assessmentClientMock.Verify(
+               a =>
+               a.CloneEntityOutcomes(SupportingEntityType.LearningActivity, It.IsAny<Guid>(),
+                                     It.Is<CloneEntityOutcomeRequest>(c => c.Type == SupportingEntityType.LearningActivity)));
+            //Call to clone learning material
+            _assessmentClientMock.Verify(
+               a =>
+               a.CloneEntityOutcomes(SupportingEntityType.LearningMaterial, It.IsAny<Guid>(),
+                                     It.Is<CloneEntityOutcomeRequest>(c => c.Type == SupportingEntityType.LearningMaterial)));
         }
 
         static readonly Random Random = new Random();
