@@ -508,10 +508,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual void CloneOutcomes(IAssessmentClient assessmentClient)
         {
-            assessmentClient.CloneEntityOutcomes("course", OriginalEntity.Id, new CloneEntityOutcomeRequest()
+            assessmentClient.CloneEntityOutcomes(SupportingEntityType.Course, OriginalEntity.Id, new CloneEntityOutcomeRequest()
             {
                 EntityId = Id,
-                Type="course"
+                Type = SupportingEntityType.Course
             });
             Segments.ForEach(courseSegment => courseSegment.CloneOutcomes(assessmentClient));
         }

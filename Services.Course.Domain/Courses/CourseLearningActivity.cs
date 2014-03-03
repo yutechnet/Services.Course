@@ -68,10 +68,10 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual void CloneOutcomes(IAssessmentClient assessmentClient)
         {
-            assessmentClient.CloneEntityOutcomes("learningactivity", SourceCourseLearningActivityId, new CloneEntityOutcomeRequest()
+            assessmentClient.CloneEntityOutcomes(SupportingEntityType.LearningActivity, SourceCourseLearningActivityId, new CloneEntityOutcomeRequest()
             {
                 EntityId = Id,
-                Type = "learningactivity"
+                Type = SupportingEntityType.LearningActivity
             });
         }
     }

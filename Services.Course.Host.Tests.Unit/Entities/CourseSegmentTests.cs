@@ -108,7 +108,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         public void Can_clone_Outcomes()
         {
             _courseSegment.CloneOutcomes(_mockAssessmentClient.Object);
-            _mockAssessmentClient.Verify(a => a.CloneEntityOutcomes(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CloneEntityOutcomeRequest>()));
+            _mockAssessmentClient.Verify(a => a.CloneEntityOutcomes(It.IsAny<SupportingEntityType>(), It.IsAny<Guid>(), It.IsAny<CloneEntityOutcomeRequest>()));
         }
 
     }

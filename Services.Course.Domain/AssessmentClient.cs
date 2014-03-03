@@ -17,7 +17,7 @@ namespace BpeProducts.Services.Course.Domain
         void PublishAssessment(Guid id, string publishNote);
         FeedbackResponse GetFeedback(Guid rubricId, Guid criterionId, Guid feedbackId);
         ObservationInfoResponse GetObservation(Guid rubricId, Guid criterionId, Guid observationId);
-        void CloneEntityOutcomes(string entityType, Guid entityId, CloneEntityOutcomeRequest request);
+        void CloneEntityOutcomes(SupportingEntityType entityType, Guid entityId, CloneEntityOutcomeRequest request);
     }
 
     public class AssessmentClient : HttpClientBase, IAssessmentClient
@@ -61,7 +61,7 @@ namespace BpeProducts.Services.Course.Domain
             CheckForErrors(result);
         }
 
-        public void CloneEntityOutcomes(string entityType, Guid entityId, CloneEntityOutcomeRequest request)
+        public void CloneEntityOutcomes(SupportingEntityType entityType, Guid entityId, CloneEntityOutcomeRequest request)
         {
             var requestUri = string.Format("{0}/{1}/{2}/clone", BaseAddress, entityType, entityId);
             var result = HttpClient.PostAsJsonAsync(requestUri, request).Result;

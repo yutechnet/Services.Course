@@ -151,9 +151,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NHibernate.OData.0.3.0.0\lib\net35\NHibernate.OData.dll</HintPath>
     </Reference>
-    <Reference Include="Services.Assessment.Contract, Version=0.1.234.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Services.Assessment.Contract, Version=0.1.235.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.234\lib\net40\Services.Assessment.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Assessment.Contract.0.1.235\lib\net40\Services.Assessment.Contract.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

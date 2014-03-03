@@ -683,7 +683,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             course.CloneOutcomes(_assessmentClientMock.Object);
             var learningMaterialsCount = 0;
             course.Segments.ForEach(s => learningMaterialsCount += s.LearningMaterials.Count);
-            _assessmentClientMock.Verify(a => a.CloneEntityOutcomes(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CloneEntityOutcomeRequest>()));
+            _assessmentClientMock.Verify(a => a.CloneEntityOutcomes(It.IsAny<SupportingEntityType>(), It.IsAny<Guid>(), It.IsAny<CloneEntityOutcomeRequest>()));
         }
 
         static readonly Random Random = new Random();
