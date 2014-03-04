@@ -8,7 +8,7 @@
     <description>WebApi interface for Course</description>
     <tags>Products,Course,WebApi</tags>
     <dependencies>
-      <dependency id="BpeProducts.Common.WebApi" version="[1.0.0, 2.0.0)" />
+      <dependency id="BpeProducts.Common.WebApi" />
     </dependencies>
   </metadata>
 </package>
