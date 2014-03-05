@@ -17,7 +17,6 @@ namespace BpeProducts.Services.Course.Domain.Mappings
         {
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
             mapping.IgnoreProperty(x => x.SourceCourseLearningActivityId);
-            mapping.Map(x => x.Description).CustomSqlType("nvarchar(max)");
         }
     }
 }
