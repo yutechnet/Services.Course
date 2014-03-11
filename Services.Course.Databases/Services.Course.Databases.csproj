@@ -90,6 +90,7 @@
     </Content>
     <Content Include="ReadMe.txt" />
     <Content Include="Databases\Parabola\002-Add_Description_to_CourseLearningActivity.sql" />
+    <Content Include="ScriptReview\005-Update_MaxPoint_data_type_to_decimal_CourseLearningActivity.sql" />
     <Content Include="ScriptReview\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>

@@ -40,7 +40,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         public virtual Boolean IsExtraCredit { get; set; }
 
-        public virtual int MaxPoint { get; set; }
+        public virtual decimal MaxPoint { get; set; }
 
         public virtual int Weight { get; set; }
 

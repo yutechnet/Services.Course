@@ -24,7 +24,7 @@ namespace BpeProducts.Services.Course.Contract
         [DataMember]   
         public Boolean IsExtraCredit { get; set; }
         [DataMember]   
-        public int MaxPoint { get; set; }
+        public decimal MaxPoint { get; set; }
         [DataMember]   
         public int Weight { get; set; }
         [DataMember]   

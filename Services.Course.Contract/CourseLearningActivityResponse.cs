@@ -23,7 +23,7 @@ namespace BpeProducts.Services.Course.Contract
         public CourseLearningActivityType Type { get; set; }
         public Boolean IsGradeable { get; set; }
         public Boolean IsExtraCredit { get; set; }
-        public int MaxPoint { get; set; }
+        public decimal MaxPoint { get; set; }
         public int Weight { get; set; }
         public Guid ObjectId { get; set; }
 		public string Description { get; set; }
