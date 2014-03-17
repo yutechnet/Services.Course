@@ -6,7 +6,7 @@ IF EXISTS (Select 1 From INFORMATION_SCHEMA.COLUMNS c
 		RAISERROR( 'CREATE BEGIN: Column (MaxPoint) of Table (CourseLearningActivity) being updated to Decimal(8,3)' , 0 , 1 )WITH NOWAIT;
 		RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
 
-		ALTER TABLE dbo.CourseLearningActivity ALTER COLUMN MaxPoint DECIMAL(8,3);
+		ALTER TABLE dbo.CourseLearningActivity ALTER COLUMN MaxPoint DECIMAL(16,3);
 
 		RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
 		RAISERROR( 'CREATE END: Column (MaxPoint) of Table (CourseLearningActivity) being updated to Decimal(8,3)' , 0 , 1 )WITH NOWAIT;

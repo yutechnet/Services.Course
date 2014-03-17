@@ -12,7 +12,7 @@ BEGIN
 	RAISERROR( 'CREATE BEGIN: Column (CustomAttribute) being added to Table (LearningMaterial)' , 0 , 1 )WITH NOWAIT;
 	RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
 	
-	ALTER TABLE [LearningMaterial] add [CustomAttribute] nvarchar(250) NULL;
+	ALTER TABLE [LearningMaterial] add [CustomAttribute] nvarchar(1000) NULL;
 
 	RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
 	RAISERROR( 'CREATE END: Column (CustomAttribute) being added to Table (LearningMaterial)' , 0 , 1 )WITH NOWAIT;
