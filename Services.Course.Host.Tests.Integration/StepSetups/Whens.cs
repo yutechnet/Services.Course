@@ -621,7 +621,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 {
                     AssetId = asset.Id,
                     Instruction = row["Instruction"],
-                    IsRequired = bool.Parse(row["IsRequired"])
+                    IsRequired = bool.Parse(row["IsRequired"]),
+                    CustomAttribute  = row["CustomAttribute"]
                 };
 
                 PostOperations.CreateCourseLearningMaterial(learningMaterial, courseSegment, request);

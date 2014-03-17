@@ -156,13 +156,15 @@ this.FeatureBackground();
                         "CourseSegment",
                         "Instruction",
                         "IsRequired",
-                        "LearningMaterial"});
+                        "LearningMaterial",
+                        "CustomAttribute"});
             table6.AddRow(new string[] {
                         "file1",
                         "Week 1",
                         "",
                         "false",
-                        "Material A"});
+                        "Material A",
+                        "CustomAttributeA"});
 #line 28
     testRunner.When("Create learning material as the following info", ((string)(null)), table6, "When ");
 #line hidden
@@ -170,12 +172,14 @@ this.FeatureBackground();
                         "Asset",
                         "CourseSegment",
                         "Instruction",
-                        "IsRequired"});
+                        "IsRequired",
+                        "CustomAttribute"});
             table7.AddRow(new string[] {
                         "file1",
                         "Week 1",
                         "",
-                        "false"});
+                        "false",
+                        "CustomAttributeA"});
 #line 31
  testRunner.Then("The \'Material A\' learning material has the following info", ((string)(null)), table7, "Then ");
 #line hidden
@@ -197,24 +201,28 @@ this.FeatureBackground();
                         "CourseSegment",
                         "Instruction",
                         "IsRequired",
-                        "LearningMaterial"});
+                        "LearningMaterial",
+                        "CustomAttribute"});
             table8.AddRow(new string[] {
                         "file1",
                         "Week 1",
                         "",
                         "false",
-                        "Material A"});
+                        "Material A",
+                        "CustomAttributeA"});
 #line 36
     testRunner.Given("Create learning material as the following info", ((string)(null)), table8, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "Asset",
                         "Instruction",
-                        "IsRequired"});
+                        "IsRequired",
+                        "CustomAttribute"});
             table9.AddRow(new string[] {
                         "file1",
                         "test instruction",
-                        "true"});
+                        "true",
+                        "CustomAttributeAUpdate"});
 #line 39
  testRunner.When("Update \'Material A\' learning material as the following info", ((string)(null)), table9, "When ");
 #line hidden
@@ -222,12 +230,14 @@ this.FeatureBackground();
                         "Asset",
                         "CourseSegment",
                         "Instruction",
-                        "IsRequired"});
+                        "IsRequired",
+                        "CustomAttribute"});
             table10.AddRow(new string[] {
                         "file1",
                         "Week 1",
                         "test instruction",
-                        "true"});
+                        "true",
+                        "CustomAttributeAUpdate"});
 #line 42
  testRunner.Then("The \'Material A\' learning material has the following info", ((string)(null)), table10, "Then ");
 #line hidden
@@ -249,13 +259,15 @@ this.FeatureBackground();
                         "CourseSegment",
                         "Instruction",
                         "IsRequired",
-                        "LearningMaterial"});
+                        "LearningMaterial",
+                        "CustomAttribute"});
             table11.AddRow(new string[] {
                         "file1",
                         "Week 1",
                         "",
                         "false",
-                        "Material A"});
+                        "Material A",
+                        "CustomAttributeA"});
 #line 47
     testRunner.Given("Create learning material as the following info", ((string)(null)), table11, "Given ");
 #line 50
@@ -283,19 +295,22 @@ this.FeatureBackground();
                         "CourseSegment",
                         "LearningMaterial",
                         "Instruction",
-                        "IsRequired"});
+                        "IsRequired",
+                        "CustomAttribute"});
             table12.AddRow(new string[] {
                         "file2",
                         "Week 1",
                         "Material A",
                         "",
-                        "false"});
+                        "false",
+                        "CustomAttributeA"});
             table12.AddRow(new string[] {
                         "file2",
                         "Week 2",
                         "Material B",
                         "",
-                        "false"});
+                        "false",
+                        "CustomAttributeB"});
 #line 55
     testRunner.When("Create learning material as the following info", ((string)(null)), table12, "When ");
 #line hidden
@@ -304,19 +319,22 @@ this.FeatureBackground();
                         "Asset",
                         "CourseSegment",
                         "Instruction",
-                        "IsRequired"});
+                        "IsRequired",
+                        "CustomAttribute"});
             table13.AddRow(new string[] {
                         "Material A",
                         "file2",
                         "Week 1",
                         "",
-                        "false"});
+                        "false",
+                        "CustomAttributeA"});
             table13.AddRow(new string[] {
                         "Material B",
                         "file2",
                         "Week 2",
                         "",
-                        "false"});
+                        "false",
+                        "CustomAttributeB"});
 #line 59
  testRunner.Then("The following learning materials have the following info", ((string)(null)), table13, "Then ");
 #line hidden
@@ -350,19 +368,22 @@ this.FeatureBackground();
                         "CourseSegment",
                         "Instruction",
                         "IsRequired",
-                        "LearningMaterial"});
+                        "LearningMaterial",
+                        "CustomAttribute"});
             table15.AddRow(new string[] {
                         "file1",
                         "Week 1",
                         "",
                         "false",
-                        "Material A"});
+                        "Material A",
+                        "CustomAttributeA"});
             table15.AddRow(new string[] {
                         "file2",
                         "Week 2",
                         "",
                         "false",
-                        "Material B"});
+                        "Material B",
+                        "CustomAttributeB"});
 #line 69
     testRunner.And("Create learning material as the following info", ((string)(null)), table15, "And ");
 #line hidden
@@ -454,25 +475,29 @@ this.FeatureBackground();
                         "CourseSegment",
                         "Instruction",
                         "IsRequired",
-                        "LearningMaterial"});
+                        "LearningMaterial",
+                        "CustomAttribute"});
             table20.AddRow(new string[] {
                         "file1",
                         "Week one",
                         "",
                         "false",
-                        "Template Material A"});
+                        "Template Material A",
+                        "CustomAttributeA"});
             table20.AddRow(new string[] {
                         "file2",
                         "Week two",
                         "test  instruction",
                         "true",
-                        "Template Material B"});
+                        "Template Material B",
+                        "CustomAttributeB"});
             table20.AddRow(new string[] {
                         "file3",
                         "Day one",
                         "test  instruction",
                         "true",
-                        "Template Material C"});
+                        "Template Material C",
+                        "CustomAttributeC"});
 #line 91
     testRunner.And("Create learning material as the following info", ((string)(null)), table20, "And ");
 #line hidden
@@ -496,25 +521,29 @@ this.FeatureBackground();
                         "CourseSegment",
                         "Instruction",
                         "IsRequired",
-                        "ParentCourse"});
+                        "ParentCourse",
+                        "CustomAttribute"});
             table22.AddRow(new string[] {
                         "file1",
                         "Week one",
                         "",
                         "false",
-                        "English Template"});
+                        "English Template",
+                        "CustomAttributeA"});
             table22.AddRow(new string[] {
                         "file2",
                         "Week two",
                         "test  instruction",
                         "true",
-                        "English Template"});
+                        "English Template",
+                        "CustomAttributeB"});
             table22.AddRow(new string[] {
                         "file3",
                         "Day one",
                         "test  instruction",
                         "true",
-                        "English Template"});
+                        "English Template",
+                        "CustomAttributeC"});
 #line 99
  testRunner.Then("The course \'English Course\' has following learning material", ((string)(null)), table22, "Then ");
 #line hidden
@@ -553,25 +582,29 @@ this.FeatureBackground();
                         "CourseSegment",
                         "Instruction",
                         "IsRequired",
-                        "LearningMaterial"});
+                        "LearningMaterial",
+                        "CustomAttribute"});
             table24.AddRow(new string[] {
                         "file1",
                         "Week 1",
                         "instruction 1",
                         "true",
-                        "Material A"});
+                        "Material A",
+                        "CustomAttributeA"});
             table24.AddRow(new string[] {
                         "file2",
                         "Week 2",
                         "instruction 2",
                         "false",
-                        "Material B"});
+                        "Material B",
+                        "CustomAttributeB"});
             table24.AddRow(new string[] {
                         "file3",
                         "Day 1",
                         "instruction 3",
                         "true",
-                        "Material C"});
+                        "Material C",
+                        "CustomAttributeC"});
 #line 111
     testRunner.And("Create learning material as the following info", ((string)(null)), table24, "And ");
 #line hidden
@@ -599,25 +632,29 @@ this.FeatureBackground();
                         "CourseSegment",
                         "Instruction",
                         "IsRequired",
-                        "ParentCourse"});
+                        "ParentCourse",
+                        "CustomAttribute"});
             table27.AddRow(new string[] {
                         "file1",
                         "Week 1",
                         "instruction 1",
                         "true",
-                        "Econ 100"});
+                        "Econ 100",
+                        "CustomAttributeA"});
             table27.AddRow(new string[] {
                         "file2",
                         "Week 2",
                         "instruction 2",
                         "false",
-                        "Econ 100"});
+                        "Econ 100",
+                        "CustomAttributeB"});
             table27.AddRow(new string[] {
                         "file3",
                         "Day 1",
                         "instruction 3",
                         "true",
-                        "Econ 100"});
+                        "Econ 100",
+                        "CustomAttributeC"});
 #line 122
  testRunner.Then("The course \'Econ 100 v1.0.0.1\' has following learning material", ((string)(null)), table27, "Then ");
 #line hidden
@@ -639,13 +676,15 @@ this.FeatureBackground();
                         "CourseSegment",
                         "LearningMaterial",
                         "Instruction",
-                        "IsRequired"});
+                        "IsRequired",
+                        "CustomAttribute"});
             table28.AddRow(new string[] {
                         "file1",
                         "Week 1",
                         "Material A",
                         "",
-                        "false"});
+                        "false",
+                        "CustomAttributeA"});
 #line 129
     testRunner.Given("Create learning material as the following info", ((string)(null)), table28, "Given ");
 #line hidden

@@ -16,5 +16,7 @@ namespace BpeProducts.Services.Course.Contract
         public string Instruction { get; set; }
         [DataMember]
         public bool IsRequired { get; set; }
+        [DataMember]
+        public string CustomAttribute { get; set; }
     }
 }

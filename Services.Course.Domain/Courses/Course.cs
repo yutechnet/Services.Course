@@ -317,6 +317,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
                         Instruction = courseLearningMaterial.Instruction,
                         AssetId = courseLearningMaterial.AssetId,
                         IsRequired = courseLearningMaterial.IsRequired,
+                        CustomAttribute = courseLearningMaterial.CustomAttribute
                     }).ToList();
 
             return sectionLearningMaterials;
