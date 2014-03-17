@@ -1,13 +1,21 @@
-﻿USE Parabola
-GO
-
-IF EXISTS(SELECT 1 FROM sys.columns c WHERE c.name = 'MaxPoint' AND c.object_id = Object_id('CourseLearningActivity'))
+﻿
+IF EXISTS (Select 1 From INFORMATION_SCHEMA.COLUMNS c 
+			Where c.COLUMN_NAME = 'MaxPoint' and c.TABLE_NAME = 'CourseLearningActivity')
 	BEGIN
+		RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
+		RAISERROR( 'CREATE BEGIN: Column (MaxPoint) of Table (CourseLearningActivity) being updated to Decimal(8,3)' , 0 , 1 )WITH NOWAIT;
+		RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
+
 		ALTER TABLE dbo.CourseLearningActivity ALTER COLUMN MaxPoint DECIMAL(8,3);
-		PRINT 'Column MaxPoint successfully changed to DECIMAL(8,3) in table CourseLearningActivity';
+
+		RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
+		RAISERROR( 'CREATE END: Column (MaxPoint) of Table (CourseLearningActivity) being updated to Decimal(8,3)' , 0 , 1 )WITH NOWAIT;
+		RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
 	END
 ELSE
 	BEGIN
-		PRINT 'Column MaxPoint not exists in table CourseLearningActivity, skip update';
+		RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
+		RAISERROR( 'NO CHANGE: Column (MaxPoint) Not Exists on Table (CourseLearningActivity)' , 0 , 1 )WITH NOWAIT;
+		RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
 	END
 GO
