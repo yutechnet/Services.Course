@@ -92,7 +92,7 @@
     <Content Include="Databases\Parabola\002-Add_Description_to_CourseLearningActivity.sql" />
     <Content Include="Databases\Parabola\005-Update_MaxPoint_data_type_to_decimal_CourseLearningActivity.sql" />
     <Content Include="Databases\Parabola\006-Add_CustomAttribute_column_to_LearningMaterial.sql" />
-    <Content Include="ScriptReview\007-Add_CourseId_column_to_LearningMaterial.sql" />
+    <Content Include="Databases\Parabola\007-Add_CourseId_column_to_LearningMaterial.sql" />
     <Content Include="ScriptReview\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
