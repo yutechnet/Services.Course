@@ -22,6 +22,47 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Transaction]
         [ArgumentsNotNull]
         [ValidateModelState]
+        [Route("course/{courseId:guid}/learningmaterial")]
+        public HttpResponseMessage Post(Guid courseId, LearningMaterialRequest request)
+        {
+            var learningMaterial = _learningMaterialService.AddLearningMaterial(courseId, request);
+
+            var response = Request.CreateResponse(HttpStatusCode.Created, learningMaterial);
+
+            var uri = Url.Link("GetCourseLearningMaterial", new { courseId, learningMaterialId = learningMaterial.Id });
+            if (uri != null)
+            {
+                response.Headers.Location = new Uri(uri);
+            }
+            return response;
+        }
+
+        [Transaction]
+        [ArgumentsNotNull]
+        [ValidateModelState]
+        [Route("course/{courseId:guid}/learningmaterial/{learningMaterialId:guid}")]
+        public void Put(Guid courseId, Guid learningMaterialId, UpdateLearningMaterialRequest request)
+        {
+            _learningMaterialService.UpdateLearningMaterial(courseId, learningMaterialId, request);
+        }
+
+
+        [Route("course/{courseId:guid}/learningmaterial/{learningMaterialId:guid}", Name = "GetCourseLearningMaterial")]
+        public LearningMaterialInfo Get(Guid courseId, Guid learningMaterialId)
+        {
+            return _learningMaterialService.Get(courseId, learningMaterialId);
+        }
+
+        [Transaction]
+        [Route("course/{courseId:guid}/learningmaterial/{learningMaterialId:guid}")]
+        public void Delete(Guid courseId, Guid learningMaterialId)
+        {
+            _learningMaterialService.Delete(courseId, learningMaterialId);
+        }
+
+        [Transaction]
+        [ArgumentsNotNull]
+        [ValidateModelState]
         [Route("course/{courseId:guid}/segment/{segmentId:guid}/learningmaterial")]
         public HttpResponseMessage Post(Guid courseId, Guid segmentId, LearningMaterialRequest request)
         {
@@ -59,5 +100,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         {
             _learningMaterialService.Delete(courseId, segmentId, learningMaterialId);
         }
+
+
     }
 }

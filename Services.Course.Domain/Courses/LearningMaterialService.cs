@@ -12,6 +12,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
 {
     public interface ILearningMaterialService
     {
+        LearningMaterialInfo AddLearningMaterial(Guid courseId, LearningMaterialRequest request);
+        void UpdateLearningMaterial(Guid courseId, Guid learningMaterialId, UpdateLearningMaterialRequest request);
+        LearningMaterialInfo Get(Guid courseId, Guid learningMaterialId);
+        void Delete(Guid courseId, Guid learningMaterialId);
+
         LearningMaterialInfo AddLearningMaterial(Guid courseId, Guid segmentId, LearningMaterialRequest request);
         void UpdateLearningMaterial(Guid courseId, Guid segmentId, Guid learningMaterialId, UpdateLearningMaterialRequest request);
         LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningMaterialId);
@@ -27,6 +32,36 @@ namespace BpeProducts.Services.Course.Domain.Courses
         {
             _courseRepository = courseRepository;
             _assetService = assetService;
+        }
+
+        public LearningMaterialInfo AddLearningMaterial(Guid courseId, LearningMaterialRequest request)
+        {
+            var course = _courseRepository.GetOrThrow(courseId);
+
+            var learningMaterial = course.AddLearningMaterial(request);
+
+            return Mapper.Map<LearningMaterialInfo>(learningMaterial);
+        }
+
+        public LearningMaterialInfo Get(Guid courseId, Guid learningMaterialId)
+        {
+            var learningMaterial = _courseRepository.GetLearningMaterial(learningMaterialId);
+            return Mapper.Map<LearningMaterialInfo>(learningMaterial);
+        }
+
+        public void Delete(Guid courseId, Guid learningMaterialId)
+        {
+            var course = _courseRepository.GetOrThrow(courseId);
+            course.DeleteLearningMaterial(learningMaterialId);
+            _courseRepository.Save(course);
+        }
+
+        public void UpdateLearningMaterial(Guid courseId, Guid learningMaterialId, UpdateLearningMaterialRequest request)
+        {
+            var course = _courseRepository.GetOrThrow(courseId);
+            course.UpdateLearningMaterial(learningMaterialId, request);
+
+            _courseRepository.Save(course);
         }
 
         public LearningMaterialInfo AddLearningMaterial(Guid courseId, Guid segmentId, LearningMaterialRequest request)
@@ -53,7 +88,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             _courseRepository.Save(course);
         }
-
 
         public void UpdateLearningMaterial(Guid courseId, Guid segmentId, Guid learningMaterialId, UpdateLearningMaterialRequest request)
         {

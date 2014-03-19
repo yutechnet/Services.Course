@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
@@ -26,6 +27,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
         private IList<CourseSegment> _segments = new List<CourseSegment>();
         private IList<Program> _programs = new List<Program>();
         private IList<Course> _prerequisites = new List<Course>();
+        private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
 
         [JsonProperty]
         public virtual Course Template { get; protected internal set; }
@@ -54,7 +56,11 @@ namespace BpeProducts.Services.Course.Domain.Courses
                 _code = value;
             }
         }
-
+        public virtual IList<LearningMaterial> LearningMaterials
+        {
+            get { return _learningMaterials; }
+            set { _learningMaterials = value; }
+        }
         public virtual string Description
         {
             get { return _description; }
@@ -163,18 +169,18 @@ namespace BpeProducts.Services.Course.Domain.Courses
             }
 
             var newSegment = new CourseSegment
-                {
-                    Course = this,
-                    Id = segmentId,
-                    Name = request.Name,
-                    Description = request.Description,
-                    DisplayOrder = request.DisplayOrder,
-                    Type = request.Type,
-                    TenantId = TenantId,
-                    ActiveFlag = true,
-                    ActiveDate = request.ActiveDate,
-                    InactiveDate = request.InactiveDate
-                };
+            {
+                Course = this,
+                Id = segmentId,
+                Name = request.Name,
+                Description = request.Description,
+                DisplayOrder = request.DisplayOrder,
+                Type = request.Type,
+                TenantId = TenantId,
+                ActiveFlag = true,
+                ActiveDate = request.ActiveDate,
+                InactiveDate = request.InactiveDate
+            };
 
             if (parentSegment != null)
             {
@@ -247,78 +253,77 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     string.Format("Cannot create a section from course {0}. Course is not published.", Id));
 
             var translatedRequest = new CreateSectionRequest
-                {
-                    Name = request.Name,
-                    CourseCode = request.CourseCode,
-                    SectionCode = request.SectionCode,
-                    OrganizationId = request.OrganizationId,
-                    StartDate = request.StartDate,
-                    EndDate = request.EndDate,
-                    TenantId = TenantId,
-                    CourseId = Id,
-                    Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null), assessmentClient),
-                    Credit = Credit
-                };
+            {
+                Name = request.Name,
+                CourseCode = request.CourseCode,
+                SectionCode = request.SectionCode,
+                OrganizationId = request.OrganizationId,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+                TenantId = TenantId,
+                CourseId = Id,
+                LearningMaterials = BuildLearningMaterials(LearningMaterials),
+                Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null)),
+                Credit = Credit
+            };
 
             return translatedRequest;
         }
 
-        private List<SectionSegmentRequest> BuildSectionSegments(IEnumerable<CourseSegment> segments,
-                                                                 IAssessmentClient assessmentClient)
+        private List<SectionSegmentRequest> BuildSectionSegments(IEnumerable<CourseSegment> segments)
         {
             var sectionSegments = segments.Select(courseSegment => new SectionSegmentRequest
-                {
-                    Name = courseSegment.Name,
-                    Description = courseSegment.Description,
-                    DisplayOrder = courseSegment.DisplayOrder,
-                    Type = courseSegment.Type,
-                    CourseSegmentId = courseSegment.Id,
-                    ChildSegments = BuildSectionSegments(courseSegment.ChildSegments, assessmentClient),
-                    LearningActivities = BuildLearningActivities(courseSegment.CourseLearningActivities),
-                    LearningMaterials = BuildLearningMaterials(courseSegment.LearningMaterials, assessmentClient)
-                }).ToList();
+            {
+                Name = courseSegment.Name,
+                Description = courseSegment.Description,
+                DisplayOrder = courseSegment.DisplayOrder,
+                Type = courseSegment.Type,
+                CourseSegmentId = courseSegment.Id,
+                ChildSegments = BuildSectionSegments(courseSegment.ChildSegments),
+                LearningActivities = BuildLearningActivities(courseSegment.CourseLearningActivities),
+                LearningMaterials = BuildLearningMaterials(courseSegment.LearningMaterials)
+            }).ToList();
 
             return sectionSegments;
         }
 
-        private IList<SectionLearningActivityRequest> BuildLearningActivities(
+        private List<SectionLearningActivityRequest> BuildLearningActivities(
             IEnumerable<CourseLearningActivity> courseLearningActivities)
         {
             var sectionLearningActivities =
                 courseLearningActivities.Select(courseLearningActivity => new SectionLearningActivityRequest
-                    {
-                        Name = courseLearningActivity.Name,
-                        CourseLearningActivityId = courseLearningActivity.Id,
-                        Type = (SectionLearningActivityType) courseLearningActivity.Type,
-                        ActiveDate = courseLearningActivity.ActiveDate,
-                        InactiveDate = courseLearningActivity.InactiveDate,
-                        DueDate = courseLearningActivity.DueDate,
-                        IsExtraCredit = courseLearningActivity.IsExtraCredit,
-                        IsGradeable = courseLearningActivity.IsGradeable,
-                        MaxPoint = courseLearningActivity.MaxPoint,
-                        Weight = courseLearningActivity.Weight,
-                        ObjectId = courseLearningActivity.ObjectId,
-                        CustomAttribute = courseLearningActivity.CustomAttribute,
-                        AssessmentId = courseLearningActivity.AssessmentId,
-                        AssessmentType = courseLearningActivity.AssessmentType.ToString(),
-						Description = courseLearningActivity.Description
-                    }).ToList();
+                {
+                    Name = courseLearningActivity.Name,
+                    CourseLearningActivityId = courseLearningActivity.Id,
+                    Type = (SectionLearningActivityType)courseLearningActivity.Type,
+                    ActiveDate = courseLearningActivity.ActiveDate,
+                    InactiveDate = courseLearningActivity.InactiveDate,
+                    DueDate = courseLearningActivity.DueDate,
+                    IsExtraCredit = courseLearningActivity.IsExtraCredit,
+                    IsGradeable = courseLearningActivity.IsGradeable,
+                    MaxPoint = courseLearningActivity.MaxPoint,
+                    Weight = courseLearningActivity.Weight,
+                    ObjectId = courseLearningActivity.ObjectId,
+                    CustomAttribute = courseLearningActivity.CustomAttribute,
+                    AssessmentId = courseLearningActivity.AssessmentId,
+                    AssessmentType = courseLearningActivity.AssessmentType.ToString(),
+                    Description = courseLearningActivity.Description
+                }).ToList();
 
             return sectionLearningActivities;
         }
 
-        private IList<SectionLearningMaterialRequest> BuildLearningMaterials(
-            IEnumerable<LearningMaterial> courseLearningMaterials, IAssessmentClient assessmentClient)
+        private List<SectionLearningMaterialRequest> BuildLearningMaterials(IEnumerable<LearningMaterial> courseLearningMaterials)
         {
             var sectionLearningMaterials =
                 courseLearningMaterials.Select(courseLearningMaterial => new SectionLearningMaterialRequest
-                    {
-                        CourseLearningMaterialId = courseLearningMaterial.Id,
-                        Instruction = courseLearningMaterial.Instruction,
-                        AssetId = courseLearningMaterial.AssetId,
-                        IsRequired = courseLearningMaterial.IsRequired,
-                        CustomAttribute = courseLearningMaterial.CustomAttribute
-                    }).ToList();
+                {
+                    CourseLearningMaterialId = courseLearningMaterial.Id,
+                    Instruction = courseLearningMaterial.Instruction,
+                    AssetId = courseLearningMaterial.AssetId,
+                    IsRequired = courseLearningMaterial.IsRequired,
+                    CustomAttribute = courseLearningMaterial.CustomAttribute
+                }).ToList();
 
             return sectionLearningMaterials;
         }
@@ -384,27 +389,27 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
             // TODO: Consider using AutoMapper here
             var courseLearningActivity = new CourseLearningActivity()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = request.Name,
-                    Type = request.Type,
-                    IsExtraCredit = request.IsExtraCredit,
-                    IsGradeable = request.IsGradeable,
-                    MaxPoint = request.MaxPoint,
-                    Weight = request.Weight,
-                    ObjectId = request.ObjectId,
-					Description = request.Description,
-                    CustomAttribute = request.CustomAttribute,
-                    TenantId = TenantId,
-                    ActiveDate = request.ActiveDate,
-                    InactiveDate = request.InactiveDate,
-                    DueDate = request.DueDate,
-                    AssessmentId = request.AssessmentId,
-                    AssessmentType = string.IsNullOrEmpty(request.AssessmentType)
-                            ? AssessmentType.Custom
-                            : (AssessmentType) Enum.Parse(typeof (AssessmentType), request.AssessmentType),
-                    ActiveFlag = true
-                };
+            {
+                Id = Guid.NewGuid(),
+                Name = request.Name,
+                Type = request.Type,
+                IsExtraCredit = request.IsExtraCredit,
+                IsGradeable = request.IsGradeable,
+                MaxPoint = request.MaxPoint,
+                Weight = request.Weight,
+                ObjectId = request.ObjectId,
+                Description = request.Description,
+                CustomAttribute = request.CustomAttribute,
+                TenantId = TenantId,
+                ActiveDate = request.ActiveDate,
+                InactiveDate = request.InactiveDate,
+                DueDate = request.DueDate,
+                AssessmentId = request.AssessmentId,
+                AssessmentType = string.IsNullOrEmpty(request.AssessmentType)
+                        ? AssessmentType.Custom
+                        : (AssessmentType)Enum.Parse(typeof(AssessmentType), request.AssessmentType),
+                ActiveFlag = true
+            };
 
 
             segment.CourseLearningActivities.Add(courseLearningActivity);
@@ -427,7 +432,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             learningActivity.MaxPoint = request.MaxPoint;
             learningActivity.Weight = request.Weight;
             learningActivity.ObjectId = request.ObjectId;
-	        learningActivity.Description = request.Description;
+            learningActivity.Description = request.Description;
             learningActivity.CustomAttribute = request.CustomAttribute;
             learningActivity.ActiveDate = request.ActiveDate;
             learningActivity.InactiveDate = request.InactiveDate;
@@ -436,7 +441,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             learningActivity.AssessmentType = string.IsNullOrEmpty(request.AssessmentType)
                                                   ? AssessmentType.Custom
                                                   : (AssessmentType)
-                                                    Enum.Parse(typeof (AssessmentType), request.AssessmentType);
+                                                    Enum.Parse(typeof(AssessmentType), request.AssessmentType);
 
             return learningActivity;
         }
@@ -469,8 +474,43 @@ namespace BpeProducts.Services.Course.Domain.Courses
 
         #endregion
 
+        #region CourseLearningMaterial
+        public virtual LearningMaterial AddLearningMaterial(LearningMaterialRequest learningMaterialRequest)
+        {
+            CheckPublished();
+            var learningMaterial = Mapper.Map<LearningMaterial>(learningMaterialRequest);
+            learningMaterial.TenantId = TenantId;
+            learningMaterial.Id = Guid.NewGuid();
+            learningMaterial.Course = this;
+            _learningMaterials.Add(learningMaterial);
+            return learningMaterial;
+        }
+        public virtual void UpdateLearningMaterial(Guid learningMaterialId, UpdateLearningMaterialRequest updatelearningMaterialRequest)
+        {
+            CheckPublished();
+            var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
+            Mapper.Map(updatelearningMaterialRequest, learningMaterial);
+        }
+
+        public virtual void DeleteLearningMaterial(Guid learningMaterialId)
+        {
+            CheckPublished();
+            var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
+            learningMaterial.ActiveFlag = false;
+        }
+
+        private LearningMaterial GetLearningMaterialOrThrow(Guid learningMaterialId)
+        {
+            var learningMaterial = _learningMaterials.SingleOrDefault(l => l.Id == learningMaterialId);
+
+            if (learningMaterial == null)
+                throw new NotFoundException(string.Format("Learning Material {0} for Course Learning Material {1} is not found.", learningMaterialId, Id));
+
+            return learningMaterial;
+        }
+
         public virtual LearningMaterial AddLearningMaterial(Guid segmentId,
-                                                            LearningMaterialRequest learningMaterialRequest)
+                                                         LearningMaterialRequest learningMaterialRequest)
         {
             CheckPublished();
 
@@ -494,8 +534,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var segment = GetSegmentOrThrow(segmentId);
             segment.UpdateLearningMaterial(learningMaterialId, updatelearningMaterialRequest);
         }
+        #endregion
 
-		// Base method is not supported
+        // Base method is not supported
         public override void Publish(string publishNote)
         {
             throw new NotImplementedException("this overload is not supported for course");
