@@ -1,4 +1,4 @@
-﻿IF EXISTS (Select * From INFORMATION_SCHEMA.COLUMNS c 
+﻿IF EXISTS (Select 1 From INFORMATION_SCHEMA.COLUMNS c 
 			Where c.COLUMN_NAME = 'CourseSegmentId' and c.TABLE_NAME = 'LearningMaterial' AND IS_NULLABLE='NO')
 	BEGIN
 		RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
