@@ -8,6 +8,7 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
 using Services.Assessment.Contract;
 using Services.Authorization.Contract;
+using ServiceStack.Common.Extensions;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -71,7 +72,14 @@ namespace BpeProducts.Services.Course.Domain.Courses
                     TenantId = request.TenantId
 				};
 
-			var newSegments = Mapper.Map<List<CourseSegment>>(template.Segments);
+            var newLearningMaterials = Mapper.Map<List<LearningMaterial>>(template.LearningMaterials);
+            foreach (LearningMaterial learningMaterial in newLearningMaterials)
+            {
+                learningMaterial.Id = Guid.NewGuid();
+                learningMaterial.Course = course;
+            }
+
+            var newSegments = Mapper.Map<List<CourseSegment>>(template.Segments);
 			foreach (CourseSegment courseSegment in newSegments)
 			{
 				courseSegment.Id = Guid.NewGuid();
@@ -97,7 +105,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             course.Credit = template.Credit;
             course.ActiveFlag = true;
             course.IsTemplate = request.IsTemplate;
-
+            course.LearningMaterials = newLearningMaterials;
             return course;
         }
 

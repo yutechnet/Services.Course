@@ -200,7 +200,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Resources<CourseResource>.Get(courseName);
             var program = Resources<ProgramResource>.Get(programName);
 
-            PutOperations.AssociateCourseWithPrograms(course, new List<ProgramResource> {program});
+            PutOperations.AssociateCourseWithPrograms(course, new List<ProgramResource> { program });
         }
 
         [When(@"I associate '(.*)' course with the following programs")]
@@ -218,7 +218,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Resources<CourseResource>.Get(courseName);
             var program = Resources<ProgramResource>.Get(programName);
 
-            PutOperations.DisassociateCourseWithPrograms(course, new List<ProgramResource> {program});
+            PutOperations.DisassociateCourseWithPrograms(course, new List<ProgramResource> { program });
         }
 
         [When(@"the outcome '(.*)' supports the following outcomes")]
@@ -359,7 +359,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIUpdateLearningActivityWithTheFollowingInfo(string activityName, Table table)
         {
             var resourse = Resources<CourseLearningActivityResource>.Get(activityName);
-            
+
             var learningActivity = table.CreateInstance<SaveCourseLearningActivityRequest>();
             var assessmentRow = table.Rows.SingleOrDefault(r => r["Field"] == "Assessment");
             if (assessmentRow != null)
@@ -380,7 +380,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             PutOperations.UpdateCourseLearningActivity(resourse, learningActivity);
         }
 
-		[When(@"I view '(.*)' course")]
+        [When(@"I view '(.*)' course")]
         [When(@"I retrieve '(.*)' course")]
         public void WhenIRetrieveCourse(string courseName)
         {
@@ -403,7 +403,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var request = table.CreateInstance<Contract.VersionRequest>();
 
-            var course = Resources<CourseResource>.Get(courseName);       
+            var course = Resources<CourseResource>.Get(courseName);
             request.ParentVersionId = course.Id;
 
             PostOperations.CreateCourseVersion(newVersionName, request);
@@ -610,10 +610,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [When(@"Create learning material as the following info")]
         public void WhenCreateLearningMaterialAsTheFollowingInfo(Table table)
         {
+            var isCourseSegmentLearningMaterial = table.ContainsColumn("CourseSegment");
+
             foreach (var row in table.Rows)
             {
-                var segmentName = row["CourseSegment"];
-                var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
                 var assetName = row["Asset"];
                 var asset = Resources<AssetResource>.Get(assetName);
                 var learningMaterial = row["LearningMaterial"];
@@ -625,7 +625,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     CustomAttribute  = row["CustomAttribute"]
                 };
 
-                PostOperations.CreateCourseLearningMaterial(learningMaterial, courseSegment, request);
+                if (isCourseSegmentLearningMaterial)
+                {
+                    var segmentName = row["CourseSegment"];
+                    var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
+                    PostOperations.CreateCourseSegmentLearningMaterial(learningMaterial, courseSegment, request);
+                }
+                else
+                {
+                    var courseName = row["Course"];
+                    var course = Resources<CourseResource>.Get(courseName);
+                    PostOperations.CreateCourseLearningMaterial(learningMaterial, course, request);
+                }
             }
         }
 

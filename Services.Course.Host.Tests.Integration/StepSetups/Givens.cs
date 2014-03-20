@@ -289,10 +289,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Given(@"Create learning material as the following info")]
         public void GivenCreateLearningMaterialAsTheFollowingInfo(Table table)
         {
+            var isCourseSegmentLearningMaterial = table.ContainsColumn("CourseSegment");
+
             foreach (var row in table.Rows)
             {
-                var segmentName = row["CourseSegment"];
-                var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
                 var assetName = row["Asset"];
                 var asset = Resources<AssetResource>.Get(assetName);
                 var learningMaterial = row["LearningMaterial"];
@@ -304,7 +304,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     CustomAttribute = row["CustomAttribute"]
                 };
 
-                PostOperations.CreateCourseLearningMaterial(learningMaterial, courseSegment, request);
+                if (isCourseSegmentLearningMaterial)
+                {
+                    var segmentName = row["CourseSegment"];
+                    var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
+                    PostOperations.CreateCourseSegmentLearningMaterial(learningMaterial, courseSegment, request);
+                }
+                else
+                {
+                    var courseName = row["Course"];
+                    var course = Resources<CourseResource>.Get(courseName);
+                    PostOperations.CreateCourseLearningMaterial(learningMaterial, course, request);
+                }
+
+
             }
         }
 

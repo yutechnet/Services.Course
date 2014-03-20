@@ -23,6 +23,7 @@ Background:
 	| file1 |
 	| file2 |
 	| file3 |
+	| file4 |
 
 Scenario: Create a learning material
     When Create learning material as the following info
@@ -93,14 +94,18 @@ Scenario: Create a course from a course template with learning materials
 	    | file1 | Week one      |                   | false      | Template Material A |CustomAttributeA |
 	    | file2 | Week two      | test  instruction | true       | Template Material B |CustomAttributeB |
 	    | file3 | Day one       | test  instruction | true       | Template Material C |CustomAttributeC |
+    And Create learning material as the following info
+	    | Asset | Course           | Instruction | IsRequired | LearningMaterial    | CustomAttribute  |
+	    | file4 | English Template |             | false      | Template Material D | CustomAttributeD |
 	When Create a course from the template 'English Template' with the following
 	    | Name           | Code    | Description                   | OrganizationName | IsTemplate |
 	    | English Course | ENG 200 | My First Course from Template | COB              | false      |
 	Then The course 'English Course' has following learning material
-	    | Asset | CourseSegment | Instruction       | IsRequired | ParentCourse     |CustomAttribute  |
-	    | file1 | Week one      |                   | false      | English Template |CustomAttributeA |
-	    | file2 | Week two      | test  instruction | true       | English Template |CustomAttributeB |
-	    | file3 | Day one       | test  instruction | true       | English Template |CustomAttributeC |
+	    | Asset | CourseSegment | Instruction       | IsRequired | ParentCourse     | CustomAttribute  |
+	    | file1 | Week one      |                   | false      | English Template | CustomAttributeA |
+	    | file2 | Week two      | test  instruction | true       | English Template | CustomAttributeB |
+	    | file3 | Day one       | test  instruction | true       | English Template | CustomAttributeC |
+	    | file4 |               |                   | false      | English Template | CustomAttributeD |
 
 Scenario: Create a course version from a previously-published version with learning materials
 	Given Published the following assets
@@ -108,11 +113,15 @@ Scenario: Create a course version from a previously-published version with learn
 	    | file1 | published   |
 	    | file2 | published   |
 		| file3 | published   |
+		| file4 | published   |
     And Create learning material as the following info
 	    | Asset | CourseSegment | Instruction   | IsRequired | LearningMaterial |CustomAttribute  |
 	    | file1 | Week 1        | instruction 1 | true       | Material A       |CustomAttributeA |
 	    | file2 | Week 2        | instruction 2 | false      | Material B       |CustomAttributeB |
 	    | file3 | Day 1         | instruction 3 | true       | Material C       |CustomAttributeC |
+	And Create learning material as the following info
+	    | Asset | Course   | Instruction   | IsRequired | LearningMaterial | CustomAttribute  |
+	    | file4 | Econ 100 | instruction 4 | true       | Material D       | CustomAttributeD |
 	And Publish the following courses
         | CourseName | Note      |
         | Econ 100   | published |
@@ -120,10 +129,11 @@ Scenario: Create a course version from a previously-published version with learn
 	    | Field         | Value    |
 	    | VersionNumber | 1.0.0.1  |
 	Then The course 'Econ 100 v1.0.0.1' has following learning material
-	    | Asset | CourseSegment | Instruction   | IsRequired | ParentCourse |CustomAttribute  |
-	    | file1 | Week 1        | instruction 1 | true       | Econ 100     |CustomAttributeA |
-	    | file2 | Week 2        | instruction 2 | false      | Econ 100     |CustomAttributeB |
-	    | file3 | Day 1         | instruction 3 | true       | Econ 100     |CustomAttributeC |
+	    | Asset | CourseSegment | Instruction   | IsRequired | ParentCourse | CustomAttribute  |
+	    | file1 | Week 1        | instruction 1 | true       | Econ 100     | CustomAttributeA |
+	    | file2 | Week 2        | instruction 2 | false      | Econ 100     | CustomAttributeB |
+	    | file3 | Day 1         | instruction 3 | true       | Econ 100     | CustomAttributeC |
+	    | file4 |               | instruction 4 | true       | Econ 100     | CustomAttributeD |
 
 Scenario: Publish course with learning materials then the associate assets need publish
     Given Create learning material as the following info
@@ -133,3 +143,32 @@ Scenario: Publish course with learning materials then the associate assets need 
         | CourseName | Note      |
         | Econ 100   | published |
 	Then The asset 'file1' is published
+
+
+
+Scenario: Create a course learning material
+    When Create learning material as the following info
+		| Asset | Course   | Instruction | IsRequired | LearningMaterial | CustomAttribute  |
+		| file1 | Econ 100 |             | false      | Material A       | CustomAttributeA |
+	Then The 'Material A' learning material has the following info
+	    | Asset | Course   | Instruction | IsRequired | CustomAttribute  |
+	    | file1 | Econ 100 |             | false      | CustomAttributeA |
+
+Scenario: Update a course learning material
+    Given Create learning material as the following info
+		| Asset | Course   | Instruction | IsRequired | LearningMaterial | CustomAttribute  |
+		| file1 | Econ 100 |             | false      | Material A       | CustomAttributeA |
+	When Update 'Material A' learning material as the following info
+	    | Asset | Instruction      | IsRequired | CustomAttribute        |
+	    | file1 | test instruction | true       | CustomAttributeAUpdate |
+	Then The 'Material A' learning material has the following info
+		| Asset | Course   | Instruction      | IsRequired | LearningMaterial | CustomAttribute  |
+		| file1 | Econ 100 | test instruction | true       | Material A       | CustomAttributeA |
+
+Scenario: Delete a course learning material
+    Given Create learning material as the following info
+		| Asset | Course   | Instruction | IsRequired | LearningMaterial | CustomAttribute  |
+		| file1 | Econ 100 |             | false      | Material A       | CustomAttributeA |
+	When I remove 'Material A' learning material
+	And I retrieve the learning material 'Material A'
+	Then I get 'NotFound' response

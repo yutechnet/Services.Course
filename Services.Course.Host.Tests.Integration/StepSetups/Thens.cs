@@ -370,7 +370,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var row in table.Rows)
             {
                 var segmentName = row["Name"];
-                
+
                 if(traversed.Contains(segmentName))
                     Assert.Fail("Duplicate segment '{0}' in table", segmentName);
                 else 
@@ -533,18 +533,29 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"The '(.*)' learning material has the following info")]
         public void ThenTheLearningMaterialHasTheFollowingInfo(string materialName, Table table)
         {
+            var isCourseSegmentLearningMaterial = table.ContainsColumn("CourseSegment");
             var materialResource = Resources<LearningMaterialResource>.Get(materialName);
             var response = GetOperations.GetCourseLearningMaterial(materialResource);
             foreach (var row in table.Rows)
             {
-                var segmentName = row["CourseSegment"];
-                var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
                 var assetName = row["Asset"];
                 var asset = Resources<AssetResource>.Get(assetName);
                 Assert.That(response.AssetId, Is.EqualTo(asset.Id));
-                Assert.That(response.CourseSegmentId, Is.EqualTo(courseSegment.Id));
                 Assert.That(response.Instruction, Is.EqualTo(row["Instruction"]));
                 Assert.That(response.IsRequired, Is.EqualTo(bool.Parse(row["IsRequired"])));
+                if (isCourseSegmentLearningMaterial)
+                {
+                    var segmentName = row["CourseSegment"];
+                    var courseSegment = Resources<CourseSegmentResource>.Get(segmentName);
+                    Assert.That(response.CourseSegmentId, Is.EqualTo(courseSegment.Id));
+                }
+                else
+                {
+                    var courseName = row["Course"];
+                    var course = Resources<CourseResource>.Get(courseName);
+                    Assert.That(response.CourseId, Is.EqualTo(course.Id));
+                }
+
             }
         }
 
@@ -576,17 +587,31 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var row in table.Rows)
             {
                 var segmentName = row["CourseSegment"];
+                var isCourseLearningMaterial = segmentName.Equals(string.Empty);
                 var assetName = row["Asset"];
                 var asset = Resources<AssetResource>.Get(assetName);
                 var parentCourseResource = Resources<CourseResource>.Get(row["ParentCourse"]);
                 var parentCourse = GetOperations.GetCourse(parentCourseResource);
-                var segments = course.Segments.FlattenTree(c => c.ChildSegments).ToList();
-                var segment = segments.First(s => s.Name == segmentName);
-                var learningMaterial = segment.LearningMaterials.First(l => l.AssetId == asset.Id); 
-                var parentCourseSegments = parentCourse.Segments.FlattenTree(c => c.ChildSegments).ToList();
-                var parentCourseSegment = parentCourseSegments.First(s => s.Name == segmentName);
-                var parentCourseLearningMaterial = parentCourseSegment.LearningMaterials.First(l => l.AssetId == asset.Id); 
-                Assert.That(segment.LearningMaterials.Count, Is.EqualTo(parentCourseSegment.LearningMaterials.Count));
+                var segment = new CourseSegmentInfo();
+                LearningMaterialInfo parentCourseLearningMaterial;
+                LearningMaterialInfo learningMaterial;
+                if (isCourseLearningMaterial)
+                {
+                    learningMaterial = course.LearningMaterials.First(l => l.AssetId == asset.Id);
+                    parentCourseLearningMaterial = parentCourse.LearningMaterials.First(l => l.AssetId == asset.Id);
+                    Assert.That(course.LearningMaterials.Count, Is.EqualTo(parentCourse.LearningMaterials.Count));
+
+                }
+                else
+                {
+                    var segments = course.Segments.FlattenTree(c => c.ChildSegments).ToList();
+                    segment = segments.First(s => s.Name == segmentName);
+                    learningMaterial = segment.LearningMaterials.First(l => l.AssetId == asset.Id);
+                    var parentCourseSegments = parentCourse.Segments.FlattenTree(c => c.ChildSegments).ToList();
+                    var parentCourseSegment = parentCourseSegments.First(s => s.Name == segmentName);
+                    parentCourseLearningMaterial = parentCourseSegment.LearningMaterials.First(l => l.AssetId == asset.Id);
+                    Assert.That(segment.LearningMaterials.Count, Is.EqualTo(parentCourseSegment.LearningMaterials.Count));
+                }
                 Assert.That(learningMaterial.Id, Is.Not.EqualTo(parentCourseLearningMaterial.Id));
                 Assert.That(learningMaterial.AssetId, Is.EqualTo(asset.Id));
                 Assert.That(learningMaterial.CourseSegmentId, Is.EqualTo(segment.Id));

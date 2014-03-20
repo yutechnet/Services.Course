@@ -9,12 +9,12 @@ using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-	public interface ICoursePublisher
-	{
-		void Publish(Course course,string publishNote);
-		void PublishAssesments(IList<CourseSegment> segments, string publishNote);
-		void PublishLearningMaterialAsset(IList<CourseSegment> segments, string publishNote);
-	}
+    public interface ICoursePublisher
+    {
+        void Publish(Course course, string publishNote);
+        void PublishAssesments(IList<CourseSegment> segments, string publishNote);
+        void PublishCourseLearningMaterialAsset(Course course, string publishNote);
+    }
 
 	public class CoursePublisher : ICoursePublisher
 	{
@@ -40,9 +40,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
 	        if (!isValid)
 	            throw new BadRequestException(string.Join("\n", brokenRules));
 
-	        PublishAssesments(course.Segments, publishNote);
-	        PublishLearningMaterialAsset(course.Segments, publishNote);
-	    }
+            PublishAssesments(course.Segments, publishNote);
+            PublishCourseLearningMaterialAsset(course, publishNote);
+        }
 
 	    public void PublishAssesments(IList<CourseSegment> segments, string publishNote)
 		{
@@ -65,19 +65,28 @@ namespace BpeProducts.Services.Course.Domain.Courses
 			return assessment.IsPublished == false;
 		}
 
-		public  void PublishLearningMaterialAsset(IList<CourseSegment> segments, string publishNote)
-		{
-			foreach (var segment in segments)
-			{
-				foreach (var lm in segment.LearningMaterials)
-				{
-					PublishAsset(lm.AssetId,publishNote);
-				}
-			
-				if (segment.ChildSegments.Count>0) PublishLearningMaterialAsset(segment.ChildSegments,publishNote);
-			}
-			
-		}
+        public void PublishCourseLearningMaterialAsset(Course course, string publishNote)
+        {
+            foreach (var lm in course.LearningMaterials)
+            {
+                PublishAsset(lm.AssetId, publishNote);
+            }
+            PublishSegmentLearningMaterialAsset(course.Segments, publishNote);
+        }
+
+        private void PublishSegmentLearningMaterialAsset(IList<CourseSegment> segments, string publishNote)
+        {
+            foreach (var segment in segments)
+            {
+                foreach (var lm in segment.LearningMaterials)
+                {
+                    PublishAsset(lm.AssetId, publishNote);
+                }
+
+                if (segment.ChildSegments.Count > 0) PublishSegmentLearningMaterialAsset(segment.ChildSegments, publishNote);
+            }
+
+        }
 
 		public  void PublishAsset(Guid assetId,string publishNote)
 		{

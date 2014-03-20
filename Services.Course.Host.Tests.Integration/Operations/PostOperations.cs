@@ -48,7 +48,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return ApiFeature.CourseTestHost.Post<SectionResource, CourseSectionRequest>(name, requestUri, request);
         }
 
-        public static HttpResponseMessage CreateCourseLearningMaterial(string name, CourseSegmentResource segment, LearningMaterialRequest request)
+        public static HttpResponseMessage CreateCourseLearningMaterial(string name, CourseResource course, LearningMaterialRequest request)
+        {
+            var requestUri = string.Format("{0}/learningmaterial", course.ResourceUri);
+            return ApiFeature.CourseTestHost.Post<LearningMaterialResource, LearningMaterialRequest>(name, requestUri, request);
+        }
+
+        public static HttpResponseMessage CreateCourseSegmentLearningMaterial(string name, CourseSegmentResource segment, LearningMaterialRequest request)
         {
             var requestUri = string.Format("{0}/learningmaterial", segment.ResourceUri);
             return ApiFeature.CourseTestHost.Post<LearningMaterialResource, LearningMaterialRequest>(name, requestUri, request);
