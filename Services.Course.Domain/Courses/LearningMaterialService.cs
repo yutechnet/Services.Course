@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using BpeProducts.Common.Authorization;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
+using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
@@ -26,14 +28,13 @@ namespace BpeProducts.Services.Course.Domain.Courses
     public class LearningMaterialService : ILearningMaterialService
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly IAssetServiceClient _assetService;
 
-        public LearningMaterialService(ICourseRepository courseRepository, IAssetServiceClient assetService)
+        public LearningMaterialService(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
-            _assetService = assetService;
         }
 
+        [AuthByAcl(Capability = Capability.EditCourse, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public LearningMaterialInfo AddLearningMaterial(Guid courseId, LearningMaterialRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);
@@ -43,12 +44,14 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return Mapper.Map<LearningMaterialInfo>(learningMaterial);
         }
 
+        [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public LearningMaterialInfo Get(Guid courseId, Guid learningMaterialId)
         {
             var learningMaterial = _courseRepository.GetLearningMaterial(learningMaterialId);
             return Mapper.Map<LearningMaterialInfo>(learningMaterial);
         }
 
+        [AuthByAcl(Capability = Capability.EditCourse, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public void Delete(Guid courseId, Guid learningMaterialId)
         {
             var course = _courseRepository.GetOrThrow(courseId);
@@ -56,6 +59,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             _courseRepository.Save(course);
         }
 
+        [AuthByAcl(Capability = Capability.EditCourse, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public void UpdateLearningMaterial(Guid courseId, Guid learningMaterialId, UpdateLearningMaterialRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);
@@ -64,6 +68,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             _courseRepository.Save(course);
         }
 
+        [AuthByAcl(Capability = Capability.EditCourse, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public LearningMaterialInfo AddLearningMaterial(Guid courseId, Guid segmentId, LearningMaterialRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);
@@ -75,12 +80,14 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return Mapper.Map<LearningMaterialInfo>(learningMaterial);
         }
 
+        [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public LearningMaterialInfo Get(Guid courseId, Guid segmentId, Guid learningMaterialId)
         {
             var learningMaterial = _courseRepository.GetLearningMaterial(learningMaterialId);
             return Mapper.Map<LearningMaterialInfo>(learningMaterial);
         }
 
+        [AuthByAcl(Capability = Capability.EditCourse, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public void Delete(Guid courseId, Guid segmentId, Guid learningMaterialId)
         {
             var course = _courseRepository.GetOrThrow(courseId);
@@ -89,6 +96,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             _courseRepository.Save(course);
         }
 
+        [AuthByAcl(Capability = Capability.EditCourse, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public void UpdateLearningMaterial(Guid courseId, Guid segmentId, Guid learningMaterialId, UpdateLearningMaterialRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);

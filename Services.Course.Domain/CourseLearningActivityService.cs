@@ -2,12 +2,14 @@
 using System.Linq;
 using AutoMapper;
 using System.Collections.Generic;
+using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Services.Assessment.Contract;
+using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain
 {
@@ -22,6 +24,7 @@ namespace BpeProducts.Services.Course.Domain
             _assessmentClient = assessmentClient;
         }
 
+        [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public CourseLearningActivityResponse Get(Guid courseId, Guid segmentId, Guid learningActivityId)
         {
             var course = _courseRepository.Get(courseId);
@@ -31,6 +34,7 @@ namespace BpeProducts.Services.Course.Domain
             return Mapper.Map<CourseLearningActivityResponse>(learningActivity);
         }
 
+        [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public IEnumerable<CourseLearningActivityResponse> Get(Guid courseId, Guid segmentId)
         {
             var course = _courseRepository.Get(courseId);
@@ -40,6 +44,7 @@ namespace BpeProducts.Services.Course.Domain
             return Mapper.Map<IList<CourseLearningActivityResponse>>(learningActivity);
         }
 
+        [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public void Update(Guid courseId, Guid segmentId, Guid learningActivityId, SaveCourseLearningActivityRequest request)
         {
             var course = _courseRepository.Get(courseId);
@@ -54,6 +59,7 @@ namespace BpeProducts.Services.Course.Domain
             _courseRepository.Save(course);
         }
 
+        [AuthByAcl(Capability = Capability.EditCourse, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public void Delete(Guid courseId, Guid segmentId, Guid learningActivityId)
         {
             var course = _courseRepository.Get(courseId);
@@ -61,6 +67,7 @@ namespace BpeProducts.Services.Course.Domain
             _courseRepository.Save(course);
         }
 
+        [AuthByAcl(Capability = Capability.EditCourse, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public CourseLearningActivityResponse Create(Guid courseId, Guid segmentId, SaveCourseLearningActivityRequest request)
         {
             var course = _courseRepository.Get(courseId);
