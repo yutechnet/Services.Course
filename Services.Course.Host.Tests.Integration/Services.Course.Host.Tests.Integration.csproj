@@ -61,6 +61,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Authorization.3.0.847\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
     </Reference>
+    <Reference Include="BpeProducts.Common.Contract, Version=3.0.847.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\BpeProducts.Common.Contract.3.0.847\lib\net40\BpeProducts.Common.Contract.dll</HintPath>
+    </Reference>
     <Reference Include="BpeProducts.Common.Exceptions, Version=3.0.847.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Exceptions.3.0.847\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
