@@ -13,6 +13,7 @@ Background:
 	| CourseCreate  |
 	| CoursePublish |
 	| CourseView    |
+	| EditCourse    |
 	And I have the following courses   
 	| Name           | Code   | Description                   | OrganizationName | CourseType  | IsTemplate |
 	| English 1010   | ENG101 | Ranji's awesome English Class | COB              | Traditional | false      |

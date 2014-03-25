@@ -85,6 +85,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "CoursePublish"});
             table2.AddRow(new string[] {
                         "CourseView"});
+            table2.AddRow(new string[] {
+                        "EditCourse"});
 #line 8
  testRunner.And("I have the following capabilities", ((string)(null)), table2, "And ");
 #line hidden
@@ -102,7 +104,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "COB",
                         "Traditional",
                         "False"});
-#line 13
+#line 14
  testRunner.And("I have the following courses", ((string)(null)), table3, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -125,7 +127,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "First Day is slack time",
                         "TimeSpan",
                         "Week 1"});
-#line 16
+#line 17
  testRunner.And("I have the following course segments for \'Econ 100\'", ((string)(null)), table4, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -138,7 +140,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "file3"});
             table5.AddRow(new string[] {
                         "file4"});
-#line 21
+#line 22
  testRunner.And("I have the following assets", ((string)(null)), table5, "And ");
 #line hidden
         }
@@ -148,7 +150,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void CreateALearningMaterial()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a learning material", ((string[])(null)));
-#line 28
+#line 29
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -167,7 +169,7 @@ this.FeatureBackground();
                         "false",
                         "Material A",
                         "CustomAttributeA"});
-#line 29
+#line 30
     testRunner.When("Create learning material as the following info", ((string)(null)), table6, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -182,7 +184,7 @@ this.FeatureBackground();
                         "",
                         "false",
                         "CustomAttributeA"});
-#line 32
+#line 33
  testRunner.Then("The \'Material A\' learning material has the following info", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -193,7 +195,7 @@ this.FeatureBackground();
         public virtual void UpdateALearningMaterial()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a learning material", ((string[])(null)));
-#line 36
+#line 37
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -212,7 +214,7 @@ this.FeatureBackground();
                         "false",
                         "Material A",
                         "CustomAttributeA"});
-#line 37
+#line 38
     testRunner.Given("Create learning material as the following info", ((string)(null)), table8, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -225,7 +227,7 @@ this.FeatureBackground();
                         "test instruction",
                         "true",
                         "CustomAttributeAUpdate"});
-#line 40
+#line 41
  testRunner.When("Update \'Material A\' learning material as the following info", ((string)(null)), table9, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -240,7 +242,7 @@ this.FeatureBackground();
                         "test instruction",
                         "true",
                         "CustomAttributeAUpdate"});
-#line 43
+#line 44
  testRunner.Then("The \'Material A\' learning material has the following info", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -251,7 +253,7 @@ this.FeatureBackground();
         public virtual void DeleteALearningMaterial()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a learning material", ((string[])(null)));
-#line 47
+#line 48
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -270,13 +272,13 @@ this.FeatureBackground();
                         "false",
                         "Material A",
                         "CustomAttributeA"});
-#line 48
+#line 49
     testRunner.Given("Create learning material as the following info", ((string)(null)), table11, "Given ");
-#line 51
- testRunner.When("I remove \'Material A\' learning material", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 52
- testRunner.And("I retrieve the learning material \'Material A\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I remove \'Material A\' learning material", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 53
+ testRunner.And("I retrieve the learning material \'Material A\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 54
  testRunner.Then("I get \'NotFound\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -287,7 +289,7 @@ this.FeatureBackground();
         public virtual void CreateLearningMaterialsWithSameAsset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create learning materials with same asset", ((string[])(null)));
-#line 55
+#line 56
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -313,7 +315,7 @@ this.FeatureBackground();
                         "",
                         "false",
                         "CustomAttributeB"});
-#line 56
+#line 57
     testRunner.When("Create learning material as the following info", ((string)(null)), table12, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -337,7 +339,7 @@ this.FeatureBackground();
                         "",
                         "false",
                         "CustomAttributeB"});
-#line 60
+#line 61
  testRunner.Then("The following learning materials have the following info", ((string)(null)), table13, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -348,7 +350,7 @@ this.FeatureBackground();
         public virtual void CanCreateASectionFromTheCourseWithLearningMaterials()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Can create a section from the course with learning materials", ((string[])(null)));
-#line 65
+#line 66
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -362,7 +364,7 @@ this.FeatureBackground();
             table14.AddRow(new string[] {
                         "file2",
                         "published"});
-#line 66
+#line 67
  testRunner.Given("Published the following assets", ((string)(null)), table14, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -386,7 +388,7 @@ this.FeatureBackground();
                         "false",
                         "Material B",
                         "CustomAttributeB"});
-#line 70
+#line 71
     testRunner.And("Create learning material as the following info", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -395,9 +397,9 @@ this.FeatureBackground();
             table16.AddRow(new string[] {
                         "Econ 100",
                         "published"});
-#line 74
+#line 75
  testRunner.And("Publish the following courses", ((string)(null)), table16, "And ");
-#line 77
+#line 78
  testRunner.When("The section service returns \'Created\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -414,9 +416,9 @@ this.FeatureBackground();
                         "2/15/2014",
                         "6/15/2014",
                         "COB"});
-#line 78
+#line 79
  testRunner.And("Create section as following", ((string)(null)), table17, "And ");
-#line 81
+#line 82
     testRunner.Then("I get \'Created\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -427,7 +429,7 @@ this.FeatureBackground();
         public virtual void CreateACourseFromACourseTemplateWithLearningMaterials()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a course from a course template with learning materials", ((string[])(null)));
-#line 83
+#line 84
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -446,7 +448,7 @@ this.FeatureBackground();
                         "COB",
                         "Traditional",
                         "true"});
-#line 84
+#line 85
    testRunner.Given("I have the following course templates", ((string)(null)), table18, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -469,7 +471,7 @@ this.FeatureBackground();
                         "First Day",
                         "TimeSpan",
                         "Week one"});
-#line 87
+#line 88
     testRunner.And("I have the following course segments for \'English Template\'", ((string)(null)), table19, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -500,7 +502,7 @@ this.FeatureBackground();
                         "true",
                         "Template Material C",
                         "CustomAttributeC"});
-#line 92
+#line 93
     testRunner.And("Create learning material as the following info", ((string)(null)), table20, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -517,7 +519,7 @@ this.FeatureBackground();
                         "false",
                         "Template Material D",
                         "CustomAttributeD"});
-#line 97
+#line 98
     testRunner.And("Create learning material as the following info", ((string)(null)), table21, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -532,7 +534,7 @@ this.FeatureBackground();
                         "My First Course from Template",
                         "COB",
                         "false"});
-#line 100
+#line 101
  testRunner.When("Create a course from the template \'English Template\' with the following", ((string)(null)), table22, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -570,7 +572,7 @@ this.FeatureBackground();
                         "false",
                         "English Template",
                         "CustomAttributeD"});
-#line 103
+#line 104
  testRunner.Then("The course \'English Course\' has following learning material", ((string)(null)), table23, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -583,7 +585,7 @@ this.FeatureBackground();
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a course version from a previously-published version with learning materia" +
                     "ls", ((string[])(null)));
-#line 110
+#line 111
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -603,7 +605,7 @@ this.FeatureBackground();
             table24.AddRow(new string[] {
                         "file4",
                         "published"});
-#line 111
+#line 112
  testRunner.Given("Published the following assets", ((string)(null)), table24, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -634,7 +636,7 @@ this.FeatureBackground();
                         "true",
                         "Material C",
                         "CustomAttributeC"});
-#line 117
+#line 118
     testRunner.And("Create learning material as the following info", ((string)(null)), table25, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -651,7 +653,7 @@ this.FeatureBackground();
                         "true",
                         "Material D",
                         "CustomAttributeD"});
-#line 122
+#line 123
  testRunner.And("Create learning material as the following info", ((string)(null)), table26, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
@@ -660,7 +662,7 @@ this.FeatureBackground();
             table27.AddRow(new string[] {
                         "Econ 100",
                         "published"});
-#line 125
+#line 126
  testRunner.And("Publish the following courses", ((string)(null)), table27, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
@@ -669,7 +671,7 @@ this.FeatureBackground();
             table28.AddRow(new string[] {
                         "VersionNumber",
                         "1.0.0.1"});
-#line 128
+#line 129
  testRunner.When("Create a new version of \'Econ 100\' course named \'Econ 100 v1.0.0.1\' with the foll" +
                     "owing info", ((string)(null)), table28, "When ");
 #line hidden
@@ -708,7 +710,7 @@ this.FeatureBackground();
                         "true",
                         "Econ 100",
                         "CustomAttributeD"});
-#line 131
+#line 132
  testRunner.Then("The course \'Econ 100 v1.0.0.1\' has following learning material", ((string)(null)), table29, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -719,7 +721,7 @@ this.FeatureBackground();
         public virtual void PublishCourseWithLearningMaterialsThenTheAssociateAssetsNeedPublish()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Publish course with learning materials then the associate assets need publish", ((string[])(null)));
-#line 138
+#line 139
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -738,7 +740,7 @@ this.FeatureBackground();
                         "",
                         "false",
                         "CustomAttributeA"});
-#line 139
+#line 140
     testRunner.Given("Create learning material as the following info", ((string)(null)), table30, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
@@ -747,9 +749,9 @@ this.FeatureBackground();
             table31.AddRow(new string[] {
                         "Econ 100",
                         "published"});
-#line 142
+#line 143
  testRunner.When("Publish the following courses with \'file1\' asset does not publish", ((string)(null)), table31, "When ");
-#line 145
+#line 146
  testRunner.Then("The asset \'file1\' is published", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -760,7 +762,7 @@ this.FeatureBackground();
         public virtual void CreateACourseLearningMaterial()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a course learning material", ((string[])(null)));
-#line 149
+#line 150
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -779,7 +781,7 @@ this.FeatureBackground();
                         "false",
                         "Material A",
                         "CustomAttributeA"});
-#line 150
+#line 151
     testRunner.When("Create learning material as the following info", ((string)(null)), table32, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
@@ -794,7 +796,7 @@ this.FeatureBackground();
                         "",
                         "false",
                         "CustomAttributeA"});
-#line 153
+#line 154
  testRunner.Then("The \'Material A\' learning material has the following info", ((string)(null)), table33, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -805,7 +807,7 @@ this.FeatureBackground();
         public virtual void UpdateACourseLearningMaterial()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update a course learning material", ((string[])(null)));
-#line 157
+#line 158
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -824,7 +826,7 @@ this.FeatureBackground();
                         "false",
                         "Material A",
                         "CustomAttributeA"});
-#line 158
+#line 159
     testRunner.Given("Create learning material as the following info", ((string)(null)), table34, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
@@ -837,7 +839,7 @@ this.FeatureBackground();
                         "test instruction",
                         "true",
                         "CustomAttributeAUpdate"});
-#line 161
+#line 162
  testRunner.When("Update \'Material A\' learning material as the following info", ((string)(null)), table35, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
@@ -854,7 +856,7 @@ this.FeatureBackground();
                         "true",
                         "Material A",
                         "CustomAttributeA"});
-#line 164
+#line 165
  testRunner.Then("The \'Material A\' learning material has the following info", ((string)(null)), table36, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -865,7 +867,7 @@ this.FeatureBackground();
         public virtual void DeleteACourseLearningMaterial()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a course learning material", ((string[])(null)));
-#line 168
+#line 169
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
@@ -884,13 +886,13 @@ this.FeatureBackground();
                         "false",
                         "Material A",
                         "CustomAttributeA"});
-#line 169
+#line 170
     testRunner.Given("Create learning material as the following info", ((string)(null)), table37, "Given ");
-#line 172
- testRunner.When("I remove \'Material A\' learning material", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 173
- testRunner.And("I retrieve the learning material \'Material A\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I remove \'Material A\' learning material", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 174
+ testRunner.And("I retrieve the learning material \'Material A\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 175
  testRunner.Then("I get \'NotFound\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

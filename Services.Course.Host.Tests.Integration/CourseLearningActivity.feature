@@ -9,10 +9,11 @@ Background:
 	| Name |
 	| COB  |
 	And I have the following capabilities
-	| Capability   |
+	| Capability    |
 	| CourseCreate  |
 	| CoursePublish |
 	| CourseView    |
+	| EditCourse    |
 	And I have the following courses
 	| Name     | Code | Description    | OrganizationName | CourseType  | IsTemplate |
 	| Econ 100 | E100 | Macroeconomics | COB              | Traditional | False      |
