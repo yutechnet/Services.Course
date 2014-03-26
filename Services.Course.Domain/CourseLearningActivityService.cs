@@ -44,7 +44,7 @@ namespace BpeProducts.Services.Course.Domain
             return Mapper.Map<IList<CourseLearningActivityResponse>>(learningActivity);
         }
 
-        [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
+        [AuthByAcl(Capability = Capability.EditCourse, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
         public void Update(Guid courseId, Guid segmentId, Guid learningActivityId, SaveCourseLearningActivityRequest request)
         {
             var course = _courseRepository.Get(courseId);
