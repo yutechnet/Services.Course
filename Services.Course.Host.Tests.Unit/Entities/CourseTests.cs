@@ -408,6 +408,18 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 };
 
             var course = GetCourse();
+
+            var learningMaterial = new LearningMaterial
+            {
+                Id = Guid.NewGuid(),
+                AssetId = Guid.NewGuid(),
+                Instruction = "test lm",
+                IsRequired = false,
+                ActiveFlag = true,
+                Course = course
+            };
+            course.LearningMaterials.Add(learningMaterial);
+            
             course.Publish("It's published", _coursePublisher.Object);
 
             var request = course.GetSectionRequest(sectionRequest, _assessmentClientMock.Object);
@@ -420,6 +432,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(request.EndDate, Is.EqualTo(sectionRequest.EndDate));
             Assert.That(request.CourseId, Is.EqualTo(course.Id));
             Assert.That(request.TenantId, Is.EqualTo(course.TenantId));
+
+            var sectionLearningMaterial = course.LearningMaterials.FirstOrDefault();
+            Assert.That(sectionLearningMaterial.CustomAttribute, Is.EqualTo(learningMaterial.CustomAttribute));
+            Assert.That(sectionLearningMaterial.Instruction, Is.EqualTo(learningMaterial.Instruction));
+            Assert.That(sectionLearningMaterial.IsRequired, Is.EqualTo(learningMaterial.IsRequired));
+            Assert.That(sectionLearningMaterial.AssetId, Is.EqualTo(learningMaterial.AssetId));
         }
 
         [Test]
@@ -700,6 +718,84 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                                      It.Is<CloneEntityOutcomeRequest>(c => c.Type == SupportingEntityType.LearningMaterial)));
         }
 
+        [Test]
+        public void Can_add_course_learning_material_to_course()
+        {
+            var course = GetCourse();
+
+            var learningMaterialRequest = new LearningMaterialRequest
+            {
+                AssetId = Guid.NewGuid(),
+                Instruction = "test lm",
+                IsRequired = false
+            };
+
+            var learningMaterialId = course.AddLearningMaterial(learningMaterialRequest).Id;
+
+            var learningMaterial =
+                course.LearningMaterials.First(l => l.Instruction == learningMaterialRequest.Instruction);
+
+            Assert.That(learningMaterial.Id, Is.EqualTo(learningMaterialId));
+            Assert.That(learningMaterial.IsRequired, Is.EqualTo(learningMaterialRequest.IsRequired));
+            Assert.That(learningMaterial.AssetId, Is.EqualTo(learningMaterialRequest.AssetId));
+        }
+
+        [Test]
+        public void Can_update_course_learning_material_to_course()
+        {
+
+            Mapper.CreateMap<UpdateLearningMaterialRequest, Domain.Courses.LearningMaterial>();
+
+            var course = GetCourse();
+
+            var learningMaterialRequest = new LearningMaterialRequest
+            {
+                AssetId = Guid.NewGuid(),
+                Instruction = "test lm",
+                IsRequired = false
+            };
+            var updateLearningMaterialRequest = new UpdateLearningMaterialRequest
+            {
+                AssetId = Guid.NewGuid(),
+                Instruction = "test lm update",
+                IsRequired = true
+            };
+            var learningMaterialId = course.AddLearningMaterial(learningMaterialRequest).Id;
+            course.UpdateLearningMaterial(learningMaterialId, updateLearningMaterialRequest);
+
+            var learningMaterial =
+                course.LearningMaterials.First(l => l.Id == learningMaterialId);
+
+            Assert.That(learningMaterial.Instruction, Is.EqualTo(updateLearningMaterialRequest.Instruction));
+            Assert.That(learningMaterial.IsRequired, Is.EqualTo(updateLearningMaterialRequest.IsRequired));
+            Assert.That(learningMaterial.AssetId, Is.EqualTo(updateLearningMaterialRequest.AssetId));
+        }
+
+        [Test]
+        public void Can_delete_course_learning_material_from_course()
+        {
+            var course = GetCourse();
+
+            var learningMaterialRequest = new LearningMaterialRequest
+            {
+                AssetId = Guid.NewGuid(),
+                Instruction = "test lm",
+                IsRequired = false
+            };
+
+            var learningMaterialId = course.AddLearningMaterial(learningMaterialRequest).Id;
+            course.DeleteLearningMaterial(learningMaterialId);
+
+            Assert.That(course.LearningMaterials.Count(l => l.ActiveFlag), Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Get_error_if_delete_unknow_course_learning_material_from_course()
+        {
+            var course = GetCourse();
+            Assert.Throws<NotFoundException>(() => course.DeleteLearningMaterial(Guid.NewGuid()));
+        }
+
         static readonly Random Random = new Random();
         private Mock<ICoursePublisher> _coursePublisher;
 
@@ -720,5 +816,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             course.TenantId = 999999;
             return course;
         }
+   
     }
 }

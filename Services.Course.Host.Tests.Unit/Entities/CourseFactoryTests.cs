@@ -61,6 +61,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     CourseType = ECourseType.Competency,
                     Credit = 1
                 };
+            var learningMaterial = new LearningMaterial
+            {
+                Id = Guid.NewGuid(),
+                AssetId = Guid.NewGuid(),
+                Instruction = "test lm",
+                IsRequired = false,
+                ActiveFlag = true,
+                Course = template
+            };
+            template.LearningMaterials.Add(learningMaterial);
             _mockRepository.Setup(r => r.Get<Domain.Courses.Course>(It.IsAny<Guid>())).Returns(template);
 
             var request = new CreateCourseFromTemplateRequest
@@ -84,6 +94,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(course.Description, Is.EqualTo(request.Description));
             Assert.That(course.Name, Is.EqualTo(request.Name));
             Assert.That(course.IsTemplate, Is.EqualTo(request.IsTemplate));
+
+            var sectionLearningMaterial = course.LearningMaterials.FirstOrDefault();
+            Assert.That(sectionLearningMaterial.CustomAttribute, Is.EqualTo(learningMaterial.CustomAttribute));
+            Assert.That(sectionLearningMaterial.Instruction, Is.EqualTo(learningMaterial.Instruction));
+            Assert.That(sectionLearningMaterial.IsRequired, Is.EqualTo(learningMaterial.IsRequired));
+            Assert.That(sectionLearningMaterial.AssetId, Is.EqualTo(learningMaterial.AssetId));
         }
 
         [Test]
