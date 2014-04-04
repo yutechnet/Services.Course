@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using BpeProducts.Common.Authorization;
+using BpeProducts.Common.WebApi.ApiKeys;
 using BpeProducts.Common.WebApiTest;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Domain;
@@ -36,6 +38,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public static Mock<ISectionClient> MockSectionClient { get; private set; }
         public static Mock<IAssetServiceClient> MockAssetClient { get; private set; }
         public static Mock<IAssessmentClient> MockAssessmentClient { get; private set; }
+        public static Mock<ITenantClient> MockTenantClient { get; private set; }
 
         static ApiFeature()
         {
@@ -86,12 +89,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             MockSectionClient = new Mock<ISectionClient>();
             MockAssetClient = new Mock<IAssetServiceClient>();
             MockAssessmentClient = new Mock<IAssessmentClient>();
+            MockTenantClient = new Mock<ITenantClient>();
+            MockTenantClient.Setup(x => x.ApiKeyGet(It.IsAny<Guid>()))
+                .Returns(
+                    Task.FromResult(new ApiKeyResponse
+                    {
+                        SecretKey =
+                            "LqzGgBRX8UE68xxWMQX5psO+qfoWWCBGGMJXivAdPc9kctbM17xcMZxJ0EyQqY3gRoC8dEtIHonOG2K3o9n3Cw==",
+                        TenantId = TenantId
+                    }));
+
+
             
             var updater = new ContainerBuilder();
             updater.RegisterInstance(MockAclClient.Object).As<IAclHttpClient>();
             updater.RegisterInstance(MockSectionClient.Object).As<ISectionClient>();
             updater.RegisterInstance(MockAssetClient.Object).As<IAssetServiceClient>();
             updater.RegisterInstance(MockAssessmentClient.Object).As<IAssessmentClient>();
+            updater.RegisterInstance(MockTenantClient.Object).As<ITenantClient>();
             updater.Update(CourseTestHost.Container);
         }
     }
