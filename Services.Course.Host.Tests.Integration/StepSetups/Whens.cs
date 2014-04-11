@@ -1,5 +1,7 @@
 ﻿using System.Net.Http.Formatting;
+using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.WebApiTest;
 using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
@@ -326,6 +328,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             PutOperations.SetCoursePrerequisites(course, request);
         }
 
+        [Given(@"I add the following learning activity to '(.*)' course segment")]
         [When(@"I add the following learning activity to '(.*)' course segment")]
         public void WhenIAddTheFollowingLearningActivityToCourseSegment(string segmentName, Table table)
         {
@@ -767,6 +770,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             var result = PostOperations.CreateCourseFromTemplate(courseRequest.Name, courseRequest);
             return result;
+        }
+
+        [When(@"I am '(.*)'")]
+        public void WhenIAm(string userName)
+        {
+            var testUserName = (TestUserName)Enum.Parse(typeof(TestUserName), userName);
+            ApiFeature.CourseTestHost.SetTestUser(testUserName); ;
         }
     }
 }

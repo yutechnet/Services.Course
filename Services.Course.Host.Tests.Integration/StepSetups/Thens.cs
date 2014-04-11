@@ -315,6 +315,20 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             table.CompareToInstance(courseLearningActivity);
         }
 
+        [When(@"I get course learning activity '(.*)'")]
+        public void WhenIGetCourseLearningActivity(string learningActivityName)
+        {
+            var resource = Resources<CourseLearningActivityResource>.Get(learningActivityName);
+            GetOperations.GetCourseLearningActivity(resource);
+        }
+
+        [When(@"I get course learning material '(.*)'")]
+        public void WhenIGetCourseLearningMaterial(string learningMaterialName)
+        {
+            var resource = Resources<LearningMaterialResource>.Get(learningMaterialName);
+            GetOperations.GetCourseLearningMaterial(resource);
+        }
+
         [Then(@"the program '(.*)' include the following course information")]
         public void ThenTheProgramIncludeTheFollowingCourseInformation(string programName, Table table)
         {

@@ -233,6 +233,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseAuthorization.feature</DependentUpon>
     </Compile>
+    <Compile Include="CourseLearningActivityAuthorization.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CourseLearningActivityAuthorization.feature</DependentUpon>
+    </Compile>
     <Compile Include="CourseLearningMaterial.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -247,6 +252,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CourseLearningActivity.feature</DependentUpon>
+    </Compile>
+    <Compile Include="CourseLearningMaterialAuthorization.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CourseLearningMaterialAuthorization.feature</DependentUpon>
     </Compile>
     <Compile Include="CoursePreRequisite.feature.cs">
       <AutoGen>True</AutoGen>
@@ -330,6 +340,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseAuthorization.feature.cs</LastGenOutput>
     </None>
+    <None Include="CourseLearningActivityAuthorization.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CourseLearningActivityAuthorization.feature.cs</LastGenOutput>
+    </None>
     <None Include="CourseLearningMaterial.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseLearningMaterial.feature.cs</LastGenOutput>
@@ -341,6 +355,10 @@
     <None Include="CourseLearningActivity.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>CourseLearningActivity.feature.cs</LastGenOutput>
+    </None>
+    <None Include="CourseLearningMaterialAuthorization.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CourseLearningMaterialAuthorization.feature.cs</LastGenOutput>
     </None>
     <None Include="CoursePreRequisite.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

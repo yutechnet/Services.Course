@@ -1,4 +1,5 @@
-﻿using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
+﻿using BpeProducts.Common.WebApiTest;
+using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System;
 using System.Linq;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
@@ -21,22 +22,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
                                into value
                                where !string.IsNullOrWhiteSpace(value)
                                select (Capability)Enum.Parse(typeof(Capability), value);
+            var userId = TestUserFactory.GetGuid(ApiFeature.CourseTestHost.TestUserName);
 
             foreach (var capability in assigned)
             {
                 var closureCopy = capability;
-                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>(), (int)closureCopy)).Returns(true);
-                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), (int)closureCopy)).Returns(true);
+                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), userId, It.IsAny<Guid>(), (int)closureCopy)).Returns(true);
+                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), userId, It.IsAny<Guid>(), It.IsAny<Guid>(), (int)closureCopy)).Returns(true);
             }
         }
 
+        [When(@"I have the '(.*)' capability")]
         [Given(@"I have the '(.*)' capability")]
         public void GivenIHaveTheCapability(string capabilityName)
         {
+            var userId = TestUserFactory.GetGuid(ApiFeature.CourseTestHost.TestUserName);
             if (!string.IsNullOrWhiteSpace(capabilityName))
             {
                 var capability = (Capability)Enum.Parse(typeof(Capability), capabilityName);
-                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>(), (int)capability)).Returns(true);
+                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), userId, It.IsAny<Guid>(), (int)capability)).Returns(true);
+                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), userId, It.IsAny<Guid>(), It.IsAny<Guid>(), (int)capability)).Returns(true);
             }
         }
 
