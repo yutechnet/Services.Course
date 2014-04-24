@@ -22,7 +22,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
                                into value
                                where !string.IsNullOrWhiteSpace(value)
                                select (Capability)Enum.Parse(typeof(Capability), value);
-            var userId = TestUserFactory.GetGuid(ApiFeature.CourseTestHost.TestUserName);
+            var userId = TestUserFactory.GetGuid(ApiFeature.CurrentTestUser);
 
             foreach (var capability in assigned)
             {
@@ -36,7 +36,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
         [Given(@"I have the '(.*)' capability")]
         public void GivenIHaveTheCapability(string capabilityName)
         {
-            var userId = TestUserFactory.GetGuid(ApiFeature.CourseTestHost.TestUserName);
+            var userId = TestUserFactory.GetGuid(ApiFeature.CurrentTestUser);
             if (!string.IsNullOrWhiteSpace(capabilityName))
             {
                 var capability = (Capability)Enum.Parse(typeof(Capability), capabilityName);

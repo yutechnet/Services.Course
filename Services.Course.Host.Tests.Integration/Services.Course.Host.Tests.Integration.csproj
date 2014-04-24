@@ -311,6 +311,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SectionCreation.feature</DependentUpon>
     </Compile>
+    <Compile Include="Startup.cs" />
     <Compile Include="StepSetups\Account\Givens.cs" />
     <Compile Include="StepSetups\Assessment\Givens.cs" />
     <Compile Include="StepSetups\Givens.cs" />

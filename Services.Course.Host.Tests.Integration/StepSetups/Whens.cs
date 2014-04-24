@@ -776,7 +776,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIAm(string userName)
         {
             var testUserName = (TestUserName)Enum.Parse(typeof(TestUserName), userName);
-            ApiFeature.CourseTestHost.SetTestUser(testUserName); ;
+            ApiFeature.CurrentTestUser = testUserName;
         }
     }
 }

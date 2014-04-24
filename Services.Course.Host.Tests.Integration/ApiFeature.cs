@@ -22,16 +22,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
     [Binding]
     public static class ApiFeature
     {
-        public const TestUserName DefaultTestUser = TestUserName.TestUser3;
+        private const TestUserName DefaultTestUser = TestUserName.TestUser3;
+        private static TestUserName _currentTestUser = DefaultTestUser;
+        public static TestUserName CurrentTestUser {
+            get { return _currentTestUser; }
+            set { 
+                _currentTestUser = value;
+                CourseTestHost.SetTestUser(CurrentTestUser);
+            }
+        }
 
         public static int TenantId = 999999;
         public static readonly string LeadingPath;
 
-        public const string BaseAddress = "https://localhost"; //ConfigurationManager.AppSettings["TestHostBaseAddress"]
+        public const string BaseAddress = "http://localhost:12003";
 
-        public static WebApiTestHost CourseTestHost
+        public static WebApiSelfTestHost CourseTestHost
         {
-            get { return (WebApiTestHost)FeatureContext.Current["CourseTestHost"]; }
+            get { return (WebApiSelfTestHost)FeatureContext.Current["CourseTestHost"]; }
         }
 
         public static Mock<IAclHttpClient> MockAclClient { get; private set; }
@@ -51,7 +59,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         {
             var featureContext = FeatureContext.Current;
 
-            var courseApiTestHost = new WebApiTestHost(WebApiApplication.ConfigureWebApi, new Uri(BaseAddress));
+            var courseApiTestHost = new WebApiSelfTestHost(new Uri(BaseAddress));
             featureContext.Add("CourseTestHost", courseApiTestHost);
             featureContext.Add("TenantId", TenantId);
 
@@ -63,7 +71,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             featureContext.Add("CourseLeadingPath", courseLeadingPath);
             featureContext.Add("ProgramLeadingPath", programLeadingPath);
             featureContext.Add("OutcomeLeadingPath", outcomeLeadingPath);
-            featureContext.Add("AccountLeadingPath", accountLeadingPath);
+            featureContext.Add("AccountLeadingPath", accountLeadingPath);            
         }
 
         [AfterFeature("Api")]
@@ -82,9 +90,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             Resources<OrganizationResource>.Add("Default", defaultOrg);
 
-            //Some scenarios change the user, so make sure we set it to a know user for each scenario
-            CourseTestHost.SetTestUser(DefaultTestUser);;
-
             MockAclClient = new Mock<IAclHttpClient>();
             MockSectionClient = new Mock<ISectionClient>();
             MockAssetClient = new Mock<IAssetServiceClient>();
@@ -98,8 +103,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                             "LqzGgBRX8UE68xxWMQX5psO+qfoWWCBGGMJXivAdPc9kctbM17xcMZxJ0EyQqY3gRoC8dEtIHonOG2K3o9n3Cw==",
                         TenantId = TenantId
                     }));
-
-
             
             var updater = new ContainerBuilder();
             updater.RegisterInstance(MockAclClient.Object).As<IAclHttpClient>();
@@ -108,6 +111,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             updater.RegisterInstance(MockAssessmentClient.Object).As<IAssessmentClient>();
             updater.RegisterInstance(MockTenantClient.Object).As<ITenantClient>();
             updater.Update(CourseTestHost.Container);
+
+            //Some scenarios change the user, so make sure we set it to a know user for each scenario
+            CurrentTestUser = DefaultTestUser;
         }
     }
 }
