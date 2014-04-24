@@ -238,14 +238,11 @@
     <Compile Include="Entities\Program.cs" />
     <Compile Include="Events\CourseAssociatedWithProgram.cs" />
     <Compile Include="Events\CourseDisassociatedWithProgram.cs" />
-    <Compile Include="Events\CourseInfoUpdated.cs" />
     <Compile Include="Events\CourseSegmentAdded.cs" />
     <Compile Include="Events\CourseSegmentUpdated.cs" />
-    <Compile Include="Events\CourseUpdated.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
     <Compile Include="Handlers\IHandle.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCourseSegment.cs" />
-    <Compile Include="Handlers\UpdateModelOnCourseUpdating.cs" />
     <Compile Include="Courses\ICourseFactory.cs" />
     <Compile Include="IocRegistrations.cs" />
     <Compile Include="Mappings\CourseMappingOverride.cs" />
@@ -253,7 +250,6 @@
     <Compile Include="ProgramService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Courses\CourseRepository.cs" />
-    <Compile Include="Handlers\CourseUpdatedHandler.cs" />
     <Compile Include="Courses\ICourseRepository.cs" />
     <Compile Include="Validation\CoursePublishValidator.cs" />
     <Compile Include="Validation\IValidatable.cs" />

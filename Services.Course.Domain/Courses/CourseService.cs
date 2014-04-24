@@ -19,15 +19,17 @@ namespace BpeProducts.Services.Course.Domain
         private readonly ICourseRepository _courseRepository;
 	    private readonly ICoursePublisher _coursePublisher;
         private readonly IAssessmentClient _assessmentClient;
+        private readonly IProgramRepository _programRepository;
 
         public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository, 
-            ICoursePublisher coursePublisher,IAssessmentClient assessmentClient)
+            ICoursePublisher coursePublisher, IAssessmentClient assessmentClient, IProgramRepository programRepository)
         {
             _courseFactory = courseFactory;
             _domainEvents = domainEvents;
             _courseRepository = courseRepository;
 			_coursePublisher = coursePublisher;
 	        _assessmentClient = assessmentClient;
+            _programRepository = programRepository;
         }
 
 		[AuthByAcl(Capability = Capability.CourseCreate, OrganizationObject = "request")]
@@ -52,12 +54,17 @@ namespace BpeProducts.Services.Course.Domain
         {
             var course = _courseRepository.GetOrThrow(courseId);
 
-            _domainEvents.Raise<CourseUpdated>(new CourseUpdated
-            {
-                AggregateId = courseId,
-                Old = course,
-                Request = request
-            });
+            course.Name = request.Name;
+            course.Description = request.Description;
+            course.Code = request.Code;
+            course.IsTemplate = request.IsTemplate;
+            course.CourseType = request.CourseType;
+            course.Credit = request.Credit;
+
+            var programs = _programRepository.Get(request.ProgramIds);
+            course.SetPrograms(programs.ToList());
+
+            _courseRepository.Save(course);
         }
 
         [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]

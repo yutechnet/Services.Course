@@ -31,19 +31,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
         }
 
         [Test]
-        public void Throws_Exception_When_DomainEvent_Is_Not_CourseSegmentAdded()
-        {
-            var exception = Assert.Throws<InvalidOperationException>(
-                () => _updateModelOnAddingCourseSegment.Handle(new CourseInfoUpdated()));
-            Assert.That(exception.Message, Is.EqualTo("Invalid domain event."));
-        }
-
-        [Test]
         public void Add_Root_Segment_If_ParentSegmentId_Not_Specified()
         {
             // Setup
 			var amoq = AutoMock.GetLoose();
-			var course = amoq.Create<Course.Domain.Courses.Course>();
+			var course = amoq.Create<Domain.Courses.Course>();
             var courseId = Guid.NewGuid();
 	        course.Id = courseId;
 	        course.Code = "Code";
@@ -81,7 +73,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Handlers
             var courseId = Guid.NewGuid();
             var parentSegmentId = Guid.NewGuid();
 			var amoq = AutoMock.GetLoose();
-			var course = amoq.Create<Course.Domain.Courses.Course>();
+			var course = amoq.Create<Domain.Courses.Course>();
 	        
 			course.Id = courseId;
 	        course.Code = "Code";

@@ -239,10 +239,8 @@
     <Compile Include="Entities\LearningMaterialTests.cs" />
     <Compile Include="Entities\LearningActivityAssessmentTests.cs" />
     <Compile Include="Handlers\FakeDomainEvent.cs" />
-    <Compile Include="Handlers\CourseUpdatedHandlerTests.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCoursePrerequisiteTests.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCourseSegmentTests.cs" />
-    <Compile Include="Handlers\UpdateModelOnCourseUpdatingTests.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionCreatedTests.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionPublishTests.cs" />
     <Compile Include="Handlers\UpdateModelOnRemovingCoursePrerequisiteTests.cs" />
