@@ -26,7 +26,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Mapper.CreateMap<LearningMaterialRequest, LearningMaterial>();
             _mockAssessmentClient = new Mock<IAssessmentClient>();
             _course = new Domain.Courses.Course();
-            _courseSegment = _course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest { });
+            _courseSegment = _course.AddSegment(new SaveCourseSegmentRequest { });
             _learningMaterial = _courseSegment.AddLearningMaterial(new LearningMaterialRequest());
             _assessmentId = Guid.NewGuid();
         }

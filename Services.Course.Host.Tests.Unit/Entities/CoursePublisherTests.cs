@@ -44,11 +44,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             _coursePublisher = _autoMock.Create<CoursePublisher>();
 
-            _segmentId = Guid.NewGuid();
             _assessmentId = Guid.NewGuid();
             _assetId = Guid.NewGuid();
 
-            _course.AddSegment(_segmentId, new SaveCourseSegmentRequest());
+            _segmentId = _course.AddSegment(new SaveCourseSegmentRequest()).Id;
             _course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
                 {
                     AssessmentId = _assessmentId,
@@ -59,15 +58,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Cannot_publish_course_when_invalid()
         {
-            var seg1Id = Guid.NewGuid();
-            var seg2Id = Guid.NewGuid();
-
-            _course.AddSegment(seg1Id, new SaveCourseSegmentRequest {Name = "S1"});
-            _course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest {Name = "S2"});
+            var seg1 = _course.AddSegment(new SaveCourseSegmentRequest {Name = "S1"});
+            var seg2 = _course.AddSegment(seg1.Id, new SaveCourseSegmentRequest {Name = "S2"});
             // Next two are "invalid" from publishing perspective
             // because they are non-Custom type and do not have AssessmentIds.
-            _course.AddLearningActivity(seg1Id, new SaveCourseLearningActivityRequest { Name = "LA1", AssessmentType = "Essay" });
-            _course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest {Name = "LA2", AssessmentType = "Essay"});
+            _course.AddLearningActivity(seg1.Id, new SaveCourseLearningActivityRequest { Name = "LA1", AssessmentType = "Essay" });
+            _course.AddLearningActivity(seg2.Id, new SaveCourseLearningActivityRequest {Name = "LA2", AssessmentType = "Essay"});
 
             Assert.Throws<BadRequestException>(() => _coursePublisher.Publish(_course, "should not publish"));
         }

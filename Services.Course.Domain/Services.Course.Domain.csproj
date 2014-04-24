@@ -233,11 +233,9 @@
     <Compile Include="Entities\Program.cs" />
     <Compile Include="Events\CourseAssociatedWithProgram.cs" />
     <Compile Include="Events\CourseDisassociatedWithProgram.cs" />
-    <Compile Include="Events\CourseSegmentAdded.cs" />
     <Compile Include="Events\CourseSegmentUpdated.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
     <Compile Include="Handlers\IHandle.cs" />
-    <Compile Include="Handlers\UpdateModelOnAddingCourseSegment.cs" />
     <Compile Include="Courses\ICourseFactory.cs" />
     <Compile Include="IocRegistrations.cs" />
     <Compile Include="Mappings\CourseMappingOverride.cs" />

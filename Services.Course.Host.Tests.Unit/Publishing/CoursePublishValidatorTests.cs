@@ -5,31 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Validation;
-using Moq;
 using NUnit.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
 {
     public class CoursePublishValidatorTests
     {
-        private Guid _courseId;
-        private Guid _segmentId;
         private Guid _assessmentId;
 
-        private Mock<IValidator<CourseLearningActivity>> _mockLearningActivityValidator; 
         private CoursePublishValidator _validator;
 	    private AutoMock _autoMock;
 
 	    [SetUp]
         public void SetUp()
         {
-            _courseId = Guid.NewGuid();
-            _segmentId = Guid.NewGuid();
             _assessmentId = Guid.NewGuid();
-
-            _mockLearningActivityValidator = new Mock<IValidator<CourseLearningActivity>>();
 
             _validator = new CoursePublishValidator(new LearningActivityPublishValidator());
 	        _autoMock = AutoMock.GetLoose();
@@ -39,8 +30,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
         public void Can_validate_course_for_publishability()
         {
 			var course = _autoMock.Create<Domain.Courses.Course>();
-            course.AddSegment(_segmentId, new SaveCourseSegmentRequest());
-            course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
+            var seg1 = course.AddSegment(new SaveCourseSegmentRequest());
+            course.AddLearningActivity(seg1.Id, new SaveCourseLearningActivityRequest
                 {
                     AssessmentId = _assessmentId, AssessmentType = "Essay"
                 });
@@ -55,9 +46,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
         [Test]
         public void Can_find_broken_rules_before_publishing()
         {
-			var course = _autoMock.Create<Course.Domain.Courses.Course>();
-            course.AddSegment(_segmentId, new SaveCourseSegmentRequest());
-            course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
+			var course = _autoMock.Create<Domain.Courses.Course>();
+            var seg1 = course.AddSegment(new SaveCourseSegmentRequest());
+            course.AddLearningActivity(seg1.Id, new SaveCourseLearningActivityRequest
             {
                 AssessmentId = Guid.Empty,
                 AssessmentType = "Essay"
@@ -73,15 +64,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
         [Test]
         public void Can_find_multiple_broken_rules_before_publishing()
         {
-			var course = _autoMock.Create<Course.Domain.Courses.Course>();
-            course.AddSegment(_segmentId, new SaveCourseSegmentRequest());
-            course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
+			var course = _autoMock.Create<Domain.Courses.Course>();
+            var seg1 = course.AddSegment(new SaveCourseSegmentRequest());
+            course.AddLearningActivity(seg1.Id, new SaveCourseLearningActivityRequest
             {
                 AssessmentId = Guid.Empty,
                 AssessmentType = "Essay"
             });
 
-            course.AddLearningActivity(_segmentId, new SaveCourseLearningActivityRequest
+            course.AddLearningActivity(seg1.Id, new SaveCourseLearningActivityRequest
             {
                 AssessmentId = Guid.NewGuid(),
                 AssessmentType = "Essay"

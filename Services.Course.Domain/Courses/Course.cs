@@ -147,12 +147,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
             }
         }
 
-        public virtual CourseSegment AddSegment(Guid segmentId, SaveCourseSegmentRequest request)
+        public virtual CourseSegment AddSegment(SaveCourseSegmentRequest request)
         {
-            return AddSegment(segmentId, Guid.Empty, request);
+            return AddSegment(Guid.Empty, request);
         }
 
-        public virtual CourseSegment AddSegment(Guid segmentId, Guid parentSegmentId, SaveCourseSegmentRequest request)
+        public virtual CourseSegment AddSegment(Guid parentSegmentId, SaveCourseSegmentRequest request)
         {
             CheckPublished();
 
@@ -171,7 +171,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             var newSegment = new CourseSegment
             {
                 Course = this,
-                Id = segmentId,
+                Id = Guid.NewGuid(),
                 Name = request.Name,
                 Description = request.Description,
                 DisplayOrder = request.DisplayOrder,

@@ -240,7 +240,6 @@
     <Compile Include="Entities\LearningActivityAssessmentTests.cs" />
     <Compile Include="Handlers\FakeDomainEvent.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCoursePrerequisiteTests.cs" />
-    <Compile Include="Handlers\UpdateModelOnAddingCourseSegmentTests.cs" />
     <Compile Include="Handlers\UpdateModelOnRemovingCoursePrerequisiteTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publishing\CoursePublishValidatorTests.cs" />

@@ -24,7 +24,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         public void SetUp()
         {
             _course = new Domain.Courses.Course();
-            _courseSegment = _course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest());
+            _courseSegment = _course.AddSegment(new SaveCourseSegmentRequest());
             _learningActivity = _course.AddLearningActivity(_courseSegment.Id, new SaveCourseLearningActivityRequest { AssessmentType = "Custom" });
             _assessmentId = Guid.NewGuid();
         }

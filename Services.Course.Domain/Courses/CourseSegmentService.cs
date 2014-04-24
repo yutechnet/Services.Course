@@ -43,32 +43,13 @@ namespace BpeProducts.Services.Course.Domain
         public CourseSegmentInfo Create(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
             var course = _courseRepository.GetOrThrow(courseId);
-            if (course.Id == Guid.Empty || !course.ActiveFlag)
-            {
-                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
-            }
-
             var parentSegmentId = saveCourseSegmentRequest.ParentSegmentId ?? Guid.Empty;
 
-            var newSegmentId = Guid.NewGuid();
-            _domainEvents.Raise<CourseSegmentAdded>(new CourseSegmentAdded
-            {
-                AggregateId = courseId,
-                SegmentId = newSegmentId,
-                ParentSegmentId = parentSegmentId,
-                Request = saveCourseSegmentRequest
-            });
+            var segment = course.AddSegment(parentSegmentId, saveCourseSegmentRequest);
 
-            return new CourseSegmentInfo
-                {
-                    Name = saveCourseSegmentRequest.Name,
-                    Description = saveCourseSegmentRequest.Description,
-                    ParentSegmentId = parentSegmentId,
-                    Type = saveCourseSegmentRequest.Type,
-                    Id = newSegmentId,
-                    ActiveDate = saveCourseSegmentRequest.ActiveDate,
-                    InactiveDate = saveCourseSegmentRequest.InactiveDate,
-                };
+            _courseRepository.Save(course);
+
+            return Mapper.Map<CourseSegmentInfo>(segment);
         }
 
         public void Update(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)

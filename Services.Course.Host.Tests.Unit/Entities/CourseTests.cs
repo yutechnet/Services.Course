@@ -38,7 +38,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             var course = GetCourse();
 
-            var segmentId = Guid.NewGuid();
             for (int i = 0; i < segmentCount; i++)
             {
                 var request = new SaveCourseSegmentRequest
@@ -48,10 +47,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                         Type = "Weekly"
                     };
 
-                course.AddSegment(segmentId, Guid.Empty, request);
+                var segment = course.AddSegment(Guid.Empty, request);
 
-                var segment = course.Segments.First(s => s.Name == request.Name);
-                Assert.That(segment.Id, Is.EqualTo(segmentId));
+                Assert.That(segment.Id, Is.EqualTo(segment.Id));
                 Assert.That(segment.Course, Is.EqualTo(course));
                 Assert.That(segment.ParentSegment, Is.Null);
 
@@ -77,14 +75,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     Description = "Week 1",
                     Type = "Weekly"
                 };
-            var segmentId = Guid.NewGuid();
-            course.AddSegment(segmentId, Guid.Empty, request);
+
+            var segmentId = course.AddSegment(Guid.Empty, request).Id;
 
             var parentSegmentId = segmentId;
             var segmentCount = 5;
             for (int i = 0; i < segmentCount; i++)
             {
-                segmentId = Guid.NewGuid();
                 request = new SaveCourseSegmentRequest
                     {
                         Name = "Assigment" + i,
@@ -92,7 +89,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                         Type = "Assignment"
                     };
 
-                course.AddSegment(segmentId, parentSegmentId, request);
+                segmentId = course.AddSegment(parentSegmentId, request).Id;
 
                 var segment = course.Segments.First().ChildSegments.First(s => s.Name == request.Name);
                 Assert.That(segment.Id, Is.EqualTo(segmentId));
@@ -127,8 +124,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                         Type = "Assignment"
                     };
 
-                var newSegment = course.AddSegment(Guid.NewGuid(), lastSegment == null ? Guid.Empty : lastSegment.Id,
-                                                   request);
+                var newSegment = course.AddSegment(lastSegment == null ? Guid.Empty : lastSegment.Id, request);
 
                 Assert.That(course.Segments.Contains(newSegment));
                 Assert.That(newSegment.ParentSegment, Is.EqualTo(lastSegment));
@@ -245,7 +241,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.DoesNotThrow(() => course.SetPrograms(new List<Program>()));
             Assert.DoesNotThrow(() => course.AddPrerequisite(prerequisiteCourse));
             Assert.DoesNotThrow(() => course.RemovePrerequisite(Guid.NewGuid()));
-            Assert.DoesNotThrow(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
+            Assert.DoesNotThrow(() => course.AddSegment(Guid.Empty, new SaveCourseSegmentRequest()));
 
             course.Publish("note", _coursePublisher.Object);
 
@@ -256,7 +252,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.Throws<BadRequestException>(() => course.SetPrograms(new List<Program>()));
             Assert.Throws<BadRequestException>(() => course.AddPrerequisite(prerequisiteCourse));
             Assert.Throws<BadRequestException>(() => course.RemovePrerequisite(Guid.NewGuid()));
-            Assert.Throws<BadRequestException>(() => course.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest()));
+            Assert.Throws<BadRequestException>(() => course.AddSegment(Guid.Empty, new SaveCourseSegmentRequest()));
             Assert.Throws<BadRequestException>(() => course.AddLearningMaterial(Guid.NewGuid(), new LearningMaterialRequest()));
             Assert.Throws<BadRequestException>(() => course.DeleteLearningMaterial(Guid.NewGuid(), Guid.NewGuid()));
         }
@@ -266,7 +262,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             var course = GetCourse();
 
-            var segmentId = Guid.NewGuid();
             var request = new SaveCourseSegmentRequest
                 {
                     Name = "Week 1",
@@ -274,7 +269,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     Type = "Weekly"
                 };
 
-            course.AddSegment(segmentId, Guid.Empty, request);
+            var segmentId = course.AddSegment(Guid.Empty, request).Id;
             var segment = course.Segments.First(s => s.Name == request.Name);
 
             var learningActivityRequest = new SaveCourseLearningActivityRequest
@@ -309,7 +304,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             var course = GetCourse();
 
-            var segmentId = Guid.NewGuid();
             var request = new SaveCourseSegmentRequest
             {
                 Name = "Week 1",
@@ -317,7 +311,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 Type = "Weekly"
             };
 
-            course.AddSegment(segmentId, Guid.Empty, request);
+            var segmentId = course.AddSegment(Guid.Empty, request).Id;
 
             var learningActivityRequest = new SaveCourseLearningActivityRequest
             {
@@ -348,7 +342,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             var course = GetCourse();
 
-            var segmentId = Guid.NewGuid();
             var request = new SaveCourseSegmentRequest
                 {
                     Name = "Week 1",
@@ -356,7 +349,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     Type = "Weekly"
                 };
 
-            course.AddSegment(segmentId, Guid.Empty, request);
+            var segmentId = course.AddSegment(Guid.Empty, request).Id;
 
             var learningActivityRequest = new SaveCourseLearningActivityRequest
                 {
@@ -383,8 +376,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             var course = GetCourse();
 
-            Assert.Throws<BadRequestException>(
-                () => course.AddSegment(Guid.NewGuid(), Guid.NewGuid(), new SaveCourseSegmentRequest()));
+            Assert.Throws<BadRequestException>(() => course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest()));
         }
 
         [Test]
@@ -465,19 +457,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             };
 
             var course = GetCourse();
-            var seg1Id = Guid.NewGuid();
-            var seg11Id = Guid.NewGuid();
-            var seg2Id = Guid.NewGuid();
-            var seg21Id = Guid.NewGuid();
-            var seg22Id = Guid.NewGuid();
-            var seg221Id = Guid.NewGuid();
 
-            var seg1 = course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "1" });
-            var seg11 = course.AddSegment(seg11Id, seg1Id, new SaveCourseSegmentRequest { Name = "11" });
-            var seg2 = course.AddSegment(seg2Id, new SaveCourseSegmentRequest { Name = "2" });
-            var seg21 = course.AddSegment(seg21Id, seg2Id, new SaveCourseSegmentRequest { Name = "21" });
-            var seg22 = course.AddSegment(seg22Id, seg2Id, new SaveCourseSegmentRequest { Name = "22" });
-            var seg221 = course.AddSegment(seg221Id, seg22Id, new SaveCourseSegmentRequest { Name = "221" });
+            var seg1 = course.AddSegment(new SaveCourseSegmentRequest { Name = "1" });
+            var seg11 = course.AddSegment(seg1.Id, new SaveCourseSegmentRequest { Name = "11" });
+            var seg2 = course.AddSegment(new SaveCourseSegmentRequest { Name = "2" });
+            var seg21 = course.AddSegment(seg2.Id, new SaveCourseSegmentRequest { Name = "21" });
+            var seg22 = course.AddSegment(seg2.Id, new SaveCourseSegmentRequest { Name = "22" });
+            var seg221 = course.AddSegment(seg22.Id, new SaveCourseSegmentRequest { Name = "221" });
 
             course.Publish("It's published", _coursePublisher.Object);
 
@@ -518,8 +504,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             var course = GetCourse();
 
-            var seg1Id = Guid.NewGuid();
-
             var cs = new SaveCourseSegmentRequest
                 {
                     Name = "S1",
@@ -528,7 +512,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     DisplayOrder = 5,
                 };
 
-            course.AddSegment(seg1Id, cs);
+            var seg1 = course.AddSegment(cs);
 
             var weight = Random.Next(1000);
             var points = Random.Next(weight);
@@ -547,7 +531,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     CustomAttribute = Random.Next().ToString(CultureInfo.InvariantCulture)
                 };
 
-            course.AddLearningActivity(seg1Id, cla);
+            course.AddLearningActivity(seg1.Id, cla);
 
             course.Publish("It's published", _coursePublisher.Object);
 
@@ -587,14 +571,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             var course = GetCourse();
 
-            var seg1Id = Guid.NewGuid();
-            var seg2Id = Guid.NewGuid();
-
-            course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
-            course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
-            var la1 = course.AddLearningActivity(seg1Id, new SaveCourseLearningActivityRequest { Name = "LA1" });
-            var la2 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" });
-            var la3 = course.AddLearningActivity(seg2Id, new SaveCourseLearningActivityRequest { Name = "LA2" });
+            var seg1 = course.AddSegment(new SaveCourseSegmentRequest { Name = "S1" });
+            var seg2 = course.AddSegment(seg1.Id, new SaveCourseSegmentRequest { Name = "S2" });
+            var la1 = course.AddLearningActivity(seg1.Id, new SaveCourseLearningActivityRequest { Name = "LA1" });
+            var la2 = course.AddLearningActivity(seg2.Id, new SaveCourseLearningActivityRequest { Name = "LA2" });
+            var la3 = course.AddLearningActivity(seg2.Id, new SaveCourseLearningActivityRequest { Name = "LA2" });
 
             course.Publish("It's published", _coursePublisher.Object);
 
@@ -625,15 +606,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 
             var course = GetCourse();
 
-            var seg1Id = Guid.NewGuid();
-            var seg2Id = Guid.NewGuid();
+            var seg1 = course.AddSegment(new SaveCourseSegmentRequest { Name = "S1" });
+            var seg2 = course.AddSegment(seg1.Id, new SaveCourseSegmentRequest { Name = "S2" });
 
-            course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
-            course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
-
-            var lm1 = course.AddLearningMaterial(seg1Id, new LearningMaterialRequest { Instruction = "LM1" });
-            var lm2 = course.AddLearningMaterial(seg2Id, new LearningMaterialRequest { Instruction = "LM2" });
-            var lm3 = course.AddLearningMaterial(seg2Id, new LearningMaterialRequest { Instruction = "LM3" });
+            var lm1 = course.AddLearningMaterial(seg1.Id, new LearningMaterialRequest { Instruction = "LM1" });
+            var lm2 = course.AddLearningMaterial(seg2.Id, new LearningMaterialRequest { Instruction = "LM2" });
+            var lm3 = course.AddLearningMaterial(seg2.Id, new LearningMaterialRequest { Instruction = "LM3" });
 
             course.Publish("It's published", _coursePublisher.Object);
 
@@ -652,18 +630,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             var course = GetCourse();
 
-            var seg1Id = Guid.NewGuid();
-            var seg2Id = Guid.NewGuid();
             var assetId = Guid.NewGuid();
             const bool isRequird = false;
             const string instruction = "learning material";
 
-            course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
-            course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
+            var seg1 = course.AddSegment(new SaveCourseSegmentRequest { Name = "S1" });
+            var seg2 = course.AddSegment(seg1.Id, new SaveCourseSegmentRequest { Name = "S2" });
 
-            var returnedMaterial = course.AddLearningMaterial(seg2Id, new LearningMaterialRequest { Instruction = instruction, AssetId = assetId, IsRequired = isRequird });
+            var returnedMaterial = course.AddLearningMaterial(seg2.Id, new LearningMaterialRequest { Instruction = instruction, AssetId = assetId, IsRequired = isRequird });
 
-            var internalMaterial = course.Segments.First(s => s.Id == seg2Id)
+            var internalMaterial = course.Segments.First(s => s.Id == seg2.Id)
                       .LearningMaterials.Single();
 
             Assert.That(course.Segments.SelectMany(s => s.LearningMaterials).Count(), Is.EqualTo(1));
@@ -679,14 +655,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             var course = GetCourse();
 
-            var seg1Id = Guid.NewGuid();
-            var seg2Id = Guid.NewGuid();
             var assetId = Guid.NewGuid();
             const bool isRequird = false;
             const string instruction = "learning material";
 
-            course.AddSegment(seg1Id, new SaveCourseSegmentRequest { Name = "S1" });
-            course.AddSegment(seg2Id, seg1Id, new SaveCourseSegmentRequest { Name = "S2" });
+            var seg1 = course.AddSegment(new SaveCourseSegmentRequest { Name = "S1" });
+            course.AddSegment(seg1.Id, new SaveCourseSegmentRequest { Name = "S2" });
 
             Assert.Throws<NotFoundException>(() => course.AddLearningMaterial(Guid.NewGuid(), new LearningMaterialRequest { Instruction = instruction, AssetId = assetId, IsRequired = isRequird }));
         }
@@ -695,8 +669,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         public void Can_clone_Outcomes()
         {
             var course = GetCourse();
-            const int segmentCount = 5;
-            var courseSegment = course.AddSegment(Guid.NewGuid(), new SaveCourseSegmentRequest());
+            var courseSegment = course.AddSegment(new SaveCourseSegmentRequest());
             courseSegment.CourseLearningActivities.Add(new CourseLearningActivity());
             courseSegment.AddLearningMaterial(new LearningMaterialRequest());
             course.CloneOutcomes(_assessmentClientMock.Object);

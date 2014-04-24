@@ -85,14 +85,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                 Instruction = "instruction 2"
             };
 
-            template.AddSegment(Guid.NewGuid(), Guid.Empty, new SaveCourseSegmentRequest());
+            template.AddSegment(Guid.Empty, new SaveCourseSegmentRequest());
 
-            Guid segmentId = Guid.NewGuid();
-            var courseSegment2 = template.AddSegment(segmentId, Guid.Empty, new SaveCourseSegmentRequest());
+            var courseSegment2 = template.AddSegment(Guid.Empty, new SaveCourseSegmentRequest());
             courseSegment2.AddLearningMaterial(learningMaterialRequest1);
             courseSegment2.AddLearningMaterial(learningMaterialRequest2);
 
-            template.AddSegment(Guid.NewGuid(), segmentId, new SaveCourseSegmentRequest());
+            template.AddSegment(courseSegment2.Id, new SaveCourseSegmentRequest());
 
             template.SetPrograms(new List<Program>
 				{
