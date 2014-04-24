@@ -8,6 +8,7 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
 using Services.Assessment.Contract;
@@ -154,12 +155,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
     internal class TestCourseFactory : CourseFactory
     {
-        public TestCourseFactory(IRepository courseRepository, IAssessmentClient assessmentClient)
-            : base(courseRepository, assessmentClient)
+        public TestCourseFactory(ICourseRepository courseRepository, IAssessmentClient assessmentClient) : base(courseRepository, assessmentClient)
         {
         }
-
-
 
         public new Domain.Courses.Course BuildFromTemplate(Domain.Courses.Course template, CreateCourseFromTemplateRequest request)
         {

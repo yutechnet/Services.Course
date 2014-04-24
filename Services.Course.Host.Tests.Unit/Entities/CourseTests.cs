@@ -144,11 +144,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             AutoMock autoMock = AutoMock.GetLoose();
             var courseFactory = autoMock.Create<CourseFactory>();
 
-            var course = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Build(new SaveCourseRequest());
 
             Assert.That(course.Prerequisites, Is.Empty);
 
-            var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+            var prerequisiste = courseFactory.Build(new SaveCourseRequest());
             prerequisiste.Publish("", _coursePublisher.Object);
             course.AddPrerequisite(prerequisiste);
 
@@ -162,11 +162,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             AutoMock autoMock = AutoMock.GetLoose();
             var courseFactory = autoMock.Create<CourseFactory>();
 
-            var course = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Build(new SaveCourseRequest());
 
             Assert.That(course.Prerequisites, Is.Empty);
 
-            var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+            var prerequisiste = courseFactory.Build(new SaveCourseRequest());
             prerequisiste.Publish("", _coursePublisher.Object);
             course.AddPrerequisite(prerequisiste);
             course.AddPrerequisite(prerequisiste);
@@ -181,11 +181,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             AutoMock autoMock = AutoMock.GetLoose();
             var courseFactory = autoMock.Create<CourseFactory>();
 
-            var course = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Build(new SaveCourseRequest());
 
             Assert.That(course.Prerequisites, Is.Empty);
 
-            var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+            var prerequisiste = courseFactory.Build(new SaveCourseRequest());
             Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiste));
         }
 
@@ -195,11 +195,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             AutoMock autoMock = AutoMock.GetLoose();
             var courseFactory = autoMock.Create<CourseFactory>();
 
-            var course = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Build(new SaveCourseRequest());
 
             Assert.That(course.Prerequisites, Is.Empty);
 
-            var prerequisiste = courseFactory.Create(new SaveCourseRequest());
+            var prerequisiste = courseFactory.Build(new SaveCourseRequest());
             prerequisiste.Id = Guid.NewGuid();
             prerequisiste.Publish("", _coursePublisher.Object);
             course.AddPrerequisite(prerequisiste);
@@ -217,7 +217,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             AutoMock autoMock = AutoMock.GetLoose();
             var courseFactory = autoMock.Create<CourseFactory>();
 
-            var course = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Build(new SaveCourseRequest());
 
             Assert.That(course.Prerequisites, Is.Empty);
 
@@ -230,8 +230,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             AutoMock autoMock = AutoMock.GetLoose();
             var courseFactory = autoMock.Create<CourseFactory>();
-            var course = courseFactory.Create(new SaveCourseRequest());
-            var prerequisiteCourse = courseFactory.Create(new SaveCourseRequest());
+            var course = courseFactory.Build(new SaveCourseRequest());
+            var prerequisiteCourse = courseFactory.Build(new SaveCourseRequest());
             prerequisiteCourse.Publish("", _coursePublisher.Object);
 
             Assert.DoesNotThrow(() => course.Name = "name");

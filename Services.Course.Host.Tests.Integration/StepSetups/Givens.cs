@@ -282,7 +282,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
                 Resources<AssetResource>.Add(name, resource);
                 ApiFeature.MockAssetClient.Setup(x => x.AddAssetToLibrary("course", It.IsAny<Guid>(), resource.Id))
-                          .Returns(new LibraryInfo {Id = Guid.NewGuid()});
+                          .Returns(new LibraryInfo {OwnerId = Guid.NewGuid()});
             }
         }
 

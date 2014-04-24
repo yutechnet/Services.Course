@@ -1,10 +1,10 @@
 ﻿using BpeProducts.Common.WebApiTest;
+using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System;
 using System.Linq;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using Moq;
-using Services.Authorization.Contract;
 using BpeProducts.Common.WebApiTest.Framework;
 using TechTalk.SpecFlow;
 

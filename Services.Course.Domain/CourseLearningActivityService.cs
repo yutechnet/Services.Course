@@ -3,13 +3,9 @@ using System.Linq;
 using AutoMapper;
 using System.Collections.Generic;
 using BpeProducts.Common.Authorization;
-using BpeProducts.Common.Exceptions;
+using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Courses;
-using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
-using Services.Assessment.Contract;
-using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain
 {

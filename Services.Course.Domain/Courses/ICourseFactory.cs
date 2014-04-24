@@ -7,8 +7,7 @@ namespace BpeProducts.Services.Course.Domain
 {
 	public interface ICourseFactory
 	{
-		Courses.Course Create(SaveCourseRequest request);
-	    Courses.Course Create(CreateCourseFromTemplateRequest request);
-        Courses.Course Reconstitute(Guid aggregateId);
+		Courses.Course Build(SaveCourseRequest request);
+	    Courses.Course Build(CreateCourseFromTemplateRequest request);
     }
 }

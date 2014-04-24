@@ -1,4 +1,4 @@
-# Deployment Module v0.1.62
+# Deployment Module v0.1.64
 
 $Script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -169,7 +169,7 @@ function Deployment-SetWebsiteBinding
 			ForEach($tmpHostHeader in $hostHeaderArray)
 			{
 				$tmpBindingString = "$($IPAddress):$($port):$($tmpHostHeader)"
-				Write-Host "Checking existing website `"$websiteName`" binding"
+				Write-Host "Checking existing website `"$websiteName`" $protocol binding"
 				# get the existing binding
 				$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $tmpBindingString}
 				if (-not $existingBinding )
@@ -177,7 +177,7 @@ function Deployment-SetWebsiteBinding
 					Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$tmpHostHeader`""
 					if ($IPAddress)
 					{
-						New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $tmpHostHeader						
+						New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $tmpHostHeader
 					}
 					else
 					{
@@ -188,23 +188,19 @@ function Deployment-SetWebsiteBinding
 		}
 		else
 		{
-			Write-Host "Checking existing website `"$websiteName`" binding"
+			Write-Host "Checking existing website `"$websiteName`" $protocol binding"
 			# get the existing binding
-			$existingBindings = Get-WebBinding -Name $websiteName -Protocol $protocol -ErrorAction SilentlyContinue 
-			if ($existingBindings -ne $null)
+			$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $bindingString}
+			if (-not $existingBinding)
 			{
-				$existingBinding = $existingBindings | Where {$_.BindingInformation -eq $bindingString}
-				if (-not $existingBinding )
+				Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
+				if ($IPAddress)
 				{
-					Write-Host "Creating website `"$websiteName`" binding `"$protocol $($IPAddress.ToString())`:$port`:$hostheader`""
-					if ($IPAddress)
-					{
-						New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
-					}
-					else
-					{
-						New-WebBinding -Name $websiteName -Protocol $protocol -Port $port -HostHeader $hostheader
-					}
+					New-WebBinding -Name $websiteName -Protocol $protocol -IPAddress $IPAddress -Port $port -HostHeader $hostheader
+				}
+				else
+				{
+					New-WebBinding -Name $websiteName -Protocol $protocol -Port $port -HostHeader $hostheader
 				}
 			}
 		}
@@ -262,7 +258,7 @@ function Deployment-RemoveWebsiteBinding
 	$website = Get-Item "IIS:\Sites\$websiteName" -ErrorAction SilentlyContinue
 	if ($website)
 	{
-		Write-Host "Checking existing website binding"
+		Write-Host "Checking existing website `"$websiteName`" default binding"
 		# get the existing binding
 		$existingBinding = Get-WebBinding -Name $websiteName -Protocol $protocol | Where {$_.BindingInformation -eq $bindingString}
 		if ($existingBinding)
@@ -992,6 +988,35 @@ function Deployment-SetCustomACLPermissions
 	}
 }
 
+function Deployment-SetCustomACLPermissionsForURI
+{
+	param(
+		$account,
+		$path,
+		$fileSystemRights,
+		$accessControlType,
+		$inheritanceFlags,
+		$propagationFlags,
+		[switch]$file = $false
+	)
+	# check existing acl
+	Write-Host "Checking ACL permissions for `"$account`" on URI `"$path`""
+	if($file)
+	{
+		$path = Deployment-CreateParentDirectory -File $path
+	}
+	else
+	{
+		#Assumed a directory
+		if(-not (Test-Path "$path"))
+		{
+			# create folder and set permissions on it
+			Write-Host "Creating directory `"$path`""
+			New-Item -ItemType Directory -Path "$path" | Out-Null
+		}
+	}
+	Deployment-SetCustomACLPermissions -Account "$account" -Path "$path" -FileSystemRights "$fileSystemRights" -AccessControlType "$accessControlType" -InheritanceFlags "$inheritanceFlags" -PropagationFlags "$propagationFlags"
+}
 #endregion
 
 #region Windows Service Functions
@@ -1529,6 +1554,7 @@ function Deployment-CreateParentDirectory
 		Write-Host "Creating directory $folderPath"
 		New-Item -ItemType directory -Path $folderPath | Out-Null
 	}
+	return $folderPath
 }
 
 function Deployment-BackupFile

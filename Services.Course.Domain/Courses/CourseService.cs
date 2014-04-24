@@ -4,12 +4,11 @@ using System.Linq;
 using AutoMapper;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
 using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
-using Services.Assessment.Contract;
-using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain
 {
@@ -21,7 +20,8 @@ namespace BpeProducts.Services.Course.Domain
 	    private readonly ICoursePublisher _coursePublisher;
         private readonly IAssessmentClient _assessmentClient;
 
-        public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository, ICoursePublisher coursePublisher,IAssessmentClient assessmentClient)
+        public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository, 
+            ICoursePublisher coursePublisher,IAssessmentClient assessmentClient)
         {
             _courseFactory = courseFactory;
             _domainEvents = domainEvents;
@@ -33,7 +33,7 @@ namespace BpeProducts.Services.Course.Domain
 		[AuthByAcl(Capability = Capability.CourseCreate, OrganizationObject = "request")]
         public CourseInfoResponse Create(SaveCourseRequest request)
         {
-            var course = _courseFactory.Create(request);
+            var course = _courseFactory.Build(request);
             _domainEvents.Raise<CourseCreated>(new CourseCreated
             {
                 AggregateId = course.Id,
@@ -46,7 +46,7 @@ namespace BpeProducts.Services.Course.Domain
         [AuthByAcl(Capability = Capability.CourseCreate, OrganizationObject = "request")]
         public CourseInfoResponse Create(CreateCourseFromTemplateRequest request)
         {
-            var course = _courseFactory.Create(request);
+            var course = _courseFactory.Build(request);
             _domainEvents.Raise<CourseCreated>(new CourseCreated
             {
                 AggregateId = course.Id,
@@ -58,12 +58,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Update(Guid courseId, UpdateCourseRequest request)
         {
-            var course = _courseFactory.Reconstitute(courseId);
-
-            if (course == null || !course.ActiveFlag)
-            {
-                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
-            }
+            var course = _courseRepository.GetOrThrow(courseId);
 
             _domainEvents.Raise<CourseUpdated>(new CourseUpdated
             {
@@ -98,12 +93,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Delete(Guid courseId)
         {
-            var course = _courseFactory.Reconstitute(courseId);
-
-            if (course == null || !course.ActiveFlag)
-            {
-                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
-            }
+            var course = _courseRepository.GetOrThrow(courseId);
 
             if (course.IsPublished)
             {
@@ -118,11 +108,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public void UpdatePrerequisiteList(Guid courseId, List<Guid> newPrerequisiteIds)
         {
-            var course = _courseFactory.Reconstitute(courseId);
-            if (course == null || !course.ActiveFlag)
-            {
-                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
-            }
+            var course = _courseRepository.GetOrThrow(courseId);
 
             var existing = (from prereq in course.Prerequisites
                             select prereq.Id).ToList();

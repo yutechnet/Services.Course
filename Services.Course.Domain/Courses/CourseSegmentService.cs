@@ -12,14 +12,12 @@ namespace BpeProducts.Services.Course.Domain
 {
     public class CourseSegmentService : ICourseSegmentService
     {
-        private readonly ICourseFactory _courseFactory;
         private readonly IDomainEvents _domainEvents;
         private readonly ICourseRepository _courseRepository;
 
-        public CourseSegmentService(ICourseRepository courseRepository, ICourseFactory courseFactory, IDomainEvents domainEvents)
+        public CourseSegmentService(ICourseRepository courseRepository, IDomainEvents domainEvents)
         {
             _courseRepository = courseRepository;
-            _courseFactory = courseFactory;
             _domainEvents = domainEvents;
         }
 
@@ -44,7 +42,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public CourseSegmentInfo Create(Guid courseId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
-            var course = _courseFactory.Reconstitute(courseId);
+            var course = _courseRepository.GetOrThrow(courseId);
             if (course.Id == Guid.Empty || !course.ActiveFlag)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
@@ -75,13 +73,7 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Update(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
         {
-			// TODO: Rename Reconstitute to something else since we aren't using the event store anymore
-            var course = _courseFactory.Reconstitute(courseId);
-            // TODO Check for CourseId no longer needed once an appropriate factory.load is used
-            if (course.Id == Guid.Empty || !course.ActiveFlag)
-            {
-                throw new NotFoundException(string.Format("Course {0} not found.", courseId));
-            }
+            var course = _courseRepository.GetOrThrow(courseId);
 
             _domainEvents.Raise<CourseSegmentUpdated>(new CourseSegmentUpdated
                 {

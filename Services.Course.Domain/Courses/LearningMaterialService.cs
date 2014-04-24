@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using BpeProducts.Common.Authorization;
-using BpeProducts.Services.Asset.Contracts;
+using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
-using Services.Authorization.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {

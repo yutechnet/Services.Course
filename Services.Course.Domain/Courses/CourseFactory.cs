@@ -6,25 +6,22 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
-using Services.Assessment.Contract;
-using Services.Authorization.Contract;
-using ServiceStack.Common.Extensions;
+using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.Courses
 {
-    public class CourseFactory : VersionFactory<Course>, ICourseFactory
+    public class CourseFactory : ICourseFactory
     {
-        private readonly IRepository _courseRepository;
+        private readonly ICourseRepository _courseRepository;
         private readonly IAssessmentClient _assessmentClient;
-        public CourseFactory(IRepository courseRepository, IAssessmentClient assessmentClient)
-            : base(courseRepository)
+
+        public CourseFactory(ICourseRepository courseRepository, IAssessmentClient assessmentClient)
         {
             _courseRepository = courseRepository;
             _assessmentClient = assessmentClient;
         }
-
-
-        public Course Create(SaveCourseRequest request)
+        
+        public Course Build(SaveCourseRequest request)
         {
             if (request.TemplateCourseId.HasValue)
             {
@@ -39,24 +36,17 @@ namespace BpeProducts.Services.Course.Domain.Courses
                         TemplateCourseId = request.TemplateCourseId.Value,
                         TenantId = request.TenantId
                     };
-                return Create(createCourseFromTemplateRequest);
+                return Build(createCourseFromTemplateRequest);
             }
-            else
-            {
-                return BuildFromScratch(request);                
-            }
+
+            return BuildFromScratch(request);
         }
 
 
-        public Course Create(CreateCourseFromTemplateRequest request)
+        public Course Build(CreateCourseFromTemplateRequest request)
         {
-            // var template = Reconstitute(request.TemplateCourseId.Value);
-            var template = _courseRepository.Get<Course>(request.TemplateCourseId);
-            if (template == null)
-            {
-                throw new BadRequestException(string.Format("Course template {0} not found.", request.TemplateCourseId));
-            }
-
+            var template = _courseRepository.GetOrThrow(request.TemplateCourseId);
+            
             return BuildFromTemplate(template, request);
         }
 
@@ -108,8 +98,6 @@ namespace BpeProducts.Services.Course.Domain.Courses
             course.LearningMaterials = newLearningMaterials;
             return course;
         }
-
-
 
         protected Course BuildFromScratch(SaveCourseRequest request)
         {
