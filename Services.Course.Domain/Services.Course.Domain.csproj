@@ -216,7 +216,6 @@
     <Compile Include="ICourseLearningActivityService.cs" />
     <Compile Include="SectionClient.cs" />
     <Compile Include="IVersionableEntityFactory.cs" />
-    <Compile Include="IVersionHandler.cs" />
     <Compile Include="CourseLearningActivityService.cs" />
     <Compile Include="Mappings\LearningMaterialMappingOverride.cs" />
     <Compile Include="Mappings\CourseLearningActivityMappingOverride.cs" />
@@ -227,11 +226,7 @@
     <Compile Include="Courses\ICourseSegmentService.cs" />
     <Compile Include="IHandleVersioning.cs" />
     <Compile Include="IProgramService.cs" />
-    <Compile Include="Events\VersionCreated.cs" />
-    <Compile Include="Events\VersionPublished.cs" />
     <Compile Include="Handlers\UpdateModelOnUpdatingCourseSegment.cs" />
-    <Compile Include="Handlers\UpdateModelOnCourseVersionCreation.cs" />
-    <Compile Include="Handlers\UpdateModelOnEntityVersionPublish.cs" />
     <Compile Include="Courses\CourseFactory.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="Courses\Course.cs" />
@@ -257,7 +252,6 @@
     <Compile Include="Validation\LearningActivityPublishValidator.cs" />
     <Compile Include="Validation\Validator.cs" />
     <Compile Include="VersionableEntityFactory.cs" />
-    <Compile Include="VersionHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

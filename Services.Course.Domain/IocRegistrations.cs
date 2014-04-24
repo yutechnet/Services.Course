@@ -49,9 +49,7 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
 			containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>().EnableInterfaceInterceptors().EnableAuthorization();
 			containerBuilder.RegisterType<ProgramService>().As<IProgramService>();
-			containerBuilder.RegisterType<VersionHandler>().As<IVersionHandler>();
 			containerBuilder.RegisterType<VersionableEntityFactory>().As<IVersionableEntityFactory>();
-
 
 			containerBuilder.RegisterType<DomainEvents>().As<IDomainEvents>();
 
@@ -62,12 +60,10 @@ namespace BpeProducts.Services.Course.Domain
 
 			containerBuilder.RegisterType<UpdateModelOnAddingCoursePrerequisite>().As<IHandle<CoursePrerequisiteAdded>>();
 			containerBuilder.RegisterType<UpdateModelOnRemovingCoursePrerequisite>().As<IHandle<CoursePrerequisiteRemoved>>();
-			containerBuilder.RegisterType<UpdateModelOnCourseVersionCreation>().As<IHandle<VersionCreated>>();
-			containerBuilder.RegisterType<UpdateModelOnEntityVersionPublish>().As<IHandle<VersionPublished>>();
 
             containerBuilder.RegisterType<CoursePublisher>().As<ICoursePublisher>();
 			containerBuilder.RegisterType<CoursePublishValidator>().As<IValidator<Courses.Course>>();
-            containerBuilder.RegisterType<LearningActivityPublishValidator>().As<IValidator<Courses.CourseLearningActivity>>();
+            containerBuilder.RegisterType<LearningActivityPublishValidator>().As<IValidator<CourseLearningActivity>>();
 
 		    RegisterMappings();
 		}
