@@ -134,7 +134,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(course.Description, Is.EqualTo(template.Description));
             Assert.That(course.Name, Is.EqualTo(template.Name));
             Assert.That(course.IsTemplate, Is.False);
-
         }
 
         [Test]

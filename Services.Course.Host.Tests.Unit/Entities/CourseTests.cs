@@ -19,7 +19,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 {
     public class CourseTests
     {
+        static readonly Random Random = new Random();
+        private Mock<ICoursePublisher> _coursePublisher;
         private Mock<IAssessmentClient> _assessmentClientMock;
+
         [SetUp]
         public void SetUp()
         {
@@ -27,6 +30,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Mapper.CreateMap<LearningMaterialRequest, LearningMaterial>();
             _coursePublisher = new Mock<ICoursePublisher>();
         }
+
         [Test]
         public void Can_add_top_level_segments()
         {
@@ -796,8 +800,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.Throws<NotFoundException>(() => course.DeleteLearningMaterial(Guid.NewGuid()));
         }
 
-        static readonly Random Random = new Random();
-        private Mock<ICoursePublisher> _coursePublisher;
+        [Test]
+        public void CanDeleteCourse()
+        {
+            var course = GetCourse();
+            course.Delete();
+
+            Assert.That(course.ActiveFlag, Is.False);
+        }
+
+        [Test]
+        public void CannotDeletePublishedCourse()
+        {
+            var course = GetCourse();
+            course.Publish("note", _coursePublisher.Object);
+            Assert.Throws<BadRequestException>(course.Delete);
+        }
 
         static T RandomEnumValue<T>()
         {
@@ -816,6 +834,5 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             course.TenantId = 999999;
             return course;
         }
-   
     }
 }

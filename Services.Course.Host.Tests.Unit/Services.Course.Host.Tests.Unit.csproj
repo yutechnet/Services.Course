@@ -242,8 +242,6 @@
     <Compile Include="Handlers\CourseUpdatedHandlerTests.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCoursePrerequisiteTests.cs" />
     <Compile Include="Handlers\UpdateModelOnAddingCourseSegmentTests.cs" />
-    <Compile Include="Handlers\UpdateModelOnCourseCreationTests.cs" />
-    <Compile Include="Handlers\UpdateModelOnCourseDeletionTests.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseUpdatingTests.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionCreatedTests.cs" />
     <Compile Include="Handlers\UpdateModelOnCourseVersionPublishTests.cs" />

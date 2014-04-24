@@ -564,5 +564,15 @@ namespace BpeProducts.Services.Course.Domain.Courses
             brokenRules = validator.BrokenRules(this);
             return isValid;
         }
+
+        public virtual void Delete()
+        {
+            if (IsPublished)
+            {
+                throw new BadRequestException(string.Format("Course {0} is published and cannot be deleted.", Id));
+            }
+
+            ActiveFlag = false;
+        }
     }
 }

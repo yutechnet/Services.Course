@@ -73,7 +73,7 @@ Scenario: Published version cannot be deleted
 	| Name         | Note      |
 	| English 1010 | Blah blah |
 	And I delete 'English 1010' course
-	Then I get 'Forbidden' response
+	Then I get 'BadRequest' response
 
 Scenario: Create a course version from a previously-published version
 	When I publish the following courses

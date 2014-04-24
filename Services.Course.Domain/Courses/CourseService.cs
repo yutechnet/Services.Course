@@ -34,11 +34,7 @@ namespace BpeProducts.Services.Course.Domain
         public CourseInfoResponse Create(SaveCourseRequest request)
         {
             var course = _courseFactory.Build(request);
-            _domainEvents.Raise<CourseCreated>(new CourseCreated
-            {
-                AggregateId = course.Id,
-                Course = course
-            });
+            _courseRepository.Save(course);
 
 			return Mapper.Map<CourseInfoResponse>(course);
         }
@@ -47,11 +43,7 @@ namespace BpeProducts.Services.Course.Domain
         public CourseInfoResponse Create(CreateCourseFromTemplateRequest request)
         {
             var course = _courseFactory.Build(request);
-            _domainEvents.Raise<CourseCreated>(new CourseCreated
-            {
-                AggregateId = course.Id,
-                Course = course
-            });
+            _courseRepository.Save(course);
 
             return Mapper.Map<CourseInfoResponse>(course);
         }
@@ -95,15 +87,8 @@ namespace BpeProducts.Services.Course.Domain
         {
             var course = _courseRepository.GetOrThrow(courseId);
 
-            if (course.IsPublished)
-            {
-                throw new ForbiddenException(string.Format("Course {0} is published and cannot be deleted.", courseId));
-            }
-
-            _domainEvents.Raise<CourseDeleted>(new CourseDeleted
-            {
-                AggregateId = courseId,
-            });
+            course.Delete();
+            _courseRepository.Save(course);
         }
 
         public void UpdatePrerequisiteList(Guid courseId, List<Guid> newPrerequisiteIds)
