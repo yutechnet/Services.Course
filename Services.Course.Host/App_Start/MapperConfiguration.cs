@@ -3,7 +3,6 @@ using System.Linq;
 using AutoMapper;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Entities;
-using BpeProducts.Services.Course.Domain.Events;
 
 namespace BpeProducts.Services.Course.Host.App_Start
 {

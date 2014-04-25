@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using BpeProducts.Services.Course.Contract;
-using EventStore;
+﻿using BpeProducts.Services.Course.Contract;
 
-namespace BpeProducts.Services.Course.Domain
+namespace BpeProducts.Services.Course.Domain.Courses
 {
 	public interface ICourseFactory
 	{

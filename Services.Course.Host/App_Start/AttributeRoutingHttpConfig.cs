@@ -1,6 +1,6 @@
 using System.Web.Http;
 
-namespace BpeProducts.Services.Course.Host 
+namespace BpeProducts.Services.Course.Host.App_Start 
 {
     public static class AttributeRoutingHttpConfig
 	{

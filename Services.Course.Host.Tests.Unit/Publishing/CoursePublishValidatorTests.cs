@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Validation;
 using NUnit.Framework;
 
-namespace BpeProducts.Services.Course.Host.Tests.Unit.Validation
+namespace BpeProducts.Services.Course.Host.Tests.Unit.Publishing
 {
     public class CoursePublishValidatorTests
     {

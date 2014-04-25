@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Diagnostics;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Events;
-using BpeProducts.Services.Course.Domain.Repositories;
 
-namespace BpeProducts.Services.Course.Domain
+namespace BpeProducts.Services.Course.Domain.Courses
 {
     public class CourseSegmentService : ICourseSegmentService
     {

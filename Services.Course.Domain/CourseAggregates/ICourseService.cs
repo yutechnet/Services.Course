@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 
-namespace BpeProducts.Services.Course.Domain
+namespace BpeProducts.Services.Course.Domain.Courses
 {
     public interface ICourseService
     {

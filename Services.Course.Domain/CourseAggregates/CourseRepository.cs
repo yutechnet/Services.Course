@@ -4,13 +4,9 @@ using System.Linq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.NHibernate;
-using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Courses;
-using NHibernate;
 using NHibernate.Criterion;
-using NHibernate.Linq;
 
-namespace BpeProducts.Services.Course.Domain.Repositories
+namespace BpeProducts.Services.Course.Domain.Courses
 {
     [Validate]
     public class CourseRepository : ICourseRepository

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BpeProducts.Services.Course.Domain.Entities;
+﻿using BpeProducts.Services.Course.Domain.Courses;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
-using BpeProducts.Services.Course.Domain.Courses;
 using FluentNHibernate.Mapping;
 
-namespace BpeProducts.Services.Course.Domain.Overrides
+namespace BpeProducts.Services.Course.Domain.Mappings
 {
     public class CourseSegmentMappingOverride : IAutoMappingOverride<CourseSegment>
     {

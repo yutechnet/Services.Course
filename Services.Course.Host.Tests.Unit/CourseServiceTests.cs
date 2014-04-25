@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.Courses;
-using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;

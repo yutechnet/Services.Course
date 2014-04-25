@@ -6,11 +6,9 @@ using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Courses;
-using BpeProducts.Services.Course.Domain.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
 
-namespace BpeProducts.Services.Course.Domain
+namespace BpeProducts.Services.Course.Domain.Courses
 {
     public class CourseService : ICourseService
     {
