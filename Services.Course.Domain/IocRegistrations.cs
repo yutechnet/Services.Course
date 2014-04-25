@@ -53,9 +53,6 @@ namespace BpeProducts.Services.Course.Domain
 
 			containerBuilder.RegisterType<DomainEvents>().As<IDomainEvents>();
 
-			containerBuilder.RegisterType<UpdateModelOnUpdatingCourseSegment>().As<IHandle<CourseSegmentUpdated>>();
-			containerBuilder.RegisterType<UpdateModelOnReorderingCourseSegment>().As<IHandle<CourseSegmentReordered>>();
-
             containerBuilder.RegisterType<CoursePublisher>().As<ICoursePublisher>();
 			containerBuilder.RegisterType<CoursePublishValidator>().As<IValidator<Courses.Course>>();
             containerBuilder.RegisterType<LearningActivityPublishValidator>().As<IValidator<CourseLearningActivity>>();

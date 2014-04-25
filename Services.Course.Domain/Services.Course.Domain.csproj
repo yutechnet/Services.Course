@@ -203,8 +203,6 @@
     <Compile Include="Courses\LearningMaterial.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
     <Compile Include="Courses\CourseSegment.cs" />
-    <Compile Include="Events\CourseSegmentReordered.cs" />
-    <Compile Include="Handlers\UpdateModelOnReorderingCourseSegment.cs" />
     <Compile Include="AssessmentClient.cs" />
     <Compile Include="AssetServiceClient.cs" />
     <Compile Include="ICourseLearningActivityService.cs" />
@@ -220,7 +218,6 @@
     <Compile Include="Courses\ICourseSegmentService.cs" />
     <Compile Include="IHandleVersioning.cs" />
     <Compile Include="IProgramService.cs" />
-    <Compile Include="Handlers\UpdateModelOnUpdatingCourseSegment.cs" />
     <Compile Include="Courses\CourseFactory.cs" />
     <Compile Include="DomainEvents.cs" />
     <Compile Include="Courses\Course.cs" />

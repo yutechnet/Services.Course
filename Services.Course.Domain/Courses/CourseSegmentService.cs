@@ -52,16 +52,13 @@ namespace BpeProducts.Services.Course.Domain
             return Mapper.Map<CourseSegmentInfo>(segment);
         }
 
-        public void Update(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest)
+        public void Update(Guid courseId, Guid segmentId, SaveCourseSegmentRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);
 
-            _domainEvents.Raise<CourseSegmentUpdated>(new CourseSegmentUpdated
-                {
-                    AggregateId = courseId,
-                    SegmentId = segmentId,
-                    Request = saveCourseSegmentRequest
-                });
+            course.UpdateSegment(segmentId, request);
+
+            _courseRepository.Save(course);
         }
 
         public void Delete(Guid courseId, Guid segmentId)
@@ -74,21 +71,21 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Update(Guid courseId, IList<UpdateCourseSegmentRequest> updateCourseSegmentRequest)
         {
+            var course = _courseRepository.GetOrThrow(courseId);
+
             for (int i = 0; i < updateCourseSegmentRequest.Count(); i++)
             {
-                _domainEvents.Raise<CourseSegmentReordered>(new CourseSegmentReordered
-                    {
-                        AggregateId = courseId,
-                        SegmentId = updateCourseSegmentRequest[i].Id,
-                        Request = updateCourseSegmentRequest[i],
-                        DisplayOrder = i
-                    });
+                var request = updateCourseSegmentRequest[i];
 
-                if (updateCourseSegmentRequest[i].ChildrenSegments.Count > 0)
+                if (request.ChildrenSegments.Count > 0)
                 {
-                    Update(courseId, updateCourseSegmentRequest[i].ChildrenSegments);
+                    Update(courseId, request.ChildrenSegments);
                 }
+
+                course.ReorderSegment(request.Id, request, i);
             }
+
+            _courseRepository.Save(course);
         }
     }
 }

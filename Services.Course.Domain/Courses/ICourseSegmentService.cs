@@ -34,8 +34,8 @@ namespace BpeProducts.Services.Course.Domain
         /// </summary>
         /// <param name="courseId">Parent course</param>
         /// <param name="segmentId">Segment to update</param>
-        /// <param name="saveCourseSegmentRequest">Request object</param>
-        void Update(Guid courseId, Guid segmentId, SaveCourseSegmentRequest saveCourseSegmentRequest);
+        /// <param name="request">Request object</param>
+        void Update(Guid courseId, Guid segmentId, SaveCourseSegmentRequest request);
 
         /// <summary>
         /// 
