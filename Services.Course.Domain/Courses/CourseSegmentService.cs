@@ -66,11 +66,10 @@ namespace BpeProducts.Services.Course.Domain
 
         public void Delete(Guid courseId, Guid segmentId)
         {
-            _domainEvents.Raise<CourseSegmentDeleted>(new CourseSegmentDeleted
-                {
-                    AggregateId = courseId,
-                    SegmentId = segmentId,
-                });
+            var course = _courseRepository.GetOrThrow(courseId);
+            course.DeleteSegment(segmentId);
+
+            _courseRepository.Save(course);
         }
 
         public void Update(Guid courseId, IList<UpdateCourseSegmentRequest> updateCourseSegmentRequest)

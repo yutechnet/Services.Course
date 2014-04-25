@@ -40,29 +40,25 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Can_Add_prerequisites()
         {
-	        var courseToReturn = new Domain.Courses.Course
+	        var courseToUpdate = new Domain.Courses.Course
 	            {
 	                Id = Guid.NewGuid(), 
                     ActiveFlag = true
 	            };
 
-            _courseRepositoryMock.Setup(r => r.GetOrThrow(It.IsAny<Guid>())).Returns(courseToReturn);
+            _courseRepositoryMock.Setup(r => r.GetOrThrow(courseToUpdate.Id)).Returns(courseToUpdate);
 
-            var courseToBePrerequisite = new Domain.Courses.Course
+            var prerequisite = new Domain.Courses.Course
                 {
                     Id = Guid.NewGuid(), 
                     ActiveFlag = true
                 };
+            prerequisite.Publish("", _coursePublisher.Object);
 
-            var prereqCoursesInDb = new List<Domain.Courses.Course> { courseToBePrerequisite };
+            _courseRepositoryMock.Setup(c => c.GetOrThrow(prerequisite.Id)).Returns(prerequisite);
 
-            _courseRepositoryMock.Setup(c => c.Get(It.IsAny<List<Guid>>())).Returns(prereqCoursesInDb);
-
-            var newPrerequisiteList = new List<Guid> {courseToBePrerequisite.Id};
-            _courseService.UpdatePrerequisiteList(courseToReturn.Id, newPrerequisiteList);
-
-            _domainEventsMock.Verify(d => d.Raise<CoursePrerequisiteAdded>(It.IsAny<CoursePrerequisiteAdded>()), Times.Exactly(1));
-            _domainEventsMock.Verify(d => d.Raise<CoursePrerequisiteRemoved>(It.IsAny<CoursePrerequisiteRemoved>()), Times.Exactly(0));
+            var newPrerequisiteList = new List<Guid> {prerequisite.Id};
+            _courseService.UpdatePrerequisiteList(courseToUpdate.Id, newPrerequisiteList);
         }
 
         [Test]
@@ -89,38 +85,34 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 			
             var newPrerequisiteList = new List<Guid>();
             _courseService.UpdatePrerequisiteList(courseToReturn.Id, newPrerequisiteList);
-
-            _domainEventsMock.Verify(d => d.Raise<CoursePrerequisiteAdded>(It.IsAny<CoursePrerequisiteAdded>()), Times.Exactly(0));
-            _domainEventsMock.Verify(d => d.Raise<CoursePrerequisiteRemoved>(It.IsAny<CoursePrerequisiteRemoved>()), Times.Exactly(1));
         }
 
         [Test]
         public void Can_Add_And_Remove_prerequisites()
         {
-            var guid1 = Guid.NewGuid();
-            var guid2 = Guid.NewGuid();
-            var guid3 = Guid.NewGuid();
+            var prerequisiteCourse1 = new Domain.Courses.Course {Id = Guid.NewGuid()};
+            var prerequisiteCourse2 = new Domain.Courses.Course {Id = Guid.NewGuid()};
+            var prerequisiteCourse3 = new Domain.Courses.Course {Id = Guid.NewGuid()};
 
-            var prerequisiteCourse = new Domain.Courses.Course {Id = guid1};
-            var prerequisiteCourse2 =new Domain.Courses.Course {Id = guid2};
-
-            var prerequisiteCourseToBeAdded = new Domain.Courses.Course {Id = guid3};
-            prerequisiteCourse.Publish("", _coursePublisher.Object);
-			prerequisiteCourse2.Publish("", _coursePublisher.Object);
-            var prereqCoursesInDb = new List<Domain.Courses.Course> { prerequisiteCourse, prerequisiteCourse2, prerequisiteCourseToBeAdded };
-
+            prerequisiteCourse1.Publish("", _coursePublisher.Object);
+            prerequisiteCourse2.Publish("", _coursePublisher.Object);
+            prerequisiteCourse3.Publish("", _coursePublisher.Object);
+            
 	        var courseToReturn = new Domain.Courses.Course {Id = Guid.NewGuid(), ActiveFlag = true};
-            courseToReturn.AddPrerequisite(prerequisiteCourse);
+            courseToReturn.AddPrerequisite(prerequisiteCourse1);
 			courseToReturn.AddPrerequisite(prerequisiteCourse2);
+
 			_courseRepositoryMock.Setup(r => r.GetOrThrow(It.IsAny<Guid>())).Returns(courseToReturn);
 			
-            _courseRepositoryMock.Setup(c => c.Get(It.IsAny<List<Guid>>())).Returns(prereqCoursesInDb);
+            _courseRepositoryMock.Setup(c => c.GetOrThrow(prerequisiteCourse1.Id)).Returns(prerequisiteCourse1);
+            _courseRepositoryMock.Setup(c => c.GetOrThrow(prerequisiteCourse2.Id)).Returns(prerequisiteCourse2);
+            _courseRepositoryMock.Setup(c => c.GetOrThrow(prerequisiteCourse3.Id)).Returns(prerequisiteCourse3);
 
-            var newPrerequisiteList = new List<Guid> { guid2, prerequisiteCourseToBeAdded.Id };
+            var newPrerequisiteList = new List<Guid> { prerequisiteCourse2.Id, prerequisiteCourse3.Id };
             _courseService.UpdatePrerequisiteList(courseToReturn.Id, newPrerequisiteList);
 
-            _domainEventsMock.Verify(d => d.Raise<CoursePrerequisiteAdded>(It.IsAny<CoursePrerequisiteAdded>()), Times.Exactly(1));
-            _domainEventsMock.Verify(d => d.Raise<CoursePrerequisiteRemoved>(It.IsAny<CoursePrerequisiteRemoved>()), Times.Exactly(1));
+            Assert.That(courseToReturn.Prerequisites.Contains(prerequisiteCourse2));
+            Assert.That(courseToReturn.Prerequisites.Contains(prerequisiteCourse3));
         }
     }
 }

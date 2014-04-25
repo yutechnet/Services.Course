@@ -115,21 +115,17 @@ namespace BpeProducts.Services.Course.Domain
 
             foreach (var toAdd in added)
             {
-                _domainEvents.Raise<CoursePrerequisiteAdded>(new CoursePrerequisiteAdded
-                    {
-                        AggregateId = courseId,
-                        PrerequisiteCourseId = toAdd,
-                    });
+                var prerequisiteCourse = _courseRepository.GetOrThrow(toAdd);
+
+                course.AddPrerequisite(prerequisiteCourse);
             }
 
             foreach (var toRemove in removed)
             {
-                _domainEvents.Raise<CoursePrerequisiteRemoved>(new CoursePrerequisiteRemoved
-                {
-                    AggregateId = courseId,
-                    PrerequisiteCourseId = toRemove,
-                });
+                course.RemovePrerequisite(toRemove);
             }
+
+            _courseRepository.Save(course);
         }
 
         public IEnumerable<CourseInfoResponse> GetPublishedCourses(Guid organizationId)

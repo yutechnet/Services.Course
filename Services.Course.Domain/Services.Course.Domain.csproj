@@ -203,13 +203,7 @@
     <Compile Include="Courses\LearningMaterial.cs" />
     <Compile Include="CustomJsonSerializer.cs" />
     <Compile Include="Courses\CourseSegment.cs" />
-    <Compile Include="Events\CoursePrerequisiteAdded.cs" />
-    <Compile Include="Events\CoursePrerequisiteRemoved.cs" />
-    <Compile Include="Events\CourseSegmentDeleted.cs" />
     <Compile Include="Events\CourseSegmentReordered.cs" />
-    <Compile Include="Handlers\UpdateModelOnAddingCoursePrerequisite.cs" />
-    <Compile Include="Handlers\UpdateModelOnDeletingCourseSegment.cs" />
-    <Compile Include="Handlers\UpdateModelOnRemovingCoursePrerequisite.cs" />
     <Compile Include="Handlers\UpdateModelOnReorderingCourseSegment.cs" />
     <Compile Include="AssessmentClient.cs" />
     <Compile Include="AssetServiceClient.cs" />
@@ -231,8 +225,6 @@
     <Compile Include="DomainEvents.cs" />
     <Compile Include="Courses\Course.cs" />
     <Compile Include="Entities\Program.cs" />
-    <Compile Include="Events\CourseAssociatedWithProgram.cs" />
-    <Compile Include="Events\CourseDisassociatedWithProgram.cs" />
     <Compile Include="Events\CourseSegmentUpdated.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
     <Compile Include="Handlers\IHandle.cs" />
