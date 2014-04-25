@@ -17,8 +17,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
     public class CourseServiceTests
     {
         private ICourseService _courseService;
-        private Mock<ICourseFactory> _courseFactoryMock;
-        private Mock<IDomainEvents> _domainEventsMock;
 	    private Mock<ICourseRepository> _courseRepositoryMock;
 	    private AutoMock _autoMock;
 	    private Mock<ICoursePublisher> _coursePublisher;
@@ -28,8 +26,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         public void SetUp()
         {
             _autoMock = AutoMock.GetLoose();
-            _courseFactoryMock = _autoMock.Mock<ICourseFactory>();
-            _domainEventsMock = _autoMock.Mock<IDomainEvents>();
 	        _courseRepositoryMock = _autoMock.Mock<ICourseRepository>();
 			
 		    _coursePublisher = _autoMock.Mock<ICoursePublisher>();

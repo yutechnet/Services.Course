@@ -12,13 +12,11 @@ namespace BpeProducts.Services.Course.Domain
 {
     public class CourseSegmentService : ICourseSegmentService
     {
-        private readonly IDomainEvents _domainEvents;
         private readonly ICourseRepository _courseRepository;
 
-        public CourseSegmentService(ICourseRepository courseRepository, IDomainEvents domainEvents)
+        public CourseSegmentService(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
-            _domainEvents = domainEvents;
         }
 
         public IEnumerable<CourseSegmentInfo> Get(Guid courseId)

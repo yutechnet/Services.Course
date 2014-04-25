@@ -15,17 +15,15 @@ namespace BpeProducts.Services.Course.Domain
     public class CourseService : ICourseService
     {
         private readonly ICourseFactory _courseFactory;
-        private readonly IDomainEvents _domainEvents;
         private readonly ICourseRepository _courseRepository;
 	    private readonly ICoursePublisher _coursePublisher;
         private readonly IAssessmentClient _assessmentClient;
         private readonly IProgramRepository _programRepository;
 
-        public CourseService(ICourseFactory courseFactory, IDomainEvents domainEvents, ICourseRepository courseRepository, 
+        public CourseService(ICourseFactory courseFactory, ICourseRepository courseRepository, 
             ICoursePublisher coursePublisher, IAssessmentClient assessmentClient, IProgramRepository programRepository)
         {
             _courseFactory = courseFactory;
-            _domainEvents = domainEvents;
             _courseRepository = courseRepository;
 			_coursePublisher = coursePublisher;
 	        _assessmentClient = assessmentClient;

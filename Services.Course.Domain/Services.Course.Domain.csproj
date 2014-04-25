@@ -219,12 +219,10 @@
     <Compile Include="IHandleVersioning.cs" />
     <Compile Include="IProgramService.cs" />
     <Compile Include="Courses\CourseFactory.cs" />
-    <Compile Include="DomainEvents.cs" />
     <Compile Include="Courses\Course.cs" />
     <Compile Include="Entities\Program.cs" />
     <Compile Include="Events\CourseSegmentUpdated.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
-    <Compile Include="Handlers\IHandle.cs" />
     <Compile Include="Courses\ICourseFactory.cs" />
     <Compile Include="IocRegistrations.cs" />
     <Compile Include="Mappings\CourseMappingOverride.cs" />

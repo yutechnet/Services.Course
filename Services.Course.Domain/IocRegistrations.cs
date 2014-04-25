@@ -9,9 +9,6 @@ using BpeProducts.Common.Log;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Courses;
-using BpeProducts.Services.Course.Domain.Entities;
-using BpeProducts.Services.Course.Domain.Events;
-using BpeProducts.Services.Course.Domain.Handlers;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Domain.Validation;
 using Services.Assessment.Contract;
@@ -50,8 +47,6 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>().EnableInterfaceInterceptors().EnableAuthorization();
 			containerBuilder.RegisterType<ProgramService>().As<IProgramService>();
 			containerBuilder.RegisterType<VersionableEntityFactory>().As<IVersionableEntityFactory>();
-
-			containerBuilder.RegisterType<DomainEvents>().As<IDomainEvents>();
 
             containerBuilder.RegisterType<CoursePublisher>().As<ICoursePublisher>();
 			containerBuilder.RegisterType<CoursePublishValidator>().As<IValidator<Courses.Course>>();
