@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using AutoMapper;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
@@ -19,7 +19,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         private ILearningMaterialService _learningMaterialService;
         private Mock<ICourseRepository> _repoMock;
         private AutoMock _autoMock;
-        private Domain.Courses.Course _courseToReturn;
+        private Domain.CourseAggregates.Course _courseToReturn;
 
         [SetUp]
         public void SetUp()
@@ -31,7 +31,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Mapper.CreateMap<UpdateLearningMaterialRequest, LearningMaterial>();
             Mapper.CreateMap<LearningMaterial, LearningMaterialInfo>();
              
-            _courseToReturn = new Domain.Courses.Course {Id = Guid.NewGuid(), ActiveFlag = true};
+            _courseToReturn = new Domain.CourseAggregates.Course {Id = Guid.NewGuid(), ActiveFlag = true};
             _repoMock.Setup(c => c.GetOrThrow(It.IsAny<Guid>())).Returns(_courseToReturn);
         }
 

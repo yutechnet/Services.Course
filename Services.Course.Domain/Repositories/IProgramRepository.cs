@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.ProgramAggregates;
 using NHibernate;
 
 namespace BpeProducts.Services.Course.Domain.Repositories

@@ -1,4 +1,4 @@
-﻿using BpeProducts.Services.Course.Domain.Courses;
+﻿using BpeProducts.Services.Course.Domain.CourseAggregates;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Mapping;

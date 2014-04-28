@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
 
 namespace BpeProducts.Services.Course.Domain.Validation
 {
-    public class CoursePublishValidator : IValidator<Courses.Course>
+    public class CoursePublishValidator : IValidator<CourseAggregates.Course>
     {
         private readonly IValidator<CourseLearningActivity> _learningActivityValidator;
         private IEnumerable<string> _brokenRules;
@@ -17,12 +17,12 @@ namespace BpeProducts.Services.Course.Domain.Validation
             _brokenRules = new List<string>();
         }
 
-        public bool IsValid(Courses.Course course)
+        public bool IsValid(CourseAggregates.Course course)
         {
             return !BrokenRules(course).Any();
         }
 
-        public IEnumerable<string> BrokenRules(Courses.Course course)
+        public IEnumerable<string> BrokenRules(CourseAggregates.Course course)
         {
             foreach (var segment in course.Segments)
             {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BpeProducts.Common.Exceptions;
-using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.ProgramAggregates;
 using NHibernate;
 using NHibernate.OData;
 
@@ -44,7 +44,7 @@ namespace BpeProducts.Services.Course.Domain.Repositories
 
         public ICriteria ODataQuery(string queryString)
         {
-            return _session.ODataQuery<Entities.Program>(queryString);
+            return _session.ODataQuery<Program>(queryString);
         }
     }
 }

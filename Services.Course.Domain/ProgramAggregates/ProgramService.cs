@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Entities;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;
 
-namespace BpeProducts.Services.Course.Domain
+namespace BpeProducts.Services.Course.Domain.ProgramAggregates
 {
     public class ProgramService : IProgramService
     {

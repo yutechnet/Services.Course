@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Domain;
-using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
@@ -35,7 +35,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Can_Add_prerequisites()
         {
-	        var courseToUpdate = new Domain.Courses.Course
+	        var courseToUpdate = new Domain.CourseAggregates.Course
 	            {
 	                Id = Guid.NewGuid(), 
                     ActiveFlag = true
@@ -43,7 +43,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             _courseRepositoryMock.Setup(r => r.GetOrThrow(courseToUpdate.Id)).Returns(courseToUpdate);
 
-            var prerequisite = new Domain.Courses.Course
+            var prerequisite = new Domain.CourseAggregates.Course
                 {
                     Id = Guid.NewGuid(), 
                     ActiveFlag = true
@@ -59,17 +59,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Can_Remove_prerequisites()
         {
-			var prerequisiteCourse =new Domain.Courses.Course
+			var prerequisiteCourse =new Domain.CourseAggregates.Course
 			    {
 			        Id = Guid.NewGuid()
 			    };
 
             prerequisiteCourse.Publish("",_coursePublisher.Object);
 
-            var prereqCoursesInDb = new List<Domain.Courses.Course> { prerequisiteCourse };
+            var prereqCoursesInDb = new List<Domain.CourseAggregates.Course> { prerequisiteCourse };
             _courseRepositoryMock.Setup(c => c.Get(It.IsAny<List<Guid>>())).Returns(prereqCoursesInDb);
 
-	        var courseToReturn = new Domain.Courses.Course
+	        var courseToReturn = new Domain.CourseAggregates.Course
 	            {
 	                Id = Guid.NewGuid(), 
                     ActiveFlag = true
@@ -85,15 +85,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         [Test]
         public void Can_Add_And_Remove_prerequisites()
         {
-            var prerequisiteCourse1 = new Domain.Courses.Course {Id = Guid.NewGuid()};
-            var prerequisiteCourse2 = new Domain.Courses.Course {Id = Guid.NewGuid()};
-            var prerequisiteCourse3 = new Domain.Courses.Course {Id = Guid.NewGuid()};
+            var prerequisiteCourse1 = new Domain.CourseAggregates.Course {Id = Guid.NewGuid()};
+            var prerequisiteCourse2 = new Domain.CourseAggregates.Course {Id = Guid.NewGuid()};
+            var prerequisiteCourse3 = new Domain.CourseAggregates.Course {Id = Guid.NewGuid()};
 
             prerequisiteCourse1.Publish("", _coursePublisher.Object);
             prerequisiteCourse2.Publish("", _coursePublisher.Object);
             prerequisiteCourse3.Publish("", _coursePublisher.Object);
             
-	        var courseToReturn = new Domain.Courses.Course {Id = Guid.NewGuid(), ActiveFlag = true};
+	        var courseToReturn = new Domain.CourseAggregates.Course {Id = Guid.NewGuid(), ActiveFlag = true};
             courseToReturn.AddPrerequisite(prerequisiteCourse1);
 			courseToReturn.AddPrerequisite(prerequisiteCourse2);
 

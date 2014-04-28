@@ -4,7 +4,7 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
-using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
 using BpeProducts.Services.Course.Domain.Validation;
 using BpeProducts.Services.Course.Host.App_Start;
 using Moq;
@@ -16,7 +16,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
     [TestFixture]
     public class CoursePublisherTests
     {
-        private Domain.Courses.Course _course;
+        private Domain.CourseAggregates.Course _course;
         private CoursePublisher _coursePublisher;
         private Guid _segmentId;
         private Guid _assessmentId;
@@ -32,11 +32,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             MapperConfiguration.Configure();
 
             _autoMock = AutoMock.GetLoose();
-            _autoMock.Provide<IValidator<Domain.Courses.Course>>(new CoursePublishValidator(new LearningActivityPublishValidator()));
+            _autoMock.Provide<IValidator<Domain.CourseAggregates.Course>>(new CoursePublishValidator(new LearningActivityPublishValidator()));
             _assessmentClient = _autoMock.Mock<IAssessmentClient>();
             _assetClient = _autoMock.Mock<IAssetServiceClient>();
 
-            _course = new Domain.Courses.Course
+            _course = new Domain.CourseAggregates.Course
                 {
                     OrganizationId = Guid.NewGuid(), 
                     TenantId = 999999

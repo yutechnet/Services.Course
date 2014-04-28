@@ -27,7 +27,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Publishing
         [Test]
         public void Can_validate_course_for_publishability()
         {
-			var course = _autoMock.Create<Domain.Courses.Course>();
+			var course = _autoMock.Create<Domain.CourseAggregates.Course>();
             var seg1 = course.AddSegment(new SaveCourseSegmentRequest());
             course.AddLearningActivity(seg1.Id, new SaveCourseLearningActivityRequest
                 {
@@ -44,7 +44,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Publishing
         [Test]
         public void Can_find_broken_rules_before_publishing()
         {
-			var course = _autoMock.Create<Domain.Courses.Course>();
+			var course = _autoMock.Create<Domain.CourseAggregates.Course>();
             var seg1 = course.AddSegment(new SaveCourseSegmentRequest());
             course.AddLearningActivity(seg1.Id, new SaveCourseLearningActivityRequest
             {
@@ -62,7 +62,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Publishing
         [Test]
         public void Can_find_multiple_broken_rules_before_publishing()
         {
-			var course = _autoMock.Create<Domain.Courses.Course>();
+			var course = _autoMock.Create<Domain.CourseAggregates.Course>();
             var seg1 = course.AddSegment(new SaveCourseSegmentRequest());
             course.AddLearningActivity(seg1.Id, new SaveCourseLearningActivityRequest
             {

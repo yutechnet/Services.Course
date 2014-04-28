@@ -1,10 +1,10 @@
 ﻿using BpeProducts.Services.Course.Contract;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
 	public interface ICourseFactory
 	{
-		Courses.Course Build(SaveCourseRequest request);
-	    Courses.Course Build(CreateCourseFromTemplateRequest request);
+		Course Build(SaveCourseRequest request);
+	    Course Build(CreateCourseFromTemplateRequest request);
     }
 }

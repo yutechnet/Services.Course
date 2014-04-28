@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
-using BpeProducts.Common.Authorization;
-using BpeProducts.Common.Exceptions;
-using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Entities;
-using BpeProducts.Services.Course.Domain.Repositories;
+using BpeProducts.Services.Course.Domain.ProgramAggregates;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
     public class CourseFactory : ICourseFactory
     {

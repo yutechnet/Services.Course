@@ -8,7 +8,7 @@ using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.Repositories;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
     public class CourseService : ICourseService
     {
@@ -63,7 +63,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             _courseRepository.Save(course);
         }
 
-        [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Courses.Course))]
+        [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Course))]
         public CourseInfoResponse Get(Guid courseId)
         {
             var course = _courseRepository.GetOrThrow(courseId);
@@ -144,7 +144,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
 				throw new BadRequestException(string.Format("Version {0} for Course {1} already exists.", versionNumber, parentVersion.OriginalEntity.Id));
 			}
 
-			var newVersion = parentVersion.CreateVersion(versionNumber) as Courses.Course;
+			var newVersion = parentVersion.CreateVersion(versionNumber) as Course;
             if (newVersion == null)
             {
                 throw new Exception(string.Format("Failed to create a new version {0} from the parent version {1}", versionNumber, parentVersion.Id));

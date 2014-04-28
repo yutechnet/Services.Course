@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using BpeProducts.Services.Course.Contract;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
     public interface ICourseSegmentService
     {

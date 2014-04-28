@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using BpeProducts.Common.NHibernate;
-using Newtonsoft.Json;
 
-namespace BpeProducts.Services.Course.Domain.Entities
+namespace BpeProducts.Services.Course.Domain.ProgramAggregates
 {
 	//[JsonObject(MemberSerialization.Fields)]
 	//[Serializable]
     public class Program : TenantEntity
     {
-        private IList<Courses.Course> _courses = new List<Courses.Course>();
+        private IList<CourseAggregates.Course> _courses = new List<CourseAggregates.Course>();
 
         [NotNullable]
         public virtual string Name { get; set; }
@@ -21,7 +20,7 @@ namespace BpeProducts.Services.Course.Domain.Entities
         [NotNullable]
         public virtual string ProgramType { get; set; }
 
-        public virtual IList<Courses.Course> Courses
+        public virtual IList<CourseAggregates.Course> Courses
         {
             get { return _courses; }
             set { _courses = value; }

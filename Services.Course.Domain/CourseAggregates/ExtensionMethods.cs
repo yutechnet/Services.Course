@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
 	public static class ExtensionMethods
 	{

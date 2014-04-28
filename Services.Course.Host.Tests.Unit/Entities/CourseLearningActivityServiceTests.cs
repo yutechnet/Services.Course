@@ -7,7 +7,7 @@ using AutoMapper;
 using Autofac.Extras.Moq;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
-using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
@@ -26,7 +26,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         private Mock<ICourseRepository> _courseRepository;
         private CourseLearningActivityService _courseLearningActivityService;
 
-        private Domain.Courses.Course _course;
+        private Domain.CourseAggregates.Course _course;
 	    private AutoMock _autoMock;
 
 	    [SetUp]
@@ -38,7 +38,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             _courseId = Guid.NewGuid();
             _assessmentId = Guid.NewGuid();
 	        _autoMock = AutoMock.GetLoose();
-		    _course = _autoMock.Create<Domain.Courses.Course>();
+		    _course = _autoMock.Create<Domain.CourseAggregates.Course>();
 			_course.Id = _courseId;
 
             _segmentId = _course.AddSegment(new SaveCourseSegmentRequest()).Id;

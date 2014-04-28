@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Entities;
 using BpeProducts.Services.Course.Domain.Validation;
 using Services.Assessment.Contract;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
     public class CourseLearningActivity : TenantEntity,IValidatable<CourseLearningActivity>
     {

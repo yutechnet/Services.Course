@@ -1,11 +1,12 @@
-﻿using FluentNHibernate.Automapping;
+﻿using BpeProducts.Services.Course.Domain.ProgramAggregates;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
 
 namespace BpeProducts.Services.Course.Domain.Mappings
 {
-    public class ProgramMappingOverride : IAutoMappingOverride<Entities.Program>
+    public class ProgramMappingOverride : IAutoMappingOverride<Program>
     {
-        public void Override(AutoMapping<Entities.Program> mapping)
+        public void Override(AutoMapping<Program> mapping)
         {
             mapping
                 .HasManyToMany(x => x.Courses)

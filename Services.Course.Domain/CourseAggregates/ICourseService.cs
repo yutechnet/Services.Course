@@ -4,7 +4,7 @@ using BpeProducts.Common.Authorization;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
     public interface ICourseService
     {

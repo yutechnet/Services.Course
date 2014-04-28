@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using BpeProducts.Common.Exceptions;
-using BpeProducts.Common.NHibernate.Version;
-using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Domain.Validation;
 using Services.Assessment.Contract;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
     public interface ICoursePublisher
     {
@@ -20,12 +17,12 @@ namespace BpeProducts.Services.Course.Domain.Courses
 	{
 		private readonly IAssessmentClient _assessmentClient;
 		private readonly IAssetServiceClient _assetServiceClient;
-		private readonly IValidator<Courses.Course> _coursePublishValidator;
+		private readonly IValidator<Course> _coursePublishValidator;
 		//the linked resources are 
 		//1. assesmments
 		//2. learning materials
 
-		public CoursePublisher(IAssessmentClient assessmentClient, IAssetServiceClient assetServiceClient, IValidator<Courses.Course> coursePublishValidator)
+		public CoursePublisher(IAssessmentClient assessmentClient, IAssetServiceClient assetServiceClient, IValidator<Course> coursePublishValidator)
 		{
 			_assessmentClient = assessmentClient;
 			_assetServiceClient = assetServiceClient;

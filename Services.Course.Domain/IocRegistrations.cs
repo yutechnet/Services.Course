@@ -8,7 +8,8 @@ using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.Log;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
+using BpeProducts.Services.Course.Domain.ProgramAggregates;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Course.Domain.Validation;
 using Services.Assessment.Contract;
@@ -49,7 +50,7 @@ namespace BpeProducts.Services.Course.Domain
 			containerBuilder.RegisterType<VersionableEntityFactory>().As<IVersionableEntityFactory>();
 
             containerBuilder.RegisterType<CoursePublisher>().As<ICoursePublisher>();
-			containerBuilder.RegisterType<CoursePublishValidator>().As<IValidator<Courses.Course>>();
+			containerBuilder.RegisterType<CoursePublishValidator>().As<IValidator<CourseAggregates.Course>>();
             containerBuilder.RegisterType<LearningActivityPublishValidator>().As<IValidator<CourseLearningActivity>>();
 
 		    RegisterMappings();

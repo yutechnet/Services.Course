@@ -2,7 +2,7 @@
 using AutoMapper;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
-using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
 using Moq;
 using NUnit.Framework;
 using Services.Assessment.Contract;
@@ -12,7 +12,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
     [TestFixture]
     public class LearningMaterialTests
     {
-        private Domain.Courses.Course _course;
+        private Domain.CourseAggregates.Course _course;
         private CourseSegment _courseSegment;
         private LearningMaterial _learningMaterial;
         private Guid _assessmentId;
@@ -25,7 +25,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         {
             Mapper.CreateMap<LearningMaterialRequest, LearningMaterial>();
             _mockAssessmentClient = new Mock<IAssessmentClient>();
-            _course = new Domain.Courses.Course();
+            _course = new Domain.CourseAggregates.Course();
             _courseSegment = _course.AddSegment(new SaveCourseSegmentRequest { });
             _learningMaterial = _courseSegment.AddLearningMaterial(new LearningMaterialRequest());
             _assessmentId = Guid.NewGuid();

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
 using Moq;
 using NUnit.Framework;
 using Services.Assessment.Contract;
@@ -15,7 +15,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
     [TestFixture]
     public class LearningActivityAssessmentTests
     {
-        private Domain.Courses.Course _course;
+        private Domain.CourseAggregates.Course _course;
         private CourseSegment _courseSegment;
         private CourseLearningActivity _learningActivity;
         private Guid _assessmentId;
@@ -23,7 +23,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [SetUp]
         public void SetUp()
         {
-            _course = new Domain.Courses.Course();
+            _course = new Domain.CourseAggregates.Course();
             _courseSegment = _course.AddSegment(new SaveCourseSegmentRequest());
             _learningActivity = _course.AddLearningActivity(_courseSegment.Id, new SaveCourseLearningActivityRequest { AssessmentType = "Custom" });
             _assessmentId = Guid.NewGuid();

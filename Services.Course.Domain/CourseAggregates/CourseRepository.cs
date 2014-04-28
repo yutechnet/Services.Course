@@ -6,7 +6,7 @@ using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.NHibernate;
 using NHibernate.Criterion;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
     [Validate]
     public class CourseRepository : ICourseRepository
@@ -18,9 +18,9 @@ namespace BpeProducts.Services.Course.Domain.Courses
             _repository = repository;
         }
 
-        public Courses.Course Get(Guid courseId)
+        public Course Get(Guid courseId)
         {
-            var course = _repository.Get<Courses.Course>(courseId);
+            var course = _repository.Get<Course>(courseId);
             return course;
         }
 
@@ -40,19 +40,19 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return learningMaterial;
         }
 
-        public IEnumerable<Courses.Course> GetPublishedCourses(Guid organizationId)
+        public IEnumerable<Course> GetPublishedCourses(Guid organizationId)
         {
             return
-                _repository.Query<Courses.Course>()
+                _repository.Query<Course>()
                            .Where(c => c.ActiveFlag == true && c.IsPublished && c.OrganizationId == organizationId).AsEnumerable();
         }
 
-        public IList<Courses.Course> Get(List<Guid> ids)
+        public IList<Course> Get(List<Guid> ids)
         {
-            var courses = new List<Courses.Course>();
+            var courses = new List<Course>();
             foreach (var id in ids)
             {
-                var course = _repository.Get<Courses.Course>(id);
+                var course = _repository.Get<Course>(id);
 
                 if (course == null)
                     throw new BadRequestException(string.Format("Course {0} does not exist", id));
@@ -63,7 +63,7 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return courses;
         }
 
-        public Courses.Course GetOrThrow(Guid courseId)
+        public Course GetOrThrow(Guid courseId)
         {
             var course = Get(courseId);
 
@@ -75,33 +75,32 @@ namespace BpeProducts.Services.Course.Domain.Courses
             return course;
         }
 
-        public void Save(Courses.Course course)
+        public void Save(Course course)
         {
             _repository.SaveOrUpdate(course);
         }
 
-        public void Delete(Courses.Course course)
+        public void Delete(Course course)
         {
             course.ActiveFlag = false;
             _repository.SaveOrUpdate(course);
         }
 
-        public Courses.Course GetVersion(Guid originalEntityId, string versionNumber)
+        public Course GetVersion(Guid originalEntityId, string versionNumber)
         {
-            var version = (from c in _repository.Query<Courses.Course>()
+            var version = (from c in _repository.Query<Course>()
                            where c.OriginalEntity.Id == originalEntityId && c.VersionNumber == versionNumber
                            select c).FirstOrDefault();
 
             return version;
         }
 
-        public IList<Courses.Course> ODataQuery(string queryString)
+        public IList<Course> ODataQuery(string queryString)
         {
-
-            var criteria = _repository.ODataQuery<Courses.Course>(queryString);
+            var criteria = _repository.ODataQuery<Course>(queryString);
             criteria.Add(Restrictions.Eq("ActiveFlag", true));
 
-            var courses = criteria.List<Courses.Course>();
+            var courses = criteria.List<Course>();
 
             return courses;
         }

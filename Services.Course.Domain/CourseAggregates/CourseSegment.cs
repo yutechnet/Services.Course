@@ -10,7 +10,7 @@ using Castle.Core.Internal;
 using Newtonsoft.Json;
 using Services.Assessment.Contract;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
     public class CourseSegment : TenantEntity
     {

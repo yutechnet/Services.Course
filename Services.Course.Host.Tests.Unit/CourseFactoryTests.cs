@@ -6,8 +6,8 @@ using Autofac.Extras.Moq;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
-using BpeProducts.Services.Course.Domain.Courses;
-using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
+using BpeProducts.Services.Course.Domain.ProgramAggregates;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
@@ -41,7 +41,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     TenantId = 999999
                 };
 
-            Domain.Courses.Course course = factory.BuildFromScratch(request);
+            Domain.CourseAggregates.Course course = factory.BuildFromScratch(request);
             Assert.That(course.Code, Is.EqualTo(request.Code));
             Assert.That(course.Name, Is.EqualTo(request.Name));
             Assert.That(course.Description, Is.EqualTo(request.Description));
@@ -62,7 +62,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             // Mock<IGraphValidator> graphValidator = autoMock.Mock<IGraphValidator>();
             var factory = autoMock.Create<TestCourseFactory>();
 
-            var template = new Domain.Courses.Course
+            var template = new Domain.CourseAggregates.Course
                 {
                     Id = Guid.NewGuid(),
                     Code = "SomeCode",
@@ -107,7 +107,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     OrganizationId = Guid.NewGuid()
                 };
 
-            Domain.Courses.Course course = factory.BuildFromTemplate(template, request);
+            Domain.CourseAggregates.Course course = factory.BuildFromTemplate(template, request);
 
             var actualSegmentWithLearningMaterials = course.Segments.FirstOrDefault(s => s.LearningMaterials.Count > 0);
             if (actualSegmentWithLearningMaterials != null)
@@ -158,12 +158,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
         }
 
-        public new Domain.Courses.Course BuildFromTemplate(Domain.Courses.Course template, CreateCourseFromTemplateRequest request)
+        public new Domain.CourseAggregates.Course BuildFromTemplate(Domain.CourseAggregates.Course template, CreateCourseFromTemplateRequest request)
         {
             return base.BuildFromTemplate(template, request);
         }
 
-        public new Domain.Courses.Course BuildFromScratch(SaveCourseRequest request)
+        public new Domain.CourseAggregates.Course BuildFromScratch(SaveCourseRequest request)
         {
             return base.BuildFromScratch(request);
         }

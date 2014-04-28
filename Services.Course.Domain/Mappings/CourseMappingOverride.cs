@@ -4,9 +4,9 @@ using FluentNHibernate.Mapping;
 
 namespace BpeProducts.Services.Course.Domain.Mappings
 {
-    public class CourseMappingOverride : IAutoMappingOverride<Courses.Course>
+    public class CourseMappingOverride : IAutoMappingOverride<CourseAggregates.Course>
     {
-        public void Override(AutoMapping<Courses.Course> mapping)
+        public void Override(AutoMapping<CourseAggregates.Course> mapping)
         {
 
             mapping.Map(x => x.Name).Access.CamelCaseField(Prefix.Underscore);
@@ -15,8 +15,8 @@ namespace BpeProducts.Services.Course.Domain.Mappings
             mapping.Map(x => x.CourseType).Access.CamelCaseField(Prefix.Underscore);
             mapping.Map(x => x.Credit).Access.CamelCaseField(Prefix.Underscore);
             
-            mapping.References<Courses.Course>(c => c.OriginalEntity);
-            mapping.References<Courses.Course>(c => c.ParentEntity);
+            mapping.References<CourseAggregates.Course>(c => c.OriginalEntity);
+            mapping.References<CourseAggregates.Course>(c => c.ParentEntity);
 
             mapping.Id(x => x.Id).GeneratedBy.Assigned();
 

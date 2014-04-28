@@ -7,7 +7,7 @@ using Autofac.Extras.Moq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Courses;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
 using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
@@ -54,7 +54,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_create_course_from_template()
         {
-            var template = new Domain.Courses.Course
+            var template = new Domain.CourseAggregates.Course
                 {
                     Code = "123ABC",
                     Description = "template description",
@@ -107,7 +107,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         [Test]
         public void Can_take_values_from_template_when_request_does_not_includ_them()
         {
-            var template = new Domain.Courses.Course
+            var template = new Domain.CourseAggregates.Course
             {
                 Code = "123ABC",
                 Description = "template description",

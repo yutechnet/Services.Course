@@ -6,14 +6,14 @@ using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.ProgramAggregates;
 using BpeProducts.Services.Course.Domain.Validation;
 using BpeProducts.Services.Section.Contracts;
 using Castle.Core.Internal;
 using Newtonsoft.Json;
 using Services.Assessment.Contract;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
     public class Course : VersionableEntity, IValidatable<Course>
     {

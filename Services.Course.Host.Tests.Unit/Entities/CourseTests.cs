@@ -7,8 +7,8 @@ using AutoMapper;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
-using BpeProducts.Services.Course.Domain.Courses;
-using BpeProducts.Services.Course.Domain.Entities;
+using BpeProducts.Services.Course.Domain.CourseAggregates;
+using BpeProducts.Services.Course.Domain.ProgramAggregates;
 using Castle.Core.Internal;
 using Moq;
 using NUnit.Framework;
@@ -721,7 +721,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         public void Can_update_course_learning_material_to_course()
         {
 
-            Mapper.CreateMap<UpdateLearningMaterialRequest, Domain.Courses.LearningMaterial>();
+            Mapper.CreateMap<UpdateLearningMaterialRequest, LearningMaterial>();
 
             var course = GetCourse();
 
@@ -799,10 +799,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 .FirstOrDefault();
         }
 
-        Domain.Courses.Course GetCourse()
+        Domain.CourseAggregates.Course GetCourse()
         {
             var amoq = AutoMock.GetLoose();
-            var course = amoq.Create<Domain.Courses.Course>();
+            var course = amoq.Create<Domain.CourseAggregates.Course>();
             course.OrganizationId = Guid.NewGuid();
             course.TenantId = 999999;
             return course;

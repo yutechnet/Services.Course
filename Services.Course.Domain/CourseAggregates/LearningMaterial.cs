@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
-using BpeProducts.Services.Asset.Contracts;
 using Services.Assessment.Contract;
 
-namespace BpeProducts.Services.Course.Domain.Courses
+namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
     public class LearningMaterial : TenantEntity
     {
