@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BpeProducts.Services.Course.Domain.CourseAggregates.Course">
+    <Position X="3.5" Y="1" Width="3.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AGAIIAEABEi4BAINBOkiADUoACEwAAAgAGAAABwgARA=</HashCode>
+      <FileName>CourseAggregates\Course.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="LearningMaterials" />
+      <Property Name="Segments" />
+      <Property Name="Prerequisites" />
+      <Property Name="Programs" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BpeProducts.Services.Course.Domain.CourseAggregates.CourseLearningActivity">
+    <Position X="10.5" Y="2.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAQAAAAAAACkBCQAIABEAASAACACAAAgAQAAIAAAAAA=</HashCode>
+      <FileName>CourseAggregates\CourseLearningActivity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BpeProducts.Services.Course.Domain.CourseAggregates.CourseSegment">
+    <Position X="7.75" Y="2.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ggIAQAAAEAA0BAAYAIBAAAQgQAEiAAAAAUAgAgAgAAA=</HashCode>
+      <FileName>CourseAggregates\CourseSegment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ParentSegment" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="CourseLearningActivities" />
+      <Property Name="ChildSegments" />
+      <Property Name="LearningMaterials" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BpeProducts.Services.Course.Domain.CourseAggregates.LearningMaterial">
+    <Position X="2.5" Y="4.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAEBAAAAIAAAAAgAggIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CourseAggregates\LearningMaterial.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CourseSegment" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BpeProducts.Services.Course.Domain.ProgramAggregates.Program">
+    <Position X="0.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAgAAAAAAAAAAQAAQAAAAAAAAAIABAAAAA=</HashCode>
+      <FileName>ProgramAggregates\Program.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Courses" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
