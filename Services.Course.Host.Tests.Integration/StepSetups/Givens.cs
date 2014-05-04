@@ -143,12 +143,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             foreach (var row in table.Rows)
             {
+                var graduationRequirements = "";
+                row.TryGetValue("GraduationRequirements", out graduationRequirements);
                 var saveProgramRequest = new SaveProgramRequest
                 {
                     Description = row["Description"],
                     Name = row["Name"],
                     ProgramType = row["ProgramType"],
                     OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id,
+                    GraduationRequirements = graduationRequirements
                 };
 
                 var result = PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);

@@ -6,31 +6,34 @@ Feature: ProgramCreation
 
 Scenario: Create a basic program
 	Given I have the following programs
-	| Name                | Description | ProgramType | OrganizationName |
-	| Bachelor of Science | Economics   | MA          | Default          |
+	| Name                | Description | ProgramType | OrganizationName | GraduationRequirements |
+	| Bachelor of Science | Economics   | MA          | Default          | requirement one        |
 	Then the program 'Bachelor of Science' contains
-	| Field          | Value                                |
-	| Name           | Bachelor of Science                  |
-	| Description    | Economics                            |
-	| ProgramType    | MA                                   |
-	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Field                  | Value                                |
+	| Name                   | Bachelor of Science                  |
+	| Description            | Economics                            |
+	| ProgramType            | MA                                   |
+	| OrganizationId         | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| GraduationRequirements | requirement one                      |
 
 Scenario: Modify a program
 	Given I have the following programs
-	| Name                | Description | ProgramType | OrganizationName |
-	| Bachelor of Science | Economics   | MA          | Default          |
+	| Name                | Description | ProgramType | OrganizationName | GraduationRequirements |
+	| Bachelor of Science | Economics   | MA          | Default          | requirement one        |
 	When I modify the program 'Bachelor of Science' info to reflect the following
-	| Field          | Value                                |
-	| Name           | Bachelor of Arts                     |
-	| Description    | English                              |
-	| ProgramType    | BA                                   |
-	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Field                  | Value                                |
+	| Name                   | Bachelor of Arts                     |
+	| Description            | English                              |
+	| ProgramType            | BA                                   |
+	| OrganizationId         | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| GraduationRequirements | requirement one update               |
 	Then the program 'Bachelor of Science' contains
-	| Field          | Value                                |
-	| Name           | Bachelor of Arts                     |
-	| Description    | English                              |
-	| ProgramType    | BA                                   |
-	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Field                  | Value                                |
+	| Name                   | Bachelor of Arts                     |
+	| Description            | English                              |
+	| ProgramType            | BA                                   |
+	| OrganizationId         | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| GraduationRequirements | requirement one update               |
 
 Scenario: Delete a program
 	Given I have the following programs
@@ -42,13 +45,13 @@ Scenario: Delete a program
 
 Scenario: Get all programs
 	Given I have the following programs
-	| Name                | Description | ProgramType | OrganizationName |
-	| Bachelor of Science | Economics   | MA          | Default          |
-	| Bachelor of Arts    | Philosophy  | AA          | Default          |
+	| Name                | Description | ProgramType | OrganizationName | GraduationRequirements |
+	| Bachelor of Science | Economics   | MA          | Default          | requirement one        |
+	| Bachelor of Arts    | Philosophy  | AA          | Default          |                        |
 	Then I have the following programs
-	| Name                | Description | ProgramType | OrganizationName |
-	| Bachelor of Science | Economics   | MA          | Default          |
-	| Bachelor of Arts    | Philosophy  | AA          | Default          |
+	| Name                | Description | ProgramType | OrganizationName | GraduationRequirements |
+	| Bachelor of Science | Economics   | MA          | Default          | requirement one        |
+	| Bachelor of Arts    | Philosophy  | AA          | Default          |                        |
 
 Scenario: Unable to create program due to missing info
 	When I attempt to create the following programs

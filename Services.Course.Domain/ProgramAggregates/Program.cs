@@ -20,6 +20,8 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         [NotNullable]
         public virtual string ProgramType { get; set; }
 
+        public virtual string GraduationRequirements { get; set; }
+
         public virtual IList<CourseAggregates.Course> Courses
         {
             get { return _courses; }
