@@ -598,7 +598,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
-        [When(@"the section service returns '(.*)'")]
+        [When(@"The section service returns '(.*)'")]
         public void WhenTheSectionServiceReturns(string statusCode)
         {
             var uri = new Uri("http://mockedlocation/");
