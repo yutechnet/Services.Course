@@ -53,11 +53,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Account
                 var capabilityName = row["Capability"];
                 var objectType = row["ObjectType"];
                 var objectName = row["ObjectName"];
+                if (!string.IsNullOrWhiteSpace(capabilityName))
+                {
+                    var capability = (Capability)Enum.Parse(typeof(Capability), capabilityName);
+                    var resource = ResourceFactory.Get(objectType, objectName);
 
-                var capability = (Capability)Enum.Parse(typeof(Capability), capabilityName);
-                var resource = ResourceFactory.Get(objectType, objectName);
-
-                ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>(), resource.Id, (int)capability)).Returns(true);
+                    ApiFeature.MockAclClient.Setup(a => a.HasAccess(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>(), resource.Id, (int)capability)).Returns(true);
+                }
             }
         }
 

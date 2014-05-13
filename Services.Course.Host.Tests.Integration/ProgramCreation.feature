@@ -4,6 +4,12 @@ Feature: ProgramCreation
 	As a program builder
 	I want to create, edit and delete a program
 
+Background: 
+Given I have the following capabilities
+| Capability  |
+| EditProgram |
+| ViewProgram |
+
 Scenario: Create a basic program
 	Given I have the following programs
 	| Name                | Description | ProgramType | OrganizationName | GraduationRequirements |

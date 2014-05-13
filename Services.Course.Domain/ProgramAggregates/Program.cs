@@ -6,7 +6,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
 {
 	//[JsonObject(MemberSerialization.Fields)]
 	//[Serializable]
-    public class Program : TenantEntity
+    public class Program : OrganizationEntity
     {
         private IList<CourseAggregates.Course> _courses = new List<CourseAggregates.Course>();
 
@@ -14,8 +14,6 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         public virtual string Name { get; set; }
 
         public virtual string Description { get; set; }
-
-        public virtual Guid OrganizationId { get; set; }
 
         [NotNullable]
         public virtual string ProgramType { get; set; }

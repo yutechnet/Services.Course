@@ -46,7 +46,7 @@ namespace BpeProducts.Services.Course.Domain
 
 			containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
 			containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>().EnableInterfaceInterceptors().EnableAuthorization();
-			containerBuilder.RegisterType<ProgramService>().As<IProgramService>();
+            containerBuilder.RegisterType<ProgramService>().As<IProgramService>().EnableInterfaceInterceptors().EnableAuthorization();
 			containerBuilder.RegisterType<VersionableEntityFactory>().As<IVersionableEntityFactory>();
 
             containerBuilder.RegisterType<CoursePublisher>().As<ICoursePublisher>();

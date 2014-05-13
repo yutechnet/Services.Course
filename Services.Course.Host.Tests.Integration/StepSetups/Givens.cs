@@ -139,6 +139,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         }
 
         [Given(@"I have the following programs")]
+        [When(@"I create the following programs")]
         public void GivenIHaveTheFollowingPrograms(Table table)
         {
             foreach (var row in table.Rows)
@@ -155,7 +156,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 };
 
                 var result = PostOperations.CreateProgram(saveProgramRequest.Name, saveProgramRequest);
-                result.EnsureSuccessStatusCode();
+                //result.EnsureSuccessStatusCode();
             }
         }
 

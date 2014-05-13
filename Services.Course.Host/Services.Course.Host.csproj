@@ -100,9 +100,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.WebApi.3.0.907\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Services.Authorization.Contract, Version=0.1.604.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Services.Authorization.Contract, Version=0.1.630.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.604\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.630\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Section.Contracts, Version=0.1.517.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

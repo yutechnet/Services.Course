@@ -9,10 +9,12 @@ Background:
 	| Name |
 	| COB  |
 	And I have the following capabilities
-	| Capability   |
+	| Capability    |
 	| CourseCreate  |
 	| CoursePublish |
 	| CourseView    |
+	| EditProgram   |
+	| ViewProgram   |
 	And I have the following programs
 	| Name                | Description | ProgramType | OrganizationName |
 	| Bachelor of Art     | BA Program  | BA          | COB              |

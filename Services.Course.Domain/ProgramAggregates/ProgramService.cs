@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
+using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 using NHibernate;
 using NHibernate.Criterion;
@@ -19,6 +21,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             _repository = repository;
         }
 
+        [AuthByAcl(Capability = Capability.ViewProgram, ObjectId = "programId", ObjectType = typeof(Program))]
         public ProgramResponse Search(Guid programId)
         {
             var program = _repository.Get<Program>(programId);
@@ -43,6 +46,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             return programResponses;
         }
 
+        [AuthByAcl(Capability = Capability.EditProgram, OrganizationObject = "request")]
         public ProgramResponse Create(SaveProgramRequest request)
         {
             var program = Mapper.Map<Program>(request);
@@ -50,6 +54,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             return Mapper.Map<ProgramResponse>(program);
         }
 
+        [AuthByAcl(Capability = Capability.EditProgram, ObjectId = "programId", ObjectType = typeof(Program))]
         public void Update(Guid programId, UpdateProgramRequest request)
         {
             var program = _repository.Get<Program>(programId);
@@ -62,6 +67,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             _repository.Save(program);
         }
 
+        [AuthByAcl(Capability = Capability.EditProgram, ObjectId = "programId", ObjectType = typeof(Program))]
         public void Delete(Guid programId)
         {
             var program = _repository.Get<Program>(programId);

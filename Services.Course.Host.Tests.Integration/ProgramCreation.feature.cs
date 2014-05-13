@@ -67,49 +67,66 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 7
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Capability"});
+            table1.AddRow(new string[] {
+                        "EditProgram"});
+            table1.AddRow(new string[] {
+                        "ViewProgram"});
+#line 8
+testRunner.Given("I have the following capabilities", ((string)(null)), table1, "Given ");
+#line hidden
+        }
+        
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Create a basic program")]
         public virtual void CreateABasicProgram()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a basic program", ((string[])(null)));
-#line 7
+#line 13
 this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
                         "ProgramType",
                         "OrganizationName",
                         "GraduationRequirements"});
-            table1.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "Bachelor of Science",
                         "Economics",
                         "MA",
                         "Default",
                         "requirement one"});
-#line 8
- testRunner.Given("I have the following programs", ((string)(null)), table1, "Given ");
+#line 14
+ testRunner.Given("I have the following programs", ((string)(null)), table2, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table2.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Name",
                         "Bachelor of Science"});
-            table2.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "Description",
                         "Economics"});
-            table2.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "ProgramType",
                         "MA"});
-            table2.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "OrganizationId",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-            table2.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         "GraduationRequirements",
                         "requirement one"});
-#line 11
- testRunner.Then("the program \'Bachelor of Science\' contains", ((string)(null)), table2, "Then ");
+#line 17
+ testRunner.Then("the program \'Bachelor of Science\' contains", ((string)(null)), table3, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -119,44 +136,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ModifyAProgram()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Modify a program", ((string[])(null)));
-#line 19
+#line 25
 this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
                         "ProgramType",
                         "OrganizationName",
                         "GraduationRequirements"});
-            table3.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "Bachelor of Science",
                         "Economics",
                         "MA",
                         "Default",
                         "requirement one"});
-#line 20
- testRunner.Given("I have the following programs", ((string)(null)), table3, "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Field",
-                        "Value"});
-            table4.AddRow(new string[] {
-                        "Name",
-                        "Bachelor of Arts"});
-            table4.AddRow(new string[] {
-                        "Description",
-                        "English"});
-            table4.AddRow(new string[] {
-                        "ProgramType",
-                        "BA"});
-            table4.AddRow(new string[] {
-                        "OrganizationId",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-            table4.AddRow(new string[] {
-                        "GraduationRequirements",
-                        "requirement one update"});
-#line 23
- testRunner.When("I modify the program \'Bachelor of Science\' info to reflect the following", ((string)(null)), table4, "When ");
+#line 26
+ testRunner.Given("I have the following programs", ((string)(null)), table4, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
@@ -176,8 +174,29 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "GraduationRequirements",
                         "requirement one update"});
-#line 30
- testRunner.Then("the program \'Bachelor of Science\' contains", ((string)(null)), table5, "Then ");
+#line 29
+ testRunner.When("I modify the program \'Bachelor of Science\' info to reflect the following", ((string)(null)), table5, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table6.AddRow(new string[] {
+                        "Name",
+                        "Bachelor of Arts"});
+            table6.AddRow(new string[] {
+                        "Description",
+                        "English"});
+            table6.AddRow(new string[] {
+                        "ProgramType",
+                        "BA"});
+            table6.AddRow(new string[] {
+                        "OrganizationId",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+            table6.AddRow(new string[] {
+                        "GraduationRequirements",
+                        "requirement one update"});
+#line 36
+ testRunner.Then("the program \'Bachelor of Science\' contains", ((string)(null)), table6, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -187,26 +206,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeleteAProgram()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete a program", ((string[])(null)));
-#line 38
+#line 44
 this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
                         "ProgramType",
                         "OrganizationName"});
-            table6.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "Bachelor of Science",
                         "Economics",
                         "BA",
                         "Default"});
-#line 39
- testRunner.Given("I have the following programs", ((string)(null)), table6, "Given ");
-#line 42
+#line 45
+ testRunner.Given("I have the following programs", ((string)(null)), table7, "Given ");
+#line 48
  testRunner.When("I delete the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 43
+#line 49
  testRunner.And("I get the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 50
  testRunner.Then("I get \'NotFound\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -217,29 +238,10 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void GetAllPrograms()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get all programs", ((string[])(null)));
-#line 46
+#line 52
 this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "ProgramType",
-                        "OrganizationName",
-                        "GraduationRequirements"});
-            table7.AddRow(new string[] {
-                        "Bachelor of Science",
-                        "Economics",
-                        "MA",
-                        "Default",
-                        "requirement one"});
-            table7.AddRow(new string[] {
-                        "Bachelor of Arts",
-                        "Philosophy",
-                        "AA",
-                        "Default",
-                        ""});
-#line 47
- testRunner.Given("I have the following programs", ((string)(null)), table7, "Given ");
+#line 7
+this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -259,8 +261,29 @@ this.ScenarioSetup(scenarioInfo);
                         "AA",
                         "Default",
                         ""});
-#line 51
- testRunner.Then("I have the following programs", ((string)(null)), table8, "Then ");
+#line 53
+ testRunner.Given("I have the following programs", ((string)(null)), table8, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "ProgramType",
+                        "OrganizationName",
+                        "GraduationRequirements"});
+            table9.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "Economics",
+                        "MA",
+                        "Default",
+                        "requirement one"});
+            table9.AddRow(new string[] {
+                        "Bachelor of Arts",
+                        "Philosophy",
+                        "AA",
+                        "Default",
+                        ""});
+#line 57
+ testRunner.Then("I have the following programs", ((string)(null)), table9, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -270,35 +293,37 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UnableToCreateProgramDueToMissingInfo()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unable to create program due to missing info", ((string[])(null)));
-#line 56
+#line 62
 this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
                         "ProgramType",
                         "OrganizationName"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "Bachelor of Science",
                         "",
                         "MA",
                         "Default"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "",
                         "Economics",
                         "MA",
                         "Default"});
-#line 57
- testRunner.When("I attempt to create the following programs", ((string)(null)), table9, "When ");
+#line 63
+ testRunner.When("I attempt to create the following programs", ((string)(null)), table10, "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "StatusCode"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "BadRequest"});
-            table10.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "BadRequest"});
-#line 61
- testRunner.Then("I get the following responses", ((string)(null)), table10, "Then ");
+#line 67
+ testRunner.Then("I get the following responses", ((string)(null)), table11, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -308,45 +333,47 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SearchForPrograms()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search for programs", ((string[])(null)));
-#line 66
+#line 72
 this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Description",
-                        "ProgramType",
-                        "OrganizationName"});
-            table11.AddRow(new string[] {
-                        "Bachelor of Science",
-                        "Economics",
-                        "MA",
-                        "Default"});
-            table11.AddRow(new string[] {
-                        "Bachelor of Art",
-                        "Art program",
-                        "BA",
-                        "Default"});
-#line 67
- testRunner.Given("I have the following programs", ((string)(null)), table11, "Given ");
+#line 7
+this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Description",
                         "ProgramType",
-                        "OrganizationId"});
+                        "OrganizationName"});
             table12.AddRow(new string[] {
                         "Bachelor of Science",
                         "Economics",
                         "MA",
-                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+                        "Default"});
             table12.AddRow(new string[] {
                         "Bachelor of Art",
                         "Art program",
                         "BA",
+                        "Default"});
+#line 73
+ testRunner.Given("I have the following programs", ((string)(null)), table12, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "ProgramType",
+                        "OrganizationId"});
+            table13.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "Economics",
+                        "MA",
                         "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
-#line 71
+            table13.AddRow(new string[] {
+                        "Bachelor of Art",
+                        "Art program",
+                        "BA",
+                        "E2DF063D-E2A1-4F83-9BE0-218EC676C05F"});
+#line 77
  testRunner.Then("the organization with \'E2DF063D-E2A1-4F83-9BE0-218EC676C05F\' id has the following" +
-                    " programs", ((string)(null)), table12, "Then ");
+                    " programs", ((string)(null)), table13, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

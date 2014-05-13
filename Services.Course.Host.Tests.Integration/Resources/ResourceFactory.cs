@@ -17,6 +17,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Resources
             {
                 case "course":
                     return Resources<CourseResource>.Get(resourceName);
+                case "program":
+                    return Resources<ProgramResource>.Get(resourceName);
             }
 
             throw new ApplicationException(string.Format("Unknow Resource type '{0}'. Add a case statement to the factory.", resourceType));
