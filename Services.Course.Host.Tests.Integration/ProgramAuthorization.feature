@@ -1,8 +1,9 @@
 ﻿@Api
 Feature: ProgramAuthorization
-	In order to avoid silly mistakes
-	As a math idiot
-	I want to be told the sum of two numbers
+	In order to perform CRUD on program, 
+	I would need to have the required permission
+	Create/Edit/Delete - requires EditProgram capability
+	View - requires ViewProgram capability
 
 Scenario Outline: I can not create a program unless I have permission to do so.
 	Given I have the '<Capability>' capability

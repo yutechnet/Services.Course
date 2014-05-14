@@ -33,8 +33,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ProgramAuthorization", "In order to avoid silly mistakes\r\nAs a math idiot\r\nI want to be told the sum of t" +
-                    "wo numbers", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ProgramAuthorization", "In order to perform CRUD on program, \r\nI would need to have the required permissi" +
+                    "on\r\nCreate/Edit/Delete - requires EditProgram capability\r\nView - requires ViewPr" +
+                    "ogram capability", ProgrammingLanguage.CSharp, new string[] {
                         "Api"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -74,9 +75,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public virtual void ICanNotCreateAProgramUnlessIHavePermissionToDoSo_(string capability, string statusCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not create a program unless I have permission to do so.", exampleTags);
-#line 7
-this.ScenarioSetup(scenarioInfo);
 #line 8
+this.ScenarioSetup(scenarioInfo);
+#line 9
  testRunner.Given(string.Format("I have the \'{0}\' capability", capability), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -91,9 +92,9 @@ this.ScenarioSetup(scenarioInfo);
                         "MA",
                         "Default",
                         "requirement one"});
-#line 9
+#line 10
  testRunner.When("I create the following programs", ((string)(null)), table1, "When ");
-#line 12
+#line 13
  testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -106,9 +107,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ICanViewAProgramWhenIDoHavePermission_(string capability, string statusCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can view a program when I do have permission.", exampleTags);
-#line 18
-this.ScenarioSetup(scenarioInfo);
 #line 19
+this.ScenarioSetup(scenarioInfo);
+#line 20
  testRunner.Given("I have the \'EditProgram\' capability", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -123,7 +124,7 @@ this.ScenarioSetup(scenarioInfo);
                         "MA",
                         "Default",
                         "requirement one"});
-#line 20
+#line 21
  testRunner.When("I create the following programs", ((string)(null)), table2, "When ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -134,11 +135,11 @@ this.ScenarioSetup(scenarioInfo);
                         "program",
                         "Bachelor of Science",
                         string.Format("{0}", capability)});
-#line 23
+#line 24
  testRunner.Given("I have the following object capabilities", ((string)(null)), table3, "Given ");
-#line 26
- testRunner.When("I get the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 27
+ testRunner.When("I get the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 28
  testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -151,9 +152,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ICanEditAProgramWhenIDoHavePermission_(string capability, string statusCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can edit a program when I do have permission.", exampleTags);
-#line 34
-this.ScenarioSetup(scenarioInfo);
 #line 35
+this.ScenarioSetup(scenarioInfo);
+#line 36
  testRunner.Given("I have the \'EditProgram\' capability", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -168,9 +169,9 @@ this.ScenarioSetup(scenarioInfo);
                         "MA",
                         "Default",
                         "requirement one"});
-#line 36
+#line 37
  testRunner.When("I create the following programs", ((string)(null)), table4, "When ");
-#line 39
+#line 40
  testRunner.When("I am \'TestUser1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -181,7 +182,7 @@ this.ScenarioSetup(scenarioInfo);
                         "program",
                         "Bachelor of Science",
                         string.Format("{0}", capability)});
-#line 40
+#line 41
  testRunner.Given("I have the following object capabilities", ((string)(null)), table5, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -202,9 +203,9 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "GraduationRequirements",
                         "requirement one update"});
-#line 43
+#line 44
  testRunner.When("I modify the program \'Bachelor of Science\' info to reflect the following", ((string)(null)), table6, "When ");
-#line 50
+#line 51
  testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -217,9 +218,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ICanDeleteAProgramWhenIDoHavePermission_(string capability, string statusCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can delete a program when I do have permission.", exampleTags);
-#line 56
-this.ScenarioSetup(scenarioInfo);
 #line 57
+this.ScenarioSetup(scenarioInfo);
+#line 58
  testRunner.Given("I have the \'EditProgram\' capability", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -234,9 +235,9 @@ this.ScenarioSetup(scenarioInfo);
                         "MA",
                         "Default",
                         "requirement one"});
-#line 58
+#line 59
  testRunner.When("I create the following programs", ((string)(null)), table7, "When ");
-#line 61
+#line 62
  testRunner.When("I am \'TestUser1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -247,11 +248,11 @@ this.ScenarioSetup(scenarioInfo);
                         "program",
                         "Bachelor of Science",
                         string.Format("{0}", capability)});
-#line 62
+#line 63
  testRunner.Given("I have the following object capabilities", ((string)(null)), table8, "Given ");
-#line 65
- testRunner.When("I delete the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 66
+ testRunner.When("I delete the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 67
  testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
