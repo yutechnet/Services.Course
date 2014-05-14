@@ -100,16 +100,16 @@ Then the course 'Course 4' should have these course segments
 
 Scenario: Verify outcomes are copied from course template
 When I associate the newly created learning outcomes to 'Template 1' course
-	| Description                    |
-	| first course learning outcome  |
-	| second course learning outcome |
+	| Title    | Description                    |
+	| Outcome1 | first course learning outcome  |
+	| Outcome2 | second course learning outcome |
 And I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description                   | OrganizationName | IsTemplate |
 	| Course 5 | CourseCode5 | My First Course from Template | COB              | false      |
 Then the course 'Template 1' should have the following learning outcomes
-	| Description                    | 
-	| first course learning outcome  | 
-	| second course learning outcome |
+	| Title    | Description                    |
+	| Outcome1 | first course learning outcome  |
+	| Outcome2 | second course learning outcome |
 
 Scenario: Publish a course version, created from a template
 	Given I associate 'Template 1' course with the following programs

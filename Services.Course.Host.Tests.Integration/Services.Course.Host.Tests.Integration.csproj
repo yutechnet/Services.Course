@@ -294,6 +294,7 @@
     </Compile>
     <Compile Include="Resources\Account\OrganizationResource.cs" />
     <Compile Include="Resources\Assessment\AssessmentResource.cs" />
+    <Compile Include="Resources\Assessment\IOutcomeInfoResource.cs" />
     <Compile Include="Resources\AssetResource.cs" />
     <Compile Include="Resources\LearningMaterialResource.cs" />
     <Compile Include="Resources\CourseLearningActivityResource.cs" />

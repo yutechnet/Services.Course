@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using Services.Assessment.Contract;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using BpeProducts.Common.WebApiTest.Framework;
@@ -167,6 +168,24 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var outcome = Resources<LearningOutcomeResource>.Get(row["Description"]);
 
                 PutOperations.ProgramSupportsLearningOutcome(program, outcome);
+            }
+        }
+
+        [When(@"I associate the newly created learning outcomes to '(.*)' course")]
+        public void WhenIAssociateTheNewlyCreatedLearningOutcomesToCourse(string courseName, Table table)
+        {
+            //var mockOutcomeResponse = new Mock<HttpResponseMessage>();
+            //mockOutcomeResponse.SetupSet(r => r.StatusCode = HttpStatusCode.Created).Verifiable();
+            foreach (var row in table.Rows)
+            {
+                var courseResource = Resources<CourseResource>.Get(courseName);
+
+                var mockOutcomeInfo = new Mock<IOutcomeInfoResource>();
+                mockOutcomeInfo.SetupGet(oi => oi.Title).Returns(row["Title"]).Verifiable();
+                mockOutcomeInfo.SetupGet(oi => oi.Description).Returns(row["Description"]).Verifiable();
+                var supportedOutcome = new OutcomeInfo() {Id = courseResource.Id};
+                mockOutcomeInfo.SetupGet(oi => oi.SupportedOutcomes).Returns(new List<OutcomeInfo>() {supportedOutcome}).Verifiable();
+                Resources<IOutcomeInfoResource>.Add(mockOutcomeInfo.Object.Description,mockOutcomeInfo.Object);
             }
         }
 

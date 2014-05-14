@@ -641,6 +641,25 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var response = ApiFeature.MockAssetClient.Object.GetAsset(asset.Id);
             Assert.That(response.IsPublished, Is.EqualTo(true));
         }
+
+        [Then(@"the course '(.*)' should have the following learning outcomes")]
+        public void ThenTheCourseShouldHaveTheFollowingLearningOutcomes(string courseName, Table table)
+        {
+            var courseResource = Resources<CourseResource>.Get(courseName);
+            foreach (var row in table.Rows)
+            {
+                var outcomeInfo = Resources<IOutcomeInfoResource>.Get(row["Description"]);
+                Assert.That(outcomeInfo, Is.Not.Null);
+                Assert.That(outcomeInfo.Title, Is.EqualTo(row["Title"]));
+                var supportedOutcomes = outcomeInfo.SupportedOutcomes;
+                Assert.That(supportedOutcomes.Count, Is.EqualTo(1));
+                foreach (var outcome in supportedOutcomes)
+                {
+                    Assert.That(outcome.Id,Is.EqualTo(courseResource.Id));
+                }
+            }
+        }
+
     }
 }
 
