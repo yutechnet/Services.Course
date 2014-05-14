@@ -24,7 +24,7 @@ Scenario: Can create a section from a course that is published
 	When I publish the following courses
          | Name     | Note      |
          | Math 101 | published |
-	And the section service returns 'Created'
+	And The section service returns 'Created'
 	And I create the following sections
 		| CourseName | Name     |  CourseCode  | SectionCode            | StartDate | EndDate   |
 		| Math 101   | Math 334 |  MATH334.ABC | MATH334.ABCSectionCode | 2/15/2014 | 6/15/2014 |
@@ -34,7 +34,7 @@ Scenario: Create a section from a course returns status of section service
 	When I publish the following courses
          | Name     | Note      |
          | Math 101 | published |
-	And the section service returns 'Forbidden'
+	And The section service returns 'Forbidden'
 	And I create the following sections
 		| CourseName | Name     |  CourseCode  | SectionCode            |  StartDate | EndDate   |
 		| Math 101   | Math 334 |  MATH334.ABC | MATH334.ABCSectionCode |  2/15/2014 | 6/15/2014 |
