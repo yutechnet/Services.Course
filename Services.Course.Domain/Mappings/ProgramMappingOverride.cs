@@ -14,6 +14,13 @@ namespace BpeProducts.Services.Course.Domain.Mappings
                 .ChildKeyColumn("CourseId")
                 .Table("CourseProgram")
                 .Inverse();
+
+            mapping.Map(x => x.Description)
+               .CustomType("StringClob")
+               .Column("Description");
+
+            mapping.Map(x => x.Name)
+                   .Length(250);
         }
     }
 }
