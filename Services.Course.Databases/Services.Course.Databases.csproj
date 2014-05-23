@@ -96,6 +96,7 @@
     <Content Include="Databases\Parabola\007-Add_CourseId_column_to_LearningMaterial.sql" />
     <Content Include="Databases\Parabola\008_Update_CourseSegmentId_to_null__in_LearningMaterial.sql" />
     <Content Include="Databases\Parabola\009-Add_GraduationRequirements_to_Program.sql" />
+    <Content Include="Databases\Parabola\011_Remove_Old_Unused_Calendar_Tables.sql" />
     <Content Include="ScriptReview\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
