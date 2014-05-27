@@ -5,7 +5,7 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
 using BpeProducts.Services.Course.Domain.ProgramAggregates;
 
-namespace BpeProducts.Services.Course.Host.App_Start
+namespace BpeProducts.Services.Course.Domain
 {
     public static class MapperConfiguration
     {

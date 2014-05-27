@@ -205,6 +205,7 @@
     <Compile Include="AssessmentClient.cs" />
     <Compile Include="AssetServiceClient.cs" />
     <Compile Include="ICourseLearningActivityService.cs" />
+    <Compile Include="MapperConfiguration.cs" />
     <Compile Include="SectionClient.cs" />
     <Compile Include="IVersionableEntityFactory.cs" />
     <Compile Include="CourseLearningActivityService.cs" />

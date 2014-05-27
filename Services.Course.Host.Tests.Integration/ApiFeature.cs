@@ -1,19 +1,12 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Autofac;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.WebApi.ApiKeys;
 using BpeProducts.Common.WebApiTest;
-using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using BpeProducts.Services.Section.Contracts;
 using Moq;
-using Services.Assessment.Contract;
-using BpeProducts.Services.Section.Contracts;
 using TechTalk.SpecFlow;
 using BpeProducts.Common.WebApiTest.Framework;
 

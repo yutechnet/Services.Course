@@ -16,7 +16,6 @@ namespace BpeProducts.Services.Course.Host
 
         public static void ConfigureWebApi(HttpConfiguration httpConfiguration, IContainer container)
         {
-            MapperConfiguration.Configure();
             AttributeRoutingHttpConfig.RegisterRoutes(httpConfiguration);
             Configuration.Configure(httpConfiguration, container);
         }
