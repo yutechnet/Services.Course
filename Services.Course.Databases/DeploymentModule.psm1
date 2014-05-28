@@ -105,14 +105,22 @@ function Deployment-UpdateConfigurationTransform
 function Deployment-UpdateDatabase
 {
 	param (
-		$release = $(Throw 'Release name required')
+		$release = $(Throw 'Release name required'),
+		$executionTimeout = $null
 	)
 	
 	$pinfo = New-Object System.Diagnostics.ProcessStartInfo
 	$pinfo.CreateNoWindow = $true
 	$pinfo.UseShellExecute = $false
 	$pinfo.FileName = ".\DatabaseTool\BpeProducts.Scm.DatabaseUpdater.exe"
-	$pinfo.Arguments = "--deploy --release=`"$release`""
+	if ($executionTimeout)
+	{
+		$pinfo.Arguments = "--deploy --release=`"$release`" --executionTimeout=`"$executionTimeout`""
+	}
+	else
+	{
+		$pinfo.Arguments = "--deploy --release=`"$release`""
+	}
 	$pinfo.RedirectStandardOutput = $true
 	$pinfo.RedirectStandardError = $true
 	Write-Host "$($pinfo.FileName) $($pinfo.Arguments)"

@@ -14,4 +14,11 @@ $PSScriptRoot = $MyInvocation.MyCommand.Path | Split-Path
 Import-Module -Name $PSScriptRoot\DeploymentModule.psm1 -Force
 
 # update database using DbUp
-Deployment-UpdateDatabase -Release $OctopusPackageNameAndVersion
+if ($SQLCommandTimeoutMinutes)
+{
+	Deployment-UpdateDatabase -Release $OctopusPackageNameAndVersion -ExecutionTimeout $SQLCommandTimeoutMinutes
+}
+else
+{
+	Deployment-UpdateDatabase -Release $OctopusPackageNameAndVersion
+}
