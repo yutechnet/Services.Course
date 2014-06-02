@@ -6,22 +6,26 @@ using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Contract.Events;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;
+using NServiceBus;
 
 namespace BpeProducts.Services.Course.Domain.ProgramAggregates
 {
     public class ProgramService : IProgramService
     {
         private readonly IRepository _repository;
+	    private readonly IBus _bus;
 
-        public ProgramService(IRepository repository)
+	    public ProgramService(IRepository repository,IBus bus)
         {
-            _repository = repository;
+	        _repository = repository;
+	        _bus = bus;
         }
 
-        [AuthByAcl(Capability = Capability.ViewProgram, ObjectId = "programId", ObjectType = typeof(Program))]
+	    [AuthByAcl(Capability = Capability.ViewProgram, ObjectId = "programId", ObjectType = typeof(Program))]
         public ProgramResponse Search(Guid programId)
         {
             var program = _repository.Get<Program>(programId);
@@ -51,6 +55,12 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         {
             var program = Mapper.Map<Program>(request);
             _repository.Save(program);
+			_bus.Publish(new ProgramCreated
+				{
+					Id=program.Id,
+					OrganizationId = program.OrganizationId,
+					Type="program"
+				});
             return Mapper.Map<ProgramResponse>(program);
         }
 
@@ -63,8 +73,15 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
             }
 
-            Mapper.Map(request, program);
             _repository.Save(program);
+			Mapper.Map(request, program);
+            
+			_bus.Publish(new ProgramCreated
+			{
+				Id = program.Id,
+				OrganizationId = program.OrganizationId,
+				Type = "program"
+			});
         }
 
         [AuthByAcl(Capability = Capability.EditProgram, ObjectId = "programId", ObjectType = typeof(Program))]
