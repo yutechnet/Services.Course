@@ -7,6 +7,7 @@ using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using System;
 using Moq;
+using NServiceBus;
 using TechTalk.SpecFlow;
 using BpeProducts.Common.WebApiTest.Framework;
 
@@ -40,6 +41,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public static Mock<IAssetServiceClient> MockAssetClient { get; private set; }
         public static Mock<IAssessmentClient> MockAssessmentClient { get; private set; }
         public static Mock<ITenantClient> MockTenantClient { get; private set; }
+		public static Mock<IBus> MockBus { get; private set; }
 
         static ApiFeature()
         {
@@ -88,6 +90,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             MockAssetClient = new Mock<IAssetServiceClient>();
             MockAssessmentClient = new Mock<IAssessmentClient>();
             MockTenantClient = new Mock<ITenantClient>();
+			MockBus=new Mock<IBus>();
             MockTenantClient.Setup(x => x.ApiKeyGet(It.IsAny<Guid>()))
                 .Returns(
                     Task.FromResult(new ApiKeyResponse
@@ -103,6 +106,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
             updater.RegisterInstance(MockAssetClient.Object).As<IAssetServiceClient>();
             updater.RegisterInstance(MockAssessmentClient.Object).As<IAssessmentClient>();
             updater.RegisterInstance(MockTenantClient.Object).As<ITenantClient>();
+			updater.RegisterInstance(MockBus.Object).As<IBus>();
             updater.Update(CourseTestHost.Container);
 
             //Some scenarios change the user, so make sure we set it to a know user for each scenario

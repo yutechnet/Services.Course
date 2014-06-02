@@ -6,7 +6,10 @@ using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
+using BpeProducts.Services.Course.Contract.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
+using NServiceBus;
+
 
 namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
@@ -17,15 +20,20 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 	    private readonly ICoursePublisher _coursePublisher;
         private readonly IAssessmentClient _assessmentClient;
         private readonly IProgramRepository _programRepository;
+	    private readonly IBus _bus;
 
-        public CourseService(ICourseFactory courseFactory, ICourseRepository courseRepository, 
-            ICoursePublisher coursePublisher, IAssessmentClient assessmentClient, IProgramRepository programRepository)
+	    public CourseService(ICourseFactory courseFactory, 
+			ICourseRepository courseRepository, 
+            ICoursePublisher coursePublisher, 
+			IAssessmentClient assessmentClient, 
+			IProgramRepository programRepository,IBus bus)
         {
             _courseFactory = courseFactory;
             _courseRepository = courseRepository;
 			_coursePublisher = coursePublisher;
 	        _assessmentClient = assessmentClient;
             _programRepository = programRepository;
+	        _bus = bus;
         }
 
 		[AuthByAcl(Capability = Capability.CourseCreate, OrganizationObject = "request")]
@@ -33,7 +41,13 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         {
             var course = _courseFactory.Build(request);
             _courseRepository.Save(course);
-
+			_bus.Publish(
+				new CourseCreated
+					{
+						Id=course.Id,
+						OrganizationId = course.OrganizationId,
+						Type="course"
+					});
 			return Mapper.Map<CourseInfoResponse>(course);
         }
 
@@ -42,7 +56,13 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         {
             var course = _courseFactory.Build(request);
             _courseRepository.Save(course);
-
+			_bus.Publish(
+				new CourseCreated
+				{
+					Id = course.Id,
+					OrganizationId = course.OrganizationId,
+					Type = "course"
+				});
             return Mapper.Map<CourseInfoResponse>(course);
         }
 
@@ -61,6 +81,14 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             course.SetPrograms(programs.ToList());
 
             _courseRepository.Save(course);
+
+			_bus.Publish(
+				new CourseUpdated
+				{
+					Id = course.Id,
+					OrganizationId = course.OrganizationId,
+					Type = "course"
+				});
         }
 
         [AuthByAcl(Capability = Capability.CourseView, ObjectId = "courseId", ObjectType = typeof(Course))]
