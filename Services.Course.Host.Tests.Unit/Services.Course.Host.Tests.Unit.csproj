@@ -56,29 +56,29 @@
     <Reference Include="AutoMapper.Net4">
       <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Contract, Version=3.0.952.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Contract, Version=3.0.954.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Contract.3.0.952\lib\net40\BpeProducts.Common.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Contract.3.0.954\lib\net40\BpeProducts.Common.Contract.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Exceptions, Version=3.0.952.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Exceptions, Version=3.0.954.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Exceptions.3.0.952\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Exceptions.3.0.954\lib\net40\BpeProducts.Common.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Ioc, Version=3.0.952.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Ioc, Version=3.0.954.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Ioc.3.0.952\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Ioc.3.0.954\lib\net40\BpeProducts.Common.Ioc.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Log, Version=3.0.952.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Log, Version=3.0.954.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Log.3.0.952\lib\net40\BpeProducts.Common.Log.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Log.3.0.954\lib\net40\BpeProducts.Common.Log.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.NHibernate, Version=3.0.952.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.NHibernate, Version=3.0.954.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.NHibernate.3.0.952\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.NHibernate.3.0.954\lib\net40\BpeProducts.Common.NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Redis, Version=3.0.952.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Redis, Version=3.0.954.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Redis.3.0.952\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Redis.3.0.954\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Asset.Contracts, Version=0.1.264.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
