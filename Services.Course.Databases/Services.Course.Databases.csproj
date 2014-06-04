@@ -56,6 +56,7 @@
     <Content Include="Databases\Parabola\placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Databases\Parabola\013-Add_IsActivated_to_Course.sql" />
     <Content Include="DatabaseTool\BpeProducts.Scm.DatabaseUpdater.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
