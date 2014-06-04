@@ -39,3 +39,11 @@ Scenario: Create a section from a course returns status of section service
 		| CourseName | Name     |  CourseCode  | SectionCode            |  StartDate | EndDate   |
 		| Math 101   | Math 334 |  MATH334.ABC | MATH334.ABCSectionCode |  2/15/2014 | 6/15/2014 |
 	Then I get 'Forbidden' response
+
+Scenario: Cannot create a section from a deactivated course
+	When I deactivate the course 'Math 101'
+	And I create the following sections
+		| CourseName | Name     |  CourseCode  | SectionCode            | StartDate | EndDate   |
+		| Math 101   | Math 334 |  MATH334.ABC | MATH334.ABCSectionCode | 2/15/2014 | 6/15/2014 |
+	Then I get 'BadRequest' response
+

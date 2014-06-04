@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Net.Http;
 using System.Web.Http;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.WebApi.NHibernate;
 using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
@@ -33,6 +34,11 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public HttpResponseMessage Post(Guid courseId, CourseSectionRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);
+            if (!course.IsActivated)
+            {
+                throw new BadRequestException(string.Format("Course {0} is deactivated and cannot be used to create a section.", courseId));
+            }
+
             var sectionRequest = course.GetSectionRequest(request,_assessmentClient);
 
             var response = _sectionClient.CreateSection(request.SectionServiceUri, sectionRequest);
