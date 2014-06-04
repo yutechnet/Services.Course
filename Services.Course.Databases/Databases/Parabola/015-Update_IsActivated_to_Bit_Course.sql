@@ -1,5 +1,5 @@
 ﻿IF EXISTS (Select 1 From INFORMATION_SCHEMA.COLUMNS c 
-			Where c.COLUMN_NAME = 'IsActivated' and c.TABLE_NAME = 'Course' AND IS_NULLABLE='Yes')
+			Where c.COLUMN_NAME = 'IsActivated' and c.TABLE_NAME = 'Course' AND IS_NULLABLE='YES')
 	BEGIN
 		RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
 		RAISERROR( 'CREATE BEGIN: Column (IsActivated) of Table (Course) being updated to null' , 0 , 1 )WITH NOWAIT;
