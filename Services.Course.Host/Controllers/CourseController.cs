@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
+using BpeProducts.Common.Contract;
 using BpeProducts.Common.WebApi.NHibernate;
 using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
@@ -126,5 +127,15 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		{
 			_courseService.PublishVersion(courseId, request.PublishNote);
 		}
+
+        [Transaction]
+		[ArgumentsNotNull]
+		[ValidateModelState]
+		[HttpPut]
+		[Route("course/{courseId:guid}/activate")]
+        public void UpdateActiviationStatus(Guid courseId, ActivationRequest request)
+        {
+            _courseService.UpdateActiviationStatus(courseId, request);
+        }
     }
 }

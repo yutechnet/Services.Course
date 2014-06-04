@@ -1,4 +1,5 @@
-﻿using BpeProducts.Common.WebApiTest.Framework;
+﻿using BpeProducts.Common.Contract;
+using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
 using System.Collections.Generic;
@@ -146,6 +147,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
         {
             var requestUri = learningMaterial.ResourceUri.ToString();
             return ApiFeature.CourseTestHost.Put(requestUri, request);
+        }
+
+        public static HttpResponseMessage UpdateActivationStatus(CourseResource courseResource, ActivationRequest activationRequest)
+        {
+            var requestUri = string.Format("{0}/activate", courseResource.ResourceUri);
+            return ApiFeature.CourseTestHost.Put(requestUri, activationRequest);
         }
     }
 }

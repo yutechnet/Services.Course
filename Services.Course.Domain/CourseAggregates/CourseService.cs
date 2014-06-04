@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using BpeProducts.Common.Authorization;
+using BpeProducts.Common.Contract;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
@@ -64,6 +65,13 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 					Type = "course"
 				});
             return Mapper.Map<CourseInfoResponse>(course);
+        }
+
+        public void UpdateActiviationStatus(Guid courseId, ActivationRequest request)
+        {
+            var course = _courseRepository.GetOrThrow(courseId);
+            course.UpdateActivationStatus(request);
+            _courseRepository.Save(course);
         }
 
         public void Update(Guid courseId, UpdateCourseRequest request)

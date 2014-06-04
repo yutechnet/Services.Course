@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BpeProducts.Common.Authorization;
+using BpeProducts.Common.Contract;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 
@@ -61,5 +62,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         [AuthByAcl(Capability = Capability.CourseCreate, OrganizationObject = "request")]
         CourseInfoResponse Create(CreateCourseFromTemplateRequest request);
+
+        void UpdateActiviationStatus(Guid courseId, ActivationRequest request);
     }
 }

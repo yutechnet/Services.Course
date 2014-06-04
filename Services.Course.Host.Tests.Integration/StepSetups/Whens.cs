@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Formatting;
 using BpeProducts.Common.Authorization;
+using BpeProducts.Common.Contract;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Common.WebApiTest;
 using BpeProducts.Common.WebApiTest.Extensions;
@@ -797,5 +798,32 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var testUserName = (TestUserName)Enum.Parse(typeof(TestUserName), userName);
             ApiFeature.CurrentTestUser = testUserName;
         }
+
+        [When(@"I deactivate the course '(.*)'")]
+        public void WhenIDeactivateTheCourse(string courseName)
+        {
+            var courseResource = Resources<CourseResource>.Get(courseName);
+
+            PutOperations.UpdateActivationStatus(courseResource,
+                                                 new ActivationRequest
+                                                     {
+                                                         EntityId = courseResource.Id,
+                                                         IsActivated = false
+                                                     });
+        }
+
+        [When(@"I activate the course '(.*)'")]
+        public void WhenIActivateTheCourse(string courseName)
+        {
+            var courseResource = Resources<CourseResource>.Get(courseName);
+
+            PutOperations.UpdateActivationStatus(courseResource,
+                                                 new ActivationRequest
+                                                 {
+                                                     EntityId = courseResource.Id,
+                                                     IsActivated = true
+                                                 });
+        }
+
     }
 }
