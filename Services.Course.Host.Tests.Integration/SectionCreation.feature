@@ -41,6 +41,9 @@ Scenario: Create a section from a course returns status of section service
 	Then I get 'Forbidden' response
 
 Scenario: Cannot create a section from a deactivated course
+	When I publish the following courses
+         | Name     | Note      |
+         | Math 101 | published |
 	When I deactivate the course 'Math 101'
 	And I create the following sections
 		| CourseName | Name     |  CourseCode  | SectionCode            | StartDate | EndDate   |

@@ -232,26 +232,35 @@ this.FeatureBackground();
 this.ScenarioSetup(scenarioInfo);
 #line 4
 this.FeatureBackground();
-#line 44
- testRunner.When("I deactivate the course \'Math 101\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table9.AddRow(new string[] {
+                        "Math 101",
+                        "published"});
+#line 44
+ testRunner.When("I publish the following courses", ((string)(null)), table9, "When ");
+#line 47
+ testRunner.When("I deactivate the course \'Math 101\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "CourseName",
                         "Name",
                         "CourseCode",
                         "SectionCode",
                         "StartDate",
                         "EndDate"});
-            table9.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "Math 101",
                         "Math 334",
                         "MATH334.ABC",
                         "MATH334.ABCSectionCode",
                         "2/15/2014",
                         "6/15/2014"});
-#line 45
- testRunner.And("I create the following sections", ((string)(null)), table9, "And ");
 #line 48
+ testRunner.And("I create the following sections", ((string)(null)), table10, "And ");
+#line 51
  testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
