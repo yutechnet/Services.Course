@@ -99,6 +99,7 @@
     <Content Include="Databases\Parabola\009-Add_GraduationRequirements_to_Program.sql" />
     <Content Include="Databases\Parabola\011_Remove_Old_Unused_Calendar_Tables.sql" />
     <Content Include="ReadMe.txt" />
+    <Content Include="ScriptReview\Add_MetaData_to_Course.sql" />
     <Content Include="ScriptReview\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
