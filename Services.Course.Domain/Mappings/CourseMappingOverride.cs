@@ -8,12 +8,12 @@ namespace BpeProducts.Services.Course.Domain.Mappings
     {
         public void Override(AutoMapping<CourseAggregates.Course> mapping)
         {
-
             mapping.Map(x => x.Name).Access.CamelCaseField(Prefix.Underscore);
             mapping.Map(x => x.Code).Access.CamelCaseField(Prefix.Underscore);
             mapping.Map(x => x.Description).Access.CamelCaseField(Prefix.Underscore);
             mapping.Map(x => x.CourseType).Access.CamelCaseField(Prefix.Underscore);
             mapping.Map(x => x.Credit).Access.CamelCaseField(Prefix.Underscore);
+            mapping.Map(x => x.MetaData).Access.CamelCaseField(Prefix.Underscore);
             
             mapping.References<CourseAggregates.Course>(c => c.OriginalEntity);
             mapping.References<CourseAggregates.Course>(c => c.ParentEntity);

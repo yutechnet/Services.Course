@@ -70,7 +70,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 OrganizationId = Resources<OrganizationResource>.Get(table.Rows[0]["OrganizationName"]).Id,
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false,
-                Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0"))
+                Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0")),
+                MetaData = table.Rows[0]["MetaData"]
             };
 
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);

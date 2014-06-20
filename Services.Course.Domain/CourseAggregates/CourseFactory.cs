@@ -30,7 +30,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                         Name = request.Name,
                         OrganizationId = request.OrganizationId,
                         TemplateCourseId = request.TemplateCourseId.Value,
-                        TenantId = request.TenantId
+                        TenantId = request.TenantId,
+                        MetaData = request.MetaData
                     };
                 return Build(createCourseFromTemplateRequest);
             }
@@ -55,7 +56,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                     Code = string.IsNullOrEmpty(request.Code) ? template.Code : request.Code,
                     Description = string.IsNullOrEmpty(request.Description) ? template.Description : request.Description,
                     OrganizationId = request.OrganizationId,
-                    TenantId = request.TenantId
+                    TenantId = request.TenantId,
+                    MetaData = request.MetaData
 				};
 
             var newLearningMaterials = Mapper.Map<List<LearningMaterial>>(template.LearningMaterials);
@@ -107,7 +109,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                     TenantId = request.TenantId,
                     ActiveFlag = true,
                     CourseType = request.CourseType,
-                    Credit = request.Credit
+                    Credit = request.Credit,
+                    MetaData = request.MetaData
                 };
 
             return course;

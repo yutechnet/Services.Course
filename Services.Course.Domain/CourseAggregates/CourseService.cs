@@ -84,6 +84,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             course.IsTemplate = request.IsTemplate;
             course.CourseType = request.CourseType;
             course.Credit = request.Credit;
+            course.MetaData = request.MetaData;
 
             var programs = _programRepository.Get(request.ProgramIds);
             course.SetPrograms(programs.ToList());

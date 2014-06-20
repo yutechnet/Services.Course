@@ -36,5 +36,8 @@ namespace BpeProducts.Services.Course.Contract
 
         [DataMember]
         public decimal Credit { get; set; }
+
+        [DataMember]
+        public string MetaData { get; set; }
     }
 }

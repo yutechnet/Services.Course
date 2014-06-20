@@ -132,6 +132,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             Assert.AreEqual(originalRequest.Name, courseInfo.Name);
             Assert.AreEqual(originalRequest.Code, courseInfo.Code);
             Assert.AreEqual(originalRequest.Description, courseInfo.Description);
+            Assert.AreEqual(originalRequest.MetaData, courseInfo.MetaData);
         }
 
         [Then(@"I should get a not found message returned")]

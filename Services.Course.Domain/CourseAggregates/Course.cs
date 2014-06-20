@@ -28,6 +28,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         private IList<Program> _programs = new List<Program>();
         private IList<Course> _prerequisites = new List<Course>();
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
+        private string _metaData;
 
         [JsonProperty]
         public virtual Course Template { get; protected internal set; }
@@ -107,6 +108,16 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         {
             get { return _prerequisites; }
             protected internal set { _prerequisites = value; }
+        }
+
+        public virtual string MetaData
+        {
+            get { return _metaData; }
+            set
+            {
+                CheckPublished();
+                _metaData = value;
+            }
         }
 
         #endregion
