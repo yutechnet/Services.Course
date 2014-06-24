@@ -391,7 +391,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 if (assessmentRow["Value"] == "Non-Existing")
                 {
                     learningActivity.AssessmentId = Guid.NewGuid();
-                    ApiFeature.MockAssessmentClient.Setup(a => a.GetAssessment(learningActivity.AssessmentId))
+                    ApiFeature.MockAssessmentClient.Setup(a => a.GetAssessment(learningActivity.AssessmentId.Value))
                               .Throws(new NotFoundException("assessment not found"));
                 }
                 else
@@ -639,7 +639,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var row in table.Rows)
             {
                 var assetName = row["Asset"];
-                var asset = Resources<AssetResource>.Get(assetName);
+                var asset = new AssetResource {Id = Guid.Empty};
+                if (assetName != "")
+                {
+                    asset = Resources<AssetResource>.Get(assetName);
+                }
+
                 var learningMaterial = row["LearningMaterial"];
                 var request = new LearningMaterialRequest
                 {

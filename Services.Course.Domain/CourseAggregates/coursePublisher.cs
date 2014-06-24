@@ -47,9 +47,9 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 			{
 				foreach (var learningActivity in segment.CourseLearningActivities)
 				{
-					if (learningActivity.AssessmentId != Guid.Empty && AssessmentNotPublished(learningActivity.AssessmentId))
+					if (learningActivity.AssessmentId.HasValue && learningActivity.AssessmentId != Guid.Empty && AssessmentNotPublished(learningActivity.AssessmentId.Value))
 					{
-						_assessmentClient.PublishAssessment(learningActivity.AssessmentId, publishNote);
+						_assessmentClient.PublishAssessment(learningActivity.AssessmentId.Value, publishNote);
 					}
 				}
 				if (segment.ChildSegments.Count > 0) PublishAssesments(segment.ChildSegments, publishNote);

@@ -46,9 +46,9 @@ namespace BpeProducts.Services.Course.Domain
         {
             var course = _courseRepository.Get(courseId);
 
-            if (request.AssessmentId != Guid.Empty)
+            if (request.AssessmentId.HasValue && request.AssessmentId != Guid.Empty)
             {
-               var assessmentResponse = _assessmentClient.GetAssessment(request.AssessmentId);
+               var assessmentResponse = _assessmentClient.GetAssessment(request.AssessmentId.Value);
                request.AssessmentType = assessmentResponse.AssessmentType.ToString();
             }
 
@@ -69,9 +69,9 @@ namespace BpeProducts.Services.Course.Domain
         {
             var course = _courseRepository.Get(courseId);
 
-            if (request.AssessmentId != Guid.Empty)
+            if (request.AssessmentId.HasValue && request.AssessmentId != Guid.Empty)
             {
-                var assessmentResponse = _assessmentClient.GetAssessment(request.AssessmentId);
+                var assessmentResponse = _assessmentClient.GetAssessment(request.AssessmentId.Value);
                 if (assessmentResponse != null)
                 {
                     // TODO: What if the assessmentType from Assessment does not match with the assessmentType in the request?

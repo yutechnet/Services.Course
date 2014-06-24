@@ -25,14 +25,14 @@ namespace BpeProducts.Services.Course.Contract
         public Boolean IsExtraCredit { get; set; }
         public decimal MaxPoint { get; set; }
         public int Weight { get; set; }
-        public Guid ObjectId { get; set; }
+        public Guid? ObjectId { get; set; }
 		public string Description { get; set; }
         public string CustomAttribute { get; set; }
         public int? ActiveDate { get; set; }
         public int? InactiveDate { get; set; }
         public int? DueDate { get; set; }
 
-        public Guid AssessmentId { get; set; }
+        public Guid? AssessmentId { get; set; }
         public string AssessmentType { get; set; }
     }
 }

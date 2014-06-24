@@ -28,7 +28,7 @@ namespace BpeProducts.Services.Course.Contract
         [DataMember]   
         public int Weight { get; set; }
         [DataMember]   
-        public Guid ObjectId { get; set; }
+        public Guid? ObjectId { get; set; }
 		[DataMember]
 		public string Description { get; set; }
         [DataMember]
@@ -41,7 +41,7 @@ namespace BpeProducts.Services.Course.Contract
         [DataMember]
         public int? DueDate { get; set; }
         [DataMember]
-        public Guid AssessmentId { get; set; }
+        public Guid? AssessmentId { get; set; }
         [DataMember]
         public string AssessmentType { get; set; }
     }

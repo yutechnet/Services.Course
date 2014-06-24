@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using BpeProducts.Common.Contract.Validation;
 
 namespace BpeProducts.Services.Course.Contract
 {
@@ -11,12 +12,14 @@ namespace BpeProducts.Services.Course.Contract
     public class CreateCourseFromTemplateRequest
     {
         [DataMember(IsRequired = true)]
+        [DisallowEmptyGuid]
         public Guid TemplateCourseId { get; set; }
 
         [DataMember(IsRequired = true)]
         public int TenantId { get; set; }
 
         [DataMember(IsRequired = true)]
+        [DisallowEmptyGuid]
         public Guid OrganizationId { get; set; }
 
         [DataMember(IsRequired = true)]

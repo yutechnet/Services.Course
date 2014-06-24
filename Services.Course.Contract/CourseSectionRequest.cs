@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using BpeProducts.Common.Contract.Validation;
 
 namespace BpeProducts.Services.Course.Contract
 {
@@ -19,6 +20,7 @@ namespace BpeProducts.Services.Course.Contract
         public string SectionCode { get; set; }
 
         [DataMember(IsRequired = true)]
+        [DisallowEmptyGuid]
         public Guid OrganizationId { get; set; }
 
         [DataMember(IsRequired = true)]

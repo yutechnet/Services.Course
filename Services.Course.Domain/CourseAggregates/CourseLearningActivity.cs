@@ -41,7 +41,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         public virtual int Weight { get; set; }
 
-        public virtual Guid ObjectId { get; set; }
+        public virtual Guid? ObjectId { get; set; }
 
 		public virtual string Description { get; set; }
 
@@ -53,7 +53,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         public virtual int? DueDate { get; set; }
       
-        public virtual Guid AssessmentId { get; set; }
+        public virtual Guid? AssessmentId { get; set; }
         public virtual AssessmentType AssessmentType { get; set; }
         public virtual Guid SourceCourseLearningActivityId { get; set; }
 

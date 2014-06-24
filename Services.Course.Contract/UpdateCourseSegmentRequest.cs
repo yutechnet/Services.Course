@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using BpeProducts.Common.Contract.Validation;
 
 namespace BpeProducts.Services.Course.Contract
 {
@@ -13,6 +14,7 @@ namespace BpeProducts.Services.Course.Contract
         }
 
         [DataMember(IsRequired = true)]
+        [DisallowEmptyGuid]
         public Guid Id { get; set; }
         [DataMember]
         public Guid? ParentSegmentId { get; set; }

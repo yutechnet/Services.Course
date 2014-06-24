@@ -173,3 +173,9 @@ Scenario: Delete a course learning material
 	When I remove 'Material A' learning material
 	And I retrieve the learning material 'Material A'
 	Then I get 'NotFound' response
+
+Scenario: Can not create a learning material with empty assetId
+    When Create learning material as the following info
+		| Asset | CourseSegment | Instruction | IsRequired | LearningMaterial | CustomAttribute  |
+		|       | Week 1        |             | false      | Material A       | CustomAttributeA |
+	Then I get 'BadRequest' response

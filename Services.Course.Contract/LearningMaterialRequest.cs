@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using BpeProducts.Common.Contract.Validation;
 
 namespace BpeProducts.Services.Course.Contract
 {
@@ -11,6 +12,7 @@ namespace BpeProducts.Services.Course.Contract
     public class LearningMaterialRequest
     {
         [DataMember(IsRequired = true)]
+        [DisallowEmptyGuid]
         public Guid AssetId { get; set; }
         [DataMember]
         public string Instruction { get; set; }

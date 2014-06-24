@@ -108,7 +108,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             var courseInfo = Mapper.Map<CourseInfoResponse>(course);
 
             courseInfo.Segments = (from s in courseInfo.Segments 
-                                   where s.ParentSegmentId == Guid.Empty 
+                                   where !s.ParentSegmentId.HasValue
                                    select s).ToList();
             return courseInfo;
         }

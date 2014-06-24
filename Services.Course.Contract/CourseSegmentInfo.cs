@@ -16,7 +16,7 @@ namespace BpeProducts.Services.Course.Contract
         public string Description { get; set; }
         public string Type { get; set; }
         public int DisplayOrder { get; set; }
-        public Guid ParentSegmentId { get; set; }
+        public Guid? ParentSegmentId { get; set; }
 
         public IList<CourseSegmentInfo> ChildSegments { get; set; }
         public IList<CourseLearningActivityResponse> CourseLearningActivities { get; set; }

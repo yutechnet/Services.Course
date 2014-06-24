@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.ComponentModel.DataAnnotations;
+using BpeProducts.Common.Contract.Validation;
 
 namespace BpeProducts.Services.Course.Contract
 {
@@ -40,6 +41,7 @@ namespace BpeProducts.Services.Course.Contract
         public int TenantId { get; set; }
 
         [DataMember(IsRequired = true)]
+        [DisallowEmptyGuid]
         public Guid OrganizationId { get; set; }
 
         [DataMember]

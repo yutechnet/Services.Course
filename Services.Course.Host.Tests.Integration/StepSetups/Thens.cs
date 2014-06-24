@@ -359,7 +359,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     }
                     else
                     {
-                        row["Assessment"] = Guid.Empty.ToString();
+                        row["Assessment"] = null;
                     }
                 }
                 table.RenameColumn("Assessment", "AssessmentId");
@@ -396,7 +396,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var parentSegmentName = row["ParentSegment"];
                 if (String.IsNullOrEmpty(parentSegmentName))
                 {
-                    Assert.That(actualSegment.ParentSegmentId, Is.EqualTo(Guid.Empty));
+                    Assert.That(actualSegment.ParentSegmentId, Is.EqualTo(null));
                 }
                 else
                 {
@@ -629,7 +629,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 }
                 Assert.That(learningMaterial.Id, Is.Not.EqualTo(parentCourseLearningMaterial.Id));
                 Assert.That(learningMaterial.AssetId, Is.EqualTo(asset.Id));
-                Assert.That(learningMaterial.CourseSegmentId, Is.EqualTo(segment.Id));
+                if (isCourseLearningMaterial)
+                {
+                    Assert.That(learningMaterial.CourseSegmentId, Is.EqualTo(null));
+                }
+                else
+                {
+                    Assert.That(learningMaterial.CourseSegmentId, Is.EqualTo(segment.Id));
+                }
                 Assert.That(learningMaterial.Instruction, Is.EqualTo(row["Instruction"]));
                 Assert.That(learningMaterial.IsRequired, Is.EqualTo(bool.Parse(row["IsRequired"])));
             }

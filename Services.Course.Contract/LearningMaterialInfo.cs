@@ -7,8 +7,8 @@ namespace BpeProducts.Services.Course.Contract
         public Guid Id { get; set; }
         public string Instruction { get; set; }
         public bool IsRequired { get; set; }
-        public Guid CourseId { get; set; }
-        public Guid CourseSegmentId { get; set; }
+        public Guid? CourseId { get; set; }
+        public Guid? CourseSegmentId { get; set; }
         public Guid AssetId { get; set; }
         public string CustomAttribute { get; set; }
     }
