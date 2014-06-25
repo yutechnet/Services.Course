@@ -29,6 +29,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         private IList<Course> _prerequisites = new List<Course>();
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
         private string _metaData;
+        private string _extensionAssets;
 
         [JsonProperty]
         public virtual Course Template { get; protected internal set; }
@@ -120,6 +121,21 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             }
         }
 
+        public virtual List<Guid> ExtensionAssets
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_extensionAssets))
+                    return new List<Guid>();
+
+                return Array.ConvertAll(_extensionAssets.Split(','), s => new Guid(s)).ToList();
+            }
+            protected internal set
+            {
+                CheckPublished();
+                _extensionAssets = value == null || value.Count == 0 ? null : string.Join(",", value);
+            }
+        }
         #endregion
 
         public virtual void SetPrograms(IList<Program> programs)

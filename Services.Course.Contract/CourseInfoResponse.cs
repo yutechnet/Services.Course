@@ -40,5 +40,6 @@ namespace BpeProducts.Services.Course.Contract
 		public List<Guid> PrerequisiteCourseIds { get; set; }
         public decimal Credit { get; set; }
         public string MetaData { get; set; }
+        public List<Guid> ExtensionAssets { get; set; }
     }
 }

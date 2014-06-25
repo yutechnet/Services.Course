@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using BpeProducts.Common.Contract.Validation;
 
 namespace BpeProducts.Services.Course.Contract
@@ -36,5 +33,8 @@ namespace BpeProducts.Services.Course.Contract
 
         [DataMember]
         public string MetaData { get; set; }
+
+        [DataMember]
+        public List<Guid> ExtensionAssets { get; set; }
     }
 }

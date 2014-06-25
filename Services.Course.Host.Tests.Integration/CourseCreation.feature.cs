@@ -110,7 +110,8 @@ this.FeatureBackground();
                         "CourseType",
                         "IsTemplate",
                         "Credit",
-                        "MetaData"});
+                        "MetaData",
+                        "ExtensionAssets"});
             table3.AddRow(new string[] {
                         "English 101",
                         "ENG101",
@@ -120,7 +121,8 @@ this.FeatureBackground();
                         "Traditional",
                         "false",
                         "5",
-                        "{someData}"});
+                        "{someData}",
+                        "B40CE4F4-434A-4987-80A8-58F795C212EB,6B7D1752-2A8D-4848-B8BC-1B1E42164499"});
 #line 17
  testRunner.Given("I have a course with following info:", ((string)(null)), table3, "Given ");
 #line 20
@@ -150,7 +152,8 @@ this.FeatureBackground();
                         "CourseType",
                         "IsTemplate",
                         "Credit",
-                        "MetaData"});
+                        "MetaData",
+                        "ExtensionAssets"});
             table4.AddRow(new string[] {
                         "English 101",
                         "ENG101",
@@ -160,7 +163,8 @@ this.FeatureBackground();
                         "Traditional",
                         "false",
                         "5",
-                        "{someData}"});
+                        "{someData}",
+                        "B40CE4F4-434A-4987-80A8-58F795C212EB"});
 #line 24
  testRunner.Given("I have a course with following info:", ((string)(null)), table4, "Given ");
 #line 27
@@ -175,7 +179,8 @@ this.FeatureBackground();
                         "CourseType",
                         "IsTemplate",
                         "Credit",
-                        "MetaData"});
+                        "MetaData",
+                        "ExtensionAssets"});
             table5.AddRow(new string[] {
                         "English 101",
                         "ENG101",
@@ -185,7 +190,8 @@ this.FeatureBackground();
                         "Traditional",
                         "false",
                         "10",
-                        "{differentData}"});
+                        "{differentData}",
+                        "B40CE4F4-434A-4987-80A8-58F795C212EB,6B7D1752-2A8D-4848-B8BC-1B1E42164499"});
 #line 28
  testRunner.And("I change the info to reflect the following:", ((string)(null)), table5, "And ");
 #line 31
@@ -214,7 +220,8 @@ this.FeatureBackground();
                         "OrganizationName",
                         "CourseType",
                         "IsTemplate",
-                        "MetaData"});
+                        "MetaData",
+                        "ExtensionAssets"});
             table6.AddRow(new string[] {
                         "English 101",
                         "ENG101",
@@ -223,7 +230,8 @@ this.FeatureBackground();
                         "COB",
                         "Traditional",
                         "false",
-                        "{someData}"});
+                        "{someData}",
+                        "B40CE4F4-434A-4987-80A8-58F795C212EB"});
 #line 35
  testRunner.Given("I have an existing course with following info:", ((string)(null)), table6, "Given ");
 #line 38
@@ -256,7 +264,8 @@ this.FeatureBackground();
                         "OrganizationName",
                         "CourseType",
                         "IsTemplate",
-                        "MetaData"});
+                        "MetaData",
+                        "ExtensionAssets"});
             table7.AddRow(new string[] {
                         "English 101",
                         "ENG101",
@@ -265,7 +274,8 @@ this.FeatureBackground();
                         "COB",
                         "Traditional",
                         "false",
-                        "{someData}"});
+                        "{someData}",
+                        "B40CE4F4-434A-4987-80A8-58F795C212EB"});
 #line 43
  testRunner.Given("I have an existing course with following info:", ((string)(null)), table7, "Given ");
 #line 46
@@ -449,7 +459,8 @@ this.FeatureBackground();
                         "OrganizationName",
                         "CourseType",
                         "IsTemplate",
-                        "MetaData"});
+                        "MetaData",
+                        "ExtensionAssets"});
             table10.AddRow(new string[] {
                         "English 101",
                         "ENG101",
@@ -458,7 +469,8 @@ this.FeatureBackground();
                         "COB",
                         "Traditional",
                         "false",
-                        "{someData}"});
+                        "{someData}",
+                        "B40CE4F4-434A-4987-80A8-58F795C212EB"});
 #line 95
  testRunner.Given("I have a course with following info:", ((string)(null)), table10, "Given ");
 #line 98

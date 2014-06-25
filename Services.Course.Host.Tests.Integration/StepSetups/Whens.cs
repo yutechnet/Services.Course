@@ -115,7 +115,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 CourseType = ECourseType.Traditional,
                 IsTemplate = false,
                 Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0")),
-                MetaData = table.Rows[0]["MetaData"]
+                MetaData = table.Rows[0]["MetaData"],
+                ExtensionAssets = string.IsNullOrWhiteSpace(table.Rows[0]["ExtensionAssets"]) ? null : Array.ConvertAll(table.Rows[0]["ExtensionAssets"].Split(','), s => new Guid(s)).ToList()
             };
 
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);

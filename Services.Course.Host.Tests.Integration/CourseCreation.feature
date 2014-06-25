@@ -15,34 +15,34 @@ Background:
 
 Scenario: Create a course
 	Given I have a course with following info:
-	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit | MetaData   |
-	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | 5      | {someData} |
+	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit | MetaData   | ExtensionAssets                                                           |
+	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | 5      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB,6B7D1752-2A8D-4848-B8BC-1B1E42164499 |
 	When I submit a creation request
 	Then I should get a success confirmation message
 
 Scenario: Edit a course
 	Given I have a course with following info:
-	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate |Credit | MetaData   |
-	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      |5      | {someData} |
+	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit | MetaData   | ExtensionAssets                      |
+	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | 5      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB |
 	When I submit a creation request
 	And I change the info to reflect the following:
-	| Name        | Code   | Description                  | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit | MetaData        |
-	| English 101 | ENG101 | John's awesome English Class | 999999    | COB              | Traditional | false      | 10     | {differentData} |
+	| Name        | Code   | Description                  | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit | MetaData        | ExtensionAssets                                                           |
+	| English 101 | ENG101 | John's awesome English Class | 999999    | COB              | Traditional | false      | 10     | {differentData} | B40CE4F4-434A-4987-80A8-58F795C212EB,6B7D1752-2A8D-4848-B8BC-1B1E42164499 |
 	Then I should get a success confirmation message
 	And my course info is changed
 
 Scenario: Delete a course
 	Given I have an existing course with following info:
-	 | Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | MetaData   |
-	 | English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} |
+	 | Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets                      |
+	 | English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB |
 	And I delete this course
 	Then I should get a success confirmation message
 	And my course no longer exists
 
 Scenario Template: Can create a course with same name or code
 	Given I have an existing course with following info:
-	 | Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | MetaData   |
-	 | English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} |
+	 | Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets                      |
+	 | English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB |
 	When I create a new course with <Name>, <Code>, <Description>, <OrganizationName>
 	And I submit a creation request
 	Then I should get the status code <Status>
@@ -93,7 +93,7 @@ Scenario: Return course by partial name
 
 Scenario: Add organization id to a course
 	Given I have a course with following info:
-	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | MetaData   |
-	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} |
+	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets                      |
+	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB |
 	When I submit a creation request
 	Then the organization id is returned as part of the request
