@@ -794,13 +794,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         public void ExtensionAssets_removes_empty_guids()
         {
             // arrange
+            var guid = Guid.NewGuid();
             var course = new Domain.CourseAggregates.Course();
             
             // act
-            course.ExtensionAssets = new List<Guid>{ Guid.NewGuid(), Guid.Empty };
+            course.ExtensionAssets = new List<Guid>{ guid, Guid.Empty };
             
             // assert
             CollectionAssert.DoesNotContain(course.ExtensionAssets, Guid.Empty);
+            CollectionAssert.Contains(course.ExtensionAssets, guid);
         }
 
         static T RandomEnumValue<T>()

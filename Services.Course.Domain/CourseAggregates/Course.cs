@@ -130,7 +130,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             }
             set
             {
-                value.ToString(",");
+                _extensionAssets = value.ToString(",");
             }
         }
         #endregion
@@ -288,7 +288,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null)),
                 Credit = Credit,
                 MetaData = MetaData,
-                //ExtensionAssets = ExtensionAssets
+                ExtensionAssets = ExtensionAssets
             };
 
             return translatedRequest;
