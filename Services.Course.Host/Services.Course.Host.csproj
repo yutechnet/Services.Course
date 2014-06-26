@@ -297,6 +297,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DeploymentModule.psm1" />
+    <Content Include="newrelic.config" />
+    <Content Include="newrelic.Release.config" />
     <None Include="Properties\PublishProfiles\Course.pubxml" />
     <None Include="Properties\PublishProfiles\Local Debug.pubxml" />
   </ItemGroup>
