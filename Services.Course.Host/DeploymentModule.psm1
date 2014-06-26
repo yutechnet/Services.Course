@@ -1,4 +1,4 @@
-# Deployment Module v0.1.64
+# Deployment Module v0.1.65
 
 $Script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -141,6 +141,39 @@ function Deployment-SetWebConfigurationProperty
 	else
 	{
 		$(Throw "An existing web configuration with filter `"$webConfiguration`" was not found")
+	}
+}
+
+
+function Deployment-SetWebCompressionMimeType
+{
+	param(
+		[string]$webConfiguration,
+		[string]$mimeType,
+		[string]$enabled
+	)
+	
+	if (-not (ConfigureIIS)) {return}
+	
+	Import-Module WebAdministration
+
+	Write-Host "Checking existing web compression mimeType `"$webConfiguration/add[@mimeType=`'$mimeType`']`""
+	
+	# get the existing mimeType
+	$existingValue = Get-WebConfigurationProperty -Filter "$webConfiguration/add[@mimeType=`'$mimeType`']" -Name "enabled" -ErrorAction SilentlyContinue
+	if ($existingValue)
+	{
+		if ($existingValue -ne $enabled)
+		{
+			Write-Host "Updating web compression mimeType `"$webConfiguration/add[@mimeType=`'$mimeType`']`" property `"enabled`" from `"$($existingValue.Value)`" to `"$enabled`""
+			# update property value
+			Set-WebConfigurationProperty -Filter "$webConfiguration/add[@mimeType=`'$mimeType`']" -Name "$enabled" -Value $enabled
+		}
+	}
+	else
+	{
+		Write-Host "Adding web compression mimeType `"$webConfiguration/add[@mimeType=`'$mimeType`']`" property `"enabled`" to `"$enabled`""
+		Add-WebConfiguration -Filter "$webConfiguration" -Value (@{mimeType="$mimeType";enabled="$enabled"})
 	}
 }
 

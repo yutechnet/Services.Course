@@ -32,7 +32,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                         TemplateCourseId = request.TemplateCourseId.Value,
                         TenantId = request.TenantId,
                         MetaData = request.MetaData,
-                        
+                        ExtensionAssets = request.ExtensionAssets
                     };
                 return Build(createCourseFromTemplateRequest);
             }

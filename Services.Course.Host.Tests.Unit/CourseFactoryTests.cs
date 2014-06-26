@@ -3,15 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Autofac.Extras.Moq;
-using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
 using BpeProducts.Services.Course.Domain.ProgramAggregates;
-using BpeProducts.Services.Course.Domain.Repositories;
-using Moq;
 using NUnit.Framework;
-using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit
 {
@@ -38,7 +34,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Code = "CourseCode",
                     Description = "CourseDescription",
                     OrganizationId = Guid.NewGuid(),
-                    TenantId = 999999
+                    TenantId = 999999,
+                    MetaData = "{someData}",
+                    ExtensionAssets = new List<Guid>{Guid.NewGuid()}
                 };
 
             Domain.CourseAggregates.Course course = factory.BuildFromScratch(request);
@@ -52,6 +50,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Assert.That(course.TenantId, Is.EqualTo(request.TenantId));
             Assert.That(course.ActiveFlag, Is.EqualTo(true));
             Assert.That(course.VersionNumber, Is.EqualTo(new Version(1, 0, 0, 0).ToString()));
+            Assert.That(course.MetaData, Is.EqualTo(request.MetaData));
+            CollectionAssert.AreEquivalent(request.ExtensionAssets, course.ExtensionAssets);
         }
 
         [Test]
@@ -71,15 +71,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     CourseType = ECourseType.Competency,
                     OrganizationId = Guid.NewGuid(),
                     TenantId = 999999,
+                    MetaData = "{templateData}",
+                    ExtensionAssets = new List<Guid> { Guid.NewGuid() }
                 };
 
-            var learningMaterialRequest1 = new LearningMaterialRequest()
+            var learningMaterialRequest1 = new LearningMaterialRequest
             {
                 AssetId = Guid.NewGuid(),
                 Instruction = "instruction 1"
             };
 
-            var learningMaterialRequest2 = new LearningMaterialRequest()
+            var learningMaterialRequest2 = new LearningMaterialRequest
             {
                 AssetId = Guid.NewGuid(),
                 Instruction = "instruction 2"
@@ -104,7 +106,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Name = "CourseName",
                     Code = "CourseCode",
                     Description = "CourseDescription",
-                    OrganizationId = Guid.NewGuid()
+                    OrganizationId = Guid.NewGuid(),
+                    MetaData = "{courseData}",
+                    ExtensionAssets = new List<Guid> { Guid.NewGuid() }
                 };
 
             Domain.CourseAggregates.Course course = factory.BuildFromTemplate(template, request);
@@ -127,6 +131,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Assert.That(course.TenantId, Is.EqualTo(template.TenantId));
             Assert.That(course.ActiveFlag, Is.EqualTo(true));
             Assert.That(course.VersionNumber, Is.EqualTo(new Version(1, 0, 0, 0).ToString()));
+            Assert.That(course.MetaData, Is.EqualTo(request.MetaData));
+            CollectionAssert.AreEquivalent(request.ExtensionAssets, course.ExtensionAssets);
 
             // TODO: Validate CourseSegments, Programs, LearningOutcomes being cloned
             Assert.That(course.Segments.Count, Is.EqualTo(template.Segments.Count));

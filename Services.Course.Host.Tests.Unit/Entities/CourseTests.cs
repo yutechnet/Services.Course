@@ -790,6 +790,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.Throws<BadRequestException>(course.Delete);
         }
 
+        [Test]
+        public void ExtensionAssets_removes_empty_guids()
+        {
+            // arrange
+            var course = new Domain.CourseAggregates.Course();
+            
+            // act
+            course.ExtensionAssets = new List<Guid>{ Guid.NewGuid(), Guid.Empty };
+            
+            // assert
+            CollectionAssert.DoesNotContain(course.ExtensionAssets, Guid.Empty);
+        }
+
         static T RandomEnumValue<T>()
         {
             return Enum

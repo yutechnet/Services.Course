@@ -39,6 +39,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
             PublishAssesments(course.Segments, publishNote);
             PublishCourseLearningMaterialAsset(course, publishNote);
+            PublishExtensionAssets(course.ExtensionAssets, publishNote);
         }
 
 	    public void PublishAssesments(IList<CourseSegment> segments, string publishNote)
@@ -85,7 +86,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         }
 
-		public  void PublishAsset(Guid assetId,string publishNote)
+		public void PublishAsset(Guid assetId,string publishNote)
 		{
 			if (!CheckAssetIsPublished(assetId))
 				_assetServiceClient.PublishAsset(assetId,publishNote);
@@ -97,5 +98,12 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 			return asset.IsPublished;
 		}
 
+        public void PublishExtensionAssets(IList<Guid> extensionAssets, string publishNote)
+        {
+            foreach (var extensionAssetId in extensionAssets)
+            {
+                PublishAsset(extensionAssetId, publishNote);
+            }
+        }
 	}
 }

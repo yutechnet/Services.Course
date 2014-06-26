@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using BpeProducts.Common.Exceptions;
-using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
-using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
 
@@ -38,7 +34,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     CourseType = ECourseType.Competency,
                     Credit = 1,
                     Description = "some course",
-                    Name = "ABC 123"
+                    Name = "ABC 123",
+                    MetaData = "{someData}",
+                    ExtensionAssets = new List<Guid> { Guid.NewGuid() }
                 };
 
             var course = _courseFactory.Build(request);
@@ -49,6 +47,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(course.Credit, Is.EqualTo(request.Credit));
             Assert.That(course.Description, Is.EqualTo(request.Description));
             Assert.That(course.Name, Is.EqualTo(request.Name));
+            Assert.That(course.MetaData, Is.EqualTo(request.MetaData));
+            CollectionAssert.AreEquivalent(request.ExtensionAssets, course.ExtensionAssets);
         }
         
         [Test]
@@ -60,7 +60,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     Description = "template description",
                     Name = "Template Course",
                     CourseType = ECourseType.Competency,
-                    Credit = 1
+                    Credit = 1,
+                    MetaData = "{templateData}",
+                    ExtensionAssets = new List<Guid> { Guid.NewGuid() }
                 };
 
             var learningMaterial = new LearningMaterial
@@ -84,7 +86,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     OrganizationId = Guid.NewGuid(),
                     TemplateCourseId = Guid.NewGuid(),
                     TenantId = 1,
-                    IsTemplate = true
+                    IsTemplate = true,
+                    MetaData = "{courseData}",
+                    ExtensionAssets = new List<Guid> { Guid.NewGuid() }
                 };
 
             var course = _courseFactory.Build(request);
@@ -96,8 +100,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(course.Description, Is.EqualTo(request.Description));
             Assert.That(course.Name, Is.EqualTo(request.Name));
             Assert.That(course.IsTemplate, Is.EqualTo(request.IsTemplate));
+            Assert.That(course.MetaData, Is.EqualTo(request.MetaData));
+            CollectionAssert.AreEquivalent(request.ExtensionAssets, course.ExtensionAssets);
 
-            var sectionLearningMaterial = course.LearningMaterials.FirstOrDefault();
+            var sectionLearningMaterial = course.LearningMaterials.First();
             Assert.That(sectionLearningMaterial.CustomAttribute, Is.EqualTo(learningMaterial.CustomAttribute));
             Assert.That(sectionLearningMaterial.Instruction, Is.EqualTo(learningMaterial.Instruction));
             Assert.That(sectionLearningMaterial.IsRequired, Is.EqualTo(learningMaterial.IsRequired));
@@ -113,7 +119,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 Description = "template description",
                 Name = "Template Course",
                 CourseType = ECourseType.Competency,
-                Credit = 1
+                Credit = 1,
+                MetaData = "{templateData}",
+                ExtensionAssets = new List<Guid> { Guid.NewGuid() }
             };
             _mockRepository.Setup(r => r.GetOrThrow(It.IsAny<Guid>())).Returns(template);
 
@@ -134,6 +142,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(course.Description, Is.EqualTo(template.Description));
             Assert.That(course.Name, Is.EqualTo(template.Name));
             Assert.That(course.IsTemplate, Is.False);
+            
+            Assert.That(course.MetaData, Is.Not.EqualTo(template.MetaData));
+            Assert.That(course.ExtensionAssets, Is.Not.EqualTo(template.ExtensionAssets));
         }
 
         [Test]

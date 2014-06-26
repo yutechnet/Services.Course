@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using BpeProducts.Common.Contract.Validation;
 
@@ -28,5 +29,11 @@ namespace BpeProducts.Services.Course.Contract
 
         [DataMember]
         public DateTime? EndDate { get; set; }
+
+        [DataMember]
+        public string MetaData { get; set; }
+
+        [DataMember]
+        public List<Guid> ExtensionAssets { get; set; }
     }
 }

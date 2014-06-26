@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Common.Ioc.Extensions;
 using BpeProducts.Common.NHibernate.Version;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.ProgramAggregates;
@@ -29,7 +30,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         private IList<Course> _prerequisites = new List<Course>();
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
         private string _metaData;
-        private string _extensionAssets;
+        private string _extensionAssets = null;
 
         [JsonProperty]
         public virtual Course Template { get; protected internal set; }
@@ -125,15 +126,11 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(_extensionAssets))
-                    return new List<Guid>();
-
-                return Array.ConvertAll(_extensionAssets.Split(','), s => new Guid(s)).ToList();
+                return _extensionAssets.ToGuidList(',');
             }
-            protected internal set
+            set
             {
-                CheckPublished();
-                _extensionAssets = value == null || value.Count == 0 ? null : string.Join(",", value);
+                value.ToString(",");
             }
         }
         #endregion
@@ -261,7 +258,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         protected override VersionableEntity Clone()
         {
-            var course = AutoMapper.Mapper.Map<Course>(this);
+            var course = Mapper.Map<Course>(this);
             course.Id = Guid.NewGuid();
 
             course.Programs = new List<Program>(this.Programs);
@@ -272,12 +269,10 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         #region Create Section Request
 
-        public virtual CreateSectionRequest GetSectionRequest(CourseSectionRequest request,
-                                                              IAssessmentClient assessmentClient)
+        public virtual CreateSectionRequest GetSectionRequest(CourseSectionRequest request, IAssessmentClient assessmentClient)
         {
             if (!IsPublished)
-                throw new BadRequestException(
-                    string.Format("Cannot create a section from course {0}. Course is not published.", Id));
+                throw new BadRequestException(string.Format("Cannot create a section from course {0}. Course is not published.", Id));
 
             var translatedRequest = new CreateSectionRequest
             {
@@ -291,7 +286,9 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 CourseId = Id,
                 LearningMaterials = BuildLearningMaterials(LearningMaterials),
                 Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null)),
-                Credit = Credit
+                Credit = Credit,
+                MetaData = MetaData,
+                //ExtensionAssets = ExtensionAssets
             };
 
             return translatedRequest;
@@ -415,7 +412,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             CourseSegment segment = GetSegmentOrThrow(segmentId);
 
             // TODO: Consider using AutoMapper here
-            var courseLearningActivity = new CourseLearningActivity()
+            var courseLearningActivity = new CourseLearningActivity
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
@@ -577,7 +574,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         public virtual void CloneOutcomes(IAssessmentClient assessmentClient)
         {
-            assessmentClient.CloneEntityOutcomes(SupportingEntityType.Course, OriginalEntity.Id, new CloneEntityOutcomeRequest()
+            assessmentClient.CloneEntityOutcomes(SupportingEntityType.Course, OriginalEntity.Id, new CloneEntityOutcomeRequest
             {
                 EntityId = Id,
                 Type = SupportingEntityType.Course
