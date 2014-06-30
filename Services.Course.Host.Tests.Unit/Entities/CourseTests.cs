@@ -404,6 +404,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 };
 
             var course = GetCourse();
+            var guid1 = Guid.NewGuid();
+            course.MetaData = "{courseData}";
+            course.ExtensionAssets = new List<Guid>{ guid1 };
 
             var learningMaterial = new LearningMaterial
             {
@@ -428,6 +431,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(request.EndDate, Is.EqualTo(sectionRequest.EndDate));
             Assert.That(request.CourseId, Is.EqualTo(course.Id));
             Assert.That(request.TenantId, Is.EqualTo(course.TenantId));
+            Assert.That(request.MetaData, Is.EqualTo(course.MetaData));
+            CollectionAssert.AreEquivalent(course.ExtensionAssets, request.ExtensionAssets);
 
             var sectionLearningMaterial = course.LearningMaterials.FirstOrDefault();
             Assert.That(sectionLearningMaterial.CustomAttribute, Is.EqualTo(learningMaterial.CustomAttribute));

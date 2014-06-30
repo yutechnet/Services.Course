@@ -607,7 +607,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             foreach (var row in table.Rows)
             {
-                var course = Resources<CourseResource>.Get(row["CourseName"]);
+                var courseResource = Resources<CourseResource>.Get(row["CourseName"]);
                 var uri = new Uri("http://mockedlocation/");
 
                 var request = new CourseSectionRequest
@@ -619,15 +619,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     StartDate = row.GetValue("StartDate", DateTime.MinValue),
                     EndDate = row.GetValue<DateTime?>("EndDate", null),
 					OrganizationId = Guid.NewGuid(),
-                    MetaData = row["MetaData"],
                 };
 
-                var assetNames = row["ExtensionAssets"].Split(',').ToList();
-                var guidList = new List<Guid>();
-                guidList.AddRange(assetNames.Select(a => Resources<AssetResource>.Get(a).Id));
-                request.ExtensionAssets = guidList;
-
-                PostOperations.CreateSection(request.Name, course, request);
+                PostOperations.CreateSection(request.Name, courseResource, request);
             }
         }
 

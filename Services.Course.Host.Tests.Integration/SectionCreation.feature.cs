@@ -151,18 +151,14 @@ this.FeatureBackground();
                         "CourseCode",
                         "SectionCode",
                         "StartDate",
-                        "EndDate",
-                        "MetaData",
-                        "ExtensionAssets"});
+                        "EndDate"});
             table6.AddRow(new string[] {
                         "Math 101",
                         "Math 334",
                         "MATH334.ABC",
                         "MATH334.ABCSectionCode",
                         "2/15/2014",
-                        "6/15/2014",
-                        "{someData}",
-                        "asset1,asset2"});
+                        "6/15/2014"});
 #line 28
  testRunner.When("I create the following sections", ((string)(null)), table6, "When ");
 #line 31
@@ -198,18 +194,14 @@ this.FeatureBackground();
                         "CourseCode",
                         "SectionCode",
                         "StartDate",
-                        "EndDate",
-                        "MetaData",
-                        "ExtensionAssets"});
+                        "EndDate"});
             table8.AddRow(new string[] {
                         "Math 101",
                         "Math 334",
                         "MATH334.ABC",
                         "MATH334.ABCSectionCode",
                         "2/15/2014",
-                        "6/15/2014",
-                        "{someData}",
-                        "asset1,asset2"});
+                        "6/15/2014"});
 #line 38
  testRunner.And("I create the following sections", ((string)(null)), table8, "And ");
 #line 41
@@ -245,18 +237,14 @@ this.FeatureBackground();
                         "CourseCode",
                         "SectionCode",
                         "StartDate",
-                        "EndDate",
-                        "MetaData",
-                        "ExtensionAssets"});
+                        "EndDate"});
             table10.AddRow(new string[] {
                         "Math 101",
                         "Math 334",
                         "MATH334.ABC",
                         "MATH334.ABCSectionCode",
                         "2/15/2014",
-                        "6/15/2014",
-                        "{someData}",
-                        "asset1,asset2"});
+                        "6/15/2014"});
 #line 48
  testRunner.And("I create the following sections", ((string)(null)), table10, "And ");
 #line 51
@@ -292,18 +280,14 @@ this.FeatureBackground();
                         "CourseCode",
                         "SectionCode",
                         "StartDate",
-                        "EndDate",
-                        "MetaData",
-                        "ExtensionAssets"});
+                        "EndDate"});
             table12.AddRow(new string[] {
                         "Math 101",
                         "Math 334",
                         "MATH334.ABC",
                         "MATH334.ABCSectionCode",
                         "2/15/2014",
-                        "6/15/2014",
-                        "{someData}",
-                        "asset1,asset2"});
+                        "6/15/2014"});
 #line 58
  testRunner.And("I create the following sections", ((string)(null)), table12, "And ");
 #line 61

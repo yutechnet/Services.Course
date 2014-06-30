@@ -26,8 +26,8 @@ Background:
 
 Scenario: Cannot create a section from a course that is not published
 	When I create the following sections
-		| CourseName | Name     | CourseCode  | SectionCode            | StartDate | EndDate   | MetaData   | ExtensionAssets |
-		| Math 101   | Math 334 | MATH334.ABC | MATH334.ABCSectionCode | 2/15/2014 | 6/15/2014 | {someData} | asset1,asset2   |
+		| CourseName | Name     | CourseCode  | SectionCode            | StartDate | EndDate   |
+		| Math 101   | Math 334 | MATH334.ABC | MATH334.ABCSectionCode | 2/15/2014 | 6/15/2014 |
 	Then I get 'BadRequest' response
 
 Scenario: Can create a section from a course that is published
@@ -36,8 +36,8 @@ Scenario: Can create a section from a course that is published
          | Math 101 | published |
 	And The section service returns 'Created'
 	And I create the following sections
-		| CourseName | Name     |  CourseCode  | SectionCode            | StartDate | EndDate   | MetaData   | ExtensionAssets |
-		| Math 101   | Math 334 |  MATH334.ABC | MATH334.ABCSectionCode | 2/15/2014 | 6/15/2014 | {someData} | asset1,asset2   |
+		| CourseName | Name     |  CourseCode  | SectionCode            | StartDate | EndDate   |
+		| Math 101   | Math 334 |  MATH334.ABC | MATH334.ABCSectionCode | 2/15/2014 | 6/15/2014 |
 	Then I get 'Created' response
 
 Scenario: Create a section from a course returns status of section service
@@ -46,8 +46,8 @@ Scenario: Create a section from a course returns status of section service
          | Math 101 | published |
 	And The section service returns 'Forbidden'
 	And I create the following sections
-		| CourseName | Name     |  CourseCode  | SectionCode            |  StartDate | EndDate   | MetaData   | ExtensionAssets |
-		| Math 101   | Math 334 |  MATH334.ABC | MATH334.ABCSectionCode |  2/15/2014 | 6/15/2014 | {someData} | asset1,asset2   |
+		| CourseName | Name     |  CourseCode  | SectionCode            |  StartDate | EndDate   |
+		| Math 101   | Math 334 |  MATH334.ABC | MATH334.ABCSectionCode |  2/15/2014 | 6/15/2014 |
 	Then I get 'Forbidden' response
 
 Scenario: Cannot create a section from a deactivated course
@@ -56,7 +56,7 @@ Scenario: Cannot create a section from a deactivated course
          | Math 101 | published |
 	When I deactivate the course 'Math 101'
 	And I create the following sections
-		| CourseName | Name     |  CourseCode  | SectionCode            | StartDate | EndDate   | MetaData   | ExtensionAssets |
-		| Math 101   | Math 334 |  MATH334.ABC | MATH334.ABCSectionCode | 2/15/2014 | 6/15/2014 | {someData} | asset1,asset2   |
+		| CourseName | Name     |  CourseCode  | SectionCode            | StartDate | EndDate   |
+		| Math 101   | Math 334 |  MATH334.ABC | MATH334.ABCSectionCode | 2/15/2014 | 6/15/2014 |
 	Then I get 'BadRequest' response
 
