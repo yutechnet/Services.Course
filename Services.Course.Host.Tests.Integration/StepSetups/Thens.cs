@@ -669,6 +669,22 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
+        [Then(@"the course '(.*)' should have the following reference info")]
+        public void ThenTheCourseShouldHaveTheFollowingReferenceInfo(string courseName, Table table)
+        {
+            var resource = Resources<CourseResource>.Get(courseName);
+            var actual = GetOperations.GetCourse(resource);
+            
+            //var extensionAssets = string.IsNullOrWhiteSpace(table.GetValue("ExtensionAssets", null)) ? null : Array.ConvertAll(table.GetValue("ExtensionAssets", null).Split(','), s => new Guid(s)).ToList();
+            
+            var assetNames = table.Rows.Single(r => r["Field"] == "ExtensionAssets")["Value"].Split(',').ToList();
+            var guidList = new List<Guid>();
+            guidList.AddRange(assetNames.Select(a => Resources<AssetResource>.Get(a).Id));
+            var extensionAssets = guidList;
+
+            CollectionAssert.AreEquivalent(extensionAssets, actual.ExtensionAssets);
+        }
+
     }
 }
 

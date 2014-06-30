@@ -11,9 +11,17 @@ Background:
 	| CoursePublish |
 	| CourseView    |
 	| EditCourse    |
+	And I have the following assets
+	| Name   |
+	| asset1 |
+	| asset2 |
+	And Published the following assets
+	| Name   | PublishNote |
+	| asset1 | published   |
+	| asset2 | published   |
 	And I have the following courses
-	| Name     | Code | Description    | OrganizationName | CourseType  | IsTemplate |
-	| Econ 100 | E100 | Macroeconomics | COB              | Traditional | False      |
+	| Name     | Code | Description    | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets |
+	| Econ 100 | E100 | Macroeconomics | COB              | Traditional | False      | {someData} | asset1,asset2   |
 	And I have the following course segments for 'Econ 100'
 	| Name   | Description               | Type     | ParentSegment |
 	| Week 1 | First week is slack time  | TimeSpan |               |
@@ -83,8 +91,8 @@ Scenario: Can create a section from the course with learning materials
 
 Scenario: Create a course from a course template with learning materials
    Given I have the following course templates
-		| Name             | Code          | Description            | OrganizationName | CourseType  | IsTemplate |
-		| English Template | TemplateCode1 | English Class Template | COB              | Traditional | true       |
+		| Name             | Code          | Description            | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets |
+		| English Template | TemplateCode1 | English Class Template | COB              | Traditional | true       |	{someData} | asset1,asset2   |
     And I have the following course segments for 'English Template'
 	    | Name     | Description | Type     | ParentSegment |
 	    | Week one | First week  | TimeSpan |               |

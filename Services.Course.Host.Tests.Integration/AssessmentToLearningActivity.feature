@@ -5,7 +5,7 @@ Feature: AssessmentToLearningActivity
 	I want to be told the sum of two numbers
 
 Background: 
-	And the following organizations exist
+	Given the following organizations exist
 	| Name |
 	| COB  |
 	And I have the following capabilities
@@ -14,9 +14,15 @@ Background:
 	| CoursePublish |
 	| CourseView    |
 	| EditCourse    |
+	And I have the following assets
+	| Name   |
+	| asset1 |
+	And Published the following assets
+	| Name   | PublishNote |
+	| asset1 | published   |
 	And I have the following courses
-	| Name     | Code | Description    | OrganizationName | CourseType  | IsTemplate |
-	| Econ 100 | E100 | Macroeconomics | COB              | Traditional | False      |
+	| Name     | Code | Description    | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets |
+	| Econ 100 | E100 | Macroeconomics | COB              | Traditional | False      | {someData} | asset1          |
 	And I have the following course segments for 'Econ 100'
 	| Name   | Description              | Type     | ParentSegment |
 	| Week 1 | First week is slack time | TimeSpan |               |

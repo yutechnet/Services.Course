@@ -13,18 +13,26 @@ Background:
 	| CourseCreate  |
 	| CoursePublish |
 	| CourseView    |
+	And I have the following assets
+	| Name   |
+	| asset1 |
+	| asset2 |
+	And Published the following assets
+	| Name   | PublishNote |
+	| asset1 | published   |
+	| asset2 | published   |
 	And I have the following courses
-	| Name     | Code | Description           | OrganizationName | CourseType  | IsTemplate |
-	| Econ 100 | E100 | Macroeconomics        | COB              | Traditional | False      |
-	| Econ 200 | E200 | Microeconomics        | COB              | Traditional | False      |
-	| Econ 250 | E100 | Intro to Econometrics | COB              | Traditional | False      |
-	| Econ 300 | E100 | Applied Econometrics  | COB              | Traditional | False      |
-	| Econ 350 | E350 | Labor Economics       | COB              | Traditional | False      |
-	| Econ 400 | E400 | Advanced Econometrics | COB              | Traditional | False      |
-	| Econ 450 | E100 | Financial Economics   | COB              | Traditional | False      |
-	| Math 101 | M101 | Basic mathematics     | COB              | Traditional | False      |
-	| Math 150 | M101 | Geometry              | COB              | Traditional | False      |
-	| Math 200 | M200 | Calculus              | COB              | Traditional | False      |
+	| Name     | Code | Description           | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets |
+	| Econ 100 | E100 | Macroeconomics        | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	| Econ 200 | E200 | Microeconomics        | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	| Econ 250 | E100 | Intro to Econometrics | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	| Econ 300 | E100 | Applied Econometrics  | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	| Econ 350 | E350 | Labor Economics       | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	| Econ 400 | E400 | Advanced Econometrics | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	| Econ 450 | E100 | Financial Economics   | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	| Math 101 | M101 | Basic mathematics     | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	| Math 150 | M101 | Geometry              | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	| Math 200 | M200 | Calculus              | COB              | Traditional | False      | {someData} | asset1,asset2   |
 
 Scenario: Add a course prerequisite
 	When I publish the following courses

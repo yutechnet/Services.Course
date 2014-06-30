@@ -12,9 +12,17 @@ Background:
 	| CourseCreate  |
 	| CoursePublish |
 	| EditCourse    |
+	And I have the following assets
+	| Name   |
+	| asset1 |
+	| asset2 |
+	And Published the following assets
+	| Name   | PublishNote |
+	| asset1 | published   |
+	| asset2 | published   |
 	And I have the following courses
-	| Name     | Code | Description    | OrganizationName | CourseType  | IsTemplate |
-	| Econ 100 | E100 | Macroeconomics | COB              | Traditional | False      |
+	| Name     | Code | Description    | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets |
+	| Econ 100 | E100 | Macroeconomics | COB              | Traditional | False      | {someData} | asset1,asset2   |
 	And I have the following course segments for 'Econ 100'
 	| Name   | Description              | Type     | ParentSegment |
 	| Week 1 | First week is slack time | TimeSpan |               |

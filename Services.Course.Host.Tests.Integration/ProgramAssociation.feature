@@ -15,16 +15,27 @@ Background:
 	| CourseView    |
 	| EditProgram   |
 	| ViewProgram   |
+	| EditCourse    |
+	And I have the following assets
+	| Name   |
+	| asset1 |
+	| asset2 |
+	| asset3 |
+	And Published the following assets
+	| Name   | PublishNote |
+	| asset1 | published   |
+	| asset2 | published   |
+	| asset3 | published   |
 	And I have the following programs
 	| Name                | Description | ProgramType | OrganizationName |
 	| Bachelor of Art     | BA Program  | BA          | COB              |
 	| Bachelor of Science | BS program  | BS          | COB              |
 	And I have the following courses
-	| Name           | Code   | Description    | OrganizationName |
-	| English 101    | ENG101 | English 101    | COB              |
-	| Psychology 101 | PSY101 | Psychology 101 | COB              |
-	| Econ 100       | E100   | Macroeconomics | COB              |
-	| Econ 400       | E400   | Microeconomics | COB              |
+	| Name           | Code   | Description    | OrganizationName | MetaData   | ExtensionAssets |
+	| English 101    | ENG101 | English 101    | COB              |	{someData} | asset1,asset2   |
+	| Psychology 101 | PSY101 | Psychology 101 | COB              | {someData} | asset1,asset2   |
+	| Econ 100       | E100   | Macroeconomics | COB              |	{someData} | asset1,asset2   |
+	| Econ 400       | E400   | Microeconomics | COB              |	{someData} | asset1,asset2   |
 
 Scenario Template: Associate a course with a program
 	When I associate '<Course Name>' course with '<Program Name>' program

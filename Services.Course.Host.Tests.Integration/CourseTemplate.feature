@@ -15,13 +15,24 @@ Background:
 	| CourseView    |
 	| EditProgram   |
 	| ViewProgram   |
+	| EditCourse    |
+	And I have the following assets
+	| Name   |
+	| asset1 |
+	| asset2 |
+	| asset3 |
+	And Published the following assets
+	| Name   | PublishNote |
+	| asset1 | published   |
+	| asset2 | published   |
+	| asset3 | published   |
 	And I have the following programs
 	| Name                | Description | ProgramType | OrganizationName |
 	| Bachelor of Art     | BA Program  | BA          | COB              |
 	| Bachelor of Science | BS program  | BS          | COB              |
 	And I have the following course templates
-	| Name       | Code          | Description              | OrganizationName | CourseType  | IsTemplate |
-	| Template 1 | TemplateCode1 | My First Course Template | COB              | Traditional | true       |
+	| Name       | Code          | Description              | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets |
+	| Template 1 | TemplateCode1 | My First Course Template | COB              | Traditional | true       |	{someData} | asset1,asset2   |
 	And I have the following course segments for 'Template 1'
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
@@ -47,6 +58,10 @@ Then the course 'Course 1' should have the following info
 	| Description | My First Course |
 	| CourseType  | Traditional     |
 	| IsTemplate  | false           |
+	| MetaData    | {someData}      |
+And the course 'Course 1' should have the following reference info
+	| Field           | Value         |
+	| ExtensionAssets | asset1,asset2 |
 And the course 'Course 2' should have the following info
 	| Field       | Value            |
 	| Name        | Course 2         |
@@ -54,6 +69,10 @@ And the course 'Course 2' should have the following info
 	| Description | My Second Course |
 	| CourseType  | Traditional      |
 	| IsTemplate  | true             |
+	| MetaData    | {someData}       |
+And the course 'Course 2' should have the following reference info
+	| Field           | Value         |
+	| ExtensionAssets | asset1,asset2 |
 And the course 'Course 3' should have the following info
 	| Field       | Value                    |
 	| Name        | Course 3                 |
@@ -61,6 +80,10 @@ And the course 'Course 3' should have the following info
 	| Description | My First Course Template |
 	| CourseType  | Traditional              |
 	| IsTemplate  | true                     |
+	| MetaData    | {someData}               |
+And the course 'Course 3' should have the following reference info
+	| Field           | Value         |
+	| ExtensionAssets | asset1,asset2 |
 
 Scenario: Ignore course Type in the request when creating from template
 When I create a course from the template 'Template 1' with the following
@@ -73,6 +96,10 @@ Then the course 'Course 2' should have the following info
 	| Description | My First Course Template |
 	| CourseType  | Traditional              |
 	| IsTemplate  | false                    |
+	| MetaData    | {someData}       |
+And the course 'Course 2' should have the following reference info
+	| Field           | Value         |
+	| ExtensionAssets | asset1,asset2 |
 
 Scenario: Verify programs are copied from course template
 When I associate 'Template 1' course with the following programs

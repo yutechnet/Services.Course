@@ -12,7 +12,7 @@ Background:
 	| CourseCreate  |
 	| CoursePublish |
 	| CourseView    |
-
+	| EditCourse    |
 Scenario: Create a course
 	Given I have a course with following info:
 	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit | MetaData   | ExtensionAssets                                                           |

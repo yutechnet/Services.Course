@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Formatting;
+using BpeProducts.Common.Ioc.Extensions;
 using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
@@ -122,8 +123,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     PrerequisiteCourseIds = new List<Guid>(),
                     CourseType = row.TryGetValue("CourseType", out type) ? (ECourseType)Enum.Parse(typeof(ECourseType), type) : ECourseType.Traditional,
                     IsTemplate = row.TryGetValue("IsTemplate", out isTemplate) && bool.Parse(isTemplate),
-                    Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0"))
+                    Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0")),
+                    MetaData = row["MetaData"]
                 };
+
+                var assetNames = row["ExtensionAssets"].Split(',').ToList();
+                var guidList = new List<Guid>();
+                guidList.AddRange(assetNames.Select(a => Resources<AssetResource>.Get(a).Id));
+                saveCourseRequest.ExtensionAssets = guidList;
 
                 var result = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
                 result.EnsureSuccessStatusCode();
@@ -289,6 +296,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 Resources<AssetResource>.Add(name, resource);
                 ApiFeature.MockAssetClient.Setup(x => x.AddAssetToLibrary("course", It.IsAny<Guid>(), resource.Id))
                           .Returns(new LibraryInfo {OwnerId = Guid.NewGuid()});
+                //ApiFeature.MockAssetClient.Setup(x => x.GetAsset(resource.Id))
+                //          .Returns(new AssetInfo { IsPublished = row.GetValue("IsPublished", false) });
             }
         }
 

@@ -30,11 +30,5 @@ namespace BpeProducts.Services.Course.Contract
 
         [DataMember]
         public string Description { get; set; }
-
-        [DataMember]
-        public string MetaData { get; set; }
-
-        [DataMember]
-        public List<Guid> ExtensionAssets { get; set; }
     }
 }

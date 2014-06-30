@@ -13,9 +13,17 @@ Background:
  	And the following organizations exist
 	| Name |
 	| COB  |
+	And I have the following assets
+	| Name   |
+	| asset1 |
+	| asset2 |
+	And Published the following assets
+	| Name   | PublishNote |
+	| asset1 | published   |
+	| asset2 | published   |
 	And I have the following courses
-	| Name     | Code | Description       | OrganizationName |
-	| Math 101 | M101 | Basic mathematics | COB              |
+	| Name     | Code | Description       | OrganizationName | MetaData   | ExtensionAssets |
+	| Math 101 | M101 | Basic mathematics | COB              | {someData} | asset1,asset2   |
 
 Scenario: Add course segment
 	Given I have the following course segments for 'Math 101'

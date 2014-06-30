@@ -598,5 +598,17 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
             ActiveFlag = false;
         }
+
+        public override VersionableEntity CreateVersion(string versionNumber)
+        {
+            var versionableEntity = base.CreateVersion(versionNumber) as Course;
+            if (versionableEntity != null)
+            {
+                versionableEntity.MetaData = MetaData;
+                versionableEntity.ExtensionAssets = ExtensionAssets;
+            }
+
+            return versionableEntity;
+        }
     }
 }

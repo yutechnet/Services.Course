@@ -14,26 +14,42 @@ Background:
 	| CoursePublish |
 	| CourseView    |
 	| EditCourse    |
-	And I have the following courses   
-	| Name           | Code   | Description                   | OrganizationName | CourseType  | IsTemplate |
-	| English 1010   | ENG101 | Ranji's awesome English Class | COB              | Traditional | false      |
-	| English 101011 | E10011 | Macroeconomics                | COB              | Traditional | false      |
+	And I have the following assets
+	| Name   |
+	| asset1 |
+	| asset2 |
+	| asset3 |
+	And Published the following assets
+	| Name   | PublishNote |
+	| asset1 | published   |
+	| asset2 | published   |
+	| asset3 | published   |
+	And I have the following courses 
+	| Name           | Code   | Description                   | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets |
+	| English 1010   | ENG101 | Ranji's awesome English Class | COB              | Traditional | false      | {someData} | asset1,asset2   |
+	| English 101011 | E10011 | Macroeconomics                | COB              | Traditional | false      | {someData} | asset3          |
 
 Scenario: Create a default version
 	Then the course 'English 1010' should have the following info
-	| Field         | Value                         |
-	| Name          | English 1010                  |
-	| Code          | ENG101                        |
-	| Description   | Ranji's awesome English Class |
-	| VersionNumber | 1.0.0.0                       |
+	| Field           | Value                         |
+	| Name            | English 1010                  |
+	| Code            | ENG101                        |
+	| Description     | Ranji's awesome English Class |
+	| VersionNumber   | 1.0.0.0                       |
+	| MetaData        | {someData}                    |
+	And the course 'English 1010' should have the following reference info
+	| Field           | Value         |
+	| ExtensionAssets | asset1,asset2 |
 
 Scenario: Edit a course version
 	When I update 'English 1010' course with the following info
-	| Field       | Value                          |
-	| Name        | English 10101                  |
-	| Code        | ENG10101                       |
-	| Description | Ranji's terrible English Class |
-	| IsTemplate  | true                           |
+	| Field           | Value                          |
+	| Name            | English 10101                  |
+	| Code            | ENG10101                       |
+	| Description     | Ranji's terrible English Class |
+	| IsTemplate      | true                           |
+	| MetaData        | {updatedData}                  |
+	| ExtensionAssets | asset2                         |
 	Then the course 'English 1010' should have the following info
 	| Field            | Value                          |
 	| Name             | English 10101                  |
@@ -42,6 +58,10 @@ Scenario: Edit a course version
 	| VersionNumber    | 1.0.0.0                        |
 	| OrganizationName | COB                            |
 	| IsTemplate       | true                           |
+	| MetaData         | {updatedData}                  |
+	And the course 'English 1010' should have the following reference info
+	| Field           | Value  |
+	| ExtensionAssets | asset2 |
 
 Scenario: Publish a course version
 	When I publish the following courses
@@ -55,17 +75,23 @@ Scenario: Publish a course version
 	| VersionNumber | 1.0.0.0                       |
 	| IsPublished   | true                          |
 	| PublishNote   | Blah blah                     |
+	| MetaData      | {someData}                    |
+	And the course 'English 1010' should have the following reference info
+	| Field           | Value          |
+	| ExtensionAssets | asset1,asset2 |
 
 Scenario: Published version cannot be modified
 	When I publish the following courses
 	| Name         | Note      |
 	| English 1010 | Blah blah |
 	And I update 'English 1010' course with the following info
-	| Field          | Value                                |
-	| Name           | English 10101                        |
-	| Code           | ENG101                               |
-	| Description    | Johns's terrible English Class       |
-	| OrganizationId | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| Field           | Value                                |
+	| Name            | English 10101                        |
+	| Code            | ENG101                               |
+	| Description     | Johns's terrible English Class       |
+	| OrganizationId  | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| MetaData        | {updatedData}                        |
+	| ExtensionAssets | asset2                               |
 	Then I get 'BadRequest' response
 
 Scenario: Published version cannot be deleted
@@ -83,12 +109,17 @@ Scenario: Create a course version from a previously-published version
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the course 'English 1010 v2' should have the following info
-	| Field         | Value                         |
-	| Name          | English 1010                  |
-	| Code          | ENG101                        |
-	| Description   | Ranji's awesome English Class |
-	| VersionNumber | 2.0a                          |
-	| IsPublished   | false                         |
+	| Field           | Value                                |
+	| Name            | English 1010                         |
+	| Code            | ENG101                               |
+	| Description     | Ranji's awesome English Class        |
+	| VersionNumber   | 2.0a                                 |
+	| IsPublished     | false                                |
+	| MetaData        | {someData}                           |
+	And the course 'English 1010 v2' should have the following reference info
+	| Field           | Value          |
+	| ExtensionAssets | asset1,asset2 |
+
 
 Scenario: Create a course version from a previously-published version then publish it
 	When I publish the following courses
@@ -101,16 +132,20 @@ Scenario: Create a course version from a previously-published version then publi
 	| Name                  | Note            |
 	| English 1010 v1.0.0.1 | Blah blah DE396 |	
 	Then the course 'English 1010 v1.0.0.1' should have the following info
-	| Field         | Value                         |
-	| Name          | English 1010                  |
-	| Code          | ENG101                        |
-	| Description   | Ranji's awesome English Class |
-	| VersionNumber | 1.0.0.1                       |
-	| IsPublished   | true                          |
+	| Field           | Value                                |
+	| Name            | English 1010                         |
+	| Code            | ENG101                               |
+	| Description     | Ranji's awesome English Class        |
+	| VersionNumber   | 1.0.0.1                              |
+	| IsPublished     | true                                 |
+	| MetaData        | {someData}                           |
+	And the course 'English 1010 v1.0.0.1' should have the following reference info
+	| Field           | Value          |
+	| ExtensionAssets | asset1,asset2 |
 
 Scenario: Create a course version from a previously-published version with prerequisites
 	When I publish the following courses
-	| Name         | Note      |
+	| Name           | Note      |
 	| English 101011 | Blah blah |
 	And I add the following prerequisites to 'English 1010'
 	| Name			 | 
@@ -122,12 +157,16 @@ Scenario: Create a course version from a previously-published version with prere
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the course 'English 1010 v2' should have the following info
-	| Field         | Value                         |
-	| Name          | English 1010                  |
-	| Code          | ENG101                        |
-	| Description   | Ranji's awesome English Class |
-	| VersionNumber | 2.0a                          |
-	| IsPublished   | false                         |
+	| Field           | Value                                |
+	| Name            | English 1010                         |
+	| Code            | ENG101                               |
+	| Description     | Ranji's awesome English Class        |
+	| VersionNumber   | 2.0a                                 |
+	| IsPublished     | false                                |
+	| MetaData        | {someData}                           |
+	And the course 'English 1010 v2' should have the following reference info
+	| Field           | Value          |
+	| ExtensionAssets | asset1,asset2 |
 	And the course 'English 1010 v2' should have the following prerequisites
 	| Name           |
 	| English 101011 |
@@ -146,12 +185,16 @@ Scenario: Create a course version from a previously-published version with segme
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the course 'English 1010 v2' should have the following info
-	| Field         | Value                         |
-	| Name          | English 1010                  |
-	| Code          | ENG101                        |
-	| Description   | Ranji's awesome English Class |
-	| VersionNumber | 2.0a                          |
-	| IsPublished   | false                         |
+	| Field           | Value                                |
+	| Name            | English 1010                         |
+	| Code            | ENG101                               |
+	| Description     | Ranji's awesome English Class        |
+	| VersionNumber   | 2.0a                                 |
+	| IsPublished     | false                                |
+	| MetaData        | {someData}                           |
+	And the course 'English 1010 v2' should have the following reference info
+	| Field           | Value          |
+	| ExtensionAssets | asset1,asset2 |
 	And the course 'English 1010 v2' should have these course segments
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
@@ -179,12 +222,16 @@ Scenario: Create a course version from a previously-published version with segme
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the course 'English 1010 v2' should have the following info
-	| Field         | Value                         |
-	| Name          | English 1010                  |
-	| Code          | ENG101                        |
-	| Description   | Ranji's awesome English Class |
-	| VersionNumber | 2.0a                          |
-	| IsPublished   | false                         |
+	| Field           | Value                                |
+	| Name            | English 1010                         |
+	| Code            | ENG101                               |
+	| Description     | Ranji's awesome English Class        |
+	| VersionNumber   | 2.0a                                 |
+	| IsPublished     | false                                |
+	| MetaData        | {someData}                           |
+	And the course 'English 1010 v2' should have the following reference info
+	| Field           | Value          |
+	| ExtensionAssets | asset1,asset2 |
 	And the course 'English 1010 v2' should have these course segments
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |

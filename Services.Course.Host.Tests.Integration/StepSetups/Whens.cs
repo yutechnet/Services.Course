@@ -419,6 +419,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = Resources<CourseResource>.Get(courseName);
             var updateCourseRequest = table.CreateInstance<UpdateCourseRequest>();
 
+            var assetNames = table.Rows.Single(r => r["Field"] == "ExtensionAssets")["Value"].Split(',').ToList();
+            var guidList = new List<Guid>();
+            guidList.AddRange(assetNames.Select(a => Resources<AssetResource>.Get(a).Id));
+            updateCourseRequest.ExtensionAssets = guidList;
+
             PutOperations.UpdateCourse(course, updateCourseRequest);
         }
 
@@ -613,8 +618,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     SectionCode = row["SectionCode"],
                     StartDate = row.GetValue("StartDate", DateTime.MinValue),
                     EndDate = row.GetValue<DateTime?>("EndDate", null),
-					OrganizationId = Guid.NewGuid()
+					OrganizationId = Guid.NewGuid(),
+                    MetaData = row["MetaData"],
                 };
+
+                var assetNames = row["ExtensionAssets"].Split(',').ToList();
+                var guidList = new List<Guid>();
+                guidList.AddRange(assetNames.Select(a => Resources<AssetResource>.Get(a).Id));
+                request.ExtensionAssets = guidList;
 
                 PostOperations.CreateSection(request.Name, course, request);
             }

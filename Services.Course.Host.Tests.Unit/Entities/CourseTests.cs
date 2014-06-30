@@ -805,6 +805,27 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             CollectionAssert.Contains(course.ExtensionAssets, guid);
         }
 
+        [Test]
+        public void CreateVersion_copies_over_metaData_and_extensionAssets()
+        {
+            // arrange
+            var guid = Guid.NewGuid();
+            var course = new Domain.CourseAggregates.Course
+                {
+                    MetaData = "{someData}",
+                    ExtensionAssets = new List<Guid> {guid}
+                };
+
+            // act
+            var versionedCourse = course.CreateVersion("newVersion") as Domain.CourseAggregates.Course;
+
+            // assert
+            Assert.NotNull(versionedCourse);
+            Assert.That(versionedCourse.VersionNumber, Is.EqualTo("newVersion"));
+            Assert.That(versionedCourse.MetaData, Is.EqualTo(course.MetaData));
+            CollectionAssert.AreEquivalent(course.ExtensionAssets, versionedCourse.ExtensionAssets);
+        }
+
         static T RandomEnumValue<T>()
         {
             return Enum

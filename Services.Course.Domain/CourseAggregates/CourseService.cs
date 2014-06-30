@@ -74,6 +74,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             _courseRepository.Save(course);
         }
 
+        [AuthByAcl(Capability = Capability.EditCourse, ObjectId = "courseId", ObjectType = typeof(Course))]
         public void Update(Guid courseId, UpdateCourseRequest request)
         {
             var course = _courseRepository.GetOrThrow(courseId);

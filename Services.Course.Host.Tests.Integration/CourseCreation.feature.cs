@@ -86,6 +86,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
                         "CoursePublish"});
             table2.AddRow(new string[] {
                         "CourseView"});
+            table2.AddRow(new string[] {
+                        "EditCourse"});
 #line 10
  testRunner.And("I have the following capabilities", ((string)(null)), table2, "And ");
 #line hidden
