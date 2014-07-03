@@ -1,4 +1,4 @@
-# Deployment Module v0.1.65
+# Deployment Module v0.1.70
 
 $Script:ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -1486,38 +1486,39 @@ function Deployment-UninstallNServiceBusService
 	param(
 		$serviceName
 	)
-	Write-Host "Uninstalling NServiceBus Windows service named `"$serviceName`""
-	$pinfo = New-Object System.Diagnostics.ProcessStartInfo
-	$pinfo.CreateNoWindow = $true
-	$pinfo.UseShellExecute = $false
-	$pinfo.FileName = ".\NServiceBus.Host.exe"
-	$pinfo.Arguments = "-uninstall -serviceName=`"$serviceName`""
-	$pinfo.RedirectStandardOutput = $true
-	$pinfo.RedirectStandardError = $true
-	if($password)
+	
+	# check to see if the service has already been registered
+	Write-Host "Checking for existing NServiceBus Windows service named `"$serviceName`""
+	$existingService = Get-WmiObject win32_service -Filter "name='$serviceName'"
+	# windows service exists
+	if ($existingService -ne $null)
 	{
-		Write-Host "$($pinfo.FileName) $($($pinfo.Arguments).Replace("$password", "********"))"
-	}
-	else
-	{
+		Write-Host "Uninstalling NServiceBus Windows service named `"$serviceName`""
+		$pinfo = New-Object System.Diagnostics.ProcessStartInfo
+		$pinfo.CreateNoWindow = $true
+		$pinfo.UseShellExecute = $false
+		$pinfo.FileName = ".\NServiceBus.Host.exe"
+		$pinfo.Arguments = "-uninstall -serviceName=`"$serviceName`""
+		$pinfo.RedirectStandardOutput = $true
+		$pinfo.RedirectStandardError = $true
 		Write-Host "$($pinfo.FileName) $($pinfo.Arguments)"
-	}
-	$p = New-Object System.Diagnostics.Process
-	$p.StartInfo = $pinfo
-	$p.Start() | Out-Null
-	$stdOut = $p.StandardOutput.ReadToEnd()
-	$stdErr = $p.StandardError.ReadToEnd()
-	$p.WaitForExit()
-	$exitCode = $p.ExitCode
-	Write-Host "Uninstall Exit Code: $exitCode"
-	Write-Host "----- Uninstall Output -----"
-	Write-Host $stdOut
-	Write-Host "----- End Uninstall Output -----"
-	if ($exitCode -ne 0)
-	{
-		Write-Host "----- Uninstall Error -----"
-		Write-Host $stdErr
-		Write-Host "----- End Uninstall Error -----"
+		$p = New-Object System.Diagnostics.Process
+		$p.StartInfo = $pinfo
+		$p.Start() | Out-Null
+		$stdOut = $p.StandardOutput.ReadToEnd()
+		$stdErr = $p.StandardError.ReadToEnd()
+		$p.WaitForExit()
+		$exitCode = $p.ExitCode
+		Write-Host "Uninstall Exit Code: $exitCode"
+		Write-Host "----- Uninstall Output -----"
+		Write-Host $stdOut
+		Write-Host "----- End Uninstall Output -----"
+		if ($exitCode -ne 0)
+		{
+			Write-Host "----- Uninstall Error -----"
+			Write-Host $stdErr
+			Write-Host "----- End Uninstall Error -----"
+		}
 	}
 }
 
@@ -1575,6 +1576,51 @@ function Deployment-InstallNServiceBusService
 #endregion
 
 #region Generic Functions
+function Deployment-PurgeDirectory
+{
+	param(
+		$directory = $(Throw 'directory path is required')
+	)
+	
+	if (Test-Path($directory))
+	{
+		Write-Host "Forcing purge of directory $($directory)"
+		$attempts = 5
+		$attempt = 0
+		$purgeException = $null
+		do
+		{
+			$attempt = $attempt + 1
+			if ($attempt -gt 1)
+			{
+				Write-Host "Previous purge attempt failed. Trying purge attempt $($attempt)/$($attempts)"
+			}
+			Try
+			{
+				$existingContent = Get-ChildItem -Path $directory
+				ForEach($content in $existingContent)
+				{
+					Remove-Item $content.PSPath -Force -Recurse | Out-Null
+				}
+				$attempt = $attempts
+				$purgeException = $null
+			}
+			Catch [Exception]
+			{
+				Write-Host "$($_.Exception.GetType().FullName): $($_.Exception.Message)"
+				$purgeException = "$($_.Exception.GetType().FullName): $($_.Exception.Message)"
+				Start-Sleep -s 10
+			}
+		} While ($attempt -lt  $attempts)
+		
+		if ($purgeException)
+		{
+			Write-Host "Purging directory failed after $($attempts) attempts"
+			Throw $purgeException
+		}
+	}
+}
+
 function Deployment-CreateParentDirectory
 {
 	param(
@@ -1772,6 +1818,156 @@ function Deployment-InstallMsi
 		Write-Host "Install $applicationProductName Exit Code: $($process.ExitCode)"
 		
 		Start-Sleep -s 30
+	}
+}
+
+function Deployment-InstallNewRelicMonitoring
+{
+	param(
+		$productList,
+		[string]$monitorProductName,
+		[string]$monitorDownloadUri,
+		[string]$agentProductName,
+		[string]$agentDownloadUri,
+		[string]$agentApplicationName,
+		[string]$licenseKey,
+		[string]$downloadDirectory
+	)
+	
+	# if the product list is empty populate it (this can be slow)
+	if ($productList -eq $null)
+	{
+		$productList = Get-WmiObject -Class Win32_Product
+	}
+	
+	# install the New Relic System Monitor
+	if ($monitorProductName)
+	{
+		Write-Host "Checking to see if $monitorProductName has been installed"
+	
+		# search the product list for the application
+		$product = $productList | Where-Object {$_.Name -like "*$monitorProductName*"}
+		if ($product -eq $null)
+		{
+			if (-not (Test-Path "$downloadDirectory"))
+			{
+				New-Item -ItemType directory -Path "$downloadDirectory" | Out-Null
+			}
+		
+			# get the url
+			$uri = new-Object System.Uri "$($Script:BaseSoftwareDownloadUri)/$($monitorDownloadUri)"
+		
+			Write-Host "Downloading $monitorProductName ($uri)"
+		
+			# get the full download path
+			$fileName = $uri.Segments[-1] 
+			$downloadFile = Join-Path $downloadDirectory $fileName
+		
+			# delete the old downloaded file if it exists
+			if (Test-Path $downloadFile)
+			{
+				Remove-Item $downloadFile -Force | Out-Null
+			}
+		
+			# download file
+			$webClient = New-Object System.Net.WebClient
+			$webClient.Headers.Add("Authorization","Basic $($Script:AuthToken)")
+			$webClient.DownloadFile($uri, $downloadFile)
+		
+			# install the application
+			Write-Host "Installing $monitorProductName (msiexec.exe /i `"$downloadFile`" /qn NR_LICENSE_KEY=`"$($licenseKey)`")"
+			$args = @()
+			$args += "/i"
+			$args += "`"$downloadFile`""
+			$args += "/qn"
+			$args += "NR_LICENSE_KEY=`"$($licenseKey)`""
+			$process = (Start-Process -FilePath "msiexec.exe" -ArgumentList $args -PassThru -Wait)
+			Write-Host "Install $monitorProductName Exit Code: $($process.ExitCode)"
+			
+			Start-Sleep -s 30
+			
+			# reset IIS
+			Write-Host "Restarting IIS"
+			Invoke-Command -ScriptBlock {iisreset}
+		}
+	}
+	
+	# install the New Relic Agent Monitor
+	if ($agentProductName)
+	{
+		Write-Host "Checking to see if $agentProductName has been installed"
+	
+		# search the product list for the application
+		$product = $productList | Where-Object {$_.Name -like "*$agentProductName*"}
+		if ($product -eq $null)
+		{
+			if (-not (Test-Path "$downloadDirectory"))
+			{
+				New-Item -ItemType directory -Path "$downloadDirectory" | Out-Null
+			}
+		
+			# get the url
+			$uri = new-Object System.Uri "$($Script:BaseSoftwareDownloadUri)/$($agentDownloadUri)"
+		
+			Write-Host "Downloading $monitorProductName ($uri)"
+		
+			# get the full download path
+			$fileName = $uri.Segments[-1] 
+			$downloadFile = Join-Path $downloadDirectory $fileName
+		
+			# delete the old downloaded file if it exists
+			if (Test-Path $downloadFile)
+			{
+				Remove-Item $downloadFile -Force | Out-Null
+			}
+		
+			# download file
+			$webClient = New-Object System.Net.WebClient
+			$webClient.Headers.Add("Authorization","Basic $($Script:AuthToken)")
+			$webClient.DownloadFile($uri, $downloadFile)
+		
+			# install the application
+			Write-Host "Installing $agentProductName (msiexec.exe /i `"$downloadFile`" /qb NR_LICENSE_KEY=`"$($licenseKey)`" INSTALLLEVEL=50)"
+			$args = @()
+			$args += "/i"
+			$args += "`"$downloadFile`""
+			$args += "/qb"
+			$args += "NR_LICENSE_KEY=`"$($licenseKey)`""
+			$args += "INSTALLLEVEL=50"
+			$process = (Start-Process -FilePath "msiexec.exe" -ArgumentList $args -PassThru -Wait)
+			Write-Host "Install $agentProductName Exit Code: $($process.ExitCode)"
+			
+			Start-Sleep -s 30
+			
+			# reset IIS
+			Write-Host "Restarting IIS"
+			Invoke-Command -ScriptBlock {iisreset}
+		}
+	}
+	
+	# update config
+	if ($agentApplicationName)
+	{
+		if (Test-Path ("C:\ProgramData\New Relic\.NET Agent\newrelic.config"))
+		{
+			$ns = @{x="urn:newrelic-config"}
+			$xml = [xml](Get-Content "C:\ProgramData\New Relic\.NET Agent\newrelic.config")
+			$applicationName = Select-Xml -Xml $xml -XPath '/x:configuration/x:application/x:name' -Namespace $ns
+			if ($applicationName -ne $null -and $applicationName.Node.InnerText -ne $agentApplicationName)
+			{
+				Write-Host "Updating Agent Application Name in file C:\ProgramData\New Relic\.NET Agent\newrelic.config from $($applicationName.Node.InnerText) to $agentApplicationName"
+				$applicationName.Node.set_InnerText($agentApplicationName)
+				$xml.Save("C:\ProgramData\New Relic\.NET Agent\newrelic.config")
+				
+				# reset IIS
+				Write-Host "Restarting IIS"
+				Invoke-Command -ScriptBlock {iisreset}
+			}
+		}
+		else
+		{
+			Write-Host "Unable to locate file C:\ProgramData\New Relic\.NET Agent\newrelic.config"
+		}
 	}
 }
 
