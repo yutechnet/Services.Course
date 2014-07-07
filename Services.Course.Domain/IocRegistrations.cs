@@ -25,26 +25,56 @@ namespace BpeProducts.Services.Course.Domain
 			Common.NHibernate.IocRegistrations.RegisterSessionFactory(containerBuilder, connectionString, dropSchema: false,
 			                                                          updateSchema: updateSchema);
 
-			containerBuilder
-				.RegisterType<CourseRepository>().As<ICourseRepository>()
-				.EnableInterfaceInterceptors().EnableUserInputValidation()
-				.InterceptedBy(typeof (PublicInterfaceLoggingInterceptor));
-			containerBuilder
-				.RegisterType<ProgramRepository>().As<IProgramRepository>()
-                .EnableInterfaceInterceptors().EnableUserInputValidation()
-				.InterceptedBy(typeof (PublicInterfaceLoggingInterceptor));
+		    containerBuilder.RegisterType<CourseRepository>()
+		                    .As<ICourseRepository>()
+		                    .EnableInterfaceInterceptors()
+		                    .EnableUserInputValidation()
+		                    .EnableLogging();
 
-			containerBuilder.RegisterType<CourseFactory>().As<ICourseFactory>();
-			containerBuilder.RegisterType<CourseService>().As<ICourseService>().EnableInterfaceInterceptors().EnableAuthorization();
+		    containerBuilder.RegisterType<ProgramRepository>()
+		                    .As<IProgramRepository>()
+		                    .EnableInterfaceInterceptors()
+		                    .EnableUserInputValidation()
+                            .EnableLogging();
 
-            containerBuilder.RegisterType<LearningMaterialService>().As<ILearningMaterialService>().EnableInterfaceInterceptors().EnableAuthorization();
+		    containerBuilder.RegisterType<CourseFactory>()
+		                    .As<ICourseFactory>()
+		                    .EnableInterfaceInterceptors()
+		                    .EnableLogging();
+
+		    containerBuilder.RegisterType<CourseService>()
+		                    .As<ICourseService>()
+		                    .EnableInterfaceInterceptors()
+		                    .EnableAuthorization()
+		                    .EnableLogging();
+
+		    containerBuilder.RegisterType<LearningMaterialService>()
+		                    .As<ILearningMaterialService>()
+		                    .EnableInterfaceInterceptors()
+		                    .EnableAuthorization()
+		                    .EnableLogging();
+
             containerBuilder.RegisterType<AssetServiceClient>().As<IAssetServiceClient>();
 
 			containerBuilder.RegisterType<AssessmentClient>().As<IAssessmentClient>();
 
-			containerBuilder.RegisterType<CourseSegmentService>().As<ICourseSegmentService>();
-			containerBuilder.RegisterType<CourseLearningActivityService>().As<ICourseLearningActivityService>().EnableInterfaceInterceptors().EnableAuthorization();
-            containerBuilder.RegisterType<ProgramService>().As<IProgramService>().EnableInterfaceInterceptors().EnableAuthorization();
+		    containerBuilder.RegisterType<CourseSegmentService>()
+		                    .As<ICourseSegmentService>()
+		                    .EnableInterfaceInterceptors()
+		                    .EnableLogging();
+
+		    containerBuilder.RegisterType<CourseLearningActivityService>()
+		                    .As<ICourseLearningActivityService>()
+		                    .EnableInterfaceInterceptors()
+		                    .EnableAuthorization()
+		                    .EnableLogging();
+
+		    containerBuilder.RegisterType<ProgramService>()
+		                    .As<IProgramService>()
+		                    .EnableInterfaceInterceptors()
+		                    .EnableAuthorization()
+		                    .EnableLogging();
+
 			containerBuilder.RegisterType<VersionableEntityFactory>().As<IVersionableEntityFactory>();
 
             containerBuilder.RegisterType<CoursePublisher>().As<ICoursePublisher>();
