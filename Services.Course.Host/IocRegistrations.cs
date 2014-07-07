@@ -14,10 +14,12 @@ namespace BpeProducts.Services.Course.Host
         public void Register(ContainerBuilder containerBuilder)
         {
             Common.WebApi.IocRegistrations.RegisterWebApi(containerBuilder);
-			
-            containerBuilder.RegisterType<SectionClient>().As<ISectionClient>()
-                .EnableInterfaceInterceptors().EnableValidation()
-                .InterceptedBy(typeof(PublicInterfaceLoggingInterceptor));
+
+            containerBuilder.RegisterType<SectionClient>()
+                            .As<ISectionClient>()
+                            .EnableInterfaceInterceptors()
+                            .EnableValidation()
+                            .EnableLogging();
 
             containerBuilder.RegisterType<BootstrapContextSamlTokenExtractor>().As<ISamlTokenExtractor>();
         }
