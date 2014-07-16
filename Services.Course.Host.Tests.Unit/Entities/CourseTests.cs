@@ -435,7 +435,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             CollectionAssert.AreEquivalent(course.ExtensionAssets, request.ExtensionAssets);
 
             var sectionLearningMaterial = course.LearningMaterials.FirstOrDefault();
-            Assert.That(sectionLearningMaterial.CustomAttribute, Is.EqualTo(learningMaterial.CustomAttribute));
+            Assert.That(sectionLearningMaterial.MetaData, Is.EqualTo(learningMaterial.MetaData));
             Assert.That(sectionLearningMaterial.Instruction, Is.EqualTo(learningMaterial.Instruction));
             Assert.That(sectionLearningMaterial.IsRequired, Is.EqualTo(learningMaterial.IsRequired));
             Assert.That(sectionLearningMaterial.AssetId, Is.EqualTo(learningMaterial.AssetId));
@@ -533,7 +533,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                     DueDate = Random.Next(50000),
                     IsGradeable = Random.Next(1) == 1,
                     IsExtraCredit = Random.Next(1) == 1,
-                    CustomAttribute = Random.Next().ToString(CultureInfo.InvariantCulture)
+                    MetaData = Random.Next().ToString(CultureInfo.InvariantCulture)
                 };
 
             course.AddLearningActivity(seg1.Id, cla);
@@ -559,7 +559,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(learningActivity.DueDate, Is.EqualTo(cla.DueDate));
             Assert.That(learningActivity.IsGradeable, Is.EqualTo(cla.IsGradeable));
             Assert.That(learningActivity.IsExtraCredit, Is.EqualTo(cla.IsExtraCredit));
-            Assert.That(learningActivity.CustomAttribute, Is.EqualTo(cla.CustomAttribute));
+            Assert.That(learningActivity.MetaData, Is.EqualTo(cla.MetaData));
         }
 
         [Test]

@@ -32,7 +32,10 @@ namespace BpeProducts.Services.Course.Contract
 		[DataMember]
 		public string Description { get; set; }
         [DataMember]
+        [Obsolete("this will be removed")]
         public string CustomAttribute { get; set; }
+        [DataMember]
+        public string MetaData { get; set; }
 
         [DataMember]
         public int? ActiveDate { get; set; }

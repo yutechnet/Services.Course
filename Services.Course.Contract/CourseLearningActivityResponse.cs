@@ -27,7 +27,9 @@ namespace BpeProducts.Services.Course.Contract
         public int Weight { get; set; }
         public Guid? ObjectId { get; set; }
 		public string Description { get; set; }
+        [Obsolete("this will be removed")]
         public string CustomAttribute { get; set; }
+        public string MetaData { get; set; }
         public int? ActiveDate { get; set; }
         public int? InactiveDate { get; set; }
         public int? DueDate { get; set; }

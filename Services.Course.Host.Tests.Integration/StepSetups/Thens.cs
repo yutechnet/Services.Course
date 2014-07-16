@@ -591,7 +591,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 Assert.That(response.CourseSegmentId, Is.EqualTo(courseSegment.Id));
                 Assert.That(response.Instruction, Is.EqualTo(row["Instruction"]));
                 Assert.That(response.IsRequired, Is.EqualTo(bool.Parse(row["IsRequired"])));
-                Assert.That(response.CustomAttribute, Is.EqualTo(row["CustomAttribute"]));
+                Assert.That(response.MetaData, Is.EqualTo(row["MetaData"]));
             }
         }
 

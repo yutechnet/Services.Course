@@ -71,16 +71,16 @@ Scenario Outline: I can update a learning activity unless I have permission to d
 	When I am 'TestUser1'
 	And I have the '<Capability>' capability
 	And I update 'Discussion 1' learning activity with the following info
-	| Field           | Value                                                                        |
-	| Name            | Discussion 1                                                                 |
-	| Type            | Assignment                                                                   |
-	| IsGradeable     | false                                                                        |
-	| IsExtraCredit   | false                                                                        |
-	| Description     | Desc                                                                         |
-	| Weight          | 100                                                                          |
-	| MaxPoint        | 100                                                                          |
-	| ObjectId        | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
-	| CustomAttribute | {"id":"49","summary":"asdf","type":"Parabola.Web.Contract.Discussion.Forum"} |
+	| Field         | Value                                                                        |
+	| Name          | Discussion 1                                                                 |
+	| Type          | Assignment                                                                   |
+	| IsGradeable   | false                                                                        |
+	| IsExtraCredit | false                                                                        |
+	| Description   | Desc                                                                         |
+	| Weight        | 100                                                                          |
+	| MaxPoint      | 100                                                                          |
+	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
+	| MetaData      | {"id":"49","summary":"asdf","type":"Parabola.Web.Contract.Discussion.Forum"} |
 	Then I get '<StatusCode>' response
 Examples:
 	| Capability | StatusCode |

@@ -99,27 +99,27 @@ Scenario: Update a learning activity NEW
 	| Name         | Type       | IsGradeable | IsExtraCredit | Weight | MaxPoint | ObjectId                             |
 	| Discussion 1 | Discussion | True        | true         | 100     | 20       | D2DF063D-E2A1-4F83-9BE0-218EC676C05F |
 	When I update 'Discussion 1' learning activity with the following info
-	| Field           | Value                                                                        |
-	| Name            | Discussion 1                                                                 |
-	| Type            | Assignment                                                                   |
-	| IsGradeable     | false                                                                        |
-	| IsExtraCredit   | false                                                                        |
-	| Description     | Desc                                                                         |
-	| Weight          | 100                                                                          |
-	| MaxPoint        | 100                                                                          |
-	| ObjectId        | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
-	| CustomAttribute | {"id":"49","summary":"asdf","type":"Parabola.Web.Contract.Discussion.Forum"} |
+	| Field         | Value                                                                        |
+	| Name          | Discussion 1                                                                 |
+	| Type          | Assignment                                                                   |
+	| IsGradeable   | false                                                                        |
+	| IsExtraCredit | false                                                                        |
+	| Description   | Desc                                                                         |
+	| Weight        | 100                                                                          |
+	| MaxPoint      | 100                                                                          |
+	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
+	| MetaData      | {"id":"49","summary":"asdf","type":"Parabola.Web.Contract.Discussion.Forum"} |
 	Then my course learning activity 'Discussion 1' contains the following
-	| Field           | Value                                                                        |
-	| Name            | Discussion 1                                                                 |
-	| Type            | Assignment                                                                   |
-	| IsGradeable     | false                                                                        |
-	| IsExtraCredit   | false                                                                        |
-	| Description     | Desc                                                                         |
-	| Weight          | 100                                                                          |
-	| MaxPoint        | 100                                                                          |
-	| ObjectId        | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
-	| CustomAttribute | {"id":"49","summary":"asdf","type":"Parabola.Web.Contract.Discussion.Forum"} |
+	| Field         | Value                                                                        |
+	| Name          | Discussion 1                                                                 |
+	| Type          | Assignment                                                                   |
+	| IsGradeable   | false                                                                        |
+	| IsExtraCredit | false                                                                        |
+	| Description   | Desc                                                                         |
+	| Weight        | 100                                                                          |
+	| MaxPoint      | 100                                                                          |
+	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
+	| MetaData      | {"id":"49","summary":"asdf","type":"Parabola.Web.Contract.Discussion.Forum"} |
 
 Scenario: Delete a learning activity
 	Given I add the following course learning activities to 'Week 1' course segment
@@ -146,22 +146,22 @@ Scenario: Cannot add a learning activity to a course that is already published
 
 Scenario: Add a new learning activity with a custom type
 	When I add the following learning activity to 'Week 1' course segment
-	| Field           | Value                                                                        |
-	| Name            | Custom 1                                                                     |
-	| Type            | Custom                                                                       |
-	| IsGradeable     | True                                                                         |
-	| IsExtraCredit   | False                                                                        |
-	| Weight          | 100                                                                          |
-	| MaxPoint        | 20                                                                           |
-	| ObjectId        | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
-	| CustomAttribute | {"id":"49","summary":"asdf","type":"Parabola.Web.Contract.Discussion.Forum"} |
+	| Field         | Value                                                                        |
+	| Name          | Custom 1                                                                     |
+	| Type          | Custom                                                                       |
+	| IsGradeable   | True                                                                         |
+	| IsExtraCredit | False                                                                        |
+	| Weight        | 100                                                                          |
+	| MaxPoint      | 20                                                                           |
+	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
+	| MetaData      | {"id":"49","summary":"asdf","type":"Parabola.Web.Contract.Discussion.Forum"} |
 	Then my course learning activity 'Custom 1' contains the following
-	| Field           | Value                                                                        |
-	| Name            | Custom 1                                                                     |
-	| Type            | Custom                                                                       |
-	| IsGradeable     | True                                                                         |
-	| IsExtraCredit   | False                                                                        |
-	| Weight          | 100                                                                          |
-	| MaxPoint        | 20                                                                           |
-	| ObjectId        | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
-	| CustomAttribute | {"id":"49","summary":"asdf","type":"Parabola.Web.Contract.Discussion.Forum"} |
+	| Field         | Value                                                                        |
+	| Name          | Custom 1                                                                     |
+	| Type          | Custom                                                                       |
+	| IsGradeable   | True                                                                         |
+	| IsExtraCredit | False                                                                        |
+	| Weight        | 100                                                                          |
+	| MaxPoint      | 20                                                                           |
+	| ObjectId      | D2DF063D-E2A1-4F83-9BE0-218EC676C05F                                         |
+	| MetaData      | {"id":"49","summary":"asdf","type":"Parabola.Web.Contract.Discussion.Forum"} |

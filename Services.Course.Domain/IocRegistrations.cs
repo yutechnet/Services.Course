@@ -88,8 +88,10 @@ namespace BpeProducts.Services.Course.Domain
 
 	    private void RegisterMappings()
 	    {
-	        Mapper.CreateMap<LearningMaterial, LearningMaterialInfo>();
-	        Mapper.CreateMap<CourseLearningActivity, CourseLearningActivityResponse>();
+	        Mapper.CreateMap<LearningMaterial, LearningMaterialInfo>()
+	              .ForMember(x => x.CustomAttribute, opt => opt.MapFrom(src => src.MetaData));
+	        Mapper.CreateMap<CourseLearningActivity, CourseLearningActivityResponse>()
+	              .ForMember(x => x.CustomAttribute, opt => opt.MapFrom(src => src.MetaData));
 	    }
 	}
 }

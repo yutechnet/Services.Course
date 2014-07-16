@@ -328,7 +328,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                     MaxPoint = courseLearningActivity.MaxPoint,
                     Weight = courseLearningActivity.Weight,
                     ObjectId = courseLearningActivity.ObjectId,
-                    CustomAttribute = courseLearningActivity.CustomAttribute,
+                    MetaData = courseLearningActivity.MetaData,
                     AssessmentId = courseLearningActivity.AssessmentId,
                     AssessmentType = courseLearningActivity.AssessmentType.ToString(),
                     Description = courseLearningActivity.Description
@@ -346,7 +346,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                     Instruction = courseLearningMaterial.Instruction,
                     AssetId = courseLearningMaterial.AssetId,
                     IsRequired = courseLearningMaterial.IsRequired,
-                    CustomAttribute = courseLearningMaterial.CustomAttribute
+                    MetaData = courseLearningMaterial.MetaData
                 }).ToList();
 
             return sectionLearningMaterials;
@@ -423,7 +423,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 Weight = request.Weight,
                 ObjectId = request.ObjectId,
                 Description = request.Description,
-                CustomAttribute = request.CustomAttribute,
+                MetaData = request.CustomAttribute ?? request.MetaData,
                 TenantId = TenantId,
                 ActiveDate = request.ActiveDate,
                 InactiveDate = request.InactiveDate,
@@ -457,7 +457,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             learningActivity.Weight = request.Weight;
             learningActivity.ObjectId = request.ObjectId;
             learningActivity.Description = request.Description;
-            learningActivity.CustomAttribute = request.CustomAttribute;
+            learningActivity.MetaData = request.CustomAttribute ?? request.MetaData;
             learningActivity.ActiveDate = request.ActiveDate;
             learningActivity.InactiveDate = request.InactiveDate;
             learningActivity.DueDate = request.DueDate;

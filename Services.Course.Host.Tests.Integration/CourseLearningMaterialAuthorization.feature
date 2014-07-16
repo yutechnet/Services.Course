@@ -31,15 +31,15 @@ Background:
 	| file1 |
 	| file2 |
 	And Create learning material as the following info
-	| Asset | CourseSegment | Instruction | IsRequired | LearningMaterial | CustomAttribute  |
-	| file1 | Week 1        |             | false      | Material A       | CustomAttributeA |
+	| Asset | CourseSegment | Instruction | IsRequired | LearningMaterial | MetaData  |
+	| file1 | Week 1        |             | false      | Material A       | MetaDataA |
 	
 Scenario Outline: I can create a learning material unless I have permission to do so.
 	When I am 'TestUser1'	
 	And  I have the '<Capability>' capability
 	And Create learning material as the following info
-	| Asset | CourseSegment | Instruction | IsRequired | LearningMaterial | CustomAttribute  |
-	| file1 | Week 1        |             | false      | Material B       | CustomAttributeA |
+	| Asset | CourseSegment | Instruction | IsRequired | LearningMaterial | MetaData  |
+	| file1 | Week 1        |             | false      | Material B       | MetaDataA |
 	Then I get '<StatusCode>' response
 Examples:
 	| Capability | StatusCode |
@@ -61,8 +61,8 @@ Scenario Outline: I can update a learning material unless I have permission to d
 	When I am 'TestUser1'
 	And I have the '<Capability>' capability
 	And Update 'Material A' learning material as the following info
-	| Asset | Instruction      | IsRequired | CustomAttribute        |
-	| file1 | test instruction | true       | CustomAttributeAUpdate |
+	| Asset | Instruction      | IsRequired | MetaData        |
+	| file1 | test instruction | true       | MetaDataAUpdate |
 	Then I get '<StatusCode>' response
 Examples:
 	| Capability | StatusCode |

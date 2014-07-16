@@ -38,7 +38,8 @@ namespace BpeProducts.Services.Course.Domain
                   .ForMember(dest => dest.TemplateCourseId, opt => opt.MapFrom(course => course.Template == null ? Guid.Empty : course.Template.Id))
                   .ForMember(dest => dest.PrerequisiteCourseIds, opt => opt.MapFrom(course => course.Prerequisites.Select(p => p.Id).ToList()));
             Mapper.CreateMap<CourseSegment, CourseSegmentInfo>();
-            Mapper.CreateMap<CourseLearningActivity, CourseLearningActivityResponse>();
+            Mapper.CreateMap<CourseLearningActivity, CourseLearningActivityResponse>()
+                .ForMember(x => x.CustomAttribute, opt => opt.MapFrom(src => src.MetaData));
 
             // From DTOs to Domain Entities
             Mapper.CreateMap<SaveCourseRequest, Domain.CourseAggregates.Course>()
@@ -47,11 +48,14 @@ namespace BpeProducts.Services.Course.Domain
             Mapper.CreateMap<CourseSegmentInfo, CourseSegment>();
 
             Mapper.CreateMap<SaveCourseLearningActivityRequest, CourseLearningActivity>()
-                .ForMember(x => x.Id, opt => opt.Ignore());
+                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.MetaData, opt => opt.MapFrom(src => src.CustomAttribute ?? src.MetaData));
 
-            Mapper.CreateMap<LearningMaterialRequest, LearningMaterial>();
+            Mapper.CreateMap<LearningMaterialRequest, LearningMaterial>()
+                .ForMember(x => x.MetaData, opt => opt.MapFrom(src => src.CustomAttribute ?? src.MetaData));
 
-            Mapper.CreateMap<UpdateLearningMaterialRequest, LearningMaterial>();
+            Mapper.CreateMap<UpdateLearningMaterialRequest, LearningMaterial>()
+                .ForMember(x => x.MetaData, opt => opt.MapFrom(src => src.CustomAttribute ?? src.MetaData));
 
             //for course deep copy purpose
             Mapper.CreateMap<Domain.CourseAggregates.Course, Domain.CourseAggregates.Course>()

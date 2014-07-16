@@ -38,19 +38,19 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var assetId = Guid.NewGuid();
             const bool isRequired = false;
             const string instruction = "new description";
-            const string customAttribute = "new CustomAttribute";
+            const string metaData = "new meta data";
             var learningMaterialRequest = new LearningMaterialRequest()
             {
                 Instruction = instruction,
                 IsRequired = isRequired,
                 AssetId = assetId,
-                CustomAttribute = customAttribute
+                MetaData = metaData
             };
             var learningMaterial = courseSegment.AddLearningMaterial(learningMaterialRequest);
 
             Assert.That(learningMaterial.Instruction, Is.EqualTo(instruction));
             Assert.That(learningMaterial.AssetId, Is.EqualTo(assetId));
-            Assert.That(learningMaterial.CustomAttribute, Is.EqualTo(customAttribute));
+            Assert.That(learningMaterial.MetaData, Is.EqualTo(metaData));
             Assert.That(courseSegment.LearningMaterials.Single(), Is.EqualTo(learningMaterial));
         }
 
@@ -62,14 +62,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var assetId = Guid.NewGuid();
             const bool isRequired = false;
             const string instruction = "new description";
-            const string customAttribute = "customAttribute";
+            const string metaData = "metaData";
 
             var learningMaterialRequest = new LearningMaterialRequest()
             {
                 Instruction = instruction,
                 IsRequired = isRequired,
                 AssetId = assetId,
-                CustomAttribute = customAttribute
+                MetaData = metaData
             };
             var learningMaterial = courseSegment.AddLearningMaterial(learningMaterialRequest);
             Assert.That(courseSegment.LearningMaterials.Single(), Is.EqualTo(learningMaterial));
@@ -88,14 +88,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             const bool updateIsRequired = false;
             const string instruction = "new instruction";
             const string updateInstruction = "update instruction";
-            const string customAttribute = "customAttribute";
-            const string updateCustomAttribute = "update customAttribute";
+            const string metaData = "metaData";
+            const string updateMetaData = "update metaData";
             var learningMaterialRequest = new LearningMaterialRequest()
             {
                 Instruction = instruction,
                 IsRequired = isRequired,
                 AssetId = assetId,
-                CustomAttribute = customAttribute
+                MetaData = metaData
             };
 
             var updateLearningMaterialRequest = new UpdateLearningMaterialRequest()
@@ -103,7 +103,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 Instruction = updateInstruction,
                 IsRequired = updateIsRequired,
                 AssetId = updateAssetId,
-                CustomAttribute = updateCustomAttribute
+                MetaData = updateMetaData
             };
             var learningMaterial = courseSegment.AddLearningMaterial(learningMaterialRequest);
             Assert.That(courseSegment.LearningMaterials.Single(), Is.EqualTo(learningMaterial));
@@ -111,7 +111,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(learningMaterial.AssetId, Is.EqualTo(updateAssetId));
             Assert.That(learningMaterial.Instruction, Is.EqualTo(updateInstruction));
             Assert.That(learningMaterial.IsRequired, Is.EqualTo(updateIsRequired));
-            Assert.That(learningMaterial.CustomAttribute, Is.EqualTo(updateCustomAttribute));
+            Assert.That(learningMaterial.MetaData, Is.EqualTo(updateMetaData));
 
         }
 

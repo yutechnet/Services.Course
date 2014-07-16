@@ -10,6 +10,8 @@ namespace BpeProducts.Services.Course.Contract
         public Guid? CourseId { get; set; }
         public Guid? CourseSegmentId { get; set; }
         public Guid AssetId { get; set; }
+        [Obsolete("this will be removed")]
         public string CustomAttribute { get; set; }
+        public string MetaData { get; set; }
     }
 }

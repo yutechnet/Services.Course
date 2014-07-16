@@ -45,7 +45,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
 		public virtual string Description { get; set; }
 
-        public virtual string CustomAttribute { get; set; }
+        public virtual string MetaData { get; set; }
 
         public virtual int? ActiveDate { get; set; }
 

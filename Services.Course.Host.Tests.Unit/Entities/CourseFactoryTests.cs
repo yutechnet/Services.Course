@@ -102,7 +102,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             CollectionAssert.AreEquivalent(template.ExtensionAssets, course.ExtensionAssets);
 
             var sectionLearningMaterial = course.LearningMaterials.First();
-            Assert.That(sectionLearningMaterial.CustomAttribute, Is.EqualTo(learningMaterial.CustomAttribute));
+            Assert.That(sectionLearningMaterial.MetaData, Is.EqualTo(learningMaterial.MetaData));
             Assert.That(sectionLearningMaterial.Instruction, Is.EqualTo(learningMaterial.Instruction));
             Assert.That(sectionLearningMaterial.IsRequired, Is.EqualTo(learningMaterial.IsRequired));
             Assert.That(sectionLearningMaterial.AssetId, Is.EqualTo(learningMaterial.AssetId));
