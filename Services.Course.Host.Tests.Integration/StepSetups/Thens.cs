@@ -637,6 +637,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 else
                 {
                     Assert.That(learningMaterial.CourseSegmentId, Is.EqualTo(segment.Id));
+                    Assert.That(learningMaterial.CourseId, Is.EqualTo(course.Id));
                 }
                 Assert.That(learningMaterial.Instruction, Is.EqualTo(row["Instruction"]));
                 Assert.That(learningMaterial.IsRequired, Is.EqualTo(bool.Parse(row["IsRequired"])));
@@ -683,6 +684,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var extensionAssets = guidList;
 
             CollectionAssert.AreEquivalent(extensionAssets, actual.ExtensionAssets);
+        }
+
+        [Then(@"The course '(.*)' has '(.*)' course learning material")]
+        public void ThenTheCourseHasCourseLearningMaterial(string courseName, int count)
+        {
+            var courseResource = Resources<CourseResource>.Get(courseName);
+            var course = GetOperations.GetCourse(courseResource);
+            Assert.That(course.LearningMaterials.Count, Is.EqualTo(count));
         }
 
     }

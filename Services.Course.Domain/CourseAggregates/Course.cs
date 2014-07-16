@@ -284,7 +284,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 EndDate = request.EndDate,
                 TenantId = TenantId,
                 CourseId = Id,
-                LearningMaterials = BuildLearningMaterials(LearningMaterials),
+                LearningMaterials = BuildLearningMaterials(LearningMaterials.Where(p=>p.CourseSegment == null)),
                 Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null)),
                 Credit = Credit,
                 MetaData = MetaData,

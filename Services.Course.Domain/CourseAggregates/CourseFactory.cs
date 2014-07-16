@@ -81,6 +81,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 foreach (LearningMaterial learningMaterial in courseSegment.LearningMaterials)
                 {
                     learningMaterial.CourseSegment = courseSegment;
+                    learningMaterial.Course = course;
                     learningMaterial.CloneOutcomes(_assessmentClient);
                 }
             }
@@ -93,7 +94,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             course.Credit = template.Credit;
             course.ActiveFlag = true;
             course.IsTemplate = request.IsTemplate;
-            course.LearningMaterials = newLearningMaterials;
+            course.LearningMaterials = newLearningMaterials.FindAll(x => x.CourseSegment == null);
             return course;
         }
 

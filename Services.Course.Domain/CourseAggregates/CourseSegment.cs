@@ -135,6 +135,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             learningMaterial.TenantId = TenantId;
             learningMaterial.Id = Guid.NewGuid();
             learningMaterial.CourseSegment = this;
+            learningMaterial.Course = Course; 
             _learningMaterials.Add(learningMaterial);
             return learningMaterial;
         }

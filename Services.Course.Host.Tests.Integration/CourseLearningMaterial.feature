@@ -115,6 +115,7 @@ Scenario: Create a course from a course template with learning materials
 	    | file2 | Week two      | test  instruction | true       | English Template | MetaDataB |
 	    | file3 | Day one       | test  instruction | true       | English Template | MetaDataC |
 	    | file4 |               |                   | false      | English Template | MetaDataD |
+	And The course 'English Course' has '1' course learning material
 
 Scenario: Create a course version from a previously-published version with learning materials
 	Given Published the following assets
@@ -143,6 +144,7 @@ Scenario: Create a course version from a previously-published version with learn
 	    | file2 | Week 2        | instruction 2 | false      | Econ 100     | MetaDataB |
 	    | file3 | Day 1         | instruction 3 | true       | Econ 100     | MetaDataC |
 	    | file4 |               | instruction 4 | true       | Econ 100     | MetaDataD |
+	And The course 'Econ 100 v1.0.0.1' has '1' course learning material
 
 Scenario: Publish course with learning materials then the associate assets need publish
     Given Create learning material as the following info
