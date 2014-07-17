@@ -53,6 +53,7 @@
     <Content Include="Databases\Parabola\003-Update_Description_to_NVarcharmax_CourseLearningActivity.sql" />
     <Content Include="Databases\Parabola\004-Update_Description_to_NVarchar1000_CourseLearningActivity.sql" />
     <Content Include="Databases\Parabola\010-Update_Description_to_NVarcharmax_Program.sql" />
+    <Content Include="Databases\Parabola\023_Update_Description_On_Course_To_Max.sql" />
     <Content Include="Databases\Parabola\placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
