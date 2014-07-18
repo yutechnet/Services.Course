@@ -38,7 +38,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         IEnumerable<CourseInfoResponse> Search(string queryString);
 
         /// <summary>
-        /// Delete a course by marking it inactive
+        /// Delete a course by marking it deleted
         /// </summary>
         /// <param name="courseId">Course to soft-delete</param>
         void Delete(Guid courseId);

@@ -74,7 +74,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var learningMaterial = courseSegment.AddLearningMaterial(learningMaterialRequest);
             Assert.That(courseSegment.LearningMaterials.Single(), Is.EqualTo(learningMaterial));
             courseSegment.DeleteLearningMaterial(learningMaterial.Id);
-            Assert.That(learningMaterial.ActiveFlag, Is.False);
+            Assert.That(learningMaterial.IsDeleted, Is.True);
         }
 
         [Test]

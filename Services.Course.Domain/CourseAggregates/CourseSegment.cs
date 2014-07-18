@@ -111,7 +111,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         public virtual void Delete()
         {
-            ActiveFlag = false;
+            IsDeleted = true;
 
             foreach (var childSegment in _childSegments)
             {
@@ -148,7 +148,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         public virtual void DeleteLearningMaterial(Guid learningMaterialId)
         {
             var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
-            learningMaterial.ActiveFlag = false;
+            learningMaterial.IsDeleted = true;
         }
 
         private LearningMaterial GetLearningMaterialOrThrow(Guid learningMaterialId)

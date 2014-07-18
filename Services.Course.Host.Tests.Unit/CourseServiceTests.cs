@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac.Extras.Moq;
-using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
-using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
 
@@ -37,16 +32,16 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
 	        var courseToUpdate = new Domain.CourseAggregates.Course
 	            {
-	                Id = Guid.NewGuid(), 
-                    ActiveFlag = true
+	                Id = Guid.NewGuid(),
+                    IsDeleted = false
 	            };
 
             _courseRepositoryMock.Setup(r => r.GetOrThrow(courseToUpdate.Id)).Returns(courseToUpdate);
 
             var prerequisite = new Domain.CourseAggregates.Course
                 {
-                    Id = Guid.NewGuid(), 
-                    ActiveFlag = true
+                    Id = Guid.NewGuid(),
+                    IsDeleted = false
                 };
             prerequisite.Publish("", _coursePublisher.Object);
 
@@ -71,8 +66,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
 	        var courseToReturn = new Domain.CourseAggregates.Course
 	            {
-	                Id = Guid.NewGuid(), 
-                    ActiveFlag = true
+	                Id = Guid.NewGuid(),
+                    IsDeleted = false
 	            };
 
             courseToReturn.AddPrerequisite(prerequisiteCourse);
@@ -92,8 +87,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             prerequisiteCourse1.Publish("", _coursePublisher.Object);
             prerequisiteCourse2.Publish("", _coursePublisher.Object);
             prerequisiteCourse3.Publish("", _coursePublisher.Object);
-            
-	        var courseToReturn = new Domain.CourseAggregates.Course {Id = Guid.NewGuid(), ActiveFlag = true};
+
+            var courseToReturn = new Domain.CourseAggregates.Course { Id = Guid.NewGuid(), IsDeleted = false };
             courseToReturn.AddPrerequisite(prerequisiteCourse1);
 			courseToReturn.AddPrerequisite(prerequisiteCourse2);
 

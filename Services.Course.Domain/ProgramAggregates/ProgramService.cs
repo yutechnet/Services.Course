@@ -29,7 +29,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         public ProgramResponse Search(Guid programId)
         {
             var program = _repository.Get<Program>(programId);
-            if (program == null || !program.ActiveFlag)
+            if (program == null || program.IsDeleted)
             {
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
             }
@@ -41,7 +41,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             var queryArray = queryString.Split('?');
             ICriteria criteria =
                 _repository.ODataQuery<Program>(queryArray.Length > 1 ? queryArray[1] : "");
-            criteria.Add(Restrictions.Eq("ActiveFlag", true));
+            criteria.Add(Restrictions.Eq("IsDeleted", false));
             criteria.SetFetchMode("Courses", FetchMode.Join);  //for eager loading
             criteria.SetResultTransformer(Transformers.DistinctRootEntity);
             var programs = criteria.List<Program>();//Distinct();
@@ -68,7 +68,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         public void Update(Guid programId, UpdateProgramRequest request)
         {
             var program = _repository.Get<Program>(programId);
-            if (program == null || !program.ActiveFlag)
+            if (program == null || program.IsDeleted)
             {
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
             }
@@ -88,11 +88,11 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         public void Delete(Guid programId)
         {
             var program = _repository.Get<Program>(programId);
-            if (program == null || !program.ActiveFlag)
+            if (program == null || program.IsDeleted)
             {
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
             }
-            program.ActiveFlag = false;
+            program.IsDeleted = true;
             _repository.Save(program);
         }
     }

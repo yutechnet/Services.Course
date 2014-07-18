@@ -33,7 +33,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         public LearningMaterial GetLearningMaterial(Guid learningMaterialId)
         {
             var learningMaterial = _repository.Get<LearningMaterial>(learningMaterialId);
-            if (learningMaterial == null || !learningMaterial.ActiveFlag)
+            if (learningMaterial == null || learningMaterial.IsDeleted)
             {
                 throw new NotFoundException(string.Format("LearningMaterial {0} not found.", learningMaterialId));
             }
@@ -44,7 +44,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         {
             return
                 _repository.Query<Course>()
-                           .Where(c => c.ActiveFlag == true && c.IsPublished && c.OrganizationId == organizationId).AsEnumerable();
+                           .Where(c => !c.IsDeleted && c.IsPublished && c.OrganizationId == organizationId).AsEnumerable();
         }
 
         public IList<Course> Get(List<Guid> ids)
@@ -67,7 +67,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         {
             var course = Get(courseId);
 
-            if (course == null || !course.ActiveFlag)
+            if (course == null || course.IsDeleted)
             {
                 throw new NotFoundException(string.Format("Course {0} not found.", courseId));
             }
@@ -82,7 +82,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         public void Delete(Course course)
         {
-            course.ActiveFlag = false;
+            course.IsDeleted = true;
             _repository.SaveOrUpdate(course);
         }
 
@@ -98,7 +98,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         public IList<Course> ODataQuery(string queryString)
         {
             var criteria = _repository.ODataQuery<Course>(queryString);
-            criteria.Add(Restrictions.Eq("ActiveFlag", true));
+            criteria.Add(Restrictions.Eq("IsDeleted", false));
 
             var courses = criteria.List<Course>();
 

@@ -92,7 +92,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             course.TenantId = template.TenantId;
             course.Template = template;
             course.Credit = template.Credit;
-            course.ActiveFlag = true;
+            course.IsDeleted = false;
             course.IsTemplate = request.IsTemplate;
             course.LearningMaterials = newLearningMaterials.FindAll(x => x.CourseSegment == null);
             return course;
@@ -108,7 +108,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                     Description = request.Description,
                     OrganizationId = request.OrganizationId,
                     TenantId = request.TenantId,
-                    ActiveFlag = true,
+                    IsDeleted = false,
                     CourseType = request.CourseType,
                     Credit = request.Credit,
                     MetaData = request.MetaData,

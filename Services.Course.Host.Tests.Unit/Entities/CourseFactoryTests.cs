@@ -71,7 +71,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 AssetId = Guid.NewGuid(),
                 Instruction = "test lm",
                 IsRequired = false,
-                ActiveFlag = true,
+                IsDeleted = false,
                 Course = template
             };
 

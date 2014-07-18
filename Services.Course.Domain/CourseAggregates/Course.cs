@@ -30,7 +30,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         private IList<Course> _prerequisites = new List<Course>();
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
         private string _metaData;
-        private string _extensionAssets = null;
+        private string _extensionAssets;
 
         [JsonProperty]
         public virtual Course Template { get; protected internal set; }
@@ -201,7 +201,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 DisplayOrder = request.DisplayOrder,
                 Type = request.Type,
                 TenantId = TenantId,
-                ActiveFlag = true,
+                IsDeleted = false,
                 ActiveDate = request.ActiveDate,
                 InactiveDate = request.InactiveDate
             };
@@ -374,7 +374,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             CourseLearningActivity learningActivity =
                 segment.CourseLearningActivities.FirstOrDefault(s => s.Id == learningActivityId);
 
-            if (learningActivity == null || !learningActivity.ActiveFlag)
+            if (learningActivity == null || learningActivity.IsDeleted)
                 throw new NotFoundException(string.Format("Learning Activity {0} for Segment {1} is not found.",
                                                           learningActivityId, segmentId));
             return learningActivity;
@@ -432,7 +432,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 AssessmentType = string.IsNullOrEmpty(request.AssessmentType)
                         ? AssessmentType.Custom
                         : (AssessmentType)Enum.Parse(typeof(AssessmentType), request.AssessmentType),
-                ActiveFlag = true
+                IsDeleted = false
             };
 
 
@@ -480,8 +480,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             CourseSegment segment = GetSegmentOrThrow(segmentId);
 
             return
-                AutoMapper.Mapper.Map<IList<CourseLearningActivity>>(
-                    segment.CourseLearningActivities.Where(c => c.ActiveFlag.Equals(true)));
+                Mapper.Map<IList<CourseLearningActivity>>(
+                    segment.CourseLearningActivities.Where(c => !c.IsDeleted));
         }
 
         public virtual CourseLearningActivity DeleteLearningActivity(Guid segmentId, Guid learningActivityId)
@@ -491,7 +491,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
             CourseLearningActivity learningActivity = GetCourseLearningActivityOrThrow(segmentId, learningActivityId);
 
-            learningActivity.ActiveFlag = false;
+            learningActivity.IsDeleted = true;
 
             return learningActivity;
         }
@@ -520,7 +520,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         {
             CheckPublished();
             var learningMaterial = GetLearningMaterialOrThrow(learningMaterialId);
-            learningMaterial.ActiveFlag = false;
+            learningMaterial.IsDeleted = true;
         }
 
         private LearningMaterial GetLearningMaterialOrThrow(Guid learningMaterialId)
@@ -596,7 +596,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 throw new BadRequestException(string.Format("Course {0} is published and cannot be deleted.", Id));
             }
 
-            ActiveFlag = false;
+            IsDeleted = true;
         }
 
         public override VersionableEntity CreateVersion(string versionNumber)

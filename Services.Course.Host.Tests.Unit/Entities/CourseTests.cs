@@ -414,7 +414,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
                 AssetId = Guid.NewGuid(),
                 Instruction = "test lm",
                 IsRequired = false,
-                ActiveFlag = true,
+                IsDeleted = false,
                 Course = course
             };
             course.LearningMaterials.Add(learningMaterial);
@@ -768,7 +768,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var learningMaterialId = course.AddLearningMaterial(learningMaterialRequest).Id;
             course.DeleteLearningMaterial(learningMaterialId);
 
-            Assert.That(course.LearningMaterials.Count(l => l.ActiveFlag), Is.EqualTo(0));
+            Assert.That(course.LearningMaterials.Count(l => !l.IsDeleted), Is.EqualTo(0));
         }
 
         [Test]
@@ -784,7 +784,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var course = GetCourse();
             course.Delete();
 
-            Assert.That(course.ActiveFlag, Is.False);
+            Assert.That(course.IsDeleted, Is.True);
         }
 
         [Test]

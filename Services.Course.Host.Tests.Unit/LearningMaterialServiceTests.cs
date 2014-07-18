@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Autofac.Extras.Moq;
 using AutoMapper;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
-using BpeProducts.Services.Course.Domain.Repositories;
 using Moq;
 using NUnit.Framework;
 
@@ -30,8 +26,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Mapper.CreateMap<LearningMaterialRequest, LearningMaterial>();
             Mapper.CreateMap<UpdateLearningMaterialRequest, LearningMaterial>();
             Mapper.CreateMap<LearningMaterial, LearningMaterialInfo>();
-             
-            _courseToReturn = new Domain.CourseAggregates.Course {Id = Guid.NewGuid(), ActiveFlag = true};
+
+            _courseToReturn = new Domain.CourseAggregates.Course { Id = Guid.NewGuid(), IsDeleted = false };
             _repoMock.Setup(c => c.GetOrThrow(It.IsAny<Guid>())).Returns(_courseToReturn);
         }
 
@@ -60,7 +56,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                 AssetId = Guid.NewGuid(),
                 Instruction = "test lm",
                 IsRequired = false,
-                ActiveFlag = true,
+                IsDeleted = false,
                 Course = _courseToReturn
             };
             _courseToReturn.LearningMaterials.Add(learningMaterial);
@@ -104,7 +100,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                 AssetId = Guid.NewGuid(),
                 Instruction = "test lm",
                 IsRequired = false,
-                ActiveFlag = true,
+                IsDeleted = false,
                 Course = _courseToReturn
             };
             _courseToReturn.LearningMaterials.Add(learningMaterial);
@@ -113,7 +109,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             _learningMaterialService.Delete(_courseToReturn.Id, learningMaterial.Id);
 
             var learningMaterialDetete = _courseToReturn.LearningMaterials.First(l => l.Id == learningMaterial.Id);
-            Assert.That(learningMaterialDetete.ActiveFlag, Is.EqualTo(false));
+            Assert.That(learningMaterialDetete.IsDeleted, Is.EqualTo(true));
         }
 
     }
