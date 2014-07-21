@@ -104,6 +104,7 @@
     <Content Include="Databases\Parabola\019-Add_ExtensionAssets_to_Course.sql" />
     <Content Include="Databases\Parabola\020-Change_CustomAttribute_name_to_MetaData_in_CourseLearningActivity.sql" />
     <Content Include="Databases\Parabola\021-Change_CustomAttribute_name_to_MetaData_in_LearningMaterial.sql" />
+    <Content Include="ScriptReview\024-RenameActiveFlagColumnToIsDeleted.sql" />
     <Content Include="ScriptReview\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
