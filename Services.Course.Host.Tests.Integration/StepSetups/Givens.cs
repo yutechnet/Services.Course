@@ -93,8 +93,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var whens = new Whens();
             whens.WhenISubmitACreationRequest();
 
-            var thens = new Thens();
-            thens.ThenIShouldGetASuccessConfirmationMessage();
         }
 
         [Given(@"I create a course from the template '(.*)' with the following")]
@@ -140,11 +138,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Given(@"I delete this course")]
         public void GivenIDeleteThisCourse()
         {
-            var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
-            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
-            ScenarioContext.Current.Add("courseId", courseInfoResponse.Id);
-            var delSuccess = ApiFeature.CourseTestHost.Client.DeleteAsync(_leadingPath + "/" + courseInfoResponse.Id).Result;
-            delSuccess.EnsureSuccessStatusCode();
+            var courseName = ScenarioContext.Current["courseName"].ToString();
+            var courseRescource = Resources<CourseResource>.Get(courseName);
+            DeleteOperations.DeleteResource(courseRescource);
         }
 
         [Given(@"I have the following programs")]

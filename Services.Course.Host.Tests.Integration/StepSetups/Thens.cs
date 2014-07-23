@@ -92,16 +92,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"my course no longer exists")]
         public void ThenMyCourseNoLongerExists()
         {
-            var courseId = ScenarioContext.Current.Get<Guid>("courseId");
-            var getResponse = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + courseId).Result;
+            var courseName = ScenarioContext.Current["courseName"].ToString();
+            var courseRescource = Resources<CourseResource>.Get(courseName);
+            var getResponse = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + courseRescource.Id).Result;
             Assert.That(getResponse.StatusCode.Equals(HttpStatusCode.NotFound));
-        }
-
-        [Then(@"I should get a success confirmation message")]
-        public void ThenIShouldGetASuccessConfirmationMessage()
-        {
-            var response = ScenarioContext.Current.Get<HttpResponseMessage>("responseToValidate");
-            response.EnsureSuccessStatusCode();
         }
 
         [Then(@"I can retrieve the course by course name")]
@@ -123,12 +117,10 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         [Then(@"my course info is changed")]
         public void ThenMyCourseInfoIsChanged()
         {
-            var courseId = ScenarioContext.Current.Get<Guid>("courseId");
-            var response = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + "/" + courseId).Result;
-            response.EnsureSuccessStatusCode();
-
-            var courseInfo = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
-            var originalRequest = ScenarioContext.Current.Get<SaveCourseRequest>("editCourseRequest");
+            var courseName = ScenarioContext.Current["courseName"].ToString();
+            var courseRescource = Resources<CourseResource>.Get(courseName);
+            var courseInfo = GetOperations.GetCourse(courseRescource);
+            var originalRequest = ScenarioContext.Current.Get<UpdateCourseRequest>("editCourseRequest");
             Assert.AreEqual(originalRequest.Name, courseInfo.Name);
             Assert.AreEqual(originalRequest.Code, courseInfo.Code);
             Assert.AreEqual(originalRequest.Description, courseInfo.Description);
@@ -148,8 +140,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void ThenTheOrganizationIdIsReturnedAsPartOfTheRequest()
         {
             var orgId = ScenarioContext.Current.Get<Guid>("orgId");
-            var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
-            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+            var courseName = ScenarioContext.Current["courseName"].ToString();
+            var courseRescource = Resources<CourseResource>.Get(courseName);
+            var courseInfoResponse = GetOperations.GetCourse(courseRescource);
 
             Assert.That(courseInfoResponse.OrganizationId, Is.Not.Null);
             Assert.That(courseInfoResponse.OrganizationId, Is.EqualTo(orgId));
@@ -159,8 +152,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void ThenTheTemplateCourseIdIsReturnedAsPartOfTheRequest()
         {
             var templateId = ScenarioContext.Current.Get<Guid>("templateId");
-            var response = ScenarioContext.Current.Get<HttpResponseMessage>("createCourseResponse");
-            var courseInfoResponse = response.Content.ReadAsAsync<CourseInfoResponse>().Result;
+            var courseName = ScenarioContext.Current["courseName"].ToString();
+            var courseRescource = Resources<CourseResource>.Get(courseName);
+            var courseInfoResponse = GetOperations.GetCourse(courseRescource);
 
             Assert.That(courseInfoResponse.TemplateCourseId, Is.Not.Null);
             Assert.That(courseInfoResponse.TemplateCourseId, Is.EqualTo(templateId));

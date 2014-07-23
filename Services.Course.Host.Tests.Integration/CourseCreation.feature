@@ -18,7 +18,7 @@ Scenario: Create a course
 	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit | MetaData   | ExtensionAssets                                                           |
 	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | 5      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB,6B7D1752-2A8D-4848-B8BC-1B1E42164499 |
 	When I submit a creation request
-	Then I should get a success confirmation message
+	Then I get 'Created' response
 
 Scenario: Edit a course
 	Given I have a course with following info:
@@ -26,9 +26,9 @@ Scenario: Edit a course
 	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | 5      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB |
 	When I submit a creation request
 	And I change the info to reflect the following:
-	| Name        | Code   | Description                  | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit | MetaData        | ExtensionAssets                                                           |
-	| English 101 | ENG101 | John's awesome English Class | 999999    | COB              | Traditional | false      | 10     | {differentData} | B40CE4F4-434A-4987-80A8-58F795C212EB,6B7D1752-2A8D-4848-B8BC-1B1E42164499 |
-	Then I should get a success confirmation message
+	| Name        | Code   | Description                  | CourseType  | IsTemplate | Credit | MetaData        | ExtensionAssets                                                           |
+	| English 101 | ENG101 | John's awesome English Class | Traditional | false      | 10     | {differentData} | B40CE4F4-434A-4987-80A8-58F795C212EB,6B7D1752-2A8D-4848-B8BC-1B1E42164499 |
+	Then I get 'NoContent' response
 	And my course info is changed
 
 Scenario: Delete a course
@@ -36,7 +36,7 @@ Scenario: Delete a course
 	 | Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets                      |
 	 | English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB |
 	And I delete this course
-	Then I should get a success confirmation message
+	Then I get 'NoContent' response
 	And my course no longer exists
 
 Scenario Template: Can create a course with same name or code
@@ -45,7 +45,7 @@ Scenario Template: Can create a course with same name or code
 	 | English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB |
 	When I create a new course with <Name>, <Code>, <Description>, <OrganizationName>
 	And I submit a creation request
-	Then I should get the status code <Status>
+	Then I get '<Status>' response
 
 	Examples: 
 		 | Name           | Code   | Description                             | Status  | OrganizationName |
@@ -55,7 +55,7 @@ Scenario Template: Can create a course with same name or code
 Scenario Template: cannot create a course with missing data
 	When I create a new course with <Name>, <Code>, <Description>, <OrganizationName>
 	And I submit a creation request
-	Then I should get the status code <Status>
+	Then I get '<Status>' response
 
 	Examples: 
 		 | Name           | Code   | Description                             | OrganizationName | Status     |
