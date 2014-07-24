@@ -27,7 +27,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         {
             var learningMaterial = _learningMaterialService.AddLearningMaterial(courseId, request);
 
-            var response = Request.CreateResponse(HttpStatusCode.Created);
+            var response = Request.CreateResponse(HttpStatusCode.Created, learningMaterial);
 
             var uri = Url.Link("GetCourseLearningMaterial", new { courseId, learningMaterialId = learningMaterial.Id });
             if (uri != null)
@@ -68,7 +68,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         {
             var learningMaterial = _learningMaterialService.AddLearningMaterial(courseId, segmentId, request);
 
-            var response = Request.CreateResponse(HttpStatusCode.Created);
+            var response = Request.CreateResponse(HttpStatusCode.Created, learningMaterial);
 
             var uri = Url.Link("GetLearningMaterial", new { courseId, segmentId, learningMaterialId = learningMaterial.Id });
             if (uri != null)

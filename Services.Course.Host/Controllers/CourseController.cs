@@ -56,7 +56,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public HttpResponseMessage Post(SaveCourseRequest request)
         {
 	        var courseInfoResponse = _courseService.Create(request);
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("GetCourse", new { courseId = courseInfoResponse.Id });
             if (uri != null)
@@ -73,7 +73,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public HttpResponseMessage Post(CreateCourseFromTemplateRequest request)
         {
             var courseInfoResponse = _courseService.Create(request);
-            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("GetCourse", new { courseId = courseInfoResponse.Id });
             if (uri != null)

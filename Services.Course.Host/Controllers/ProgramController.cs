@@ -39,7 +39,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		public HttpResponseMessage Post(SaveProgramRequest request)
 		{
 		    var programResponse = _programService.Create(request);
-			var response = Request.CreateResponse(HttpStatusCode.Created);
+            var response = Request.CreateResponse(HttpStatusCode.Created, programResponse);
             var uri = Url.Link("GetProgram", new { programId = programResponse.Id });
 			if (uri != null)
 			{

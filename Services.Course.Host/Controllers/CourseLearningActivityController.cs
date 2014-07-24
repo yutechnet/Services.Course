@@ -40,7 +40,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         public HttpResponseMessage Post(Guid courseId, Guid segmentId, SaveCourseLearningActivityRequest request)
 		{
             var learningActivityResponse = _courseLearningActivityService.Create(courseId, segmentId, request);
-            var response = Request.CreateResponse(HttpStatusCode.Created);
+            var response = Request.CreateResponse(HttpStatusCode.Created, learningActivityResponse);
 
             var uri = Url.Link("GetCourseLearningActivity", new { id = learningActivityResponse.Id });
             if (uri != null)
