@@ -75,7 +75,15 @@ Scenario: Return course by partial name
 		 | Philosophy 100   | PHIL100  | To be, or not to be                   | 999999    | COB              | Traditional | false      |
 		 | Philanthropy 101 | PHILA101 | Don't be greedy                       | 999999    | COB              | Traditional | false      |
 		 | Chemistry 350    | CHEM350  | Periodic table of elements to the max | 999999    | COB              | Traditional | false      |
-	Then the course name counts are as follows:
+    And the user has permission to access these courses:
+		 | Name             | 
+		 | English 101      | 
+		 | Engineering 200  | 
+		 | English 220      | 
+		 | Philosophy 100   | 
+		 | Philanthropy 101 | 
+		 | Chemistry 350    | 
+    Then the course name counts are as follows:
 		| Operation  | Argument          | Count |
 		| Eq         | Engineering%20200 | 1     |
 		| StartsWith | Eng               | 3     |

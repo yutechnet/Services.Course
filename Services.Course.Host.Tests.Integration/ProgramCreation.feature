@@ -54,6 +54,10 @@ Scenario: Get all programs
 	| Name                | Description | ProgramType | OrganizationName | GraduationRequirements |
 	| Bachelor of Science | Economics   | MA          | Default          | requirement one        |
 	| Bachelor of Arts    | Philosophy  | AA          | Default          |                        |
+	Given the user has permission to access these programs:
+	| Name           |
+	| Bachelor of Science   |
+	| Bachelor of Arts |
 	Then I have the following programs
 	| Name                | Description | ProgramType | OrganizationName | GraduationRequirements |
 	| Bachelor of Science | Economics   | MA          | Default          | requirement one        |

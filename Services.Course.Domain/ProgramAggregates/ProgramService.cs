@@ -36,6 +36,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             return Mapper.Map<ProgramResponse>(program);
         }
 
+		[AuthCollectionByAcl(Capability=Capability.ViewProgram,Type = "program")]
         public IEnumerable<ProgramResponse> Search(string queryString)
         {
             var queryArray = queryString.Split('?');

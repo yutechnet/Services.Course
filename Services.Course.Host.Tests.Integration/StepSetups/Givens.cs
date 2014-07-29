@@ -3,6 +3,7 @@ using System.Net.Http.Formatting;
 using BpeProducts.Common.Ioc.Extensions;
 using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Asset.Contracts;
+using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Host.Tests.Integration.Operations;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources;
@@ -52,11 +53,68 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     CourseType = ECourseType.Traditional,
                     IsTemplate = false
                 };
-
-                var response = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
-                response.EnsureSuccessStatusCode();
+				PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
+				//var response = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
+				//response.EnsureSuccessStatusCode();
             }
         }
+
+		[Given(@"the user has permission to access these courses:")]
+		public void GivenTheUserHasPermissionToAccessTheseCourses(Table table)
+		{
+			List<Guid> filtererdBy;
+			//the try catch is there because in some cases we use ticks and in some cases we dont
+			try
+			{
+				filtererdBy =
+				table.Rows
+				.Select(row => Resources<CourseResource>.Get(ScenarioContext.Current.Get<long>("ticks") + row["Name"]))
+				.Select(course => course.Id).ToList();
+			
+			}
+			catch (Exception)
+			{
+
+				filtererdBy =
+				table.Rows
+				.Select(row => Resources<CourseResource>.Get(row["Name"]))
+				.Select(course => course.Id).ToList();
+			
+			}
+			
+			
+			ApiFeature.MockAclClient.Setup(acl => acl.GetObjectIds(It.IsAny<Guid>(), (int) Capability.CourseView, "course"))
+			          .Returns(filtererdBy);
+		}
+
+		[Given(@"the user has permission to access these programs:")]
+		public void GivenTheUserHasPermissionToAccessThesePrograms(Table table)
+		{
+			List<Guid> filtererdBy;
+			//the try catch is there because in some cases we use ticks and in some cases we dont
+			try
+			{
+				filtererdBy =
+				table.Rows
+				.Select(row => Resources<ProgramResource>.Get(ScenarioContext.Current.Get<long>("ticks") + row["Name"]))
+				.Select(p => p.Id).ToList();
+
+			}
+			catch (Exception)
+			{
+
+				filtererdBy =
+				table.Rows
+				.Select(row => Resources<ProgramResource>.Get(row["Name"]))
+				.Select(p => p.Id).ToList();
+
+			}
+
+
+			ApiFeature.MockAclClient.Setup(acl => acl.GetObjectIds(It.IsAny<Guid>(), (int)Capability.ViewProgram, "program"))
+					  .Returns(filtererdBy);
+		}
+
 
         [Given(@"I have a course with following info:")]
         public void GivenIHaveACourseWithFollowingInfo(Table table)

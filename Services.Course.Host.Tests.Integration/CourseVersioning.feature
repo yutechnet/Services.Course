@@ -264,6 +264,10 @@ Scenario: Cannot publish without a version
 	Then I get 'BadRequest' response
 
 Scenario: Search for published course
+	Given the user has permission to access these courses:
+	| Name           |
+	| English 1010   |
+	| English 101011 |
 	When I publish the following courses
 	| Name           | Note      |
 	| English 1010   | Blah blah |

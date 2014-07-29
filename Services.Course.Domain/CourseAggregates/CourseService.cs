@@ -115,6 +115,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             return courseInfo;
         }
 
+		[AuthCollectionByAcl(Capability = Capability.CourseView,Type="course")]
         public IEnumerable<CourseInfoResponse> Search(string queryString)
         {
             var queryArray = queryString.Split('?');
@@ -163,6 +164,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             _courseRepository.Save(course);
         }
 
+
+		[AuthCollectionByAcl(Capability = Capability.CourseView, Type = "course")]
         public IEnumerable<CourseInfoResponse> GetPublishedCourses(Guid organizationId)
         {
             var courses = _courseRepository.GetPublishedCourses(organizationId);
