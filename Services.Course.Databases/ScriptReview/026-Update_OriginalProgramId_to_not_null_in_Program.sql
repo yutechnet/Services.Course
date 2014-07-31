@@ -15,13 +15,13 @@ BEGIN
 	
 	UPDATE Program SET OriginalProgramId = ProgramId WHERE OriginalProgramId IS NULL;
 
-	RAISERROR( 'CREATE STATUS: Column (OriginalProgramId) Set to True (1) for all NULL Rows' , 0 , 1 )WITH NOWAIT;
+	RAISERROR( 'CREATE STATUS: Column (OriginalProgramId) Set to (ProgramId) for all NULL Rows' , 0 , 1 )WITH NOWAIT;
     
 	ALTER TABLE Program ALTER COLUMN OriginalProgramId UNIQUEIDENTIFIER NOT NULL  
 
 	RAISERROR( 'CREATE STATUS: Column (OriginalProgramId) set to Non-Null' , 0 , 1 )WITH NOWAIT;
 
 	RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
-	RAISERROR( 'CREATE END: Column (OriginalProgramId) being added to Table (Program)' , 0 , 1 )WITH NOWAIT;
+	RAISERROR( 'CREATE END: Column (OriginalProgramId) being updated on Table (Program)' , 0 , 1 )WITH NOWAIT;
 	RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
 END
