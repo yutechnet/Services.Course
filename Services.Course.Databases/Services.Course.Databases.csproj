@@ -105,6 +105,8 @@
     <Content Include="Databases\Parabola\020-Change_CustomAttribute_name_to_MetaData_in_CourseLearningActivity.sql" />
     <Content Include="Databases\Parabola\021-Change_CustomAttribute_name_to_MetaData_in_LearningMaterial.sql" />
     <Content Include="Databases\Parabola\024-RenameActiveFlagColumnToIsDeleted.sql" />
+    <Content Include="ScriptReview\025-Add_Version_Columns_to_Program.sql" />
+    <Content Include="ScriptReview\026-Update_OriginalProgramId_to_not_null_in_Program.sql" />
     <Content Include="ScriptReview\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
