@@ -35,7 +35,7 @@ namespace BpeProducts.Services.Course.Domain
             // From Domain entities to DTOs
             Mapper.CreateMap<Domain.CourseAggregates.Course, CourseInfoResponse>()
                   .ForMember(dest => dest.ProgramIds, opt => opt.MapFrom(course => course.Programs.Select(p => p.Id).ToList()))
-                  .ForMember(dest => dest.TemplateCourseId, opt => opt.MapFrom(course => course.Template == null ? Guid.Empty : course.Template.Id))
+                  .ForMember(dest => dest.TemplateCourseId, opt => opt.MapFrom(course => course.Template == null ? (Guid?)null : course.Template.Id))
                   .ForMember(dest => dest.PrerequisiteCourseIds, opt => opt.MapFrom(course => course.Prerequisites.Select(p => p.Id).ToList()))
                   .ForMember(dest => dest.LearningMaterials, opt => opt.MapFrom(course => course.LearningMaterials.Where(p => p.CourseSegment == null).ToList()));
             Mapper.CreateMap<Domain.CourseAggregates.Course, Domain.CourseAggregates.Course>()

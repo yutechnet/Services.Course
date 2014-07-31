@@ -105,3 +105,10 @@ Scenario: Add organization id to a course
 	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB |
 	When I submit a creation request
 	Then the organization id is returned as part of the request
+
+Scenario: Validate TemplateCourseId is expected to be null in CourseInfoResponse when course is not created from template (DE1583)
+	Given I have a course with following info:
+	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | Credit | MetaData   | ExtensionAssets                                                           |
+	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | 5      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB,6B7D1752-2A8D-4848-B8BC-1B1E42164499 |
+	When I submit a creation request
+	Then TemplateCourseId should be null in the course 'English 101'

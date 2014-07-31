@@ -688,6 +688,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             Assert.That(course.LearningMaterials.Count, Is.EqualTo(count));
         }
 
+     
+        [Then(@"TemplateCourseId should be null in the course '(.*)'")]
+        public void ThenTemplateCourseIdShouldBeNullInTheCourse(string courseName)
+        {
+            var courseResource = Resources<CourseResource>.Get(courseName);
+            var course = GetOperations.GetCourse(courseResource);
+            Assert.That(course.TemplateCourseId, Is.Null);
+        }
     }
 }
 
