@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Domain.Validation;
+using Castle.Core.Internal;
 using Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.CourseAggregates
@@ -40,6 +42,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             PublishAssesments(course.Segments, publishNote);
             PublishCourseLearningMaterialAsset(course, publishNote);
             PublishExtensionAssets(course.ExtensionAssets, publishNote);
+            course.Programs.Where(p => !p.IsPublished).ForEach(p => p.Publish(publishNote));
         }
 
 	    public void PublishAssesments(IList<CourseSegment> segments, string publishNote)

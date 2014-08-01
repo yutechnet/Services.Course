@@ -14,6 +14,8 @@ Background:
 	| CoursePublish |
 	| CourseView    |
 	| EditCourse    |
+	| EditProgram   |
+	| ViewProgram   |
 	And I have the following assets
 	| Name   |
 	| asset1 |
@@ -77,8 +79,30 @@ Scenario: Publish a course version
 	| PublishNote   | Blah blah                     |
 	| MetaData      | {someData}                    |
 	And the course 'English 1010' should have the following reference info
-	| Field           | Value          |
+	| Field           | Value         |
 	| ExtensionAssets | asset1,asset2 |
+
+Scenario: Publish a course,course programs should be published
+	Given I have the following programs
+	| Name                | Description | ProgramType | OrganizationName | GraduationRequirements |
+	| Bachelor of Science | BS program  | BS          | Default          | requirement one        |
+	| Bachelor of Art     | BA Program  | BA          | Default          |                        |
+	And the user has permission to access these programs:
+	| Name                |
+	| Bachelor of Art     |
+	| Bachelor of Science |
+	When I associate 'English 1010' course with the following programs
+	| Program Name        |
+	| Bachelor of Art     |
+	| Bachelor of Science |
+	And I publish the following courses
+	| Name         | Note      |
+	| English 1010 | Blah blah |		
+	Then I have the following programs
+	| Name                | Description | ProgramType | OrganizationName | VersionNumber | IsPublished | PublishNote |
+	| Bachelor of Art     | BA Program  | BA          | Default          | 1.0.0.0       | true        | Blah blah   |
+	| Bachelor of Science | BS program  | BS          | Default          | 1.0.0.0       | true        | Blah blah   |
+
 
 Scenario: Published version cannot be modified
 	When I publish the following courses

@@ -11,6 +11,9 @@ namespace BpeProducts.Services.Course.Contract
 		public Guid Id { get; set; }
         public string ProgramType { get; set; }
         public string GraduationRequirements { get; set; }
+        public bool IsPublished { get; set; }
+        public string VersionNumber { get; set; }
+        public string PublishNote { get; set; }
 
         public List<SimpleCourseInfoResponse> Courses { get; set; } 
 	}

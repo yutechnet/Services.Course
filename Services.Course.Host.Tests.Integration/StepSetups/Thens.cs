@@ -458,6 +458,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var expectedPrograms = table.CreateSet<ProgramResponse>().OrderBy(p => p.Name);
             var actualPrograms = GetOperations.GetAllPrograms();
+            var isValidatePublishStatus = table.ContainsColumn("IsPublished");
 
             foreach (var expectedProgram in expectedPrograms)
             {
@@ -470,6 +471,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 Assert.That(actualProgram.Description, Is.EqualTo(expectedProgram.Description));
                 Assert.That(actualProgram.OrganizationId, Is.EqualTo(expectedOrgId));
                 Assert.That(actualProgram.ProgramType, Is.EqualTo(expectedProgram.ProgramType));
+                if (isValidatePublishStatus)
+                {
+                    Assert.That(actualProgram.IsPublished, Is.EqualTo(expectedProgram.IsPublished));
+                    Assert.That(actualProgram.PublishNote, Is.EqualTo(expectedProgram.PublishNote));
+                    Assert.That(actualProgram.VersionNumber, Is.EqualTo(expectedProgram.VersionNumber));
+                }
             }
         }
 

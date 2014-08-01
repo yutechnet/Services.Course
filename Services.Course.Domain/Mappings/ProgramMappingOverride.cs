@@ -21,6 +21,9 @@ namespace BpeProducts.Services.Course.Domain.Mappings
 
             mapping.Map(x => x.Name)
                    .Length(250);
+
+            mapping.References<Program>(c => c.OriginalEntity);
+            mapping.References<Program>(c => c.ParentEntity);
         }
     }
 }

@@ -9,6 +9,7 @@ using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Contract.Events;
 using BpeProducts.Services.Course.Domain.Repositories;
+using Castle.Core.Internal;
 using NServiceBus;
 
 

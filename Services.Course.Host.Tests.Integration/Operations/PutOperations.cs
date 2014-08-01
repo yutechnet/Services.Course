@@ -62,6 +62,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
                 TenantId = ApiFeature.TenantId,
                 OrganizationId = courseInfo.OrganizationId,
                 IsTemplate = courseInfo.IsTemplate,
+                MetaData=courseInfo.MetaData,
                 PrerequisiteCourseIds = courseInfo.PrerequisiteCourseIds
             };
 

@@ -96,8 +96,14 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         public virtual IList<Program> Programs
         {
-            get { return _programs; }
-            set { _programs = value; }
+            get
+            {
+                return _programs;
+            }
+            set
+            {
+                _programs = value;
+            }
         }
 
         public virtual IList<CourseSegment> Segments
@@ -569,7 +575,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         public virtual void Publish(string publishNote, ICoursePublisher coursePublisher)
         {
             coursePublisher.Publish(this, publishNote);
-            base.Publish(publishNote);
+           base.Publish(publishNote);
         }
 
         public virtual void CloneOutcomes(IAssessmentClient assessmentClient)
