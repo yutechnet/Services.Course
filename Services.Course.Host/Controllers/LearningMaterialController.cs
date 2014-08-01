@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BpeProducts.Common.Ioc.Extensions;
 using BpeProducts.Common.WebApi.NHibernate;
 using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
@@ -13,6 +15,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
     public class LearningMaterialController : ApiController
     {
         private readonly ILearningMaterialService _learningMaterialService;
+        private readonly string _regExPattern = ConfigurationManager.AppSettings["Regex.Course"];
+        private readonly string _rewriteUrl = ConfigurationManager.AppSettings["RewriteUrl.Course"];
 
         public LearningMaterialController(ILearningMaterialService learningMaterialService)
         {
@@ -30,6 +34,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
             var response = Request.CreateResponse(HttpStatusCode.Created, learningMaterial);
 
             var uri = Url.Link("GetCourseLearningMaterial", new { courseId, learningMaterialId = learningMaterial.Id });
+            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
+
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
@@ -71,6 +77,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
             var response = Request.CreateResponse(HttpStatusCode.Created, learningMaterial);
 
             var uri = Url.Link("GetLearningMaterial", new { courseId, segmentId, learningMaterialId = learningMaterial.Id });
+            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
+
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BpeProducts.Common.Ioc.Extensions;
 using BpeProducts.Common.WebApi.NHibernate;
 using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
@@ -14,6 +16,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
 	public class ProgramController : ApiController
 	{
 	    private readonly IProgramService _programService;
+        private readonly string _regExPattern = ConfigurationManager.AppSettings["Regex.Course"];
+        private readonly string _rewriteUrl = ConfigurationManager.AppSettings["RewriteUrl.Course"];
 
 	    public ProgramController(IProgramService programService)
 		{
@@ -41,6 +45,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		    var programResponse = _programService.Create(request);
             var response = Request.CreateResponse(HttpStatusCode.Created, programResponse);
             var uri = Url.Link("GetProgram", new { programId = programResponse.Id });
+            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
+
 			if (uri != null)
 			{
 				response.Headers.Location = new Uri(uri);

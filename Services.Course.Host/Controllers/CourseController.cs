@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.OData.Query;
 using BpeProducts.Common.Contract;
+using BpeProducts.Common.Ioc.Extensions;
 using BpeProducts.Common.WebApi.NHibernate;
 using BpeProducts.Common.WebApi.Validation;
 using BpeProducts.Services.Course.Contract;
-using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
 
 namespace BpeProducts.Services.Course.Host.Controllers
@@ -17,6 +18,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
     public class CourseController : ApiController
     {
         private readonly ICourseService _courseService;
+        private readonly string _regExPattern = ConfigurationManager.AppSettings["Regex.Course"];
+        private readonly string _rewriteUrl = ConfigurationManager.AppSettings["RewriteUrl.Course"];
 
         public CourseController(ICourseService courseService)
         {
@@ -59,6 +62,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("GetCourse", new { courseId = courseInfoResponse.Id });
+            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
+
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
@@ -76,6 +81,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("GetCourse", new { courseId = courseInfoResponse.Id });
+            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
+
             if (uri != null)
             {
                 response.Headers.Location = new Uri(uri);
@@ -111,6 +118,8 @@ namespace BpeProducts.Services.Course.Host.Controllers
 			HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
 
 			string uri = Url.Link("GetCourse", new { courseId = courseInfoResponse.Id });
+            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
+
 			if (uri != null)
 			{
 				response.Headers.Location = new Uri(uri);
