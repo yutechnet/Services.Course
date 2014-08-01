@@ -73,10 +73,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             {
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
             }
-
-            _repository.Save(program);
-			Mapper.Map(request, program);
-            
+            program.Update(request);
 			_bus.Publish(new ProgramCreated
 			{
 				Id = program.Id,
@@ -93,8 +90,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             {
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
             }
-            program.IsDeleted = true;
-            _repository.Save(program);
+            program.Deleted();
         }
     }
 }

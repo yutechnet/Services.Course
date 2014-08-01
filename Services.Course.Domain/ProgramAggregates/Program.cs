@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using BpeProducts.Common.NHibernate;
 using BpeProducts.Common.NHibernate.Version;
 
@@ -11,52 +12,15 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
     {
         private IList<CourseAggregates.Course> _courses = new List<CourseAggregates.Course>();
 
-        private string _name;
-        private string _description;
-        private string _programType;
-        private string _graduationRequirements;
+        [NotNullable]
+        public virtual string Name { get; set; }
+
+        public virtual string Description { get; set; }
 
         [NotNullable]
-        public virtual string Name
-        {
-            get { return _name; }
-            set
-            {
-                //CheckPublished();
-                _name = value;
-            }
-        }
+        public virtual string ProgramType { get; set; }
 
-        public virtual string Description
-        {
-            get { return _description; }
-            set
-            {
-                //CheckPublished();
-                _description = value;
-            }
-        }
-
-        [NotNullable]
-        public virtual string ProgramType
-        {
-            get { return _programType; }
-            set
-            {
-                //CheckPublished();
-                _programType = value;
-            }
-        }
-
-        public virtual string GraduationRequirements
-        {
-            get { return _graduationRequirements; }
-            set
-            {
-                //CheckPublished();
-                _graduationRequirements = value;
-            }
-        }
+        public virtual string GraduationRequirements { get; set; }
 
         public virtual IList<CourseAggregates.Course> Courses
         {
@@ -68,6 +32,18 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         {
             throw new NotImplementedException("this overload is not supported for program");
         }
-        
+
+
+        public virtual void Update(Contract.UpdateProgramRequest request)
+        {
+            CheckPublished();
+            Mapper.Map(request, this);
+        }
+
+        public virtual void Deleted()
+        {
+            CheckPublished();
+            IsDeleted = true;
+        }
     }
 }
