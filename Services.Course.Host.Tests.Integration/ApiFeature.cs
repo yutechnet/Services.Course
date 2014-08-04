@@ -1,8 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using Autofac;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.WebApi.ApiKeys;
 using BpeProducts.Common.WebApiTest;
+using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using System;
@@ -30,6 +34,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
         public static readonly string LeadingPath;
 
         public const string BaseAddress = "http://localhost:12003";
+
+        private static readonly Dictionary<string, string> PathExceptionsForPosts = new Dictionary<string, string>
+                {
+                    { "/coursefromtemplate", "/course" },
+                    { "/course/version", "/course" },
+                };
 
         public static WebApiSelfTestHost CourseTestHost
         {
@@ -111,6 +121,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration
 
             //Some scenarios change the user, so make sure we set it to a know user for each scenario
             CurrentTestUser = DefaultTestUser;
+        }
+
+        [AfterScenario("Api")]
+        public static void AfterScenario()
+        {
+            var createdResponses = Responses.All.Where(r => r.StatusCode == HttpStatusCode.Created);
+
+            foreach (var createdResponse in createdResponses)
+            {
+                createdResponse.AssertPostLocation(BaseAddress, "localhost", PathExceptionsForPosts);
+            }
         }
     }
 }
