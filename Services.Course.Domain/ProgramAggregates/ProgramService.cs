@@ -90,7 +90,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             {
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
             }
-            program.Deleted();
+            program.Delete();
         }
     }
 }

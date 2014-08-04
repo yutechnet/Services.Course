@@ -40,7 +40,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             Mapper.Map(request, this);
         }
 
-        public virtual void Deleted()
+        public virtual void Delete()
         {
             CheckPublished();
             IsDeleted = true;

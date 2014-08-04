@@ -213,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CourseFactoryTests.cs" />
+    <Compile Include="Entities\ProgramTests.cs" />
     <Compile Include="LearningMaterialServiceTests.cs" />
     <Compile Include="CourseServiceTests.cs" />
     <Compile Include="Entities\CourseFactoryTests.cs" />

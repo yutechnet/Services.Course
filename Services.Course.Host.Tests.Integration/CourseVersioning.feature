@@ -82,7 +82,7 @@ Scenario: Publish a course version
 	| Field           | Value         |
 	| ExtensionAssets | asset1,asset2 |
 
-Scenario: Publish a course,course programs should be published
+Scenario: Publish a course,course programs should be published and not be modified
 	Given I have the following programs
 	| Name                | Description | ProgramType | OrganizationName | GraduationRequirements |
 	| Bachelor of Science | BS program  | BS          | Default          | requirement one        |
@@ -102,6 +102,16 @@ Scenario: Publish a course,course programs should be published
 	| Name                | Description | ProgramType | OrganizationName | VersionNumber | IsPublished | PublishNote |
 	| Bachelor of Art     | BA Program  | BA          | Default          | 1.0.0.0       | true        | Blah blah   |
 	| Bachelor of Science | BS program  | BS          | Default          | 1.0.0.0       | true        | Blah blah   |
+	When I modify the program 'Bachelor of Science' info to reflect the following
+	| Field                  | Value                                |
+	| Name                   | Bachelor of Arts                     |
+	| Description            | English                              |
+	| ProgramType            | BA                                   |
+	| OrganizationId         | E2DF063D-E2A1-4F83-9BE0-218EC676C05F |
+	| GraduationRequirements | requirement one update               |
+	Then I get 'BadRequest' response
+	When I delete the program 'Bachelor of Science'
+	Then I get 'BadRequest' response
 
 
 Scenario: Published version cannot be modified

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Autofac.Extras.Moq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Asset.Contracts;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
+using BpeProducts.Services.Course.Domain.ProgramAggregates;
 using BpeProducts.Services.Course.Domain.Validation;
 using BpeProducts.Services.Course.Host.App_Start;
 using Moq;
@@ -118,5 +120,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             // should make any calls since all assessments are stubbed to be publsihed 
             _assessmentClient.Verify(a => a.PublishAssessment(It.IsAny<Guid>(), publishNote), Times.Never());
         }
+
+        [Test]
+        public void Should_publish_programs_when_course_is_published()
+        {
+            var publishNote = "hello";
+            _assessmentClient.Setup(a => a.GetAssessment(It.IsAny<Guid>()))
+                            .Returns(new AssessmentInfo { IsPublished = true });
+            var program1 = new Program() { Description = "des1" };
+            var program2 = new Program() { Description = "des1" };
+            _course.Programs=new List<Program>(){program1,program2};
+            _coursePublisher.Publish(_course, publishNote);
+            foreach (var program in _course.Programs)
+            {
+                Assert.That(program.IsPublished, Is.EqualTo(true));
+                Assert.That(program.PublishNote, Is.EqualTo(publishNote));
+            }
+        }
+
     }
 }
