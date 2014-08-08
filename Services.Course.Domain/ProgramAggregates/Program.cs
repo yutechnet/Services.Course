@@ -30,7 +30,9 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
 
         protected override VersionableEntity Clone()
         {
-            throw new NotImplementedException("this overload is not supported for program");
+            var program = Mapper.Map<Program>(this);
+            program.Id = Guid.NewGuid();
+            return program;
         }
 
 

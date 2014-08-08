@@ -7,6 +7,7 @@ using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Contract.Events;
+using BpeProducts.Services.Course.Domain.Repositories;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;
@@ -16,23 +17,19 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
 {
     public class ProgramService : IProgramService
     {
-        private readonly IRepository _repository;
+        private readonly IProgramRepository _programrepository;
 	    private readonly IBus _bus;
 
-	    public ProgramService(IRepository repository,IBus bus)
+        public ProgramService(IProgramRepository repository, IBus bus)
         {
-	        _repository = repository;
+	        _programrepository = repository;
 	        _bus = bus;
         }
 
 	    [AuthByAcl(Capability = Capability.ViewProgram, ObjectId = "programId", ObjectType = typeof(Program))]
-        public ProgramResponse Search(Guid programId)
+        public ProgramResponse Get(Guid programId)
         {
-            var program = _repository.Get<Program>(programId);
-            if (program == null || program.IsDeleted)
-            {
-                throw new NotFoundException(string.Format("Program {0} not found.", programId));
-            }
+            var program = _programrepository.GetOrThrow(programId);
             return Mapper.Map<ProgramResponse>(program);
         }
 
@@ -41,7 +38,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         {
             var queryArray = queryString.Split('?');
             ICriteria criteria =
-                _repository.ODataQuery<Program>(queryArray.Length > 1 ? queryArray[1] : "");
+                _programrepository.ODataQuery(queryArray.Length > 1 ? queryArray[1] : "");
             criteria.Add(Restrictions.Eq("IsDeleted", false));
             criteria.SetFetchMode("Courses", FetchMode.Join);  //for eager loading
             criteria.SetResultTransformer(Transformers.DistinctRootEntity);
@@ -55,7 +52,8 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         public ProgramResponse Create(SaveProgramRequest request)
         {
             var program = Mapper.Map<Program>(request);
-            _repository.Save(program);
+            program.Id = Guid.NewGuid();
+            _programrepository.Save(program);
 			_bus.Publish(new ProgramCreated
 				{
 					Id=program.Id,
@@ -68,7 +66,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         [AuthByAcl(Capability = Capability.EditProgram, ObjectId = "programId", ObjectType = typeof(Program))]
         public void Update(Guid programId, UpdateProgramRequest request)
         {
-            var program = _repository.Get<Program>(programId);
+            var program = _programrepository.Get(programId);
             if (program == null || program.IsDeleted)
             {
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
@@ -85,12 +83,51 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
         [AuthByAcl(Capability = Capability.EditProgram, ObjectId = "programId", ObjectType = typeof(Program))]
         public void Delete(Guid programId)
         {
-            var program = _repository.Get<Program>(programId);
+            var program = _programrepository.Get(programId);
             if (program == null || program.IsDeleted)
             {
                 throw new NotFoundException(string.Format("Program {0} not found.", programId));
             }
             program.Delete();
+        }
+
+
+        public ProgramResponse CreateVersion(Guid parentVersionId, string versionNumber)
+        {
+            var parentVersion = _programrepository.Get(parentVersionId);
+
+            if (parentVersion == null)
+            {
+                throw new BadRequestException(string.Format("Parent program {0} is not found.", parentVersionId));
+            }
+           
+            if (_programrepository.GetVersion(parentVersion.OriginalEntity.Id, versionNumber) != null)
+            {
+                throw new BadRequestException(string.Format("Version {0} for Program {1} already exists.", versionNumber, parentVersion.OriginalEntity.Id));
+            }
+
+            var newVersion = parentVersion.CreateVersion(versionNumber) as Program;
+            if (newVersion == null)
+            {
+                throw new Exception(string.Format("Failed to create a new version {0} from the parent version {1}", versionNumber, parentVersion.Id));
+            }
+
+            _programrepository.Save(newVersion);
+            return Mapper.Map<ProgramResponse>(newVersion);
+        }
+
+        public void PublishVersion(Guid programId, string publishNote)
+        {
+            var program = _programrepository.Get(programId);
+            program.Publish(publishNote);
+            _programrepository.Save(program);
+        }
+
+        public void UpdateActiviationStatus(Guid programId, Common.Contract.ActivationRequest request)
+        {
+            var program = _programrepository.GetOrThrow(programId);
+            program.UpdateActivationStatus(request);
+            _programrepository.Save(program);
         }
     }
 }

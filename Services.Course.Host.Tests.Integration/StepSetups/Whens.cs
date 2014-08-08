@@ -297,7 +297,23 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                         PublishNote = row["Note"]
                     };
 
-                PutOperations.PublishCourse(course, request);
+                PutOperations.Publish(course, request);
+            }
+        }
+
+        [When(@"I publish the following programs")]
+        public void WhenIPublishTheFollowingPrograms(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var programResource = Resources<ProgramResource>.Get(row["Name"]);
+
+                var request = new PublishRequest
+                {
+                    PublishNote = row["Note"]
+                };
+
+                PutOperations.Publish(programResource, request);
             }
         }
 
@@ -313,7 +329,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     PublishNote = row["Note"]
                 };
 
-                PutOperations.PublishLearningOutcome(learningOutcome, request);
+                PutOperations.Publish(learningOutcome, request);
             }
         }
 
@@ -420,6 +436,30 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             PostOperations.CreateCourseVersion(newVersionName, request);
         }
+
+        [When(@"I create a new version of '(.*)' program named '(.*)' with the following info")]
+        public void WhenICreateANewVersionOfProgramNamedWithTheFollowingInfo(string programName, string newVersionName, Table table)
+        {
+            var request = table.CreateInstance<Contract.VersionRequest>();
+
+            var programResource = Resources<ProgramResource>.Get(programName);
+            request.ParentVersionId = programResource.Id;
+
+            PostOperations.CreateProgramVersion(newVersionName, request);
+        }
+
+        [When(@"I create a Program without a version")]
+        public void WhenICreateAProgramWithoutAVersion()
+        {
+            var versionRequest = new Contract.VersionRequest
+            {
+                ParentVersionId = Guid.NewGuid(),
+                VersionNumber = null
+            };
+
+            PostOperations.CreateProgramVersion("badversion", versionRequest);
+        }
+
 
         [When(@"I update the course segments as follows")]
         public void WhenIUpdateTheCourseSegmentAsFollows(Table table)
@@ -749,7 +789,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     PublishNote = row["Note"]
                 };
 
-                PutOperations.PublishCourse(course, request);
+                PutOperations.Publish(course, request);
             }
         }
 
@@ -770,7 +810,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     Id = asset.Id,
                     IsPublished = true
                 });
-                PutOperations.PublishCourse(course, request);
+                PutOperations.Publish(course, request);
             }
         }
 
@@ -818,6 +858,34 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                                                      IsActivated = true
                                                  });
         }
+
+        [When(@"I deactivate the program '(.*)'")]
+        public void WhenIDeactivateTheProgram(string programName)
+        {
+            var programResource = Resources<ProgramResource>.Get(programName);
+
+            PutOperations.UpdateActivationStatus(programResource,
+                                                 new ActivationRequest
+                                                 {
+                                                     EntityId = programResource.Id,
+                                                     IsActivated = false
+                                                 });
+        }
+
+        [When(@"I activate the program '(.*)'")]
+        public void WhenIActivateTheProgram(string programName)
+        {
+            var programResource = Resources<ProgramResource>.Get(programName);
+
+            PutOperations.UpdateActivationStatus(programResource,
+                                                 new ActivationRequest
+                                                 {
+                                                     EntityId = programResource.Id,
+                                                     IsActivated = true
+                                                 });
+        }
+
+        
 
     }
 }

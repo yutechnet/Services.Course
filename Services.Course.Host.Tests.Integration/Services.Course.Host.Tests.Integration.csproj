@@ -238,6 +238,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AssessmentToLearningActivity.feature</DependentUpon>
     </Compile>
+    <Compile Include="ProgramDeactivation.feature.cs">
+      <DependentUpon>ProgramDeactivation.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ProgramVersioning.feature.cs">
+      <DependentUpon>ProgramVersioning.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="CourseAuthorization.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -357,6 +367,14 @@
     <None Include="AssessmentToLearningActivity.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AssessmentToLearningActivity.feature.cs</LastGenOutput>
+    </None>
+    <None Include="ProgramDeactivation.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ProgramDeactivation.feature.cs</LastGenOutput>
+    </None>
+    <None Include="ProgramVersioning.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ProgramVersioning.feature.cs</LastGenOutput>
     </None>
     <None Include="CourseAuthorization.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

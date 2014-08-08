@@ -419,7 +419,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     PublishNote = row["Note"]
                 };
 
-                PutOperations.PublishCourse(course, request);
+                PutOperations.Publish(course, request);
             }
         }
     }

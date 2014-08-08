@@ -21,6 +21,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return ApiFeature.CourseTestHost.Post<CourseResource, VersionRequest>(name, requestUri, request);
         }
 
+        public static HttpResponseMessage CreateProgramVersion(string name, VersionRequest request)
+        {
+            var requestUri = string.Format("{0}/program/version", ApiFeature.LeadingPath);
+            return ApiFeature.CourseTestHost.Post<ProgramResource, VersionRequest>(name, requestUri, request);
+        }
+
         public static HttpResponseMessage CreateProgram(string name, SaveProgramRequest request)
         {
             request.TenantId = ApiFeature.TenantId;

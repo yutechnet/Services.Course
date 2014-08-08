@@ -11,5 +11,8 @@ namespace BpeProducts.Services.Course.Domain.Repositories
         IList<Program> Get(List<Guid> ids);
         void Save(Program program);
         ICriteria ODataQuery(string queryString);
+
+        Program GetVersion(Guid guid, string versionNumber);
+        Program GetOrThrow(Guid programId);
     }
 }

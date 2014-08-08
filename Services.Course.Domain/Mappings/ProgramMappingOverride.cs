@@ -8,6 +8,8 @@ namespace BpeProducts.Services.Course.Domain.Mappings
     {
         public void Override(AutoMapping<Program> mapping)
         {
+            mapping.Id(x => x.Id).GeneratedBy.Assigned();
+
             mapping
                 .HasManyToMany(x => x.Courses)
                 .ParentKeyColumn("ProgramId")

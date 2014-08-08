@@ -95,19 +95,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             var requestUri = course.ResourceUri.ToString();
             return ApiFeature.CourseTestHost.Put(requestUri, request);
         }
+     
 
-        public static HttpResponseMessage PublishCourse(CourseResource course, PublishRequest request)
+        public static HttpResponseMessage Publish(IResource resource, PublishRequest request)
         {
-            var requestUri = string.Format("{0}/publish", course.ResourceUri);
+            var requestUri = string.Format("{0}/publish", resource.ResourceUri);
             return ApiFeature.CourseTestHost.Put(requestUri, request);
         }
 
-        public static HttpResponseMessage PublishLearningOutcome(LearningOutcomeResource learningOutcome, PublishRequest request)
-        {
-            var requestUri = string.Format("{0}/publish", learningOutcome.ResourceUri);
-            return ApiFeature.CourseTestHost.Put(requestUri, request);
-        }
-
+  
         public static HttpResponseMessage SetCoursePrerequisites(CourseResource course, UpdateCoursePrerequisites request)
         {
             var requestUri = string.Format("{0}/prerequisite", course.ResourceUri);
@@ -150,9 +146,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.Operations
             return ApiFeature.CourseTestHost.Put(requestUri, request);
         }
 
-        public static HttpResponseMessage UpdateActivationStatus(CourseResource courseResource, ActivationRequest activationRequest)
+        public static HttpResponseMessage UpdateActivationStatus(IResource resource, ActivationRequest activationRequest)
         {
-            var requestUri = string.Format("{0}/activate", courseResource.ResourceUri);
+            var requestUri = string.Format("{0}/activate", resource.ResourceUri);
             return ApiFeature.CourseTestHost.Put(requestUri, activationRequest);
         }
     }

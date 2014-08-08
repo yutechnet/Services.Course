@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BpeProducts.Common.Contract;
 using BpeProducts.Common.Ioc.Extensions;
 using BpeProducts.Common.WebApi.NHibernate;
 using BpeProducts.Common.WebApi.Validation;
@@ -33,7 +34,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
         [Route("program/{programId:guid}", Name = "GetProgram")]
         public ProgramResponse Get(Guid programId)
 		{
-            return _programService.Search(programId);
+            return _programService.Get(programId);
 		}
 
 		[Transaction]
@@ -71,6 +72,46 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		{
             _programService.Delete(programId);
 		}
+
+        [Transaction]
+        [ArgumentsNotNull]
+        [ValidateModelState]
+        [HttpPost]
+        [Route("program/version", Name = "CreateProgramVersion")]
+        public HttpResponseMessage CreateVersion(VersionRequest request)
+        {
+            var programResponse = _programService.CreateVersion(request.ParentVersionId, request.VersionNumber); 
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
+
+            string uri = Url.Link("GetProgram", new { programId = programResponse.Id });
+            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
+
+            if (uri != null)
+            {
+                response.Headers.Location = new Uri(uri);
+            }
+            return response;
+        }
+
+        [Transaction]
+        [ArgumentsNotNull]
+        [ValidateModelState]
+        [HttpPut]
+        [Route("program/{programId:guid}/publish")]
+        public void PublishVersion(Guid programId, PublishRequest request)
+        {
+            _programService.PublishVersion(programId, request.PublishNote);
+        }
+
+        [Transaction]
+        [ArgumentsNotNull]
+        [ValidateModelState]
+        [HttpPut]
+        [Route("program/{programId:guid}/activate")]
+        public void UpdateActiviationStatus(Guid programId, ActivationRequest request)
+        {
+            _programService.UpdateActiviationStatus(programId, request);
+        }
 	}
 }
 

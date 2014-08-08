@@ -28,6 +28,9 @@ namespace BpeProducts.Services.Course.Domain
             // this option is not needed
             Mapper.CreateMap<SaveProgramRequest, Program>();
             Mapper.CreateMap<UpdateProgramRequest, Program>();
+            Mapper.CreateMap<Program, Program>()
+            .ForMember(dest => dest.IsPublished, opt => opt.UseValue(false))
+            .ForMember(dest => dest.PublishDate, opt => opt.Ignore());
         }
 
         private static void CourseMappings()
