@@ -152,9 +152,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ICanEditAProgramWhenIDoHavePermission_(string capability, string statusCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can edit a program when I do have permission.", exampleTags);
-#line 35
+#line 34
 this.ScenarioSetup(scenarioInfo);
-#line 36
+#line 35
  testRunner.Given("I have the \'EditProgram\' capability", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -169,9 +169,9 @@ this.ScenarioSetup(scenarioInfo);
                         "MA",
                         "Default",
                         "requirement one"});
-#line 37
+#line 36
  testRunner.When("I create the following programs", ((string)(null)), table4, "When ");
-#line 40
+#line 39
  testRunner.When("I am \'TestUser1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -182,7 +182,7 @@ this.ScenarioSetup(scenarioInfo);
                         "program",
                         "Bachelor of Science",
                         string.Format("{0}", capability)});
-#line 41
+#line 40
  testRunner.Given("I have the following object capabilities", ((string)(null)), table5, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -203,9 +203,9 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "GraduationRequirements",
                         "requirement one update"});
-#line 44
+#line 43
  testRunner.When("I modify the program \'Bachelor of Science\' info to reflect the following", ((string)(null)), table6, "When ");
-#line 51
+#line 50
  testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -218,9 +218,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ICanDeleteAProgramWhenIDoHavePermission_(string capability, string statusCode, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can delete a program when I do have permission.", exampleTags);
-#line 57
+#line 56
 this.ScenarioSetup(scenarioInfo);
-#line 58
+#line 57
  testRunner.Given("I have the \'EditProgram\' capability", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -235,9 +235,9 @@ this.ScenarioSetup(scenarioInfo);
                         "MA",
                         "Default",
                         "requirement one"});
-#line 59
+#line 58
  testRunner.When("I create the following programs", ((string)(null)), table7, "When ");
-#line 62
+#line 61
  testRunner.When("I am \'TestUser1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -248,11 +248,251 @@ this.ScenarioSetup(scenarioInfo);
                         "program",
                         "Bachelor of Science",
                         string.Format("{0}", capability)});
-#line 63
+#line 62
  testRunner.Given("I have the following object capabilities", ((string)(null)), table8, "Given ");
-#line 66
+#line 65
  testRunner.When("I delete the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 67
+#line 66
+ testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("I can not publish a program unless I have permission to do so.")]
+        [NUnit.Framework.TestCaseAttribute("EditProgram", "NoContent", null)]
+        [NUnit.Framework.TestCaseAttribute("", "Forbidden", null)]
+        public virtual void ICanNotPublishAProgramUnlessIHavePermissionToDoSo_(string capability, string statusCode, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not publish a program unless I have permission to do so.", exampleTags);
+#line 72
+this.ScenarioSetup(scenarioInfo);
+#line 73
+ testRunner.Given("I have the \'EditProgram\' capability", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "ProgramType",
+                        "OrganizationName",
+                        "GraduationRequirements"});
+            table9.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "Economics",
+                        "MA",
+                        "Default",
+                        "requirement one"});
+#line 74
+ testRunner.When("I create the following programs", ((string)(null)), table9, "When ");
+#line 77
+ testRunner.When("I am \'TestUser1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ObjectType",
+                        "ObjectName",
+                        "Capability"});
+            table10.AddRow(new string[] {
+                        "program",
+                        "Bachelor of Science",
+                        string.Format("{0}", capability)});
+#line 78
+ testRunner.Given("I have the following object capabilities", ((string)(null)), table10, "Given ");
+#line 81
+ testRunner.And(string.Format("I have the \'{0}\' capability", capability), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table11.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "bala"});
+#line 82
+ testRunner.When("I publish the following programs", ((string)(null)), table11, "When ");
+#line 85
+ testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("I can not version a program unless I have permission to do so.")]
+        [NUnit.Framework.TestCaseAttribute("EditProgram", "Created", null)]
+        [NUnit.Framework.TestCaseAttribute("", "Forbidden", null)]
+        public virtual void ICanNotVersionAProgramUnlessIHavePermissionToDoSo_(string capability, string statusCode, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not version a program unless I have permission to do so.", exampleTags);
+#line 91
+this.ScenarioSetup(scenarioInfo);
+#line 92
+ testRunner.Given("I have the \'EditProgram\' capability", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "ProgramType",
+                        "OrganizationName",
+                        "GraduationRequirements"});
+            table12.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "Economics",
+                        "MA",
+                        "Default",
+                        "requirement one"});
+#line 93
+ testRunner.When("I create the following programs", ((string)(null)), table12, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table13.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "bala"});
+#line 96
+ testRunner.And("I publish the following programs", ((string)(null)), table13, "And ");
+#line 99
+ testRunner.When("I am \'TestUser1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ObjectType",
+                        "ObjectName",
+                        "Capability"});
+            table14.AddRow(new string[] {
+                        "program",
+                        "Bachelor of Science",
+                        string.Format("{0}", capability)});
+#line 100
+ testRunner.Given("I have the following object capabilities", ((string)(null)), table14, "Given ");
+#line 103
+ testRunner.And(string.Format("I have the \'{0}\' capability", capability), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table15.AddRow(new string[] {
+                        "VersionNumber",
+                        "1.0.0.1"});
+#line 104
+ testRunner.When("I create a new version of \'Bachelor of Science\' program named \'Bachelor of Scienc" +
+                    "e v2\' with the following info", ((string)(null)), table15, "When ");
+#line 107
+ testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("I can not deactivate a program unless I have permission to do so.")]
+        [NUnit.Framework.TestCaseAttribute("EditProgram", "NoContent", null)]
+        [NUnit.Framework.TestCaseAttribute("", "Forbidden", null)]
+        public virtual void ICanNotDeactivateAProgramUnlessIHavePermissionToDoSo_(string capability, string statusCode, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not deactivate a program unless I have permission to do so.", exampleTags);
+#line 113
+this.ScenarioSetup(scenarioInfo);
+#line 114
+ testRunner.Given("I have the \'EditProgram\' capability", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "ProgramType",
+                        "OrganizationName",
+                        "GraduationRequirements"});
+            table16.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "Economics",
+                        "MA",
+                        "Default",
+                        "requirement one"});
+#line 115
+ testRunner.When("I create the following programs", ((string)(null)), table16, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table17.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "Blah blah"});
+#line 118
+ testRunner.And("I publish the following programs", ((string)(null)), table17, "And ");
+#line 121
+ testRunner.When("I am \'TestUser1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ObjectType",
+                        "ObjectName",
+                        "Capability"});
+            table18.AddRow(new string[] {
+                        "program",
+                        "Bachelor of Science",
+                        string.Format("{0}", capability)});
+#line 122
+ testRunner.Given("I have the following object capabilities", ((string)(null)), table18, "Given ");
+#line 125
+ testRunner.And(string.Format("I have the \'{0}\' capability", capability), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 126
+ testRunner.When("I deactivate the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 127
+ testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("I can not activate a program unless I have permission to do so.")]
+        [NUnit.Framework.TestCaseAttribute("EditProgram", "NoContent", null)]
+        [NUnit.Framework.TestCaseAttribute("", "Forbidden", null)]
+        public virtual void ICanNotActivateAProgramUnlessIHavePermissionToDoSo_(string capability, string statusCode, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can not activate a program unless I have permission to do so.", exampleTags);
+#line 133
+this.ScenarioSetup(scenarioInfo);
+#line 134
+ testRunner.Given("I have the \'EditProgram\' capability", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Description",
+                        "ProgramType",
+                        "OrganizationName",
+                        "GraduationRequirements"});
+            table19.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "Economics",
+                        "MA",
+                        "Default",
+                        "requirement one"});
+#line 135
+ testRunner.When("I create the following programs", ((string)(null)), table19, "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Note"});
+            table20.AddRow(new string[] {
+                        "Bachelor of Science",
+                        "Blah blah"});
+#line 138
+ testRunner.And("I publish the following programs", ((string)(null)), table20, "And ");
+#line 141
+ testRunner.And("I deactivate the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 142
+ testRunner.When("I am \'TestUser1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ObjectType",
+                        "ObjectName",
+                        "Capability"});
+            table21.AddRow(new string[] {
+                        "program",
+                        "Bachelor of Science",
+                        string.Format("{0}", capability)});
+#line 143
+ testRunner.Given("I have the following object capabilities", ((string)(null)), table21, "Given ");
+#line 146
+ testRunner.And(string.Format("I have the \'{0}\' capability", capability), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 147
+ testRunner.When("I activate the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 148
  testRunner.Then(string.Format("I get \'{0}\' response", statusCode), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

@@ -91,14 +91,14 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             program.Delete();
         }
 
-
-        public ProgramResponse CreateVersion(Guid parentVersionId, string versionNumber)
+        [AuthByAcl(Capability = Capability.EditProgram, ObjectId = "parentProgramId", ObjectType = typeof(Program))]
+        public ProgramResponse CreateVersion(Guid parentProgramId, string versionNumber)
         {
-            var parentVersion = _programrepository.Get(parentVersionId);
+            var parentVersion = _programrepository.Get(parentProgramId);
 
             if (parentVersion == null)
             {
-                throw new BadRequestException(string.Format("Parent program {0} is not found.", parentVersionId));
+                throw new BadRequestException(string.Format("Parent program {0} is not found.", parentProgramId));
             }
            
             if (_programrepository.GetVersion(parentVersion.OriginalEntity.Id, versionNumber) != null)
@@ -116,6 +116,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             return Mapper.Map<ProgramResponse>(newVersion);
         }
 
+        [AuthByAcl(Capability = Capability.EditProgram, ObjectId = "programId", ObjectType = typeof(Program))]
         public void PublishVersion(Guid programId, string publishNote)
         {
             var program = _programrepository.Get(programId);
@@ -123,6 +124,7 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             _programrepository.Save(program);
         }
 
+        [AuthByAcl(Capability = Capability.EditProgram, ObjectId = "programId", ObjectType = typeof(Program))]
         public void UpdateActiviationStatus(Guid programId, Common.Contract.ActivationRequest request)
         {
             var program = _programrepository.GetOrThrow(programId);

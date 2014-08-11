@@ -223,9 +223,9 @@ this.FeatureBackground();
 #line 44
  testRunner.When("I publish the following programs", ((string)(null)), table6, "When ");
 #line 47
- testRunner.When("I deactivate the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I deactivate the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
- testRunner.When("I activate the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I activate the program \'Bachelor of Science\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",

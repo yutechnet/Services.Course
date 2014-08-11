@@ -44,8 +44,8 @@ Scenario: Can activate deactivated program
 	When I publish the following programs
 	| Name                | Note      |
 	| Bachelor of Science | Blah blah |
-	When I deactivate the program 'Bachelor of Science'
-	When I activate the program 'Bachelor of Science'
+	And I deactivate the program 'Bachelor of Science'
+	And I activate the program 'Bachelor of Science'
 	Then the program 'Bachelor of Science' contains
 	| Name                   | Bachelor of Science                  |
 	| Description            | Economics                            |
