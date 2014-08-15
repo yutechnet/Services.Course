@@ -57,7 +57,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                     OrganizationId = request.OrganizationId,
                     TenantId = request.TenantId,
                     MetaData = template.MetaData,
-                    ExtensionAssets = template.ExtensionAssets
+                    ExtensionAssets = template.ExtensionAssets,
 				};
 
             var newLearningMaterials = Mapper.Map<List<LearningMaterial>>(template.LearningMaterials);
