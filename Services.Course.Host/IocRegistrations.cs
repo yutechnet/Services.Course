@@ -20,8 +20,6 @@ namespace BpeProducts.Services.Course.Host
                             .EnableInterfaceInterceptors()
                             .EnableValidation()
                             .EnableLogging();
-
-            containerBuilder.RegisterType<BootstrapContextSamlTokenExtractor>().As<ISamlTokenExtractor>();
         }
     }
 }

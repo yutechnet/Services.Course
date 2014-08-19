@@ -19,7 +19,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
     public class ProgramTests
     {
         private Program _program;
-        private Domain.CourseAggregates.Course _course;
 
         [SetUp]
         public void SetUp()
