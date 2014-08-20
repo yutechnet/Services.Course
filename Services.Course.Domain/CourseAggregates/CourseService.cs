@@ -195,6 +195,15 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
 			newVersion.CloneOutcomes(_assessmentClient);
             _courseRepository.Save(newVersion);
+
+            _bus.Publish(
+                new CourseCreated
+                {
+                    Id = newVersion.Id,
+                    OrganizationId = newVersion.OrganizationId,
+                    Type = "course"
+                });
+
 	        return Mapper.Map<CourseInfoResponse>(newVersion);
 	    }
 

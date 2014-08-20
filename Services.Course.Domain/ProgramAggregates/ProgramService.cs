@@ -113,6 +113,14 @@ namespace BpeProducts.Services.Course.Domain.ProgramAggregates
             }
 
             _programrepository.Save(newVersion);
+
+            _bus.Publish(new ProgramCreated
+            {
+                Id = newVersion.Id,
+                OrganizationId = newVersion.OrganizationId,
+                Type = "program"
+            });
+
             return Mapper.Map<ProgramResponse>(newVersion);
         }
 
