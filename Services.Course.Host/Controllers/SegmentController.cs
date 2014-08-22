@@ -32,7 +32,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
             var newSegmentId = courseSegment.Id;
             string uri = Url.Link("GetSegment", new { segmentId = newSegmentId });
-            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
 
             if (uri != null)
             {

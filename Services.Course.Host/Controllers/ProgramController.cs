@@ -46,7 +46,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
 		    var programResponse = _programService.Create(request);
             var response = Request.CreateResponse(HttpStatusCode.Created, programResponse);
             var uri = Url.Link("GetProgram", new { programId = programResponse.Id });
-            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
 
 			if (uri != null)
 			{
@@ -84,7 +83,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
 
             string uri = Url.Link("GetProgram", new { programId = programResponse.Id });
-            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
 
             if (uri != null)
             {

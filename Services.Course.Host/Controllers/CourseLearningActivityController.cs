@@ -47,7 +47,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
             var response = Request.CreateResponse(HttpStatusCode.Created, learningActivityResponse);
 
             var uri = Url.Link("GetCourseLearningActivity", new { id = learningActivityResponse.Id });
-            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
 
             if (uri != null)
             {

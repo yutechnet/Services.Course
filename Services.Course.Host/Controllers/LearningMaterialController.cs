@@ -34,7 +34,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
             var response = Request.CreateResponse(HttpStatusCode.Created, learningMaterial);
 
             var uri = Url.Link("GetCourseLearningMaterial", new { courseId, learningMaterialId = learningMaterial.Id });
-            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
 
             if (uri != null)
             {
@@ -77,7 +76,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
             var response = Request.CreateResponse(HttpStatusCode.Created, learningMaterial);
 
             var uri = Url.Link("GetLearningMaterial", new { courseId, segmentId, learningMaterialId = learningMaterial.Id });
-            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
 
             if (uri != null)
             {

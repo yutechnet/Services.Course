@@ -62,7 +62,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("GetCourse", new { courseId = courseInfoResponse.Id });
-            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
 
             if (uri != null)
             {
@@ -81,7 +80,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
             HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, courseInfoResponse);
 
             string uri = Url.Link("GetCourse", new { courseId = courseInfoResponse.Id });
-            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
 
             if (uri != null)
             {
@@ -118,7 +116,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
 			HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created);
 
 			string uri = Url.Link("GetCourse", new { courseId = courseInfoResponse.Id });
-            uri = uri.UrlRewrite(_regExPattern, _rewriteUrl);
 
 			if (uri != null)
 			{
