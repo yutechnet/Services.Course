@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using BpeProducts.Common.Authorization;
+using BpeProducts.Common.Contract;
 using BpeProducts.Common.Exceptions;
 using Services.Assessment.Contract;
-using log4net;
 
 namespace BpeProducts.Services.Course.Domain
 {
@@ -20,24 +18,28 @@ namespace BpeProducts.Services.Course.Domain
         void CloneEntityOutcomes(SupportingEntityType entityType, Guid entityId, CloneEntityOutcomeRequest request);
     }
 
-    public class AssessmentClient : HttpClientBase, IAssessmentClient
+    public class AssessmentClient : IAssessmentClient
     {
-        public Uri BaseAddress { get; private set; }
+        public Lazy<HttpClient> HttpClient { get; set; }
 
-        public AssessmentClient(ISamlTokenExtractor tokenExtractor, ILog log) : base(tokenExtractor, log)
+        public AssessmentClient(RequestContext requestContext)
         {
-            BaseAddress = new Uri(ConfigurationManager.AppSettings["AssessmentServiceBaseUrl"]);
-        }
-
-        public AssessmentClient(ISamlTokenExtractor tokenExtractor, Uri baseAddress, ILog log) : base(tokenExtractor, log)
-        {
-            BaseAddress = baseAddress;
+            HttpClient = new Lazy<HttpClient>(() =>
+                {
+                    var httpClient = HttpClientFactory.Create(
+                        new RequestIdMessageHandler(requestContext.RequestId),
+                        new ApiVersionMessageHandler(ApiVersions.Version1Aug292014Release),
+                        new SignatureMessageHandler(requestContext.ApiKey.Value, requestContext.UserId.Value,
+                                                    requestContext.SharedSecret));
+                    httpClient.BaseAddress = new Uri(ConfigurationManager.AppSettings["AssessmentServiceBaseUrl"]);
+                    return httpClient;
+                });
         }
 
         public RubricInfoResponse GetRubric(Guid id)
         {
-            var uri = string.Format("{0}/rubric/{1}", BaseAddress, id);
-            var result = HttpClient.GetAsync(uri).Result;
+            var uri = string.Format("rubric/{0}", id);
+            var result = HttpClient.Value.GetAsync(uri).Result;
 
             CheckForErrors(result);
             return result.Content.ReadAsAsync<RubricInfoResponse>().Result;
@@ -45,8 +47,8 @@ namespace BpeProducts.Services.Course.Domain
 
         public AssessmentInfo GetAssessment(Guid id)
         {
-            var uri = string.Format("{0}/assessment/{1}", BaseAddress, id);
-            var result = HttpClient.GetAsync(uri).Result;
+            var uri = string.Format("assessment/{0}", id);
+            var result = HttpClient.Value.GetAsync(uri).Result;
 
             CheckForErrors(result);
             return result.Content.ReadAsAsync<AssessmentInfo>().Result;
@@ -55,16 +57,16 @@ namespace BpeProducts.Services.Course.Domain
         public void PublishAssessment(Guid id, string publishNote)
         {
             var publishRequest = new PublishRequest {PublishNote = publishNote};
-            var uri = string.Format("{0}/assessment/{1}/publish", BaseAddress, id);
-            var result = HttpClient.PutAsJsonAsync(uri, publishRequest).Result;
+            var uri = string.Format("assessment/{0}/publish", id);
+            var result = HttpClient.Value.PutAsJsonAsync(uri, publishRequest).Result;
 
             CheckForErrors(result);
         }
 
         public void CloneEntityOutcomes(SupportingEntityType entityType, Guid entityId, CloneEntityOutcomeRequest request)
         {
-            var requestUri = string.Format("{0}/{1}/{2}/clone", BaseAddress, entityType, entityId);
-            var result = HttpClient.PostAsJsonAsync(requestUri, request).Result;
+            var requestUri = string.Format("{0}/{1}/clone", entityType, entityId);
+            var result = HttpClient.Value.PostAsJsonAsync(requestUri, request).Result;
 
             CheckForErrors(result);
         }
@@ -93,7 +95,7 @@ namespace BpeProducts.Services.Course.Domain
             if ((int) response.StatusCode == 401)
             {
                 var content = response.Content.ReadAsStringAsync().Result;
-                throw new AuthorizationException(content);
+                throw new ForbiddenException(content);
             }
             if ((int) response.StatusCode == 403)
             {
@@ -116,8 +118,8 @@ namespace BpeProducts.Services.Course.Domain
 
         public FeedbackResponse GetFeedback(Guid rubricId, Guid criterionId, Guid feedbackId)
         {
-            var uri = string.Format("{0}/rubric/{1}/criterion/{2}/feedback/{3}", BaseAddress, rubricId, criterionId, feedbackId);
-            var result = HttpClient.GetAsync(uri).Result;
+            var uri = string.Format("rubric/{0}/criterion/{1}/feedback/{2}", rubricId, criterionId, feedbackId);
+            var result = HttpClient.Value.GetAsync(uri).Result;
 
             CheckForErrors(result);
             return result.Content.ReadAsAsync<FeedbackResponse>().Result;
@@ -125,39 +127,11 @@ namespace BpeProducts.Services.Course.Domain
 
         public ObservationInfoResponse GetObservation(Guid rubricId, Guid criterionId, Guid observationId)
         {
-            var uri = string.Format("{0}/rubric/{1}/criterion/{2}/observation/{3}", BaseAddress, rubricId, criterionId, observationId);
-            var result = HttpClient.GetAsync(uri).Result;
+            var uri = string.Format("rubric/{0}/criterion/{1}/observation/{2}", rubricId, criterionId, observationId);
+            var result = HttpClient.Value.GetAsync(uri).Result;
 
             CheckForErrors(result);
             return result.Content.ReadAsAsync<ObservationInfoResponse>().Result;
         }
     }
-
-	public class HttpClientBase
-	{
-		private readonly ILog _log;
-		private readonly ISamlTokenExtractor _samlTokenExtractor;
-
-		public HttpClientBase(ISamlTokenExtractor samlTokenExtractor, ILog log)
-		{
-			_log = log;
-			_samlTokenExtractor = samlTokenExtractor;
-		}
-
-		public HttpClient HttpClient
-		{
-			get
-			{
-				var samlToken = _samlTokenExtractor.GetSamlToken();
-				var xApiKey = _samlTokenExtractor.GetApiKey();
-
-				_log.Debug("Extracted X-ApiKey from SAML Token: " + xApiKey);
-
-				var client = new HttpClient();
-				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("SAML", samlToken);
-				client.DefaultRequestHeaders.Add("X-ApiKey", xApiKey);
-				return client;
-			}
-		}
-	}
 }
