@@ -57,6 +57,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         public CourseInfoResponse Create(CreateCourseFromTemplateRequest request)
         {
             var course = _courseFactory.Build(request);
+            course.CloneOutcomes(_assessmentClient, true);
             _courseRepository.Save(course);
 			_bus.Publish(
 				new CourseCreated

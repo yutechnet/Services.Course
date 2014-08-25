@@ -21,6 +21,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Mapper.CreateMap<CourseSegment, CourseSegment>();
             Mapper.CreateMap<LearningMaterialRequest, LearningMaterial>();
             Mapper.CreateMap<UpdateLearningMaterialRequest, LearningMaterial>();
+            Mapper.CreateMap<Domain.CourseAggregates.Course, Domain.CourseAggregates.Course>();
         }
 
         [Test]
@@ -127,7 +128,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Assert.That(course.Id, Is.Not.EqualTo(Guid.Empty));
             Assert.That(course.IsTemplate, Is.EqualTo(request.IsTemplate));
             Assert.That(course.OrganizationId, Is.EqualTo(request.OrganizationId));
-            Assert.That(course.TenantId, Is.EqualTo(template.TenantId));
+            Assert.That(course.TenantId, Is.EqualTo(request.TenantId));
             Assert.That(course.IsDeleted, Is.EqualTo(false));
             Assert.That(course.VersionNumber, Is.EqualTo(new Version(1, 0, 0, 0).ToString()));
             Assert.That(course.MetaData, Is.EqualTo(template.MetaData));

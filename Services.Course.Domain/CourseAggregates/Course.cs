@@ -273,6 +273,11 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             return course;
         }
 
+        public virtual  Course CloneSelf()
+        {
+            return (Course) Clone();
+        }
+
         #region Create Section Request
 
         public virtual CreateSectionRequest GetSectionRequest(CourseSectionRequest request, IAssessmentClient assessmentClient)
@@ -578,9 +583,10 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
            base.Publish(publishNote);
         }
 
-        public virtual void CloneOutcomes(IAssessmentClient assessmentClient)
+        public virtual void CloneOutcomes(IAssessmentClient assessmentClient,bool isCopyFromTempalte = false)
         {
-            assessmentClient.CloneEntityOutcomes(SupportingEntityType.Course, OriginalEntity.Id, new CloneEntityOutcomeRequest
+            var sourceCourseId = isCopyFromTempalte?Template.Id:OriginalEntity.Id;
+            assessmentClient.CloneEntityOutcomes(SupportingEntityType.Course, sourceCourseId, new CloneEntityOutcomeRequest
             {
                 EntityId = Id,
                 Type = SupportingEntityType.Course

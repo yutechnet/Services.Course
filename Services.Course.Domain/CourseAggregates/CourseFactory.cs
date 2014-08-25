@@ -52,54 +52,18 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         protected Course BuildFromTemplate(Course template, CreateCourseFromTemplateRequest request)
         {
-            var course = new Course
-                {
-                    Id = Guid.NewGuid(),
-                    Name = string.IsNullOrEmpty(request.Name) ? template.Name : request.Name,
-                    Code = string.IsNullOrEmpty(request.Code) ? template.Code : request.Code,
-                    Description = string.IsNullOrEmpty(request.Description) ? template.Description : request.Description,
-                    OrganizationId = request.OrganizationId,
-                    TenantId = request.TenantId,
-                    MetaData = template.MetaData,
-                    ExtensionAssets = template.ExtensionAssets,
-                    Prerequisites = new List<Course>(template.Prerequisites)
-                };
+            var course = template.CloneSelf();
 
-            var newLearningMaterials = Mapper.Map<List<LearningMaterial>>(template.LearningMaterials);
-            foreach (LearningMaterial learningMaterial in newLearningMaterials)
-            {
-                learningMaterial.Id = Guid.NewGuid();
-                learningMaterial.Course = course;
-            }
-
-            var newSegments = Mapper.Map<List<CourseSegment>>(template.Segments);
-			foreach (CourseSegment courseSegment in newSegments)
-			{
-				courseSegment.Id = Guid.NewGuid();
-				courseSegment.Course = course;
-			}
-
-            foreach (CourseSegment courseSegment in newSegments)
-            {
-                courseSegment.Id = Guid.NewGuid();
-                courseSegment.Course = course;
-                foreach (LearningMaterial learningMaterial in courseSegment.LearningMaterials)
-                {
-                    learningMaterial.CourseSegment = courseSegment;
-                    learningMaterial.Course = course;
-                    learningMaterial.CloneOutcomes(_assessmentClient);
-                }
-            }
-
-            course.Programs = new List<Program>(template.Programs);
-            course.CourseType = template.CourseType;
-            course.Segments = newSegments;
-            course.TenantId = template.TenantId;
+            if (!string.IsNullOrEmpty(request.Name))
+                course.Name = request.Name;
+            if (!string.IsNullOrEmpty(request.Code))
+                course.Code = request.Code;
+            if (!string.IsNullOrEmpty(request.Description))
+                course.Description = request.Description;
+            course.OrganizationId = request.OrganizationId;
+            course.TenantId = request.TenantId;
             course.Template = template;
-            course.Credit = template.Credit;
-            course.IsDeleted = false;
             course.IsTemplate = request.IsTemplate;
-            course.LearningMaterials = newLearningMaterials.FindAll(x => x.CourseSegment == null);
             return course;
         }
 
