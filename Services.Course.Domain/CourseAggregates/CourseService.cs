@@ -92,6 +92,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             var programs = _programRepository.Get(request.ProgramIds);
             course.SetPrograms(programs.ToList());
 
+            UpdatePrerequisiteList(course, request.PrerequisiteCourseIds);
+
             _courseRepository.Save(course);
 
 			_bus.Publish(
@@ -135,10 +137,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             _courseRepository.Save(course);
         }
 
-        public void UpdatePrerequisiteList(Guid courseId, List<Guid> newPrerequisiteIds)
+        private void UpdatePrerequisiteList(Course course, List<Guid> newPrerequisiteIds)
         {
-            var course = _courseRepository.GetOrThrow(courseId);
-
             var existing = (from prereq in course.Prerequisites
                             select prereq.Id).ToList();
 
@@ -161,7 +161,12 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             {
                 course.RemovePrerequisite(toRemove);
             }
+        }
 
+        public void UpdatePrerequisiteList(Guid courseId, List<Guid> newPrerequisiteIds)
+        {
+            var course = _courseRepository.GetOrThrow(courseId);
+            UpdatePrerequisiteList(course, newPrerequisiteIds);
             _courseRepository.Save(course);
         }
 

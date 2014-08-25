@@ -7,6 +7,7 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
 using BpeProducts.Services.Course.Domain.ProgramAggregates;
+using BpeProducts.Services.Course.Domain.Repositories;
 using NUnit.Framework;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit
@@ -158,7 +159,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
     internal class TestCourseFactory : CourseFactory
     {
-        public TestCourseFactory(ICourseRepository courseRepository, IAssessmentClient assessmentClient) : base(courseRepository, assessmentClient)
+        public TestCourseFactory(ICourseRepository courseRepository, IAssessmentClient assessmentClient, IProgramRepository programRepository)
+            : base(courseRepository, assessmentClient, programRepository)
         {
         }
 

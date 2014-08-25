@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.ProgramAggregates;
+using BpeProducts.Services.Course.Domain.Repositories;
 
 namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
@@ -10,11 +12,13 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
     {
         private readonly ICourseRepository _courseRepository;
         private readonly IAssessmentClient _assessmentClient;
+        private readonly IProgramRepository _programRepository;
 
-        public CourseFactory(ICourseRepository courseRepository, IAssessmentClient assessmentClient)
+        public CourseFactory(ICourseRepository courseRepository, IAssessmentClient assessmentClient, IProgramRepository programRepository)
         {
             _courseRepository = courseRepository;
             _assessmentClient = assessmentClient;
+            _programRepository = programRepository;
         }
         
         public Course Build(SaveCourseRequest request)
@@ -58,7 +62,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                     TenantId = request.TenantId,
                     MetaData = template.MetaData,
                     ExtensionAssets = template.ExtensionAssets,
-				};
+                    Prerequisites = new List<Course>(template.Prerequisites)
+                };
 
             var newLearningMaterials = Mapper.Map<List<LearningMaterial>>(template.LearningMaterials);
             foreach (LearningMaterial learningMaterial in newLearningMaterials)
@@ -112,8 +117,13 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                     CourseType = request.CourseType,
                     Credit = request.Credit,
                     MetaData = request.MetaData,
-                    ExtensionAssets = request.ExtensionAssets
+                    ExtensionAssets = request.ExtensionAssets,
+                    Prerequisites = request.PrerequisiteCourseIds.Select(x=>_courseRepository.GetOrThrow(x)).ToList()
                 };
+
+            var programs = _programRepository.Get(request.ProgramIds);
+            if (programs!=null)
+                course.SetPrograms(programs.ToList());
 
             return course;
         }
