@@ -134,6 +134,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 ExtensionAssets = string.IsNullOrWhiteSpace(table.Rows[0]["ExtensionAssets"]) ? null : Array.ConvertAll(table.Rows[0]["ExtensionAssets"].Split(','), s => new Guid(s)).ToList()
             };
 
+            if (table.ContainsColumn("Prerequisites"))
+                saveCourseRequest.PrerequisiteCourseIds = string.IsNullOrWhiteSpace(table.Rows[0]["Prerequisites"]) ? null : table.Rows[0]["Prerequisites"].Split(',').Select(course => Resources<CourseResource>.GetId(course)).ToList();
+
+            if (table.ContainsColumn("ProgramName"))
+                saveCourseRequest.ProgramIds = string.IsNullOrWhiteSpace(table.Rows[0]["ProgramName"]) ? null : table.Rows[0]["ProgramName"].Split(',').Select(program => Resources<ProgramResource>.GetId(program)).ToList();
+
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
             ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);
             ScenarioContext.Current.Add("courseCode", table.Rows[0]["Code"]);
@@ -142,6 +148,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             ScenarioContext.Current.Add("isTemplate", saveCourseRequest.IsTemplate);
         }
 
+        [When(@"I have an existing course with following info:")]
         [Given(@"I have an existing course with following info:")]
         public void GivenIHaveAnExistingCourseWithFollowingInfo(Table table)
         {

@@ -125,6 +125,12 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 ExtensionAssets = string.IsNullOrWhiteSpace(table.Rows[0]["ExtensionAssets"]) ? null : Array.ConvertAll(table.Rows[0]["ExtensionAssets"].Split(','), s => new Guid(s)).ToList()
             };
 
+            if (table.ContainsColumn("Prerequisites"))
+                editCourseRequest.PrerequisiteCourseIds = string.IsNullOrWhiteSpace(table.Rows[0]["Prerequisites"]) ? null : table.Rows[0]["Prerequisites"].Split(',').Select(course => Resources<CourseResource>.GetId(course)).ToList();
+
+            if (table.ContainsColumn("ProgramName"))
+                editCourseRequest.ProgramIds = string.IsNullOrWhiteSpace(table.Rows[0]["ProgramName"])? null: table.Rows[0]["ProgramName"].Split(',').Select(program =>Resources<ProgramResource>.GetId(program)).ToList();
+
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);
             PutOperations.UpdateCourse(courseRescource, editCourseRequest);
         }
@@ -134,13 +140,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         {
             var courseName = ScenarioContext.Current["courseName"].ToString();
             var saveCourseRequest = ScenarioContext.Current.Get<SaveCourseRequest>("createCourseRequest");
-            PostOperations.CreateCourse(courseName, saveCourseRequest); 
+            PostOperations.CreateCourse(courseName, saveCourseRequest);
         }
 
         [When(@"I create a course from the template '(.*)' with the following")]
         public HttpResponseMessage WhenICreateACourseFromTheTemplateWithTheFollowing(string templateName, Table table)
         {
-           return CreateCourseTemplate(templateName, table);
+            return CreateCourseTemplate(templateName, table);
         }
 
         [When(@"I associate the existing learning outcomes to '(.*)' program")]
@@ -168,9 +174,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var mockOutcomeInfo = new Mock<IOutcomeInfoResource>();
                 mockOutcomeInfo.SetupGet(oi => oi.Title).Returns(row["Title"]).Verifiable();
                 mockOutcomeInfo.SetupGet(oi => oi.Description).Returns(row["Description"]).Verifiable();
-                var supportedOutcome = new OutcomeInfo() {Id = courseResource.Id};
-                mockOutcomeInfo.SetupGet(oi => oi.SupportedOutcomes).Returns(new List<OutcomeInfo>() {supportedOutcome}).Verifiable();
-                Resources<IOutcomeInfoResource>.Add(mockOutcomeInfo.Object.Description,mockOutcomeInfo.Object);
+                var supportedOutcome = new OutcomeInfo() { Id = courseResource.Id };
+                mockOutcomeInfo.SetupGet(oi => oi.SupportedOutcomes).Returns(new List<OutcomeInfo>() { supportedOutcome }).Verifiable();
+                Resources<IOutcomeInfoResource>.Add(mockOutcomeInfo.Object.Description, mockOutcomeInfo.Object);
             }
         }
 
@@ -353,9 +359,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
         public void WhenIAddTheFollowingLearningActivityToCourseSegment(string segmentName, Table table)
         {
             var segment = Resources<CourseSegmentResource>.Get(segmentName);
-            
+
             var request = table.CreateInstance<SaveCourseLearningActivityRequest>();
-            var assessmentRow=table.Rows.SingleOrDefault(r => r["Field"] == "Assessment");
+            var assessmentRow = table.Rows.SingleOrDefault(r => r["Field"] == "Assessment");
             if (assessmentRow != null)
             {
                 var assessment = Resources<AssessmentResource>.Get(assessmentRow["Value"]);
@@ -640,7 +646,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     SectionCode = row["SectionCode"],
                     StartDate = row.GetValue("StartDate", DateTime.MinValue),
                     EndDate = row.GetValue<DateTime?>("EndDate", null),
-					OrganizationId = Guid.NewGuid(),
+                    OrganizationId = Guid.NewGuid(),
                 };
 
                 PostOperations.CreateSection(request.Name, courseResource, request);
@@ -667,7 +673,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             foreach (var row in table.Rows)
             {
                 var assetName = row["Asset"];
-                var asset = new AssetResource {Id = Guid.Empty};
+                var asset = new AssetResource { Id = Guid.Empty };
                 if (assetName != "")
                 {
                     asset = Resources<AssetResource>.Get(assetName);
@@ -679,7 +685,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     AssetId = asset.Id,
                     Instruction = row["Instruction"],
                     IsRequired = bool.Parse(row["IsRequired"]),
-                    MetaData  = row["MetaData"]
+                    MetaData = row["MetaData"]
                 };
 
                 if (isCourseSegmentLearningMaterial)
@@ -885,7 +891,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                                                  });
         }
 
-        
+
 
     }
 }

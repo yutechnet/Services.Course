@@ -201,4 +201,30 @@ Scenario: Cannot get the template after create a course version from a previousl
 	| Field         | Value   |
 	| VersionNumber | 1.0.0.1 |
 	Then The course 'English 2020 v1.0.0.1' should have the template named 'Template 1'
+
+Scenario: Verify programs and prerequisites should be maintained  when converting a course to a template
+	Given I have the following courses
+	| Name     | Code | Description           | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets |
+	| Econ 100 | E100 | Macroeconomics        | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	| Econ 400 | E400 | Advanced Econometrics | COB              | Traditional | False      | {someData} | asset1,asset2   |
+	When I publish the following courses
+	| Name     | Note   |
+	| Econ 100 | a note |
+	| Econ 400 | a note |
+	And I have an existing course with following info:
+	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets                      | ProgramName     | Prerequisites     |
+	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB | Bachelor of Art | Econ 100,Econ 400 |
+	And I change the info to reflect the following:
+	| Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets                      | ProgramName     | Prerequisites     |
+	| English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | true       | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB | Bachelor of Art | Econ 100,Econ 400 |
+	And I publish the following courses
+    | Name        | Note   |
+    | English 101 | a note |
+	Then the course 'English 101' includes the following program information
+	| Program Name        |
+	| Bachelor of Art     |
+	And the course 'English 101' should have the following prerequisites
+	| Name     | 
+	| Econ 100 | 
+	| Econ 400 | 
 	
