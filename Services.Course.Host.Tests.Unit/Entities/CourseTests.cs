@@ -677,7 +677,9 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var courseSegment = course.AddSegment(new SaveCourseSegmentRequest());
             courseSegment.CourseLearningActivities.Add(new CourseLearningActivity());
             courseSegment.AddLearningMaterial(new LearningMaterialRequest());
-            course.CloneOutcomes(_assessmentClientMock.Object);
+            var versionedCourse = course.CreateVersion("newVersion") as Domain.CourseAggregates.Course;
+
+            versionedCourse.CloneOutcomes(_assessmentClientMock.Object);
             // Call to clone course learning outcomes
             _assessmentClientMock.Verify(
                 a =>

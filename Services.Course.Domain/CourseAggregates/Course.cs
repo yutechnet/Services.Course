@@ -585,7 +585,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         public virtual void CloneOutcomes(IAssessmentClient assessmentClient,bool isCopyFromTempalte = false)
         {
-            var sourceCourseId = isCopyFromTempalte?Template.Id:OriginalEntity.Id;
+            var sourceCourseId = isCopyFromTempalte?Template.Id:ParentEntity.Id;
             assessmentClient.CloneEntityOutcomes(SupportingEntityType.Course, sourceCourseId, new CloneEntityOutcomeRequest
             {
                 EntityId = Id,
