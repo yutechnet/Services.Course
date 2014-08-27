@@ -891,6 +891,28 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                                                  });
         }
 
+        [When(@"I create the following sections by course code")]
+        public void WhenICreateTheFollowingSectionsByCourseCode(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var courseResource = Resources<CourseResource>.Get(row["CourseName"]);
+                var uri = new Uri("http://mockedlocation/");
+
+                var request = new CourseSectionRequest
+                {
+                    SectionServiceUri = uri,
+                    Name = row["Name"],
+                    CourseCode = ScenarioContext.Current.Get<long>("ticks") + row["CourseCode"],
+                    SectionCode = row["SectionCode"],
+                    StartDate = row.GetValue("StartDate", DateTime.MinValue),
+                    EndDate = row.GetValue<DateTime?>("EndDate", null),
+                    OrganizationId = Guid.NewGuid(),
+                };
+
+                PostOperations.CreateSectionByCourseCode(request.Name, request);
+            }
+        }
 
 
     }

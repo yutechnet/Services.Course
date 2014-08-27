@@ -221,5 +221,10 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 			course.Publish(publishNote, _coursePublisher);
             _courseRepository.Save(course);
 		}
+
+        public Course GetCourseByCourseCode(string courseCode)
+        {
+            return _courseRepository.GetOrThrowByCourseCode(courseCode);
+        }
     }
 }

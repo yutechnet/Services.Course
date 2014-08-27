@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Autofac.Extras.Moq;
+using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
 using Moq;
 using NUnit.Framework;
@@ -103,6 +104,38 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             Assert.That(courseToReturn.Prerequisites.Contains(prerequisiteCourse2));
             Assert.That(courseToReturn.Prerequisites.Contains(prerequisiteCourse3));
+        }
+
+        [Test]
+        public void Can_Get_Course_By_Course_Code()
+        {
+            var courseId = Guid.NewGuid(); 
+            var couresCode = "TestCode";
+            var courseToReturn = new Domain.CourseAggregates.Course
+            {
+                Id = courseId,
+                Code = couresCode
+            };
+            _courseRepositoryMock.Setup(r => r.GetOrThrowByCourseCode(couresCode)).Returns(courseToReturn);
+            var actualCourse = _courseService.GetCourseByCourseCode(couresCode);
+            Assert.That(actualCourse.Id, Is.EqualTo(courseId));
+            Assert.That(actualCourse.Code, Is.EqualTo(couresCode));
+        }
+
+        [Test]
+        public void Throws_NotFound_Exception_When_Course_Code_Not_Exist()
+        {
+            var couresCode = "TestCode";
+            _courseRepositoryMock.Setup(r => r.GetOrThrowByCourseCode(couresCode)).Throws(new NotFoundException(string.Format("Course with CourseCode {0} not found.", couresCode)));
+            Assert.Throws<NotFoundException>(() => _courseService.GetCourseByCourseCode(couresCode));
+        }
+
+        [Test]
+        public void Throws_BadRequest_Exception_When_More_Than_One_Courses_Have_Same_Course_Code()
+        {
+            var couresCode = "TestCode";
+            _courseRepositoryMock.Setup(r => r.GetOrThrowByCourseCode(couresCode)).Throws(new BadRequestException(string.Format("More than one courses have the same CourseCode {0}.", couresCode)));
+            Assert.Throws<BadRequestException>(() => _courseService.GetCourseByCourseCode(couresCode));
         }
     }
 }

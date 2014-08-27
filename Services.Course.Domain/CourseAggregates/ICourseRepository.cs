@@ -15,5 +15,6 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         CourseSegment GetSegment(Guid courseId,Guid segmentId);
         LearningMaterial GetLearningMaterial(Guid learningMaterialId);
         IEnumerable<Course> GetPublishedCourses(Guid organizationId);
+        Course GetOrThrowByCourseCode(string courseCode);
     }
 }
