@@ -102,9 +102,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Services.Asset.Contracts.0.1.324\lib\net40\BpeProducts.Services.Asset.Contracts.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Services.Authorization.Contract, Version=0.1.963.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Services.Authorization.Contract, Version=0.1.971.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.963\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Services.Authorization.Contract.0.1.971\lib\net40\BpeProducts.Services.Authorization.Contract.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Section.Contracts, Version=0.1.827.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
