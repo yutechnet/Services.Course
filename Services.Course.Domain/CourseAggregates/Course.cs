@@ -591,6 +591,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 EntityId = Id,
                 Type = SupportingEntityType.Course
             });
+            LearningMaterials.ForEach(learningMaterial => learningMaterial.CloneOutcomes(assessmentClient));
             Segments.ForEach(courseSegment => courseSegment.CloneOutcomes(assessmentClient));
         }
 

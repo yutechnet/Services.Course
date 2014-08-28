@@ -674,6 +674,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
         public void Can_clone_Outcomes()
         {
             var course = GetCourse();
+            course.AddLearningMaterial(new LearningMaterialRequest());
             var courseSegment = course.AddSegment(new SaveCourseSegmentRequest());
             courseSegment.CourseLearningActivities.Add(new CourseLearningActivity());
             courseSegment.AddLearningMaterial(new LearningMaterialRequest());
@@ -699,7 +700,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             _assessmentClientMock.Verify(
                a =>
                a.CloneEntityOutcomes(SupportingEntityType.LearningMaterial, It.IsAny<Guid>(),
-                                     It.Is<CloneEntityOutcomeRequest>(c => c.Type == SupportingEntityType.LearningMaterial)));
+                                     It.Is<CloneEntityOutcomeRequest>(c => c.Type == SupportingEntityType.LearningMaterial)),Times.Exactly(2));
         }
 
         [Test]
