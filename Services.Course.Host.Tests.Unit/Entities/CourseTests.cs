@@ -186,7 +186,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             Assert.That(course.Prerequisites, Is.Empty);
 
             var prerequisiste = courseFactory.Build(new SaveCourseRequest());
-            Assert.Throws<ForbiddenException>(() => course.AddPrerequisite(prerequisiste));
+            Assert.Throws<BadRequestException>(() => course.AddPrerequisite(prerequisiste));
         }
 
         [Test]
