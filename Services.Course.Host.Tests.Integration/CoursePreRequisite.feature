@@ -82,7 +82,7 @@ Scenario: Cannot add an unpublished course ass a prerequisite
 	When I add the following prerequisites to 'Math 200'
 	| Name     |
 	| Math 150 |
-	Then I get 'Forbidden' response
+	Then I get 'BadRequest' response
 
 Scenario: Verify prerequisites are copied from course template
 	Given I have the following course templates

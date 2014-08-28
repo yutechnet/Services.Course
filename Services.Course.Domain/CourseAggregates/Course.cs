@@ -155,7 +155,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
             if (!prerequisite.IsPublished)
             {
-                throw new ForbiddenException("Prerequisite item " + prerequisite.Id + " - " + prerequisite.Name +
+                throw new BadRequestException("Prerequisite item " + prerequisite.Id + " - " + prerequisite.Name +
                                              "is not yet published, and thus cannot be used as a prerequisite to this course.");
             }
 

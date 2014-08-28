@@ -366,7 +366,7 @@ this.FeatureBackground();
 #line 82
  testRunner.When("I add the following prerequisites to \'Math 200\'", ((string)(null)), table15, "When ");
 #line 85
- testRunner.Then("I get \'Forbidden\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I get \'BadRequest\' response", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
