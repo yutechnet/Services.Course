@@ -43,7 +43,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
             var sectionRequest = course.GetSectionRequest(request,_assessmentClient);
 
-            var response = _sectionClient.CreateSection(request.SectionServiceUri, sectionRequest);
+            var response = _sectionClient.CreateSection(sectionRequest);
 
             return response;
         }
@@ -62,7 +62,7 @@ namespace BpeProducts.Services.Course.Host.Controllers
 
             var sectionRequest = course.GetSectionRequest(request, _assessmentClient);
 
-            var response = _sectionClient.CreateSection(request.SectionServiceUri, sectionRequest);
+            var response = _sectionClient.CreateSection(sectionRequest);
 
             return response;
         }

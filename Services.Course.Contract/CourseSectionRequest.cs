@@ -9,9 +9,6 @@ namespace BpeProducts.Services.Course.Contract
     public class CourseSectionRequest
     {
         [DataMember(IsRequired = true)]
-        public Uri SectionServiceUri { get; set; }
-
-        [DataMember(IsRequired = true)]
         public string Name { get; set; }
 
         [DataMember(IsRequired = true)]

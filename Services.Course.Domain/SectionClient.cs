@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using BpeProducts.Common.Authorization;
@@ -10,7 +11,6 @@ namespace BpeProducts.Services.Course.Domain
     public interface ISectionClient
     {
         HttpResponseMessage CreateSection(CreateSectionRequest request);
-        HttpResponseMessage CreateSection(Uri sectionServiceAddress, CreateSectionRequest request);
     }
 
     public class SectionClient : ISectionClient
@@ -21,27 +21,18 @@ namespace BpeProducts.Services.Course.Domain
         public SectionClient(ISamlTokenExtractor tokenExtractor)
         {
             _tokenExtractor = tokenExtractor;
-        }
+            BaseAddress = new Uri(ConfigurationManager.AppSettings["SectionServiceBaseUrl"]);
 
-        public SectionClient(ISamlTokenExtractor tokenExtractor, Uri baseAddress)
-        {
-            _tokenExtractor = tokenExtractor;
-            BaseAddress = baseAddress;
         }
 
         public HttpResponseMessage CreateSection(CreateSectionRequest request)
-        {
-            return CreateSection(BaseAddress, request);
-        }
-
-        public HttpResponseMessage CreateSection(Uri sectionServiceAddress, CreateSectionRequest request)
         {
             var samlToken = _tokenExtractor.GetSamlToken();
 			var xApiKey = _tokenExtractor.GetApiKey();
             var client = HttpClientFactory.Create(new ApiVersionMessageHandler(ApiVersions.Version1Aug292014Release));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("SAML", samlToken);
 			client.DefaultRequestHeaders.Add("X-ApiKey", xApiKey);
-            var uri = new Uri(sectionServiceAddress.ToString().TrimEnd('/') + "/section");
+            var uri = new Uri(BaseAddress + "section");
             var response = client.PostAsJsonAsync(uri.ToString(), request);
 
             return response.Result;

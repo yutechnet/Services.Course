@@ -640,7 +640,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
                 var request = new CourseSectionRequest
                 {
-                    SectionServiceUri = uri,
                     Name = row["Name"],
                     CourseCode = row["CourseCode"],
                     SectionCode = row["SectionCode"],
@@ -661,7 +660,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             var response = new HttpResponseMessage(code);
             response.Headers.Location = new Uri(uri, Guid.NewGuid().ToString());
-            ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<Uri>(), It.IsAny<CreateSectionRequest>())).Returns(response);
             ApiFeature.MockSectionClient.Setup(s => s.CreateSection(It.IsAny<CreateSectionRequest>())).Returns(response);
         }
 
@@ -747,7 +745,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
                 var request = new CourseSectionRequest
                 {
-                    SectionServiceUri = uri,
                     Name = row["Name"],
                     CourseCode = row["Code"],
                     SectionCode = row["Code"],
@@ -901,7 +898,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
                 var request = new CourseSectionRequest
                 {
-                    SectionServiceUri = uri,
                     Name = row["Name"],
                     CourseCode = ScenarioContext.Current.Get<long>("ticks") + row["CourseCode"],
                     SectionCode = row["SectionCode"],
