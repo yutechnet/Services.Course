@@ -65,13 +65,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Authorization, Version=3.0.1089.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Authorization, Version=3.0.1096.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Authorization.3.0.1089\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Authorization.3.0.1096\lib\net40\BpeProducts.Common.Authorization.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.Contract, Version=3.0.1089.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Contract, Version=3.0.1096.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Contract.3.0.1089\lib\net40\BpeProducts.Common.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Contract.3.0.1096\lib\net40\BpeProducts.Common.Contract.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Common.Cryptography, Version=3.0.1089.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -101,9 +101,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\BpeProducts.Common.Redis.3.0.1089\lib\net40\BpeProducts.Common.Redis.dll</HintPath>
     </Reference>
-    <Reference Include="BpeProducts.Common.WebApi, Version=3.0.1089.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.WebApi, Version=3.0.1096.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.WebApi.3.0.1089\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.WebApi.3.0.1096\lib\net40\BpeProducts.Common.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="BpeProducts.Services.Authorization.Contract, Version=0.1.971.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
