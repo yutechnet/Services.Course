@@ -52,6 +52,20 @@ Scenario Template: Can create a course with same name or code
 		 | Psychology 101 | PSY102 | Amro's another awesome Psychology class | Created | COB              |
 		 | Psychology 102 | PSY101 | Amro's another awesome Psychology class | Created | COB              |
 
+@ignore
+#TODO: US4696 says "* Ensure CourseCode is unique if it isn't already (break out into another story if necessary)"
+#Unignore this test when this is implemented.
+Scenario: Can not create a course with same code
+	Given I have an existing course with following info:
+	 | Name        | Code   | Description                   | Tenant Id | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets                      |
+	 | English 101 | ENG101 | Ranji's awesome English Class | 999999    | COB              | Traditional | false      | {someData} | B40CE4F4-434A-4987-80A8-58F795C212EB |
+	When I create a new course with Psychology 101, SAME, Code1, COB
+	And I submit a creation request
+	Then I get 'Created' response
+	When I create a new course with Psychology 102, SAME, Same as Code1, COB
+	And I submit a creation request
+	Then I get 'BadRequest' response
+
 Scenario Template: cannot create a course with missing data
 	When I create a new course with <Name>, <Code>, <Description>, <OrganizationName>
 	And I submit a creation request
