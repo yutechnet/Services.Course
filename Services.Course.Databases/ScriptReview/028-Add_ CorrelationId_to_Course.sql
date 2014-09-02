@@ -11,7 +11,7 @@ BEGIN
 	RAISERROR( 'CREATE BEGIN: Column (CorrelationId) being added to Table (Course)' , 0 , 1 )WITH NOWAIT;
 	RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
 	
-	ALTER TABLE [Course] add CorrelationId nvarchar(255) NULL;
+	ALTER TABLE [Course] add CorrelationId nvarchar(250) NULL;
 
 	RAISERROR( '-----------------------------' , 0 , 1 )WITH NOWAIT;
 	RAISERROR( 'CREATE END: Column (CorrelationId) being added to Table (Course)' , 0 , 1 )WITH NOWAIT;
