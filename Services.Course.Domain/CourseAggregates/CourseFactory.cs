@@ -35,6 +35,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                         OrganizationId = request.OrganizationId,
                         TemplateCourseId = request.TemplateCourseId.Value,
                         TenantId = request.TenantId,
+                        CorrelationId = request.CorrelationId  
                     };
                 return Build(createCourseFromTemplateRequest);
             }
@@ -60,6 +61,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 course.Code = request.Code;
             if (!string.IsNullOrEmpty(request.Description))
                 course.Description = request.Description;
+            if (!string.IsNullOrEmpty(request.CorrelationId))
+                course.CorrelationId = request.CorrelationId;
             course.OrganizationId = request.OrganizationId;
             course.TenantId = request.TenantId;
             course.Template = template;
@@ -82,7 +85,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                     Credit = request.Credit,
                     MetaData = request.MetaData,
                     ExtensionAssets = request.ExtensionAssets,
-                    Prerequisites = request.PrerequisiteCourseIds.Select(x=>_courseRepository.GetOrThrow(x)).ToList()
+                    Prerequisites = request.PrerequisiteCourseIds.Select(x=>_courseRepository.GetOrThrow(x)).ToList(),
+                    CorrelationId = request.CorrelationId  
                 };
 
             var programs = _programRepository.Get(request.ProgramIds);

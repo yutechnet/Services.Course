@@ -131,6 +131,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             if (table.ContainsColumn("ProgramName"))
                 editCourseRequest.ProgramIds = string.IsNullOrWhiteSpace(table.Rows[0]["ProgramName"])? null: table.Rows[0]["ProgramName"].Split(',').Select(program =>Resources<ProgramResource>.GetId(program)).ToList();
 
+            if (table.ContainsColumn("CorrelationId"))
+            {
+                editCourseRequest.CorrelationId = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["CorrelationId"];
+            }
+
             ScenarioContext.Current.Add("editCourseRequest", editCourseRequest);
             PutOperations.UpdateCourse(courseRescource, editCourseRequest);
         }

@@ -30,5 +30,8 @@ namespace BpeProducts.Services.Course.Contract
 
         [DataMember]
         public string Description { get; set; }
+
+        [DataMember]
+        public string CorrelationId { get; set; }
     }
 }

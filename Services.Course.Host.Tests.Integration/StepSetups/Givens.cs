@@ -37,6 +37,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             }
         }
 
+        [When(@"I create course wiht the following info")]
         [Given(@"I have existing courses with following info:")]
         public void GivenIHaveExistingCoursesWithFollowingInfo(Table table)
         {
@@ -53,6 +54,13 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     CourseType = ECourseType.Traditional,
                     IsTemplate = false
                 };
+                if (table.ContainsColumn("CorrelationId"))
+                {
+                    if (row["CorrelationId"] != "")
+                    {
+                        saveCourseRequest.CorrelationId = ScenarioContext.Current.Get<long>("ticks") + row["CorrelationId"];
+                    }
+                }
 				PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
 				//var response = ApiFeature.CourseTestHost.Client.PostAsync(_leadingPath, saveCourseRequest, new JsonMediaTypeFormatter()).Result;
 				//response.EnsureSuccessStatusCode();
@@ -139,6 +147,11 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
             if (table.ContainsColumn("ProgramName"))
                 saveCourseRequest.ProgramIds = string.IsNullOrWhiteSpace(table.Rows[0]["ProgramName"]) ? null : table.Rows[0]["ProgramName"].Split(',').Select(program => Resources<ProgramResource>.GetId(program)).ToList();
+
+            if (table.ContainsColumn("CorrelationId"))
+            {
+                saveCourseRequest.CorrelationId = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["CorrelationId"];
+            }
 
             ScenarioContext.Current.Add("createCourseRequest", saveCourseRequest);
             ScenarioContext.Current.Add("courseName", table.Rows[0]["Name"]);

@@ -31,6 +31,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         private IList<LearningMaterial> _learningMaterials = new List<LearningMaterial>();
         private string _metaData;
         private string _extensionAssets;
+        private string _correlationId; 
 
         [JsonProperty]
         public virtual Course Template { get; protected internal set; }
@@ -125,6 +126,16 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             {
                 CheckPublished();
                 _metaData = value;
+            }
+        }
+
+        public virtual string CorrelationId
+        {
+            get { return _correlationId; }
+            set
+            {
+                CheckPublished();
+                _correlationId = value;
             }
         }
 
@@ -299,7 +310,8 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 Segments = BuildSectionSegments(Segments.Where(s => s.ParentSegment == null)),
                 Credit = Credit,
                 MetaData = MetaData,
-                ExtensionAssets = ExtensionAssets
+                ExtensionAssets = ExtensionAssets,
+                CorrelationId = request.CorrelationId 
             };
 
             return translatedRequest;
@@ -619,6 +631,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             {
                 versionableEntity.MetaData = MetaData;
                 versionableEntity.ExtensionAssets = ExtensionAssets;
+                versionableEntity.CorrelationId = null;
             }
 
             return versionableEntity;

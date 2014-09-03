@@ -91,6 +91,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             course.Credit = request.Credit;
             course.MetaData = request.MetaData;
             course.ExtensionAssets = request.ExtensionAssets;
+            course.CorrelationId = request.CorrelationId;  
 
             var programs = _programRepository.Get(request.ProgramIds);
             course.SetPrograms(programs.ToList());

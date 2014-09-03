@@ -26,5 +26,8 @@ namespace BpeProducts.Services.Course.Contract
 
         [DataMember]
         public DateTime? EndDate { get; set; }
+
+        [DataMember]
+        public string CorrelationId { get; set; }
     }
 }

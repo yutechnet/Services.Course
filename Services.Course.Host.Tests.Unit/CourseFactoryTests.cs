@@ -38,7 +38,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     OrganizationId = Guid.NewGuid(),
                     TenantId = 999999,
                     MetaData = "{someData}",
-                    ExtensionAssets = new List<Guid>{Guid.NewGuid()}
+                    ExtensionAssets = new List<Guid>{Guid.NewGuid()},
+                    CorrelationId = "Test CorrelationId"
                 };
 
             Domain.CourseAggregates.Course course = factory.BuildFromScratch(request);
@@ -53,6 +54,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Assert.That(course.IsDeleted, Is.EqualTo(false));
             Assert.That(course.VersionNumber, Is.EqualTo(new Version(1, 0, 0, 0).ToString()));
             Assert.That(course.MetaData, Is.EqualTo(request.MetaData));
+            Assert.That(course.CorrelationId, Is.EqualTo(request.CorrelationId)); 
             CollectionAssert.AreEquivalent(request.ExtensionAssets, course.ExtensionAssets);
         }
 
@@ -109,6 +111,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
                     Code = "CourseCode",
                     Description = "CourseDescription",
                     OrganizationId = Guid.NewGuid(),
+                    CorrelationId = "Test CorrelationId"
                 };
 
             Domain.CourseAggregates.Course course = factory.BuildFromTemplate(template, request);
@@ -132,6 +135,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             Assert.That(course.IsDeleted, Is.EqualTo(false));
             Assert.That(course.VersionNumber, Is.EqualTo(new Version(1, 0, 0, 0).ToString()));
             Assert.That(course.MetaData, Is.EqualTo(template.MetaData));
+            Assert.That(course.CorrelationId, Is.EqualTo(request.CorrelationId)); 
             CollectionAssert.AreEquivalent(template.ExtensionAssets, course.ExtensionAssets);
 
             // TODO: Validate CourseSegments, Programs, LearningOutcomes being cloned

@@ -55,31 +55,31 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 var operation = row["Operation"];
                 var argument = row["Argument"];
                 var count = int.Parse(row["Count"]);
-                var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + ConstructODataQueryString(operation, argument)).Result;
+                var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + ConstructODataQueryString(operation, argument, "Name")).Result;
                 var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
                 var responseList = new List<CourseInfoResponse>(getResponse);
                 Assert.That(responseList.Count, Is.EqualTo(count));
             }
         }
 
-        private string ConstructODataQueryString(string operation, string argument)
+        private string ConstructODataQueryString(string operation, string argument, string fieldName)
         {
             string queryString;
 
             if (operation.ToLower() == "startswith")
             {
-                queryString = String.Format("?$filter={1}(Name, '{0}')",
+                queryString = String.Format("?$filter={1}({2}, '{0}')",
                                                     String.IsNullOrWhiteSpace(argument)
                                                         ? ""
                                                         : ScenarioContext.Current.Get<long>("ticks") + argument,
-                                                    operation);
+                                                    operation, fieldName);
             }
             else if (operation.ToLower() == "eq")
             {
-                queryString = String.Format("?$filter=Name eq '{0}'",
+                queryString = String.Format("?$filter={1} eq '{0}'",
                                                     String.IsNullOrWhiteSpace(argument)
                                                         ? ""
-                                                        : ScenarioContext.Current.Get<long>("ticks") + argument);
+                                                        : ScenarioContext.Current.Get<long>("ticks") + argument, fieldName);
             }
             else
             {
@@ -125,6 +125,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             Assert.AreEqual(originalRequest.Code, courseInfo.Code);
             Assert.AreEqual(originalRequest.Description, courseInfo.Description);
             Assert.AreEqual(originalRequest.MetaData, courseInfo.MetaData);
+            Assert.AreEqual(originalRequest.CorrelationId, courseInfo.CorrelationId);
             CollectionAssert.AreEquivalent(originalRequest.ExtensionAssets, courseInfo.ExtensionAssets);
         }
 
@@ -703,6 +704,31 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var course = GetOperations.GetCourse(courseResource);
             Assert.That(course.TemplateCourseId, Is.Null);
         }
+
+        [Then(@"The course '(.*)' has following CorrelationId")]
+        public void ThenTheCourseHasFollowingCorrelationId(string courseName, Table table)
+        {
+            var courseResource = Resources<CourseResource>.Get(courseName);
+            var course = GetOperations.GetCourse(courseResource);
+            var expectCorrelationId = ScenarioContext.Current.Get<long>("ticks") + table.Rows[0]["CorrelationId"];
+            Assert.That(course.CorrelationId, Is.EqualTo(expectCorrelationId));
+        }
+
+        [Then(@"the course correlationId counts are as follows:")]
+        public void ThenTheCourseCorrelationIdCountsAreAsFollows(Table table)
+        {
+            foreach (var row in table.Rows)
+            {
+                var operation = row["Operation"];
+                var argument = row["Argument"];
+                var count = int.Parse(row["Count"]);
+                var result = ApiFeature.CourseTestHost.Client.GetAsync(_leadingPath + ConstructODataQueryString(operation, argument, "CorrelationId")).Result;
+                var getResponse = result.Content.ReadAsAsync<IEnumerable<CourseInfoResponse>>().Result;
+                var responseList = new List<CourseInfoResponse>(getResponse);
+                Assert.That(responseList.Count, Is.EqualTo(count));
+            }
+        }
+
     }
 }
 

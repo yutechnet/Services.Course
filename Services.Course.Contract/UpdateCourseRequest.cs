@@ -42,5 +42,8 @@ namespace BpeProducts.Services.Course.Contract
 
         [DataMember]
         public List<Guid> ExtensionAssets { get; set; }
+
+        [DataMember]
+        public string CorrelationId { get; set; }
     }
 }

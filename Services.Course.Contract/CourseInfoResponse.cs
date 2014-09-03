@@ -41,5 +41,6 @@ namespace BpeProducts.Services.Course.Contract
         public decimal Credit { get; set; }
         public string MetaData { get; set; }
         public List<Guid> ExtensionAssets { get; set; }
+        public string CorrelationId { get; set; }
     }
 }

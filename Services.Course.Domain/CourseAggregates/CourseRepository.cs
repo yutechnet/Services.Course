@@ -77,6 +77,11 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
 
         public void Save(Course course)
         {
+            if (!string.IsNullOrEmpty(course.CorrelationId))
+            {
+                if (_repository.Query<Course>().Any(s => s.CorrelationId == course.CorrelationId && s.TenantId == course.TenantId && s.Id != course.Id))
+                    throw new BadRequestException(string.Format("Course correlationId {0} is already in use.", course.CorrelationId));
+            }
             _repository.SaveOrUpdate(course);
         }
 
