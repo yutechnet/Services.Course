@@ -11,7 +11,7 @@ using BpeProducts.Services.Course.Domain.Validation;
 using BpeProducts.Services.Course.Host.App_Start;
 using Moq;
 using NUnit.Framework;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 {

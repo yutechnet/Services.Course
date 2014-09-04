@@ -12,7 +12,7 @@ using BpeProducts.Services.Course.Domain.Validation;
 using BpeProducts.Services.Section.Contracts;
 using Castle.Core.Internal;
 using Newtonsoft.Json;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {

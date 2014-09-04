@@ -14,7 +14,6 @@ using BpeProducts.Services.Course.Domain.CourseAggregates;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
-    [Authorize]
     public class CourseController : ApiController
     {
         private readonly ICourseService _courseService;

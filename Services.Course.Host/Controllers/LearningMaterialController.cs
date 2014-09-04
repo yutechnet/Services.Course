@@ -11,7 +11,6 @@ using BpeProducts.Services.Course.Domain.CourseAggregates;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
-    [Authorize]
     public class LearningMaterialController : ApiController
     {
         private readonly ILearningMaterialService _learningMaterialService;

@@ -2,7 +2,7 @@
 using BpeProducts.Common.WebApiTest.Framework;
 using BpeProducts.Common.WebApiTest.Extensions;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 using TechTalk.SpecFlow;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups.Assessment

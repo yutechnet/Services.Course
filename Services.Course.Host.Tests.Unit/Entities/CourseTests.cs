@@ -12,7 +12,7 @@ using BpeProducts.Services.Course.Domain.ProgramAggregates;
 using Castle.Core.Internal;
 using Moq;
 using NUnit.Framework;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 using CourseLearningActivityType = BpeProducts.Services.Course.Contract.CourseLearningActivityType;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities

@@ -4,7 +4,7 @@ using System.Linq;
 using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Domain.Validation;
 using Castle.Core.Internal;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {

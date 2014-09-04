@@ -4,7 +4,7 @@ using System.Net.Http;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Contract;
 using BpeProducts.Common.Exceptions;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain
 {

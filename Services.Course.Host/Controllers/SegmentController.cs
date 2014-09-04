@@ -11,7 +11,6 @@ using BpeProducts.Services.Course.Domain.CourseAggregates;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
-    [Authorize]
     public class SegmentController : ApiController
     {
         private readonly ICourseSegmentService _courseSegmentService;

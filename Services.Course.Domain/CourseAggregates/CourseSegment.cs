@@ -8,7 +8,7 @@ using BpeProducts.Common.NHibernate;
 using BpeProducts.Services.Course.Contract;
 using Castle.Core.Internal;
 using Newtonsoft.Json;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {

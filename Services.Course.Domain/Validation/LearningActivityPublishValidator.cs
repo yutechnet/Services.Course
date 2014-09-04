@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.Validation
 {

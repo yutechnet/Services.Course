@@ -13,7 +13,6 @@ using BpeProducts.Services.Course.Domain;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
-	[Authorize]
 	public class ProgramController : ApiController
 	{
 	    private readonly IProgramService _programService;

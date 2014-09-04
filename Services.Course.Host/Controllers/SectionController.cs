@@ -10,11 +10,10 @@ using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
 using BpeProducts.Services.Course.Domain.Repositories;
 using BpeProducts.Services.Section.Contracts;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
-    [Authorize]
     public class SectionController : ApiController
     {
         private readonly ICourseRepository _courseRepository;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BpeProducts.Common.WebApiTest.Framework;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Host.Tests.Integration.Resources.Assessment
 {

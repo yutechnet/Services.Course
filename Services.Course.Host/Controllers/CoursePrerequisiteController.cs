@@ -8,7 +8,6 @@ using BpeProducts.Services.Course.Domain.CourseAggregates;
 
 namespace BpeProducts.Services.Course.Host.Controllers
 {
-	[Authorize]
 	public class CoursePrerequisiteController : ApiController
     {
 		private readonly ICourseService _courseService;

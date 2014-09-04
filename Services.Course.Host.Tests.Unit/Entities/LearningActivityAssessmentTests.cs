@@ -8,7 +8,7 @@ using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
 using Moq;
 using NUnit.Framework;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 using BpeProducts.Common.NHibernate;
-using Services.Assessment.Contract;
+using BpeProducts.Services.Assessment.Contract;
 
 namespace BpeProducts.Services.Course.Domain.CourseAggregates
 {
