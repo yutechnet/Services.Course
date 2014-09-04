@@ -61,8 +61,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
                 course.Code = request.Code;
             if (!string.IsNullOrEmpty(request.Description))
                 course.Description = request.Description;
-            if (!string.IsNullOrEmpty(request.CorrelationId))
-                course.CorrelationId = request.CorrelationId;
+            course.CorrelationId = !string.IsNullOrEmpty(request.CorrelationId) ? request.CorrelationId : null;
             course.OrganizationId = request.OrganizationId;
             course.TenantId = request.TenantId;
             course.Template = template;

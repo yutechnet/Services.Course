@@ -31,8 +31,8 @@ Background:
 	| Bachelor of Art     | BA Program  | BA          | COB              |
 	| Bachelor of Science | BS program  | BS          | COB              |
 	And I have the following course templates
-	| Name       | Code          | Description              | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets |
-	| Template 1 | TemplateCode1 | My First Course Template | COB              | Traditional | true       |	{someData} | asset1,asset2   |
+	| Name       | Code          | Description              | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets | CorrelationId  |
+	| Template 1 | TemplateCode1 | My First Course Template | COB              | Traditional | true       | {someData} | asset1,asset2   | correlationId1 |
 	And I have the following course segments for 'Template 1'
 	| Name        | Description                    | Type       | ParentSegment |
 	| Week1       | First week is slack time       | TimeSpan   |               |
@@ -46,41 +46,44 @@ When I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description      | OrganizationName | IsTemplate |
 	| Course 1 | CourseCode1 | My First Course  | COB              | false      |
 And I create a course from the template 'Template 1' with the following
-	| Name     | Code        | Description      | OrganizationName | IsTemplate |
-	| Course 2 |             | My Second Course | COB              | true       |
+	| Name     | Code        | Description      | OrganizationName | IsTemplate | CorrelationId  |
+	| Course 2 |             | My Second Course | COB              | true       | correlationId2 |
 And I create a course from the template 'Template 1' with the following
 	| Name     | Code        | Description      | OrganizationName | IsTemplate |
 	| Course 3 |             |                  | COB              | true       |
 Then the course 'Course 1' should have the following info
-	| Field       | Value           |
-	| Name        | Course 1        |
-	| Code        | CourseCode1     |
-	| Description | My First Course |
-	| CourseType  | Traditional     |
-	| IsTemplate  | false           |
-	| MetaData    | {someData}      |
+	| Field         | Value           |
+	| Name          | Course 1        |
+	| Code          | CourseCode1     |
+	| Description   | My First Course |
+	| CourseType    | Traditional     |
+	| IsTemplate    | false           |
+	| MetaData      | {someData}      |
+	| CorrelationId |                 |
 And the course 'Course 1' should have the following reference info
 	| Field           | Value         |
 	| ExtensionAssets | asset1,asset2 |
 And the course 'Course 2' should have the following info
-	| Field       | Value            |
-	| Name        | Course 2         |
-	| Code        | TemplateCode1    |
-	| Description | My Second Course |
-	| CourseType  | Traditional      |
-	| IsTemplate  | true             |
-	| MetaData    | {someData}       |
+	| Field         | Value            |
+	| Name          | Course 2         |
+	| Code          | TemplateCode1    |
+	| Description   | My Second Course |
+	| CourseType    | Traditional      |
+	| IsTemplate    | true             |
+	| MetaData      | {someData}       |
+	| CorrelationId | correlationId2   |
 And the course 'Course 2' should have the following reference info
 	| Field           | Value         |
 	| ExtensionAssets | asset1,asset2 |
 And the course 'Course 3' should have the following info
-	| Field       | Value                    |
-	| Name        | Course 3                 |
-	| Code        | TemplateCode1            |
-	| Description | My First Course Template |
-	| CourseType  | Traditional              |
-	| IsTemplate  | true                     |
-	| MetaData    | {someData}               |
+	| Field         | Value                    |
+	| Name          | Course 3                 |
+	| Code          | TemplateCode1            |
+	| Description   | My First Course Template |
+	| CourseType    | Traditional              |
+	| IsTemplate    | true                     |
+	| MetaData      | {someData}               |
+	| CorrelationId |                          |
 And the course 'Course 3' should have the following reference info
 	| Field           | Value         |
 	| ExtensionAssets | asset1,asset2 |

@@ -829,6 +829,8 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             var organizationName = table.Rows[0]["OrganizationName"];
             courseRequest.OrganizationId = Resources<OrganizationResource>.GetId(organizationName);
             courseRequest.TemplateCourseId = template.Id;
+            if (!string.IsNullOrEmpty(courseRequest.CorrelationId) )
+                courseRequest.CorrelationId = ScenarioContext.Current.Get<long>("ticks") + courseRequest.CorrelationId;
 
             var result = PostOperations.CreateCourseFromTemplate(courseRequest.Name, courseRequest);
             return result;

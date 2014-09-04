@@ -27,18 +27,19 @@ Background:
 	| asset2 | published   |
 	| asset3 | published   |
 	And I have the following courses 
-	| Name           | Code   | Description                   | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets |
-	| English 1010   | ENG101 | Ranji's awesome English Class | COB              | Traditional | false      | {someData} | asset1,asset2   |
-	| English 101011 | E10011 | Macroeconomics                | COB              | Traditional | false      | {someData} | asset3          |
+	| Name           | Code   | Description                   | OrganizationName | CourseType  | IsTemplate | MetaData   | ExtensionAssets | CorrelationId  |
+	| English 1010   | ENG101 | Ranji's awesome English Class | COB              | Traditional | false      | {someData} | asset1,asset2   | correlationId1 |
+	| English 101011 | E10011 | Macroeconomics                | COB              | Traditional | false      | {someData} | asset3          | correlationId2 |
 
 Scenario: Create a default version
 	Then the course 'English 1010' should have the following info
-	| Field           | Value                         |
-	| Name            | English 1010                  |
-	| Code            | ENG101                        |
-	| Description     | Ranji's awesome English Class |
-	| VersionNumber   | 1.0.0.0                       |
-	| MetaData        | {someData}                    |
+	| Field         | Value                         |
+	| Name          | English 1010                  |
+	| Code          | ENG101                        |
+	| Description   | Ranji's awesome English Class |
+	| VersionNumber | 1.0.0.0                       |
+	| MetaData      | {someData}                    |
+	| CorrelationId | correlationId1                |
 	And the course 'English 1010' should have the following reference info
 	| Field           | Value         |
 	| ExtensionAssets | asset1,asset2 |
@@ -78,6 +79,7 @@ Scenario: Publish a course version
 	| IsPublished   | true                          |
 	| PublishNote   | Blah blah                     |
 	| MetaData      | {someData}                    |
+	| CorrelationId | correlationId1                |
 	And the course 'English 1010' should have the following reference info
 	| Field           | Value         |
 	| ExtensionAssets | asset1,asset2 |
@@ -143,13 +145,14 @@ Scenario: Create a course version from a previously-published version
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the course 'English 1010 v2' should have the following info
-	| Field           | Value                                |
-	| Name            | English 1010                         |
-	| Code            | ENG101                               |
-	| Description     | Ranji's awesome English Class        |
-	| VersionNumber   | 2.0a                                 |
-	| IsPublished     | false                                |
-	| MetaData        | {someData}                           |
+	| Field         | Value                         |
+	| Name          | English 1010                  |
+	| Code          | ENG101                        |
+	| Description   | Ranji's awesome English Class |
+	| VersionNumber | 2.0a                          |
+	| IsPublished   | false                         |
+	| MetaData      | {someData}                    |
+	| CorrelationId |                               |
 	And the course 'English 1010 v2' should have the following reference info
 	| Field           | Value          |
 	| ExtensionAssets | asset1,asset2 |
@@ -166,13 +169,14 @@ Scenario: Create a course version from a previously-published version then publi
 	| Name                  | Note            |
 	| English 1010 v1.0.0.1 | Blah blah DE396 |	
 	Then the course 'English 1010 v1.0.0.1' should have the following info
-	| Field           | Value                                |
-	| Name            | English 1010                         |
-	| Code            | ENG101                               |
-	| Description     | Ranji's awesome English Class        |
-	| VersionNumber   | 1.0.0.1                              |
-	| IsPublished     | true                                 |
-	| MetaData        | {someData}                           |
+	| Field         | Value                         |
+	| Name          | English 1010                  |
+	| Code          | ENG101                        |
+	| Description   | Ranji's awesome English Class |
+	| VersionNumber | 1.0.0.1                       |
+	| IsPublished   | true                          |
+	| MetaData      | {someData}                    |
+	| CorrelationId |                               |
 	And the course 'English 1010 v1.0.0.1' should have the following reference info
 	| Field           | Value          |
 	| ExtensionAssets | asset1,asset2 |
@@ -191,13 +195,14 @@ Scenario: Create a course version from a previously-published version with prere
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the course 'English 1010 v2' should have the following info
-	| Field           | Value                                |
-	| Name            | English 1010                         |
-	| Code            | ENG101                               |
-	| Description     | Ranji's awesome English Class        |
-	| VersionNumber   | 2.0a                                 |
-	| IsPublished     | false                                |
-	| MetaData        | {someData}                           |
+	| Field         | Value                         |
+	| Name          | English 1010                  |
+	| Code          | ENG101                        |
+	| Description   | Ranji's awesome English Class |
+	| VersionNumber | 2.0a                          |
+	| IsPublished   | false                         |
+	| MetaData      | {someData}                    |
+	| CorrelationId |                               |
 	And the course 'English 1010 v2' should have the following reference info
 	| Field           | Value          |
 	| ExtensionAssets | asset1,asset2 |
@@ -219,13 +224,14 @@ Scenario: Create a course version from a previously-published version with segme
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the course 'English 1010 v2' should have the following info
-	| Field           | Value                                |
-	| Name            | English 1010                         |
-	| Code            | ENG101                               |
-	| Description     | Ranji's awesome English Class        |
-	| VersionNumber   | 2.0a                                 |
-	| IsPublished     | false                                |
-	| MetaData        | {someData}                           |
+	| Field         | Value                         |
+	| Name          | English 1010                  |
+	| Code          | ENG101                        |
+	| Description   | Ranji's awesome English Class |
+	| VersionNumber | 2.0a                          |
+	| IsPublished   | false                         |
+	| MetaData      | {someData}                    |
+	| CorrelationId |                               |
 	And the course 'English 1010 v2' should have the following reference info
 	| Field           | Value          |
 	| ExtensionAssets | asset1,asset2 |
@@ -256,13 +262,14 @@ Scenario: Create a course version from a previously-published version with segme
 	| Field         | Value |
 	| VersionNumber | 2.0a  |
 	Then the course 'English 1010 v2' should have the following info
-	| Field           | Value                                |
-	| Name            | English 1010                         |
-	| Code            | ENG101                               |
-	| Description     | Ranji's awesome English Class        |
-	| VersionNumber   | 2.0a                                 |
-	| IsPublished     | false                                |
-	| MetaData        | {someData}                           |
+	| Field         | Value                         |
+	| Name          | English 1010                  |
+	| Code          | ENG101                        |
+	| Description   | Ranji's awesome English Class |
+	| VersionNumber | 2.0a                          |
+	| IsPublished   | false                         |
+	| MetaData      | {someData}                    |
+	| CorrelationId |                               |
 	And the course 'English 1010 v2' should have the following reference info
 	| Field           | Value          |
 	| ExtensionAssets | asset1,asset2 |

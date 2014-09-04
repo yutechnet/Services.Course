@@ -187,17 +187,28 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
 
 
             var orgName = table.GetValue("OrganizationName", String.Empty);
-          
-            if (String.IsNullOrEmpty(orgName)==false)
+            var correlationId = table.GetValue("CorrelationId", null);
+
+            if (String.IsNullOrEmpty(orgName) == false)
             {
                 var newRows = new Dictionary<string, string>
                     {
                         {"Field", "OrganizationId"},
                         {"Value", Resources<OrganizationResource>.Get(orgName).Id.ToString()}
                     };
-                 table.ReplaceRow("Field","OrganizationName",newRows);
-           }
-           
+                table.ReplaceRow("Field", "OrganizationName", newRows);
+            }
+
+            if (!string.IsNullOrEmpty(correlationId))
+            {
+                var newRows = new Dictionary<string, string>
+                    {
+                        {"Field", "CorrelationId"},
+                        {"Value", ScenarioContext.Current.Get<long>("ticks") + correlationId}
+                    };
+                table.ReplaceRow("Field", "CorrelationId", newRows);
+            }
+
             table.CompareToInstance(actual);
 
             if (actual.PublishDate.HasValue)

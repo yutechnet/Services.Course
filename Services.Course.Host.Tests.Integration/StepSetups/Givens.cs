@@ -203,6 +203,14 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                     MetaData = row["MetaData"]
                 };
 
+                if (table.ContainsColumn("CorrelationId"))
+                {
+                    if (row["CorrelationId"] != "")
+                    {
+                        saveCourseRequest.CorrelationId = ScenarioContext.Current.Get<long>("ticks") + row["CorrelationId"];
+                    }
+                }
+
                 var assetNames = row["ExtensionAssets"].Split(',').ToList();
                 var guidList = new List<Guid>();
                 guidList.AddRange(assetNames.Select(a => Resources<AssetResource>.Get(a).Id));
