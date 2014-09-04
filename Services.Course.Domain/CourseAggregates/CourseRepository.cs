@@ -118,11 +118,11 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
             {
                 throw new BadRequestException(string.Format("More than one courses have the same CourseCode {0}.", courseCode));
             }
-            if (courses.Count == 0 || courses[0].IsDeleted)
+            if (courses.Count == 0)
             {
                 throw new NotFoundException(string.Format("Course with CourseCode {0} not found.", courseCode));
             }
-            return courses[0];
+            return courses.FirstOrDefault();
         }
     }
 }
