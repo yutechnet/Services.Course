@@ -16,7 +16,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
     public class CourseRepositoryTests
     {
 
-        const string couresCode = "TestCode";
+        const string courseCode = "TestCode";
         private ICourseRepository _courseRepository;
         private Mock<IRepository> _repositoryMock;
         private AutoMock _autoMock;
@@ -37,15 +37,15 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             var course =  new Domain.CourseAggregates.Course
             {
                 Id = courseId,
-                Code = couresCode
+                Code = courseCode
             };
             var courseList = new List<Domain.CourseAggregates.Course> { course };
 
             _repositoryMock.Setup(x => x.Query<Domain.CourseAggregates.Course>()).Returns(courseList.AsQueryable);
 
-            var actualCourse = _courseRepository.GetOrThrowByCourseCode(couresCode);
+            var actualCourse = _courseRepository.GetOrThrowByCourseCode(courseCode);
             Assert.That(actualCourse.Id, Is.EqualTo(courseId));
-            Assert.That(actualCourse.Code, Is.EqualTo(couresCode));
+            Assert.That(actualCourse.Code, Is.EqualTo(courseCode));
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
         {
             var courseList = new List<Domain.CourseAggregates.Course>();
             _repositoryMock.Setup(x => x.Query<Domain.CourseAggregates.Course>()).Returns(courseList.AsQueryable);
-            Assert.Throws<NotFoundException>(() => _courseRepository.GetOrThrowByCourseCode(couresCode));
+            Assert.Throws<NotFoundException>(() => _courseRepository.GetOrThrowByCourseCode(courseCode));
         }
 
         [Test]
@@ -62,17 +62,17 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
             var course1 = new Domain.CourseAggregates.Course
             {
                 Id = Guid.NewGuid(),
-                Code = couresCode
+                Code = courseCode
             };
             var course2 = new Domain.CourseAggregates.Course
             {
                 Id = Guid.NewGuid(),
-                Code = couresCode
+                Code = courseCode
             };
             var courseList = new List<Domain.CourseAggregates.Course> { course1, course2};
 
             _repositoryMock.Setup(x => x.Query<Domain.CourseAggregates.Course>()).Returns(courseList.AsQueryable);
-            Assert.Throws<BadRequestException>(() => _courseRepository.GetOrThrowByCourseCode(couresCode));
+            Assert.Throws<BadRequestException>(() => _courseRepository.GetOrThrowByCourseCode(courseCode));
         }
     }
 }
