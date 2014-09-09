@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using BpeProducts.Common.Authorization;
+using BpeProducts.Services.Authorization.Client;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 

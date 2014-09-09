@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using System.Collections.Generic;
 using BpeProducts.Common.Authorization;
+using BpeProducts.Services.Authorization.Client;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.CourseAggregates;

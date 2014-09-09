@@ -3,6 +3,7 @@ using Autofac;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.WebApi.ApiKeys;
 using BpeProducts.Common.WebApiTest;
+using BpeProducts.Services.Authorization.Client;
 using BpeProducts.Services.Course.Domain;
 using BpeProducts.Services.Course.Host.Tests.Integration.Resources.Account;
 using System;

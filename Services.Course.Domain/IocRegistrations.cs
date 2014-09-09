@@ -6,6 +6,7 @@ using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Ioc;
 using BpeProducts.Common.Ioc.Validation;
 using BpeProducts.Common.Log;
+using BpeProducts.Services.Authorization.Client;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
 using BpeProducts.Services.Course.Domain.ProgramAggregates;

@@ -5,6 +5,7 @@ using AutoMapper;
 using BpeProducts.Common.Authorization;
 using BpeProducts.Common.Contract;
 using BpeProducts.Common.Exceptions;
+using BpeProducts.Services.Authorization.Client;
 using BpeProducts.Services.Authorization.Contract;
 using BpeProducts.Services.Course.Contract;
 using BpeProducts.Services.Course.Contract.Events;
