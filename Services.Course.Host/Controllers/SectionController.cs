@@ -19,13 +19,11 @@ namespace BpeProducts.Services.Course.Host.Controllers
         private readonly ICourseRepository _courseRepository;
         private readonly ISectionClient _sectionClient;
         private readonly IAssessmentClient _assessmentClient;
-        private readonly ICourseService _courseService;
-        public SectionController(ICourseRepository courseRepository, ISectionClient sectionClient,IAssessmentClient assessmentClient,ICourseService courseService) 
+        public SectionController(ICourseRepository courseRepository, ISectionClient sectionClient,IAssessmentClient assessmentClient) 
         {
             _courseRepository = courseRepository;
             _sectionClient = sectionClient;
             _assessmentClient = assessmentClient;
-            _courseService = courseService;
         }
 
         [Transaction]
@@ -41,25 +39,6 @@ namespace BpeProducts.Services.Course.Host.Controllers
             }
 
             var sectionRequest = course.GetSectionRequest(request,_assessmentClient);
-
-            var response = _sectionClient.CreateSection(sectionRequest);
-
-            return response;
-        }
-
-        [Transaction]
-        [ArgumentsNotNull]
-        [ValidateModelState]
-        [Route("course/{courseCode}/section")]
-        public HttpResponseMessage Post(string courseCode, CourseSectionRequest request)
-        {
-            var course = _courseService.GetCourseByCourseCode(courseCode);
-            if (!course.IsActivated)
-            {
-                throw new BadRequestException(string.Format("Course {0} is deactivated and cannot be used to create a section.", course.Id));
-            }
-
-            var sectionRequest = course.GetSectionRequest(request, _assessmentClient);
 
             var response = _sectionClient.CreateSection(sectionRequest);
 

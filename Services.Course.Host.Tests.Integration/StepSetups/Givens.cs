@@ -450,37 +450,5 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
                 PutOperations.Publish(course, request);
             }
         }
-
-        [Given(@"I have the following courses for unique code")]
-        public void GivenIHaveTheFollowingCoursesForUniqueCode(Table table)
-        {
-            foreach (var row in table.Rows)
-            {
-                string type;
-                string isTemplate;
-
-                var saveCourseRequest = new SaveCourseRequest
-                {
-                    Code = ScenarioContext.Current.Get<long>("ticks") + row["Code"],
-                    Description = row["Description"],
-                    Name = row["Name"],
-                    OrganizationId = Resources<OrganizationResource>.Get(row["OrganizationName"]).Id,
-                    PrerequisiteCourseIds = new List<Guid>(),
-                    CourseType = row.TryGetValue("CourseType", out type) ? (ECourseType)Enum.Parse(typeof(ECourseType), type) : ECourseType.Traditional,
-                    IsTemplate = row.TryGetValue("IsTemplate", out isTemplate) && bool.Parse(isTemplate),
-                    Credit = decimal.Parse(table.Rows[0].GetValue("Credit", "0")),
-                    MetaData = row["MetaData"]
-                };
-
-                var assetNames = row["ExtensionAssets"].Split(',').ToList();
-                var guidList = new List<Guid>();
-                guidList.AddRange(assetNames.Select(a => Resources<AssetResource>.Get(a).Id));
-                saveCourseRequest.ExtensionAssets = guidList;
-
-                var result = PostOperations.CreateCourse(saveCourseRequest.Name, saveCourseRequest);
-                result.EnsureSuccessStatusCode();
-            }
-        }
-
     }
 }

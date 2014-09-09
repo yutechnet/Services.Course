@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Autofac.Extras.Moq;
-using BpeProducts.Common.Exceptions;
 using BpeProducts.Services.Course.Domain.CourseAggregates;
 using Moq;
 using NUnit.Framework;
@@ -104,22 +103,6 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit
 
             Assert.That(courseToReturn.Prerequisites.Contains(prerequisiteCourse2));
             Assert.That(courseToReturn.Prerequisites.Contains(prerequisiteCourse3));
-        }
-
-        [Test]
-        public void Can_Get_Course_By_Course_Code()
-        {
-            var courseId = Guid.NewGuid(); 
-            var couresCode = "TestCode";
-            var courseToReturn = new Domain.CourseAggregates.Course
-            {
-                Id = courseId,
-                Code = couresCode
-            };
-            _courseRepositoryMock.Setup(r => r.GetOrThrowByCourseCode(couresCode)).Returns(courseToReturn);
-            var actualCourse = _courseService.GetCourseByCourseCode(couresCode);
-            Assert.That(actualCourse.Id, Is.EqualTo(courseId));
-            Assert.That(actualCourse.Code, Is.EqualTo(couresCode));
         }
     }
 }

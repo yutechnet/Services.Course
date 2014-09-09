@@ -64,7 +64,5 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         CourseInfoResponse Create(CreateCourseFromTemplateRequest request);
 
         void UpdateActiviationStatus(Guid courseId, ActivationRequest request);
-
-        Course GetCourseByCourseCode(string courseCode);
     }
 }
