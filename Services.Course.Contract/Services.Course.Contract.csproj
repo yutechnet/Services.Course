@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BpeProducts.Common.Contract, Version=3.0.1121.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="BpeProducts.Common.Contract, Version=3.0.1124.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\BpeProducts.Common.Contract.3.0.1121\lib\net40\BpeProducts.Common.Contract.dll</HintPath>
+      <HintPath>..\packages\BpeProducts.Common.Contract.3.0.1124\lib\net40\BpeProducts.Common.Contract.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
