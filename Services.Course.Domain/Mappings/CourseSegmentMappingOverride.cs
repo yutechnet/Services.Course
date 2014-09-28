@@ -27,7 +27,6 @@ namespace BpeProducts.Services.Course.Domain.Mappings
                    .Access.CamelCaseField(Prefix.Underscore)
                    .ForeignKeyConstraintName("FK_CourseSegment_LearningMaterial");
 
-            mapping.IgnoreProperty(x => x.SourceCourseSegmentId);
         }
     }
 }

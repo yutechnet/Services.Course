@@ -699,6 +699,26 @@ namespace BpeProducts.Services.Course.Host.Tests.Integration.StepSetups
             CollectionAssert.AreEquivalent(extensionAssets, actual.ExtensionAssets);
         }
 
+        [Then(@"the course '(.*)' should have the following segment info")]
+        public void ThenTheCourseShouldHaveTheFollowingSegmentInfo(string courseName, Table table)
+        {
+            var resource = Resources<CourseResource>.Get(courseName);
+            var actual = GetOperations.GetCourse(resource);
+            foreach (var tableRow in table.Rows)
+            {
+                var segmentName = tableRow["Name"];
+                var segmentDescription = tableRow["Description"];
+                var segmentType = tableRow["Type"];
+                var sourceSegment = Resources<CourseSegmentResource>.Get(tableRow["SourceSegment"]);
+                var actualSegment = actual.Segments.FirstOrDefault(x => x.Name == segmentName);
+                Assert.That(actualSegment,Is.Not.Null);
+                Assert.That(actualSegment.Description, Is.EqualTo(segmentDescription));
+                Assert.That(actualSegment.Type, Is.EqualTo(segmentType));
+                Assert.That(actualSegment.SourceCourseSegmentId, Is.EqualTo(sourceSegment.Id));
+            }
+        }
+
+
         [Then(@"The course '(.*)' has '(.*)' course learning material")]
         public void ThenTheCourseHasCourseLearningMaterial(string courseName, int count)
         {

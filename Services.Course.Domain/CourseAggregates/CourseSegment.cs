@@ -33,7 +33,7 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         public virtual int? ActiveDate { get; set; }
         public virtual int? InactiveDate { get; set; }
 
-        public virtual Guid SourceCourseSegmentId { get; set; }
+        public virtual Guid? SourceCourseSegmentId { get; set; }
 
         [NotNullable]
         public virtual Course Course { get; set; }
@@ -163,7 +163,9 @@ namespace BpeProducts.Services.Course.Domain.CourseAggregates
         
         public virtual void CloneOutcomes(IAssessmentClient assessmentClient)
         {
-            assessmentClient.CloneEntityOutcomes(SupportingEntityType.Segment, SourceCourseSegmentId, new CloneEntityOutcomeRequest()
+            if (!SourceCourseSegmentId.HasValue) return;
+
+            assessmentClient.CloneEntityOutcomes(SupportingEntityType.Segment, SourceCourseSegmentId.Value, new CloneEntityOutcomeRequest()
             {
                 EntityId = Id,
                 Type = SupportingEntityType.Segment

@@ -63,6 +63,9 @@ Then the course 'Course 1' should have the following info
 And the course 'Course 1' should have the following reference info
 	| Field           | Value         |
 	| ExtensionAssets | asset1,asset2 |
+And the course 'Course 1' should have the following segment info
+	| Name  | Description              | Type     | SourceSegment |
+	| Week1 | First week is slack time | TimeSpan | Week1         |
 And the course 'Course 2' should have the following info
 	| Field         | Value            |
 	| Name          | Course 2         |
@@ -75,6 +78,9 @@ And the course 'Course 2' should have the following info
 And the course 'Course 2' should have the following reference info
 	| Field           | Value         |
 	| ExtensionAssets | asset1,asset2 |
+And the course 'Course 2' should have the following segment info
+	| Name  | Description              | Type     | SourceSegment |
+	| Week1 | First week is slack time | TimeSpan | Week1         |
 And the course 'Course 3' should have the following info
 	| Field         | Value                    |
 	| Name          | Course 3                 |
@@ -87,6 +93,9 @@ And the course 'Course 3' should have the following info
 And the course 'Course 3' should have the following reference info
 	| Field           | Value         |
 	| ExtensionAssets | asset1,asset2 |
+And the course 'Course 3' should have the following segment info
+	| Name  | Description              | Type     | SourceSegment |
+	| Week1 | First week is slack time | TimeSpan | Week1         |
 
 Scenario: Ignore course Type in the request when creating from template
 When I create a course from the template 'Template 1' with the following

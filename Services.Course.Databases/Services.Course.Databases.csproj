@@ -109,6 +109,7 @@
     <Content Include="Databases\Parabola\025-Add_Version_Columns_to_Program.sql" />
     <Content Include="Databases\Parabola\026-Update_OriginalProgramId_to_not_null_in_Program.sql" />
     <Content Include="Databases\Parabola\028-Add_ CorrelationId_to_Course.sql" />
+    <Content Include="Databases\Parabola\029-Add_SourceCourseSegmentId_to_CourseSegment.sql" />
     <Content Include="ScriptReview\placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
