@@ -26,6 +26,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             _mockAssessmentClient = new Mock<IAssessmentClient>();
             _course = new Domain.CourseAggregates.Course();
             _courseSegment = _course.AddSegment(new SaveCourseSegmentRequest { });
+            _courseSegment.SourceCourseSegmentId = Guid.NewGuid();
             _courseSegment.AddLearningMaterial(new LearningMaterialRequest());
             _courseSegment.AddLearningMaterial(new LearningMaterialRequest());
         }

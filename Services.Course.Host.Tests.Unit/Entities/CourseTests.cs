@@ -676,6 +676,7 @@ namespace BpeProducts.Services.Course.Host.Tests.Unit.Entities
             var course = GetCourse();
             course.AddLearningMaterial(new LearningMaterialRequest());
             var courseSegment = course.AddSegment(new SaveCourseSegmentRequest());
+            courseSegment.SourceCourseSegmentId = Guid.NewGuid();
             courseSegment.CourseLearningActivities.Add(new CourseLearningActivity());
             courseSegment.AddLearningMaterial(new LearningMaterialRequest());
             var versionedCourse = course.CreateVersion("newVersion") as Domain.CourseAggregates.Course;
